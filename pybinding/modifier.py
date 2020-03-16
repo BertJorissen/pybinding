@@ -204,7 +204,7 @@ def site_state_modifier(min_neighbors: int = 0) -> functools.partial:
         the model after all modifiers have been applied.
     x, y, z : ndarray
         Lattice site position.
-    sub_id : ndarray
+    sub_id : :class:`.support.alias.AliasIndex`
         Sublattice identifier: Can be checked for equality with sublattice names
         specified in :class:`.Lattice`. For example, `state[sub_id == 'A'] = False`
         will invalidate only sites on sublattice A.
@@ -250,7 +250,7 @@ def site_position_modifier(*_) -> functools.partial:
 
     x, y, z : ndarray
         Lattice site position.
-    sub_id : ndarray of int
+    sub_id : :class:`.support.alias.AliasIndex`
         Sublattice identifier: can be checked for equality with sublattice names
         specified in :class:`.Lattice`. For example, `x[sub_id == 'A'] += 0.1` will
         only displace sites on sublattice A.
@@ -303,7 +303,7 @@ def onsite_energy_modifier(is_double: bool = False, phase: bool = False, **kwarg
         The onsite energy.
     x, y, z : ndarray
         Lattice site position.
-    sub_id : ndarray of int
+    sub_id : :class:`.support.alias.AliasIndex`
         Sublattice identifier: can be checked for equality with sublattice names
         specified in :class:`.Lattice`. For example, `energy[sub_id == 'A'] = 0`
         will set the onsite energy only for sublattice A sites.
@@ -365,11 +365,11 @@ def hopping_energy_modifier(is_double: bool = False, is_complex: bool = False, p
         The hopping energy between two sites.
     x1, y1, z1, x2, y2, z2 : ndarray
         Positions of the two lattice sites connected by the hopping parameter.
-    hop_id : ndarray of int
+    hop_id : :class:`.support.alias.AliasIndex`
         Hopping identifier: can be checked for equality with hopping names specified
         in :class:`.Lattice`. For example, `energy[hop_id == 't_nn'] *= 1.1` will only
         modify the energy of the hopping family named `t_nn`.
-    shift : array
+    shift : ndarray
         Shift of x, y, z
 
     The function must return:
