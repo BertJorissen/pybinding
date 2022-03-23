@@ -99,6 +99,11 @@ class Solver:
         self.clear()
         self.model.set_wave_vector(k)
 
+    @property
+    def get_wave_vector(self):
+        """Get the wave vector for periodic models"""
+        return self.model.get_wave_vector
+
     def calc_eigenvalues(self, map_probability_at=None):
         """Return an :class:`.Eigenvalues` result object with an optional probability colormap
 

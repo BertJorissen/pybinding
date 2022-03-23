@@ -42,7 +42,6 @@ public: // add parameters
     void add(HoppingGenerator const& g);
 
     void set_wave_vector(Cartesian const& k);
-
 public:
     /// Are any of the onsite or hopping energies given as matrices instead of scalars?
     bool is_multiorbital() const;
@@ -58,6 +57,8 @@ public: // get parameters
     Primitive const& get_primitive() const { return primitive; }
     Shape const& get_shape() const { return shape; }
     TranslationalSymmetry const& get_symmetry() const { return symmetry; }
+    Cartesian const& get_wave_vector() const {return wave_vector; }
+
 
 public: // get properties
     std::shared_ptr<System const> const& system() const;
