@@ -28,7 +28,7 @@ void wrap_solver(py::module& m) {
                  config.is_verbose = verbose;
 
                  return new Solver<FEAST>(model, config);
-             },
+             }),
              "model"_a, "energy_range"_a, "initial_size_guess"_a,
              "recycle_subspace"_a=feast_defaults.recycle_subspace,
              "is_verbose"_a=feast_defaults.is_verbose
