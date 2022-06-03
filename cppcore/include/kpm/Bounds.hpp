@@ -1,4 +1,6 @@
 #pragma once
+#include <utility>
+
 #include "hamiltonian/Hamiltonian.hpp"
 #include "utils/Chrono.hpp"
 
@@ -23,7 +25,7 @@ struct Scale {
         }
     }
     template<class T>
-    Scale(Scale<T> const& other)
+    explicit Scale(Scale<T> const& other)
         : a(static_cast<real_t>(other.a)), b(static_cast<real_t>(other.b)) {}
 
     explicit operator bool() { return a != 0; }
@@ -40,8 +42,8 @@ struct Scale {
 */
 class Bounds {
 public:
-    Bounds(Hamiltonian const& hamiltonian, double precision_percent)
-        : hamiltonian(hamiltonian), precision_percent(precision_percent) {}
+    Bounds(Hamiltonian  hamiltonian, double precision_percent)
+        : hamiltonian(std::move(hamiltonian)), precision_percent(precision_percent) {}
     /// Set the energy bounds manually, therefore skipping the Lanczos computation
     Bounds(double min_energy, double max_energy) : min(min_energy), max(max_energy) {}
 
@@ -65,7 +67,7 @@ private:
     int lanczos_loops = 0;  ///< number of iterations needed to converge the Lanczos procedure
 
     Hamiltonian hamiltonian;
-    double precision_percent;
+    double precision_percent{};
     Chrono timer;
 };
 

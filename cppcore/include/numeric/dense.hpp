@@ -28,28 +28,19 @@ using Eigen::Map;
 using Eigen::DenseBase;
 using Eigen::Array3i;
 using Eigen::ArrayXi;
-using Eigen::ArrayXf;
-using Eigen::ArrayXcf;
 using Eigen::ArrayXd;
 using Eigen::ArrayXcd;
 using Eigen::ArrayXXi;
-using Eigen::ArrayXXf;
-using Eigen::ArrayXXcf;
 using Eigen::ArrayXXd;
 using Eigen::ArrayXXcd;
-using Eigen::Vector3f;
 using Eigen::VectorXi;
-using Eigen::VectorXf;
-using Eigen::VectorXcf;
 using Eigen::VectorXd;
 using Eigen::VectorXcd;
-using Eigen::MatrixXf;
-using Eigen::MatrixXcf;
 using Eigen::MatrixXd;
 using Eigen::MatrixXcd;
 
 // convenient type aliases
-using Cartesian = Eigen::Vector3f;
+using Cartesian = Eigen::Vector3d;
 using Index3D = Eigen::Vector3i;
 using Vector3b = Eigen::Matrix<bool, 3, 1>;
 template<class T> using ArrayX = Eigen::Array<T, Eigen::Dynamic, 1>;
@@ -144,8 +135,8 @@ template<class Derived> inline bool none_of(const DenseBase<Derived>& v) { retur
 template<bool is_const>
 class BasicCartesianArrayRef {
 public:
-    using Reference = std14::conditional_t<!is_const, Eigen::Ref<ArrayXf>,
-                                           Eigen::Ref<ArrayXf const>>;
+    using Reference = std14::conditional_t<!is_const, Eigen::Ref<ArrayXd>,
+                                           Eigen::Ref<ArrayXd const>>;
 
     BasicCartesianArrayRef(Reference x, Reference y,  Reference z)
         : x_ref(x), y_ref(y), z_ref(z) {}
@@ -179,9 +170,9 @@ private:
 
 public:
     CartesianArray() = default;
-    CartesianArray(idx_t size) : x(size), y(size), z(size) {}
-    CartesianArray(ArrayXf x, ArrayXf y, ArrayXf z)
-        : x(std::move(x)), y(std::move(y)), z(std::move(z)) {}
+    explicit CartesianArray(idx_t size) : x(size), y(size), z(size) {}
+    CartesianArray(ArrayXd x, ArrayXd y, ArrayXd z)
+        : x(x), y(y), z(z) {}
 
     CartesianRef operator[](idx_t i) { return {x[i], y[i], z[i]}; }
     Cartesian operator[](idx_t i) const { return {x[i], y[i], z[i]}; }

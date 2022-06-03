@@ -7,6 +7,7 @@
 #include "detail/macros.hpp"
 #include "detail/algorithm.hpp"
 
+#include <utility>
 #include <vector>
 #include <memory>
 
@@ -34,10 +35,10 @@ public:
 
     Function apply; ///< to be user-implemented
     bool is_complex = false; ///< the modeled effect requires complex values
-    bool is_double = false; ///< the modeled effect requires double precision
+    bool is_double = true; ///< the modeled effect requires double precision
 
-    OnsiteModifier(Function const& apply, bool is_complex = false, bool is_double = false)
-        : apply(apply), is_complex(is_complex), is_double(is_double) {}
+    explicit OnsiteModifier(Function  apply, bool is_complex = false, bool is_double = false)
+        : apply(std::move(apply)), is_complex(is_complex), is_double(is_double) {}
 
     explicit operator bool() const { return static_cast<bool>(apply); }
 };
@@ -51,10 +52,10 @@ public:
                                         CartesianArrayConstRef pos2, string_view hopping_family)>;
     Function apply; ///< to be user-implemented
     bool is_complex = false; ///< the modeled effect requires complex values
-    bool is_double = false; ///< the modeled effect requires double precision
+    bool is_double = true; ///< the modeled effect requires double precision
 
-    HoppingModifier(Function const& apply, bool is_complex = false, bool is_double = false)
-        : apply(apply), is_complex(is_complex), is_double(is_double) {}
+    explicit HoppingModifier(Function  apply, bool is_complex = false, bool is_double = false)
+        : apply(std::move(apply)), is_complex(is_complex), is_double(is_double) {}
 
     explicit operator bool() const { return static_cast<bool>(apply); }
 };
@@ -100,7 +101,7 @@ private:
 
 namespace detail {
     inline Cartesian shifted(Cartesian pos, System const&) { return pos; }
-    inline Cartesian shifted(Cartesian pos, System::Boundary const& b) { return pos - b.shift; }
+    inline Cartesian shifted(const Cartesian& pos, System::Boundary const& b) { return pos - b.shift; }
 }
 
 template<class scalar_t, class Fn>

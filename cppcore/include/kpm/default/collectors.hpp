@@ -16,7 +16,7 @@ public:
     scalar_t m0;
     scalar_t m1;
 
-    DiagonalCollector(idx_t num_moments) : moments(num_moments) {}
+    explicit DiagonalCollector(idx_t num_moments) : moments(num_moments) {}
 
     idx_t size() const { return moments.size(); }
 

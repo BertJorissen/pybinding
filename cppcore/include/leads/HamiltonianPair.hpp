@@ -44,22 +44,12 @@ struct HamiltonianPair {
 
     HamiltonianPair(System const& lead_system, Lattice const& lattice,
                     HamiltonianModifiers const& modifiers, bool is_double, bool is_complex) {
-        if (is_double) {
-            if (is_complex) {
-                h0 = detail::make_h0<std::complex<double>>(lead_system, lattice, modifiers);
-                h1 = detail::make_h1<std::complex<double>>(lead_system, lattice, modifiers);
-            } else {
-                h0 = detail::make_h0<double>(lead_system, lattice, modifiers);
-                h1 = detail::make_h1<double>(lead_system, lattice, modifiers);
-            }
+        if (is_complex) {
+            h0 = detail::make_h0<std::complex<double>>(lead_system, lattice, modifiers);
+            h1 = detail::make_h1<std::complex<double>>(lead_system, lattice, modifiers);
         } else {
-            if (is_complex) {
-                h0 = detail::make_h0<std::complex<float>>(lead_system, lattice, modifiers);
-                h1 = detail::make_h1<std::complex<float>>(lead_system, lattice, modifiers);
-            } else {
-                h0 = detail::make_h0<float>(lead_system, lattice, modifiers);
-                h1 = detail::make_h1<float>(lead_system, lattice, modifiers);
-            }
+            h0 = detail::make_h0<double>(lead_system, lattice, modifiers);
+            h1 = detail::make_h1<double>(lead_system, lattice, modifiers);
         }
     }
 };

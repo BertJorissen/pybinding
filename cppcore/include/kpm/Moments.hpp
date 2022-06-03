@@ -16,7 +16,7 @@ struct DiagonalMoments {
     idx_t num_moments;
     var::complex<ArrayX> data;
 
-    DiagonalMoments(idx_t num_moments) : num_moments(num_moments) {}
+    explicit DiagonalMoments(idx_t num_moments) : num_moments(num_moments) {}
 };
 
 /**
@@ -89,7 +89,7 @@ struct DenseMatrixMoments {
     VariantCSR op;
     var::complex<MatrixX> data;
 
-    DenseMatrixMoments(idx_t num_moments, VariantCSR op = {})
+    explicit DenseMatrixMoments(idx_t num_moments, VariantCSR op = {})
         : num_moments(num_moments), op(std::move(op)) {}
 };
 
@@ -145,6 +145,6 @@ ArrayXcd extract_data(M const& moments, idx_t num_moments) {
 }
 
 /// Return the velocity operator for the direction given by the `alpha` position vector
-VariantCSR velocity(Hamiltonian const& hamiltonian, ArrayXf const& alpha);
+VariantCSR velocity(Hamiltonian const& hamiltonian, ArrayXd const& alpha);
 
 }} // namespace cpb::kpm
