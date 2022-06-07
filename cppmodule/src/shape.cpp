@@ -8,7 +8,7 @@ void wrap_shape(py::module& m) {
     py::class_<Primitive>(m, "Primitive")
         .def(py::init<int, int, int>());
 
-    using RefX = Eigen::Ref<Eigen::ArrayXf const>;
+    using RefX = Eigen::Ref<CartesianXArray const>;
     py::class_<Shape>(m, "Shape")
         .def(py::init([](Shape::Vertices const& vertices, py::object f) {
             auto contains = [f](CartesianArrayConstRef p) {
@@ -48,5 +48,5 @@ void wrap_shape(py::module& m) {
          }));
 
     py::class_<TranslationalSymmetry>(m, "TranslationalSymmetry")
-        .def(py::init<float, float, float>());
+        .def(py::init<CartesianX, CartesianX, CartesianX>());
 }

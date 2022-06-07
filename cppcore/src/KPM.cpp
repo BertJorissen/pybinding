@@ -138,7 +138,7 @@ ArrayXd KPM::calc_conductivity(ArrayXd const& chemical_potential, double broaden
 
     auto const& system = *model.system();
     auto const& p = model.is_multiorbital() ? system.expanded_positions() : system.positions;
-    auto map = std::unordered_map<char, ArrayXf const*>{{'x', &p.x}, {'y', &p.y}, {'z', &p.z}};
+    auto map = std::unordered_map<char, CartesianXArray const*>{{'x', &p.x}, {'y', &p.y}, {'z', &p.z}};
 
     calculation_timer.tic();
     auto result = core.conductivity(*map[direction[0]], *map[direction[1]], chemical_potential,

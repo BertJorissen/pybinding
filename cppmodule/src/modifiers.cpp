@@ -47,9 +47,9 @@ SiteGenerator* init_site_generator(string_view name, T const& energy, py::object
         [make, system_type](System const& s) {
             py::gil_scoped_acquire guard{};
             auto t = make(system_type(&s)).cast<py::tuple>();
-            return CartesianArray(t[0].cast<ArrayXf>(),
-                                  t[1].cast<ArrayXf>(),
-                                  t[2].cast<ArrayXf>());
+            return CartesianArray(t[0].cast<CartesianXArray>(),
+                                  t[1].cast<CartesianXArray>(),
+                                  t[2].cast<CartesianXArray>());
         }
     );
 };
@@ -88,9 +88,9 @@ void wrap_modifiers(py::module& m) {
             return new PositionModifier([apply](CartesianArrayRef p, string_view sub) {
                 py::gil_scoped_acquire guard{};
                 auto t = py::tuple(apply(arrayref(p.x()), arrayref(p.y()), arrayref(p.z()), sub));
-                extract_modifier_result<ArrayXf>(p.x(), t[0]);
-                extract_modifier_result<ArrayXf>(p.y(), t[1]);
-                extract_modifier_result<ArrayXf>(p.z(), t[2]);
+                extract_modifier_result<CartesianXArray>(p.x(), t[0]);
+                extract_modifier_result<CartesianXArray>(p.y(), t[1]);
+                extract_modifier_result<CartesianXArray>(p.z(), t[2]);
             });
         }));
 

@@ -28,9 +28,9 @@ namespace detail {
 ArrayX<bool> is_acute_angle(Cartesian a, Cartesian b, CartesianArrayConstRef c) {
     // Vectors BA and BC which make the angle
     auto const ba = Cartesian{a - b};
-    auto const bc_x = ArrayXf{c.x() - b.x()};
-    auto const bc_y = ArrayXf{c.y() - b.y()};
-    auto const bc_z = ArrayXf{c.z() - b.z()};
+    auto const bc_x = CartesianXArray{c.x() - b.x()};
+    auto const bc_y = CartesianXArray{c.y() - b.y()};
+    auto const bc_z = CartesianXArray{c.z() - b.z()};
 
     // Compute the cosine between the two vectors based on the dot product
     auto const ba_dot_bc = ba.x() * bc_x + ba.y() * bc_y + ba.z() * bc_z;

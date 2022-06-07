@@ -72,7 +72,7 @@ public:
                                         ArrayXd const& energy, double broadening);
 
     /// Kubo-Bastin conductivity in the directions defined by the `left` and `right` coordinates
-    ArrayXcd conductivity(ArrayXf const& left_coords, ArrayXf const& right_coords,
+    ArrayXcd conductivity(CartesianXArray const& left_coords, CartesianXArray const& right_coords,
                           ArrayXd const& chemical_potential, double broadening,
                           double temperature, idx_t num_random, idx_t num_points);
 

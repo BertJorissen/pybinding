@@ -145,6 +145,6 @@ ArrayXcd extract_data(M const& moments, idx_t num_moments) {
 }
 
 /// Return the velocity operator for the direction given by the `alpha` position vector
-VariantCSR velocity(Hamiltonian const& hamiltonian, ArrayXf const& alpha);
+VariantCSR velocity(Hamiltonian const& hamiltonian, CartesianXArray const& alpha);
 
 }} // namespace cpb::kpm
