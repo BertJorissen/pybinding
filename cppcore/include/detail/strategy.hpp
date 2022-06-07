@@ -12,8 +12,8 @@ namespace cpb { namespace detail {
  */
 template<class BaseStrategy, template<class> class Strategy>
 class MakeStrategy {
-    static_assert(std::is_base_of<BaseStrategy, Strategy<double>>::value, "");
-    using Config = typename Strategy<double>::Config;
+    static_assert(std::is_base_of<BaseStrategy, Strategy<float>>::value, "");
+    using Config = typename Strategy<float>::Config;
     Config config;
 
 public:

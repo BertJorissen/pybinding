@@ -21,14 +21,14 @@ struct AlgorithmConfig {
  KPM configuration struct with defaults
  */
 struct Config {
-    double min_energy = 0.0; ///< lowest eigenvalue of the Hamiltonian
-    double max_energy = 0.0; ///< highest eigenvalue of the Hamiltonian
+    float min_energy = 0.0f; ///< lowest eigenvalue of the Hamiltonian
+    float max_energy = 0.0f; ///< highest eigenvalue of the Hamiltonian
     Kernel kernel = jackson_kernel(); ///< produces the damping coefficients
 
     MatrixFormat matrix_format = MatrixFormat::ELL;
     AlgorithmConfig algorithm = {/*optimal_size*/true, /*interleaved*/true};
 
-    double lanczos_precision = 0.002; ///< how precise should the min/max energy estimation be
+    float lanczos_precision = 0.002f; ///< how precise should the min/max energy estimation be
 };
 
 }} // namespace cpb::kpm

@@ -29,7 +29,7 @@ public:
     };
 
     template<class T>
-    explicit Compute(T x) : ptr(std::make_shared<T>(std::move(x))) {}
+    Compute(T x) : ptr(std::make_shared<T>(std::move(x))) {}
 
     Interface const* operator->() const { return ptr.get(); }
 
@@ -72,7 +72,7 @@ public:
                                         ArrayXd const& energy, double broadening);
 
     /// Kubo-Bastin conductivity in the directions defined by the `left` and `right` coordinates
-    ArrayXcd conductivity(ArrayXd const& left_coords, ArrayXd const& right_coords,
+    ArrayXcd conductivity(ArrayXf const& left_coords, ArrayXf const& right_coords,
                           ArrayXd const& chemical_potential, double broadening,
                           double temperature, idx_t num_random, idx_t num_points);
 

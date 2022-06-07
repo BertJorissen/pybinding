@@ -10,7 +10,7 @@ class DefaultCompute : public Compute::Interface {
 public:
     using ProgressCallback = std::function<void (idx_t delta, idx_t total)>;
 
-    explicit DefaultCompute(idx_t num_threads = -1, ProgressCallback progress_callback = {});
+    DefaultCompute(idx_t num_threads = -1, ProgressCallback progress_callback = {});
 
     void moments(MomentsRef m, Starter const& s, AlgorithmConfig const& ac,
                  OptimizedHamiltonian const& oh) const override;

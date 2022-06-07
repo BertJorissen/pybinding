@@ -1,6 +1,4 @@
 #pragma once
-#include <utility>
-
 #include "leads/Spec.hpp"
 #include "leads/Structure.hpp"
 #include "leads/HamiltonianPair.hpp"
@@ -16,8 +14,8 @@ class Lead {
     leads::HamiltonianPair hamiltonian;
 
 public:
-    Lead(leads::Spec  spec, leads::Structure  ls, leads::HamiltonianPair  lh)
-        : specification(std::move(spec)), structure(std::move(ls)), hamiltonian(std::move(lh)) {}
+    Lead(leads::Spec const& spec, leads::Structure const& ls, leads::HamiltonianPair const& lh)
+        : specification(spec), structure(ls), hamiltonian(lh) {}
 
     leads::Spec const& spec() const { return specification; }
     std::vector<int> const& indices() const { return structure.indices; }

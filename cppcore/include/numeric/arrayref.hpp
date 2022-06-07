@@ -49,9 +49,9 @@ namespace detail {
 
         Ptr data;
         Tag tag;
-        Dim ndim{};
-        bool is_row_major{};
-        Shape shape{};
+        Dim ndim;
+        bool is_row_major;
+        Shape shape;
 
         BasicArrayRef(Ptr data, Tag tag, Dim ndim, bool rm, Shape shape)
             : data(data), tag(tag), ndim(ndim), is_row_major(rm), shape(shape) {}
