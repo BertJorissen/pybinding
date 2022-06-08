@@ -8,7 +8,7 @@ option(PB_TESTS "Enable testing" ON)
 option(PB_NATIVE_SIMD "Enable all instruction sets supported by the local machine" ON)
 option(PB_MKL "Use Intel's Math Kernel Library" OFF)
 option(PB_CUDA "Enable compilation of components written in CUDA" OFF)
-option(CPB_USE_CARTESIAN_FLAOT "Use floats for positions" OFF)
+option(PB_CARTESIAN_FLAOT "Use floats for positions" ON)
 set(PB_CPP_STANDARD "-std=c++11" CACHE STRING "Required C++ standard flag")
 
 add_library(cppcore
@@ -149,4 +149,8 @@ if(PB_TESTS)
     set(catch_url https://raw.githubusercontent.com/philsquared/Catch/v\${VERSION}/single_include)
     download_dependency(catch 1.8.1 ${catch_url} catch.hpp)
     add_subdirectory(tests)
+endif()
+
+if(PB_CARTESIAN_FLAOT)
+    target_compile_definitions(cppcore PUBLIC CPB_CARTESIAN_FLAOT)
 endif()

@@ -49,7 +49,8 @@ using Eigen::MatrixXd;
 using Eigen::MatrixXcd;
 
 // convenient type aliases, define all the positions as doubles or floats
-#ifdef CPB_USE_CARTESIAN_FLAOT
+
+#ifdef CPB_CARTESIAN_FLAOT
 using Cartesian = Eigen::Vector3f;
 using CartesianXArray = Eigen::ArrayXf;
 using CartesianX = float;
@@ -58,6 +59,9 @@ using Cartesian = Eigen::Vector3d;
 using CartesianXArray = Eigen::ArrayXd;
 using CartesianX = double;
 #endif
+
+using EnergyXArray = Eigen::ArrayXd;
+using EnergyX = double;
 
 using Index3D = Eigen::Vector3i;
 using Vector3b = Eigen::Matrix<bool, 3, 1>;

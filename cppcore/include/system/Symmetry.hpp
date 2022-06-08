@@ -31,7 +31,7 @@ struct Translation {
 */
 class TranslationalSymmetry {
 public:
-    TranslationalSymmetry(float a1 = -1, float a2 = -1, float a3 = -1);
+    TranslationalSymmetry(CartesianX a1 = -1, CartesianX a2 = -1, CartesianX a3 = -1);
 
     SymmetryArea area(Foundation const& foundation) const;
     std::vector<Translation> translations(Foundation const& foundation) const;

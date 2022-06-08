@@ -44,8 +44,8 @@ public:
     RealArrayConstRef eigenvalues();
     ComplexArrayConstRef eigenvectors();
 
-    ArrayXd calc_dos(ArrayXf energies, float broadening);
-    ArrayXd calc_spatial_ldos(float energy, float broadening);
+    ArrayXd calc_dos(EnergyXArray energies, EnergyX broadening);
+    ArrayXd calc_spatial_ldos(EnergyX energy, EnergyX broadening);
 
 protected:
     using MakeStrategy = std::function<std::unique_ptr<SolverStrategy>(Hamiltonian const&)>;
