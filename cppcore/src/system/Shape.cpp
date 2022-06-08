@@ -95,8 +95,8 @@ Polygon::Polygon(Vertices const& vertices)
 namespace {
 
 Shape::Vertices make_freeformshape_vertices(Cartesian width, Cartesian center) {
-    auto const v1 = static_cast<Cartesian>(center - 0.5f * width);
-    auto const v2 = static_cast<Cartesian>(center + 0.5f * width);
+    auto const v1 = static_cast<Cartesian>(center - 0.5 * width);
+    auto const v2 = static_cast<Cartesian>(center + 0.5 * width);
     return {
         {v1.x(), v1.y(), v1.z()},
         {v2.x(), v1.y(), v1.z()},

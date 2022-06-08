@@ -125,7 +125,7 @@ Lattice monolayer() {
 
 namespace shape {
 
-Shape rectangle(float x, float y) {
+Shape rectangle(CartesianX x, CartesianX y) {
     auto const x0 = x / 2;
     auto const y0 = y / 2;
     return Polygon({{x0, y0, 0}, {x0, -y0, 0}, {-x0, -y0, 0}, {-x0, y0, 0}});
@@ -184,8 +184,8 @@ cpb::HoppingModifier constant_magnetic_field(float value) {
 
 namespace {
     struct LinearOnsite {
-        float k;
-        Eigen::Ref<ArrayXf const> x;
+        CartesianX k;
+        Eigen::Ref<CartesianXArray const> x;
 
         template<class Array>
         void operator()(Array energy) const {

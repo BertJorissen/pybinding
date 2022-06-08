@@ -143,7 +143,7 @@ struct Velocity {
         for (auto row = idx_t{0}; row < size; ++row) {
             for (auto n = indptr[row]; n < indptr[row + 1]; ++n) {
                 const auto col = indices[n];
-                data[n] *= static_cast<scalar_t>(alpha[row] - alpha[col]);
+                data[n] *= static_cast<num::get_real_t<scalar_t>>(alpha[row] - alpha[col]);
             }
         }
 

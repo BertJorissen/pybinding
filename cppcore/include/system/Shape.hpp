@@ -77,7 +77,7 @@ namespace detail {
         ArrayX<bool> operator()(CartesianArrayConstRef positions) const;
 
     private:
-        ArrayX<float> x, y;
+        ArrayX<CartesianX> x, y;
     };
 } // namespace detail
 
