@@ -115,7 +115,7 @@ class Lattice:
             of the hopping energy.
         """
         for name, energy in sorted(mapping.items(), key=lambda item: item[0]):
-            self.impl.register_hopping_energy(name, energy)
+            self.impl.register_hopping_energy(name, np.asarray(energy, dtype=np.float64))
 
     def add_one_sublattice(self, name, position, onsite_energy=0.0, alias=""):
         """Add a new sublattice
@@ -137,7 +137,7 @@ class Lattice:
                           LoudDeprecationWarning, stacklevel=2)
             self.add_one_alias(name, alias, position)
         else:
-            self.impl.add_sublattice(name, position, np.asarray(onsite_energy))
+            self.impl.add_sublattice(name, position, np.asarray(onsite_energy, dtype=np.float64))
 
     def add_sublattices(self, *sublattices):
         """Add multiple new sublattices
@@ -218,7 +218,8 @@ class Lattice:
             The numeric value of the hopping energy or the name of a previously
             registered hopping.
         """
-        self.impl.add_hopping(relative_index, from_sub, to_sub, hop_name_or_energy)
+        hop_name_or_energy_out = hop_name_or_energy if isinstance(hop_name_or_energy, str) else np.asarray(hop_name_or_energy, dtype=np.float64)
+        self.impl.add_hopping(relative_index, from_sub, to_sub, hop_name_or_energy_out)
 
     def add_hoppings(self, *hoppings):
         """Add multiple new hoppings

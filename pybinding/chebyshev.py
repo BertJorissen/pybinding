@@ -153,8 +153,10 @@ class KPM:
 
         Parameters
         ----------
-        i, j : int
-            Hamiltonian indices.
+        i : int or list
+            Hamiltonian index.
+        j : int
+            Hamiltonian indix.
         energy : ndarray
             Energy value array.
         broadening : float
