@@ -22,7 +22,7 @@ from . import results
 from .model import Model
 from .system import System
 
-__all__ = ['Solver', 'arpack', 'feast', 'lapack']
+__all__ = ['Solver', 'arpack', 'feast', 'lapack', 'dacp']
 
 
 class Solver:
@@ -454,6 +454,35 @@ def arpack(model, k, sigma=0, **kwargs):
         # eigsh can cause problems when sigma is exactly zero
         sigma = np.finfo(model.hamiltonian.dtype).eps
     return Solver(_SolverPythonImpl(eigsh, model, k=k, sigma=sigma, **kwargs))
+
+
+def dacp(model, window=(-2, 2), random_vectors=100, filter_order=30, tol=1e-3, **kwargs):
+    """pyDACP :class:`.Solver` implementation for DACP method matrices
+
+    Some more text about DACP blablabla...
+    ALso look at https://gitlab.kwant-project.org/qt/pyDACP and install it with
+    >>pip install git+https://gitlab.kwant-project.org/qt/pyDACP
+
+    Parameters
+    ----------
+    model : Model
+        Model which will provide the Hamiltonian matrix.
+    **kwargs
+        Advanced arguments: forwarded to :func:`scipy.sparse.linalg.eigsh`.
+
+    Returns
+    -------
+    :class:`~pybinding.solver.Solver`
+    """
+    from dacp.dacp import eigvalsh
+    def solver_func(hamiltonian, **kw):
+        from dacp.dacp import eigvalsh
+        eigg = eigvalsh(hamiltonian.toarray(), window=window, random_vectors=random_vectors,
+                        filter_order=filter_order, tol=tol, **kw)
+        print(np.shape(eigg))
+        return eigg.T, np.array([eigg, eigg])
+
+    return Solver(_SolverPythonImpl(solver_func, model, **kwargs))
 
 
 def feast(model, energy_range, initial_size_guess, recycle_subspace=False, is_verbose=False):
