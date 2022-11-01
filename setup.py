@@ -127,7 +127,7 @@ setup(
     package_dir={'pybinding.tests': 'tests'},
     include_package_data=True,
     ext_modules=[CMakeExtension('_pybinding')],
-    install_requires=['numpy>=1.12', 'scipy>=0.19', 'matplotlib>=2.0', 'pytest>=5.0', 'dacp @ git+ssh://git@gitlab.kwant-project.org:443/qt/pyDACP.git#egg=dacp-0.1'],
+    install_requires=['numpy>=1.12', 'scipy>=0.19', 'matplotlib>=2.0', 'pytest>=5.0', 'dacp @ git+https://gitlab.kwant-project.org/qt/pyDACP.git#egg=dacp-0.1'],
     zip_safe=False,
     cmdclass=dict(build_ext=CMakeBuild)
 )
