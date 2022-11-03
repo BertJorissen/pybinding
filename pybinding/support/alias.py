@@ -1,5 +1,7 @@
 import numpy as np
+import scipy.sparse
 from scipy.sparse import csr_matrix
+from numpy.typing import ArrayLike
 
 
 class AliasArray(np.ndarray):
@@ -31,17 +33,18 @@ class AliasArray(np.ndarray):
     >>> list(a2 == "A")
     [True, False, True, True]
     """
-    def __new__(cls, array, mapping):
+    # TODO: check typing of the subfunctions
+    def __new__(cls, array: ArrayLike, mapping: dict):
         obj = np.asarray(array).view(cls)
         obj.mapping = {SplitName(k): v for k, v in mapping.items()}
         return obj
 
-    def __array_finalize__(self, obj):
+    def __array_finalize__(self, obj: None | 'AliasArray') -> None:
         if obj is None:
             return
         self.mapping = getattr(obj, "mapping", None)
 
-    def _mapped_eq(self, other):
+    def _mapped_eq(self, other: str) -> bool:
         if other in self.mapping:
             return super().__eq__(self.mapping[other])
         else:
@@ -51,13 +54,13 @@ class AliasArray(np.ndarray):
                     result = np.logical_or(result, super().__eq__(v))
             return result
 
-    def __eq__(self, other):
+    def __eq__(self, other: str) -> bool:
         if isinstance(other, str):
             return self._mapped_eq(other)
         else:
             return super().__eq__(other)
 
-    def __ne__(self, other):
+    def __ne__(self, other: str) -> bool:
         if isinstance(other, str):
             return np.logical_not(self._mapped_eq(other))
         else:
@@ -102,7 +105,7 @@ class AliasCSRMatrix(csr_matrix):
         self.data = AliasArray(self.data, mapping)
 
     @property
-    def format(self):
+    def format(self) -> str:
         return 'csr'
 
     @format.setter
@@ -110,10 +113,10 @@ class AliasCSRMatrix(csr_matrix):
         pass
 
     @property
-    def mapping(self):
+    def mapping(self) -> dict:
         return self.data.mapping
 
-    def tocoo(self, *args, **kwargs):
+    def tocoo(self, *args, **kwargs) -> scipy.sparse.coo_matrix:
         coo = super().tocoo(*args, **kwargs)
         coo.data = AliasArray(coo.data, mapping=self.mapping)
         return coo
@@ -164,6 +167,7 @@ class AliasIndex:
     >>> np.allclose(AliasIndex("A", 1, (2, 2)).eye, np.eye(2))
     True
     """
+    # TODO: check typing
     class LazyArray:
         def __init__(self, value, shape):
             self.value = value

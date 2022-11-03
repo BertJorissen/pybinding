@@ -3,7 +3,7 @@ from math import pi, sin, cos
 import pybinding as pb
 
 
-def monolayer_4band(num_hoppings=5):
+def monolayer_4band(num_hoppings: int = 5) -> pb.Lattice:
     """Monolayer phosphorene lattice using the four-band model
 
     Parameters
