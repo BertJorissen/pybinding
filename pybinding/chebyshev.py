@@ -6,7 +6,6 @@ in a series of Chebyshev polynomials.
 import warnings
 
 import numpy as np
-import scipy
 from numpy.typing import ArrayLike
 from scipy.sparse import csr_matrix, eye
 from typing import Literal

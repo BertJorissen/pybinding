@@ -2,9 +2,15 @@
 import functools
 import itertools
 
+import matplotlib.collections
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy.sparse
 from matplotlib.collections import LineCollection
+from numpy.typing import ArrayLike
+from typing import Literal
+from matplotlib.pyplot import axes as plt_axes
+from collections.abc import Iterable
 
 from . import _cpp
 from . import pltutils
@@ -27,22 +33,23 @@ class _CppSites(AbstractSites):
         self._registry = impl.site_registry
 
     @property
-    def x(self):
+    def x(self) -> np.ndarray:
         return self._positions.x
 
     @property
-    def y(self):
+    def y(self) -> np.ndarray:
         return self._positions.y
 
     @property
-    def z(self):
+    def z(self) -> np.ndarray:
         return self._positions.z
 
     @property
-    def ids(self):
+    def ids(self) -> AliasArray:
         return AliasArray(self._cs.decompressed(), self._registry.name_map)
 
-    def __getitem__(self, item):
+    def __getitem__(self, item) -> Sites:
+        # TODO: set typing
         return Sites([v[item] for v in self.positions], self.ids[item])
 
 
@@ -51,22 +58,22 @@ class System(Structure):
 
     Stores positions, sublattice and hopping IDs for all lattice sites.
     """
-    def __init__(self, impl: _cpp.System, lattice=None):
+    def __init__(self, impl: _cpp.System, lattice: Lattice | None = None):
         super().__init__(_CppSites(impl), impl.hopping_blocks, impl.boundaries)
         self.impl = impl
         self.lattice = lattice
 
-    def __getstate__(self):
+    def __getstate__(self) -> dict:
         return self.__dict__
 
-    def __setstate__(self, state):
+    def __setstate__(self, state: dict | _cpp.System):
         if isinstance(state, dict):
             self.__init__(state["impl"], state["lattice"])
         else:
             self.__init__(state)
 
     @property
-    def expanded_positions(self):
+    def expanded_positions(self) -> np.ndarray:
         """`positions` expanded to `hamiltonian_size` by replicating for each orbital"""
         return self.impl.expanded_positions
 
@@ -79,12 +86,12 @@ class System(Structure):
         """
         return self.impl.hamiltonian_size
 
-    def with_data(self, data) -> StructureMap:
+    def with_data(self, data: ArrayLike) -> StructureMap:
         """Map some data to this system"""
         data = self.reduce_orbitals(data)
         return StructureMap(data, self._sites, self._hoppings, self._boundaries)
 
-    def find_nearest(self, position, sublattice=""):
+    def find_nearest(self, position: ArrayLike, sublattice: str = "") -> int:
         """Find the index of the atom closest to the given position
 
         Parameters
@@ -100,11 +107,11 @@ class System(Structure):
         """
         return self.impl.find_nearest(position, sublattice)
 
-    def count_neighbors(self):
+    def count_neighbors(self) -> np.ndarray:
         """Return the number of neighbors for each site"""
         return self.impl.hopping_blocks.count_neighbors()
 
-    def to_hamiltonian_indices(self, system_idx):
+    def to_hamiltonian_indices(self, system_idx: int) -> np.ndarray:
         """Translate the given system index into its corresponding Hamiltonian indices
         
         System indices are always scalars and index a single (x, y, z) site position.
@@ -123,7 +130,7 @@ class System(Structure):
         """
         return self.impl.to_hamiltonian_indices(system_idx)
 
-    def reduce_orbitals(self, data):
+    def reduce_orbitals(self, data: ArrayLike) -> np.ndarray:
         """Sum up the contributions of individual orbitals in the given data
 
         Takes a 1D array of `hamiltonian_size` and returns a 1D array of `num_sites` size
@@ -156,7 +163,9 @@ class System(Structure):
         return np.concatenate(reduced_data)
 
 
-def structure_plot_properties(axes='xyz', site=None, hopping=None, boundary=None, **kwargs):
+def structure_plot_properties(axes: Literal['xyz', 'xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 'xyz',
+                              site: dict | None = None, hopping: dict | None = None, boundary: dict | None = None,
+                              **kwargs) -> dict:
     """Process structure plot properties
 
     Parameters
@@ -193,7 +202,8 @@ def structure_plot_properties(axes='xyz', site=None, hopping=None, boundary=None
     return props
 
 
-def decorate_structure_plot(axes='xy', add_margin=True, **_):
+def decorate_structure_plot(axes: Literal['xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 'xy', add_margin: bool = True,
+                            **_) -> None:
     plt.gca().set_aspect('equal')
     plt.gca().autoscale_view()
     plt.xlabel("{} (nm)".format(axes[0]))
@@ -207,7 +217,7 @@ def decorate_structure_plot(axes='xy', add_margin=True, **_):
         pltutils.despine()
 
 
-def _data_units_to_points(ax, value):
+def _data_units_to_points(ax: plt_axes, value: float | np.ndarray) -> float | np.ndarray:
     """Convert a value from data units to points"""
     fig = ax.get_figure()
     length = fig.bbox_inches.width * ax.get_position().width
@@ -216,8 +226,10 @@ def _data_units_to_points(ax, value):
     return value * (length / data_range)
 
 
-def plot_sites(positions, data, radius=0.025, offset=(0, 0, 0), blend=1.0,
-               cmap='auto', axes='xyz', **kwargs):
+def plot_sites(positions: tuple[ArrayLike, ArrayLike, ArrayLike], data: ArrayLike, radius: float | ArrayLike = 0.025,
+               offset: tuple[float, float, float] = (0, 0, 0), blend: float = 1.0,
+               cmap: str | list[str] = 'auto', axes: Literal['xyz', 'xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 'xyz',
+               **kwargs) -> matplotlib.collections.CircleCollection | None:
     """Plot circles at lattice site `positions` with colors based on `data`
 
     Parameters
@@ -291,7 +303,7 @@ def plot_sites(positions, data, radius=0.025, offset=(0, 0, 0), blend=1.0,
 
         ax.add_collection(col)
 
-        def dynamic_scale(active_ax):
+        def dynamic_scale(active_ax: plt_axes) -> None:
             """Rescale the circumference line width and radius based on data units"""
             scale = _data_units_to_points(active_ax, 0.005)  # [nm] reference for 1 screen point
             line_scale = np.clip(scale, 0.2, 1.1)  # don't make the line too thin or thick
@@ -319,8 +331,11 @@ def plot_sites(positions, data, radius=0.025, offset=(0, 0, 0), blend=1.0,
     return col
 
 
-def plot_hoppings(positions, hoppings, width=1.0, offset=(0, 0, 0), blend=1.0, color='#666666',
-                  axes='xyz', boundary=(), draw_only=(), **kwargs):
+def plot_hoppings(positions: tuple[ArrayLike, ArrayLike, ArrayLike], hoppings: scipy.sparse.coo_matrix,
+                  width: float = 1.0, offset: tuple[float, float, float] = (0, 0, 0), blend: float = 1.0,
+                  color: str = '#666666', axes: Literal['xyz', 'xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 'xyz',
+                  boundary: tuple[int, ArrayLike] = (), draw_only: Iterable[str] = (),
+                  **kwargs) -> matplotlib.collections.LineCollection | None:
     """Plot lines between lattice sites at `positions` based on the `hoppings` matrix
 
     Parameters
@@ -406,7 +421,7 @@ def plot_hoppings(positions, hoppings, width=1.0, offset=(0, 0, 0), blend=1.0, c
             col.set_array(hoppings.data)
         ax.add_collection(col)
 
-        def dynamic_scale(active_ax):
+        def dynamic_scale(active_ax: plt_axes) -> None:
             """Rescale the line width based on data units"""
             scale = _data_units_to_points(active_ax, 0.005)  # [nm] reference for 1 screen point
             scale = np.clip(scale, 0.6, 1.2)  # don't make the line too thin or thick
@@ -431,7 +446,7 @@ def plot_hoppings(positions, hoppings, width=1.0, offset=(0, 0, 0), blend=1.0, c
     return col
 
 
-def _make_shift_set(boundaries, level):
+def _make_shift_set(boundaries: list[_cpp.Boundary], level: int | list[int]) -> FuzzySet:
     """Return a set of boundary shift combinations for the given repetition level"""
     if level == 0:
         return FuzzySet([np.zeros(3)])
@@ -444,7 +459,8 @@ def _make_shift_set(boundaries, level):
     return FuzzySet(exclusive_shifts)
 
 
-def plot_periodic_boundaries(positions, hoppings, boundaries, data, num_periods=1, **kwargs):
+def plot_periodic_boundaries(positions: tuple[ArrayLike, ArrayLike, ArrayLike], hoppings: scipy.sparse.coo_matrix,
+                             boundaries: list[_cpp.Boundary], data: ArrayLike, num_periods: int = 1, **kwargs) -> None:
     """Plot the periodic boundaries of a system
 
     Parameters
@@ -490,7 +506,7 @@ def plot_periodic_boundaries(positions, hoppings, boundaries, data, num_periods=
                           boundary=(sign, boundary.shift), **{"blend": blend, **props["boundary"]})
 
 
-def plot_site_indices(system):
+def plot_site_indices(system: System) -> None:
     """Show the Hamiltonian index next to each atom (mainly for debugging)
 
     Parameters
@@ -501,7 +517,7 @@ def plot_site_indices(system):
         pltutils.annotate_box(i, xy)
 
 
-def plot_hopping_values(system):
+def plot_hopping_values(system: System) -> None:
     """Show the hopping energy over each hopping line (mainly for debugging)
 
     Parameters
