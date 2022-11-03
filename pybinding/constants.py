@@ -20,7 +20,7 @@ class Pauli:
     z = np.array([[1,  0],
                   [0, -1]])
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "x: [[0, 1], [1, 0]], y: [[0, -1j], [1j, 0]], z: [[1, 0], [0, -1]]"
 
 

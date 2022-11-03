@@ -8,16 +8,19 @@ import numpy as np
 import matplotlib.pyplot as plt
 from math import pi
 from scipy.sparse import csr_matrix
+from numpy.typing import ArrayLike
 
 from . import _cpp
 from . import pltutils, results
+from .lattice import Lattice
+from results import Bands
 from .system import (System, plot_sites, plot_hoppings, structure_plot_properties,
                      decorate_structure_plot)
 
 __all__ = ['Lead']
 
 
-def _center(pos, shift):
+def _center(pos: ArrayLike, shift: ArrayLike) -> tuple[float, float]:
     """Return the 2D center position of `pos + shift`"""
     x = np.concatenate((pos[0], pos[0] + shift[0]))
     y = np.concatenate((pos[1], pos[1] + shift[1]))
@@ -30,7 +33,7 @@ class Lead:
     Leads can only be created using :meth:`.Model.attach_lead`
     and accessed using :attr:`.Model.leads`.
     """
-    def __init__(self, impl: _cpp.Lead, index, lattice):
+    def __init__(self, impl: _cpp.Lead, index: int, lattice: Lattice):
         self.impl = impl
         self.index = index
         self.lattice = lattice
@@ -55,7 +58,7 @@ class Lead:
         """Hamiltonian which connects who unit cells, :class:`~scipy.sparse.csr_matrix`"""
         return self.impl.h1
 
-    def calc_bands(self, start=-pi, end=pi, step=0.05):
+    def calc_bands(self, start: float = -pi, end: float = pi, step: float = 0.05) -> Bands:
         """Calculate the band structure of an infinite lead
 
         Parameters
@@ -80,11 +83,11 @@ class Lead:
             h = h0 + h1 * np.exp(1j * k) + h1t * np.exp(-1j * k)
             return eigh(h, eigvals_only=True)
 
-        k_path = results.make_path(start, end, step=step).flatten()
-        bands = [eigenvalues(k) for k in k_path]
-        return results.Bands(k_path, np.vstack(bands))
+        k_path = results.make_path(start, end, step=step)
+        bands = [eigenvalues(k) for k in k_path.flatten()]
+        return Bands(k_path, np.vstack(bands))
 
-    def plot(self, lead_length=6, **kwargs):
+    def plot(self, lead_length: int = 6, **kwargs) -> None:
         """Plot the sites, hoppings and periodic boundaries of the lead
 
         Parameters
@@ -116,8 +119,8 @@ class Lead:
 
         decorate_structure_plot(**props)
 
-    def plot_contact(self, line_width=1.6, arrow_length=0.5,
-                     shade_width=0.3, shade_color='#d40a0c'):
+    def plot_contact(self, line_width: float = 1.6, arrow_length: float = 0.5,
+                     shade_width: float = 0.3, shade_color: str = '#d40a0c') -> None:
         """Plot the shape and direction of the lead contact region
 
         Parameters
@@ -139,16 +142,17 @@ class Lead:
         # contact line vertices
         a, b = (v[:2] for v in lead_spec.shape.vertices)
 
-        def plot_contact_line():
+        def plot_contact_line() -> None:
             # Not using plt.plot() because it would reset axis limits
             plt.gca().add_patch(plt.Polygon([a, b], color='black', lw=line_width))
 
-        def rescale_lattice_vector(vec):
+        def rescale_lattice_vector(vec: np.ndarray) -> np.ndarray:
             line_length = np.linalg.norm(a - b)
             scale = arrow_length * line_length / np.linalg.norm(vec)
             return vec[:2] * scale
 
-        def plot_arrow(xy, vec, spec, head_width=0.08, head_length=0.2):
+        def plot_arrow(xy: np.ndarray, vec: np.ndarray, spec: _cpp.Lead.spec, head_width: float = 0.08,
+                       head_length: float = 0.2) -> None:
             vnorm = np.linalg.norm(vec)
             plt.arrow(xy[0], xy[1], *vec, color='black', alpha=0.9, length_includes_head=True,
                       head_width=vnorm * head_width, head_length=vnorm * head_length)
@@ -156,7 +160,7 @@ class Lead:
             pltutils.annotate_box(label, xy + vec / 5, fontsize='large',
                                   bbox=dict(lw=0, alpha=0.6))
 
-        def plot_polygon(w):
+        def plot_polygon(w: float) -> None:
             plt.gca().add_patch(plt.Polygon([a - w, a + w, b + w, b - w],
                                             color=shade_color, alpha=0.25, lw=0))
 
@@ -167,7 +171,7 @@ class Lead:
         pltutils.despine(trim=True)
         pltutils.add_margin()
 
-    def plot_bands(self, start=-pi, end=pi, step=0.05, **kwargs):
+    def plot_bands(self, start: float = -pi, end: float = pi, step:float = 0.05, **kwargs) -> None:
         """Plot the band structure of an infinite lead
 
         Parameters
@@ -186,12 +190,12 @@ class Lead:
 
 
 class Leads:
-    def __init__(self, impl: _cpp.Leads, lattice):
+    def __init__(self, impl: _cpp.Leads, lattice: Lattice):
         self.impl = impl
         self.lattice = lattice
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int) -> Lead:
         return Lead(self.impl[index], index, self.lattice)
 
-    def __len__(self):
+    def __len__(self) -> int:
         return len(self.impl)

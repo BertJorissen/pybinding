@@ -68,7 +68,7 @@ def calc_band_graphene_pydacp(l=5):
 
 
 if __name__ == "__main__":
-    eigenvalues, solver_test, k_path_test = calc_band_graphene_pydacp(l=4)
+    eigenvalues, solver_test, k_path_test = calc_band_graphene_pydacp(l=40)
     plt.close('all')
     fig = plt.figure(figsize=(12, 4))
     grid = plt.GridSpec(1, 3, hspace=0, wspace=0)
