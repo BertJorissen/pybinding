@@ -1,11 +1,15 @@
 import pybinding as pb
 import numpy as np
 import matplotlib.pyplot as plt
-from pybinding.repository.graphene import monolayer, a, t
+
+import pybinding.solver
+from pybinding.repository.graphene import a, t
+from pybinding.results import make_path
 
 # import statement to run under WSL, it can be that you enabled QT5, then use 'use("Qt5Agg")'
 from matplotlib import use
 use("TkAGG")
+
 
 def make_mutliband_graphene():
     lat = pb.Lattice(
@@ -34,6 +38,14 @@ def make_mutliband_graphene():
     return lat
 
 
+def get_bands(solver: pybinding.solver.Solver, k_path: pybinding.results.Path):
+    eigenvalues = []
+    for n_k, k_point in enumerate(k_path):
+        solver.set_wave_vector(k_point)
+        eigenvalues.append(solver.eigenvalues)
+    return eigenvalues
+
+
 def calc_band_graphene_pydacp(l=5):
     solver = pb.solver.dacp(
         pb.Model(
@@ -41,7 +53,7 @@ def calc_band_graphene_pydacp(l=5):
             pb.primitive(l, l),
             pb.translational_symmetry(l * a, l * a)
         ),
-        window=[-8.5, 8.5],
+        window=[-2.7, 2.7],
         random_vectors=20,
         filter_order=12,
         tol=1e-3
@@ -51,19 +63,22 @@ def calc_band_graphene_pydacp(l=5):
     gamma = bz[3] * 0
     k = bz[3] / l
     m = (bz[3] + bz[4]) / 2 / l
-    return solver.calc_bands(gamma, k, m, gamma), solver
+    path = make_path(gamma, k, m, gamma)
+    return get_bands(solver, path), solver, path
 
 
 if __name__ == "__main__":
-    bands, solver = calc_band_graphene_pydacp(l=4)
+    eigenvalues, solver_test, k_path_test = calc_band_graphene_pydacp(l=4)
     plt.close('all')
     fig = plt.figure(figsize=(12, 4))
     grid = plt.GridSpec(1, 3, hspace=0, wspace=0)
     plt.subplot(grid[0], title="Large-scale structure")
-    solver.model.plot()
+    solver_test.model.plot()
     plt.subplot(grid[1], title="Brillouin-zone")
-    solver.model.lattice.plot_brillouin_zone()
-    bands.k_path.plot(point_labels=[r"$\Gamma$", r"$K$", r"$M$", r"$\Gamma$"])
+    solver_test.model.lattice.plot_brillouin_zone()
+    k_path_test.plot(point_labels=[r"$\Gamma$", r"$K$", r"$M$", r"$\Gamma$"])
     plt.subplot(grid[2], title="Low-energy bands")
-    bands.plot(point_labels=[r"$\Gamma$", r"$K$", r"$M$", r"$\Gamma$"])
+    for n_energy, energy in enumerate(eigenvalues):
+        plt.scatter(n_energy * np.ones(len(energy)), energy)
+    # bands.plot(point_labels=[r"$\Gamma$", r"$K$", r"$M$", r"$\Gamma$"])
     plt.show()

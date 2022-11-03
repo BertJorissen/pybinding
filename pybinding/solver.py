@@ -282,7 +282,7 @@ class Solver:
 
         return self.system.with_data(ldos)
 
-    def calc_bands(self, k0, k1, *ks, step=0.1):
+    def calc_bands(self, k0, k1, *ks, step=0.1) -> results.Bands:
         """Calculate the band structure on a path in reciprocal space
 
         Parameters
@@ -474,13 +474,18 @@ def dacp(model, window=(-2, 2), random_vectors=100, filter_order=30, tol=1e-3, *
     -------
     :class:`~pybinding.solver.Solver`
     """
-    from dacp.dacp import eigvalsh
+
     def solver_func(hamiltonian, **kw):
         from dacp.dacp import eigvalsh
-        eigg = eigvalsh(hamiltonian.toarray(), window=window, random_vectors=random_vectors,
-                        filter_order=filter_order, tol=tol, **kw)
-        print(np.shape(eigg))
-        return eigg.T, np.array([eigg, eigg])
+        eigenvalues = eigvalsh(
+            hamiltonian.toarray(),
+            window=window,
+            random_vectors=random_vectors,
+            filter_order=filter_order,
+            tol=tol,
+            **kw
+        )
+        return eigenvalues, np.zeros((eigenvalues.shape[0], eigenvalues.shape[0]))
 
     return Solver(_SolverPythonImpl(solver_func, model, **kwargs))
 

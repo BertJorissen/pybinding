@@ -13,7 +13,7 @@ from .utils import with_defaults, x_pi
 from .support.pickle import pickleable, save, load
 from .support.structure import Positions, AbstractSites, Sites, Hoppings
 
-__all__ = ['Bands', 'Eigenvalues', 'NDSweep', 'Series', 'SpatialMap', 'StructureMap',
+__all__ = ['Bands', 'Path', 'Eigenvalues', 'NDSweep', 'Series', 'SpatialMap', 'StructureMap',
            'Sweep', 'make_path', 'save', 'load']
 
 
@@ -58,16 +58,16 @@ class Path(np.ndarray):
         super().__setstate__(state[:-1])
 
     @property
-    def points(self):
+    def points(self) -> np.ndarray:
         """Significant points along the path, including start and end"""
         return self[self.point_indices]
 
     @property
-    def is_simple(self):
+    def is_simple(self) -> bool:
         """Is it just a simple path between two points?"""
         return len(self.point_indices) == 2
 
-    def as_1d(self):
+    def as_1d(self) -> np.ndarray:
         """Return a 1D representation of the path -- useful for plotting
 
         For simple paths (2 points) the closest 1D path with real positions is returned.
@@ -91,7 +91,7 @@ class Path(np.ndarray):
         else:
             return np.arange(self.shape[0])
 
-    def plot(self, point_labels=None, **kwargs):
+    def plot(self, point_labels: list = None, **kwargs):
         """Quiver plot of the path
 
         Parameters
@@ -122,7 +122,7 @@ class Path(np.ndarray):
                                       ha=ha, va=va, bbox=dict(lw=0))
 
 
-def make_path(k0, k1, *ks, step=0.1):
+def make_path(k0, k1, *ks, step: float = 0.1) -> Path:
     """Create a path which connects the given k points
 
     Parameters
@@ -178,7 +178,7 @@ class Series:
         self.data = np.atleast_1d(data)
         self.labels = with_defaults(labels, variable="x", data="y", columns="")
 
-    def with_data(self, data):
+    def with_data(self, data: np.ndarray):
         """Return a copy of this result object with different data"""
         result = copy(self)
         result.data = data
@@ -703,12 +703,12 @@ class Bands:
     energy : array_like
         Energy values for the bands along the path in k-space.
     """
-    def __init__(self, k_path, energy):
+    def __init__(self, k_path: Path, energy: np.ndarray):
         self.k_path = np.atleast_1d(k_path).view(Path)
         self.energy = np.atleast_1d(energy)
 
     @staticmethod
-    def _point_names(k_points):
+    def _point_names(k_points: list):
         names = []
         for k_point in k_points:
             k_point = np.atleast_1d(k_point)
@@ -721,7 +721,7 @@ class Bands:
     def num_bands(self):
         return self.energy.shape[1]
 
-    def plot(self, point_labels=None, **kwargs):
+    def plot(self, point_labels: list or None = None, **kwargs):
         """Line plot of the band structure
 
         Parameters
@@ -753,7 +753,7 @@ class Bands:
             ymax = plt.gca().transLimits.transform([0, max(self.energy[idx])])[1]
             plt.axvline(k_space[idx], ymax=ymax, color="0.4", lw=0.8, ls=":", zorder=-1)
 
-    def plot_kpath(self, point_labels=None, **kwargs):
+    def plot_kpath(self, point_labels: list or None =None, **kwargs):
         """Quiver plot of the k-path along which the bands were computed
 
         Combine with :meth:`.Lattice.plot_brillouin_zone` to see the path in context.
