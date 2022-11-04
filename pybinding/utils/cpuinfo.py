@@ -17,7 +17,7 @@ def cpu_info():
     return _cached_info
 
 
-def physical_core_count():
+def physical_core_count() -> int | None:
     """Try to return the number of physical cores
 
     An accurate number of physical cores will only be returned if the extension
@@ -36,12 +36,12 @@ def physical_core_count():
         return os.cpu_count()
 
 
-def virtual_core_count():
+def virtual_core_count() -> int | None:
     """Return the number of threads the CPU can process simultaniously"""
     return os.cpu_count()
 
 
-def summary():
+def summary() -> str:
     """Return a short description of the host CPU
 
     The returned SIMD instruction set is the one that the extension module was

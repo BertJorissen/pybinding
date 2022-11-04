@@ -3,7 +3,7 @@ import warnings
 from contextlib import contextmanager, suppress
 
 import numpy as np
-from matplotlib.pyplot import axes as plt_axes
+from matplotlib.pyplot import Axes as plt_axes
 import matplotlib as mpl
 import matplotlib.style as mpl_style
 import matplotlib.pyplot as plt

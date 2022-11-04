@@ -9,7 +9,7 @@ import scipy.sparse
 from matplotlib.collections import LineCollection
 from numpy.typing import ArrayLike
 from typing import Literal
-from matplotlib.pyplot import axes as plt_axes
+from matplotlib.pyplot import Axes as plt_axes
 from collections.abc import Iterable
 
 from . import _cpp

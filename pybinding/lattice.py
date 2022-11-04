@@ -5,7 +5,7 @@ from copy import deepcopy
 from math import pi, atan2, sqrt
 from numpy.typing import ArrayLike
 from collections.abc import Iterable
-from matplotlib.pyplot import axes as plt_axes
+from matplotlib.pyplot import Axes as plt_axes
 
 import numpy as np
 import matplotlib.pyplot as plt

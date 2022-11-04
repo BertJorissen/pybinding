@@ -1,5 +1,6 @@
 import inspect
 from collections import OrderedDict
+from types import FrameType
 
 __all__ = ['CallSignature', 'get_call_signature']
 
@@ -15,14 +16,14 @@ class CallSignature:
         self.function = function
 
     @property
-    def named_args(self):
+    def named_args(self) -> OrderedDict:
         """All arguments except *args"""
         ordered = OrderedDict()
         for x in self.positional, self.keyword_only, self.kwargs:
             ordered.update(x)
         return ordered
 
-    def _format_args(self, func):
+    def _format_args(self, func: callable) -> str:
         """Apply `func` to each argument value and return the formatted string"""
         if self.args:
             positional = [func(v) for k, v in self.positional.items()]
@@ -35,14 +36,14 @@ class CallSignature:
 
         return ", ".join(positional + args + keywords_only + kwargs)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "{}({})".format(self.function.__name__, self._format_args(str))
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "{}({})".format(self.function.__qualname__, self._format_args(repr))
 
 
-def _find_callable(name, frame):
+def _find_callable(name: str, frame: FrameType) -> callable:
     """Find the callable which matches the name and frame code"""
     func = frame.f_globals.get(name)
     if func and inspect.isfunction(func) and func.__code__ is frame.f_code:
@@ -61,7 +62,7 @@ def _find_callable(name, frame):
     raise RuntimeError("Can't find callable '{}()'".format(name))
 
 
-def get_call_signature(up=0):
+def get_call_signature(up: int = 0) -> CallSignature:
     """Return a CallSignature of the function currently being executed or `up` a few frames
 
     Parameters

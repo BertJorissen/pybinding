@@ -1,7 +1,11 @@
 """Kwant compatibility layer"""
 import warnings
 import numpy as np
+from ..model import Model
+from ..leads import Lead
+from scipy.sparse import csr_matrix, coo_matrix
 
+# TODO: Add typing
 try:
     from kwant.system import FiniteSystem, InfiniteSystem
     kwant_installed = True
@@ -34,22 +38,22 @@ class KwantFiniteSystem(FiniteSystem):
     Mostly complete, some features of `hamiltonian_submatrix` are not supported,
     however it seems to work well for `smatrix`.
     """
-    def __init__(self, pb_model):
+    def __init__(self, pb_model: Model):
         self.pb_model = pb_model
         self.graph = Graph(pb_model.system.num_sites)
         self._pos = np.array(pb_model.system.positions[:pb_model.lattice.ndim]).T
         self.leads = [KwantInfiniteSystem(l) for l in pb_model.leads]
         self.lead_interfaces = [l.indices for l in pb_model.leads]
 
-    def pos(self, index):
+    def pos(self, index: int) -> np.ndarray:
         return self._pos[index]
 
-    def hamiltonian(self, i, j, *args, params=None):
+    def hamiltonian(self, i: int, j: int, *args, params=None) -> csr_matrix:
         _warn_if_not_empty(args, params)
         return self.pb_model.hamiltonian[i, j]
 
-    def hamiltonian_submatrix(self, args=(), to_sites=None, from_sites=None,
-                              sparse=False, return_norb=False, *, params=None):
+    def hamiltonian_submatrix(self, args=(), to_sites: None = None, from_sites: None = None, sparse: bool = False,
+                              return_norb: bool = False, *, params=None) -> tuple[coo_matrix | np.ndarray, int, int]:
         if to_sites is not None or from_sites is not None:
             raise RuntimeError("The `to_sites` and `from_sites` arguments are not supported")
         _warn_if_not_empty(args, params)
@@ -71,24 +75,24 @@ class KwantInfiniteSystem(InfiniteSystem):
 
     Should completely reproduce all features.
     """
-    def __init__(self, pb_lead):
+    def __init__(self, pb_lead: Lead):
         self.h0 = pb_lead.h0
         self.h1 = pb_lead.h1
 
-    def hamiltonian(self, i, j, *args, params=None):
+    def hamiltonian(self, i: int, j: int, *args, params=None) -> float | complex:
         _warn_if_not_empty(args, params)
         return self.h0[i, j]
 
-    def cell_hamiltonian(self, args=(), sparse=False, *, params=None):
+    def cell_hamiltonian(self, args=(), sparse: bool = False, *, params=None) -> coo_matrix | np.ndarray:
         _warn_if_not_empty(args, params)
         return self.h0.tocoo() if sparse else self.h0.todense()
 
-    def inter_cell_hopping(self, args=(), sparse=False, *, params=None):
+    def inter_cell_hopping(self, args=(), sparse: bool = False, *, params=None) -> coo_matrix | np.ndarray:
         _warn_if_not_empty(args, params)
         return self.h1.tocoo() if sparse else self.h1.todense()
 
 
-def tokwant(model):
+def tokwant(model: Model) -> KwantFiniteSystem:
     """Return a finalized kwant system constructed from a pybinding Model
 
     Parameters

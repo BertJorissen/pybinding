@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib.collections import Collection
 from matplotlib.artist import allow_rasterization
 from numpy.typing import ArrayLike
-
+from typing import Literal
 
 # noinspection PyAbstractClass
 class CircleCollection(Collection):
@@ -37,17 +37,18 @@ class CircleCollection(Collection):
 
 
 class Circle3DCollection(CircleCollection):
-    def __init__(self, radius: ArrayLike, zs=0, zdir='z', depthshade=True, **kwargs):
+    def __init__(self, radius: ArrayLike, zs: ArrayLike | float = 0,
+                 zdir: Literal['x', 'y', 'z', '-x', '-y', '-z'] = 'z', depthshade: bool = True, **kwargs):
         super().__init__(radius, **kwargs)
         self._depthshade = depthshade
         self.set_3d_properties(zs, zdir)
         self._A0 = self._A
 
-    def set_array(self, array):
+    def set_array(self, array: ArrayLike) -> None:
         self._A0 = array
         super().set_array(array)
 
-    def set_3d_properties(self, zs, zdir):
+    def set_3d_properties(self, zs: ArrayLike | float, zdir: Literal['x', 'y', 'z', '-x', '-y', '-z']) -> None:
         # Force the collection to initialize the face and edgecolors
         # just in case it is a scalarmappable with a colormap.
         self.update_scalarmappable()
@@ -63,7 +64,8 @@ class Circle3DCollection(CircleCollection):
         self._facecolor3d = self.get_facecolor()
         self._edgecolor3d = self.get_edgecolor()
 
-    def do_3d_projection(self, renderer):
+    def do_3d_projection(self, renderer) -> float:
+        # TODO: DEPRECATED --> find workaround
         from mpl_toolkits.mplot3d import proj3d
         from mpl_toolkits.mplot3d.art3d import zalpha
         from matplotlib import colors as mcolors
