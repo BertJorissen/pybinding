@@ -4,6 +4,7 @@ import numpy as np
 from ..model import Model
 from ..leads import Lead
 from scipy.sparse import csr_matrix, coo_matrix
+from typing import Union
 
 # TODO: Add typing
 try:
@@ -53,7 +54,7 @@ class KwantFiniteSystem(FiniteSystem):
         return self.pb_model.hamiltonian[i, j]
 
     def hamiltonian_submatrix(self, args=(), to_sites: None = None, from_sites: None = None, sparse: bool = False,
-                              return_norb: bool = False, *, params=None) -> tuple[coo_matrix | np.ndarray, int, int]:
+                              return_norb: bool = False, *, params=None) -> tuple[Union[coo_matrix, np.ndarray], int, int]:
         if to_sites is not None or from_sites is not None:
             raise RuntimeError("The `to_sites` and `from_sites` arguments are not supported")
         _warn_if_not_empty(args, params)
@@ -79,15 +80,15 @@ class KwantInfiniteSystem(InfiniteSystem):
         self.h0 = pb_lead.h0
         self.h1 = pb_lead.h1
 
-    def hamiltonian(self, i: int, j: int, *args, params=None) -> float | complex:
+    def hamiltonian(self, i: int, j: int, *args, params=None) -> Union[float, complex]:
         _warn_if_not_empty(args, params)
         return self.h0[i, j]
 
-    def cell_hamiltonian(self, args=(), sparse: bool = False, *, params=None) -> coo_matrix | np.ndarray:
+    def cell_hamiltonian(self, args=(), sparse: bool = False, *, params=None) -> Union[coo_matrix, np.ndarray]:
         _warn_if_not_empty(args, params)
         return self.h0.tocoo() if sparse else self.h0.todense()
 
-    def inter_cell_hopping(self, args=(), sparse: bool = False, *, params=None) -> coo_matrix | np.ndarray:
+    def inter_cell_hopping(self, args=(), sparse: bool = False, *, params=None) -> Union[coo_matrix, np.ndarray]:
         _warn_if_not_empty(args, params)
         return self.h1.tocoo() if sparse else self.h1.todense()
 

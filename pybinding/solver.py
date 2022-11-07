@@ -19,6 +19,7 @@ import numpy as np
 from scipy.sparse import csr_matrix
 from numpy.typing import ArrayLike
 from collections.abc import Iterable, Callable
+from typing import Optional, Union
 
 from . import _cpp
 from . import results
@@ -36,7 +37,7 @@ class Solver:
     and :func:`.feast`. Those functions will set up their specific solver strategy and
     return a properly configured :class:`.Solver` object.
     """
-    def __init__(self, impl: _cpp.Solver | '_SolverPythonImpl'):
+    def __init__(self, impl: Union[_cpp.Solver, '_SolverPythonImpl']):
         self.impl = impl
 
     @property
@@ -107,7 +108,7 @@ class Solver:
         """Get the wave vector for periodic models"""
         return self.model.get_wave_vector
 
-    def calc_eigenvalues(self, map_probability_at: ArrayLike | None = None) -> results.Eigenvalues:
+    def calc_eigenvalues(self, map_probability_at: Optional[ArrayLike] = None) -> results.Eigenvalues:
         """Return an :class:`.Eigenvalues` result object with an optional probability colormap
 
         While the :attr:`.eigenvalues` property returns the raw values array, this
@@ -137,7 +138,7 @@ class Solver:
 
             return results.Eigenvalues(self.eigenvalues, probability)
 
-    def calc_probability(self, n: int | ArrayLike, reduce: float = 1e-5) -> results.StructureMap:
+    def calc_probability(self, n: Union[int, ArrayLike], reduce: float = 1e-5) -> results.StructureMap:
         r"""Calculate the spatial probability density
 
         .. math::

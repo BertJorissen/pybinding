@@ -2,6 +2,7 @@ import numpy as np
 import scipy.sparse
 from scipy.sparse import csr_matrix
 from numpy.typing import ArrayLike
+from typing import Optional
 
 
 class AliasArray(np.ndarray):
@@ -39,7 +40,7 @@ class AliasArray(np.ndarray):
         obj.mapping = {SplitName(k): v for k, v in mapping.items()}
         return obj
 
-    def __array_finalize__(self, obj: None | 'AliasArray') -> None:
+    def __array_finalize__(self, obj: Optional['AliasArray']) -> None:
         if obj is None:
             return
         self.mapping = getattr(obj, "mapping", None)

@@ -2,6 +2,7 @@
 import re
 import math
 import pybinding as pb
+from typing import Optional
 
 
 _default_3band_params = {  # from https://doi.org/10.1103/PhysRevB.88.085433
@@ -15,7 +16,7 @@ _default_3band_params = {  # from https://doi.org/10.1103/PhysRevB.88.085433
 }
 
 
-def monolayer_3band(name: str, override_params: dict | None = None) -> pb.Lattice:
+def monolayer_3band(name: str, override_params: Optional[dict] = None) -> pb.Lattice:
     r"""Monolayer of a group 6 TMD using the nearest-neighbor 3-band model
 
     Parameters

@@ -10,7 +10,7 @@ import warnings
 import numpy as np
 from collections.abc import Callable
 from numpy.typing import ArrayLike
-from typing import Tuple
+from typing import Tuple, Union
 
 from . import _cpp
 from .system import Sites
@@ -24,7 +24,7 @@ __all__ = ['constant_potential', 'force_double_precision', 'force_complex_number
            'site_generator', 'site_position_modifier', 'site_state_modifier']
 
 
-def _process_modifier_args(args, keywords: list[str], requested_argnames: list[str] | Tuple[str, ...]) -> dict:
+def _process_modifier_args(args, keywords: list[str], requested_argnames: Union[list[str], Tuple[str, ...]]) -> dict:
     """Return only the requested modifier arguments
 
     Also process any special args like 'sub_id', 'hop_id' and 'sites'.
@@ -43,7 +43,7 @@ def _process_modifier_args(args, keywords: list[str], requested_argnames: list[s
             shape = prime_arg.shape
             orbs = 1, 1
 
-    def process(obj: str | np.ndarray | ArrayLike) -> AliasIndex | np.ndarray | ArrayLike:
+    def process(obj: Union[str, np.ndarray, ArrayLike]) -> Union[AliasIndex, np.ndarray, ArrayLike]:
         # TODO: check ArrayLike
         if isinstance(obj, str):
             return AliasIndex(SplitName(obj), shape, orbs)
@@ -405,7 +405,7 @@ def constant_potential(magnitude: float) -> Callable:
         In units of eV.
     """
     @onsite_energy_modifier
-    def f(energy: float | complex | np.ndarray, sub_id: AliasIndex) -> float | complex | np.ndarray:
+    def f(energy: Union[float, complex, np.ndarray], sub_id: AliasIndex) -> Union[float, complex, np.ndarray]:
         return energy + sub_id.eye * magnitude
     return f
 
@@ -413,7 +413,7 @@ def constant_potential(magnitude: float) -> Callable:
 def force_double_precision() -> Callable:
     """Forces the model to use double precision even if that's not require by any modifier"""
     @onsite_energy_modifier(is_double=True)
-    def f(energy: float | complex | np.ndarray) -> float | complex | np.ndarray:
+    def f(energy: Union[float, complex, np.ndarray]) -> Union[float, complex, np.ndarray]:
         return energy
     return f
 
@@ -421,12 +421,12 @@ def force_double_precision() -> Callable:
 def force_complex_numbers() -> Callable:
     """Forces the model to use complex numbers even if that's not require by any modifier"""
     @hopping_energy_modifier(is_complex=True)
-    def f(energy: float | complex | np.ndarray) -> float | complex | np.ndarray:
+    def f(energy: Union[float, complex, np.ndarray]) -> Union[float, complex, np.ndarray]:
         return energy
     return f
 
 
-def _make_generator(func: Callable, kind, name: str, energy: float | complex | np.ndarray, keywords: str,
+def _make_generator(func: Callable, kind, name: str, energy: Union[float, complex, np.ndarray], keywords: str,
                     process_result: Callable = lambda x, *_: x) -> 'Generator':
     """Turn a regular function into a generator of the desired kind
 
@@ -474,7 +474,7 @@ def _make_generator(func: Callable, kind, name: str, energy: float | complex | n
 
 
 @decorator_decorator
-def site_generator(name: str, energy: float | complex | np.ndarray) -> functools.partial:
+def site_generator(name: str, energy: Union[float, complex, np.ndarray]) -> functools.partial:
     """Introduce a new site family (with a new `sub_id`) via a list of site positions
 
     This can be used to create new sites independent of the main :class:`Lattice` definition.
@@ -507,7 +507,7 @@ def site_generator(name: str, energy: float | complex | np.ndarray) -> functools
 
 
 @decorator_decorator
-def hopping_generator(name: str, energy: float | complex | np.ndarray) -> functools.partial:
+def hopping_generator(name: str, energy: Union[float, complex, np.ndarray]) -> functools.partial:
     """Introduce a new hopping family (with a new `hop_id`) via a list of index pairs
 
     This can be used to create new hoppings independent of the main :class:`Lattice` definition.

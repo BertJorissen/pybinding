@@ -5,9 +5,10 @@ import numpy as np
 from numpy import ma
 from numpy.typing import ArrayLike
 from scipy.sparse import csr_matrix, coo_matrix
+from typing import Optional, Union
 
 
-def _slice_csr_matrix(csr: csr_matrix, idx: int | np.ArrayLike):
+def _slice_csr_matrix(csr: csr_matrix, idx: Union[int, ArrayLike]):
     """Return a slice of a CSR matrix matching the given indices (applied to both rows and cols"""
     from copy import copy
 
@@ -121,7 +122,7 @@ class AbstractSites(metaclass=ABCMeta):
         else:
             return ma.argmin(ma.array(distances, mask=(self.ids != target_site_family)))
 
-    def argsort_nearest(self, target_position: ArrayLike, target_site_family: int | None = None) -> np.ndarray:
+    def argsort_nearest(self, target_position: ArrayLike, target_site_family: Optional[int] = None) -> np.ndarray:
         """Return an ndarray of site indices, sorted by distance from the target
 
         Parameters
@@ -152,7 +153,7 @@ class AbstractSites(metaclass=ABCMeta):
 class Sites(AbstractSites):
     """Reference implementation of :class:`AbstractSites`"""
 
-    def __init__(self, positions: ArrayLike, ids: ArrayLike | None = None):
+    def __init__(self, positions: ArrayLike, ids: Optional[ArrayLike] = None):
         self._x, self._y, self._z = np.atleast_1d(tuple(positions))
         if ids is not None:
             self._ids = np.atleast_1d(ids)

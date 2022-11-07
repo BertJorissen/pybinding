@@ -6,6 +6,7 @@ from math import pi, atan2, sqrt
 from numpy.typing import ArrayLike
 from collections.abc import Iterable
 from matplotlib.pyplot import Axes as plt_axes
+from typing import Optional, Union
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -35,7 +36,7 @@ class Lattice:
         If `a2` is also specified, a 2D lattice is created. Passing values for all
         three vectors will create a 3D lattice.
     """
-    def __init__(self, a1: ArrayLike, a2: ArrayLike | None = None, a3: ArrayLike | None = None):
+    def __init__(self, a1: ArrayLike, a2: Optional[ArrayLike] = None, a3: Optional[ArrayLike] = None):
         vectors = (v for v in (a1, a2, a3) if v is not None)
         self.impl = _cpp.Lattice(*vectors)
 
@@ -120,7 +121,7 @@ class Lattice:
         for name, energy in sorted(mapping.items(), key=lambda item: item[0]):
             self.impl.register_hopping_energy(name, energy)
 
-    def add_one_sublattice(self, name: str, position: ArrayLike, onsite_energy: float | np.ndarray = 0.0,
+    def add_one_sublattice(self, name: str, position: ArrayLike, onsite_energy: Union[float, np.ndarray] = 0.0,
                            alias: str = "") -> None:
         """Add a new sublattice
 
@@ -143,7 +144,7 @@ class Lattice:
         else:
             self.impl.add_sublattice(name, position, np.asarray(onsite_energy))
 
-    def add_sublattices(self, *sublattices: Iterable[str, ArrayLike, float | np.ndarray, str]) -> None:
+    def add_sublattices(self, *sublattices: Iterable[str, ArrayLike, Union[float, np.ndarray], str]) -> None:
         """Add multiple new sublattices
 
         Parameters
@@ -203,8 +204,8 @@ class Lattice:
         for alias in aliases:
             self.add_one_alias(*alias)
 
-    def add_one_hopping(self, relative_index: ArrayLike | int, from_sub: str, to_sub: str,
-                        hop_name_or_energy: str | float | np.ndarray) -> None:
+    def add_one_hopping(self, relative_index: Union[ArrayLike, int], from_sub: str, to_sub: str,
+                        hop_name_or_energy: Union[str, float, np.ndarray]) -> None:
         """Add a new hopping
 
         For each new hopping, its Hermitian conjugate is added automatically. Doing so
@@ -225,7 +226,7 @@ class Lattice:
         """
         self.impl.add_hopping(relative_index, from_sub, to_sub, hop_name_or_energy)
 
-    def add_hoppings(self, *hoppings: Iterable[ArrayLike | int, str, str, str | float | np.ndarray]) -> None:
+    def add_hoppings(self, *hoppings: Iterable[Union[ArrayLike, int], str, str, Union[str, float, np.ndarray]]) -> None:
         """Add multiple new hoppings
 
         Parameters

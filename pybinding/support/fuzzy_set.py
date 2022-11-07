@@ -2,12 +2,13 @@ import copy
 import numpy as np
 from collections.abc import Iterable
 from numpy.typing import ArrayLike
+from typing import Optional
 
 __all__ = ['FuzzySet']
 
 
 class FuzzySet:
-    def __init__(self, iterable: Iterable | None = None, rtol: float = 1.e-3, atol: float = 1.e-5):
+    def __init__(self, iterable: Optional[Iterable] = None, rtol: float = 1.e-3, atol: float = 1.e-5):
         self.data = []
         self.rtol = rtol
         self.atol = atol

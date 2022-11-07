@@ -3,6 +3,7 @@ from functools import wraps
 from contextlib import contextmanager
 from typing import Callable, Any
 from pathlib import Path
+from typing import Union, Optional
 
 import numpy as np
 
@@ -23,7 +24,7 @@ def to_list(o):
         return [o] if o is not None else []
 
 
-def with_defaults(options: dict, defaults_dict: dict=None, **defaults_kwargs) -> dict:
+def with_defaults(options: dict, defaults_dict: Optional[dict] = None, **defaults_kwargs) -> dict:
     """Return a dict where missing keys are filled in by defaults
 
     >>> options = dict(hello=0)
@@ -109,7 +110,7 @@ def decorator_decorator(decorator_wrapper) -> Callable[[Any], Callable]:
 
 
 @contextmanager
-def cd(directory: str | Path):
+def cd(directory: Union[str, Path]):
     """Change directory within this context
 
     Parameters

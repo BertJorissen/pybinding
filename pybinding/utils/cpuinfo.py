@@ -1,5 +1,6 @@
 import os
 from .. import _cpp
+from typing import Optional
 
 _cached_info = None
 
@@ -17,7 +18,7 @@ def cpu_info():
     return _cached_info
 
 
-def physical_core_count() -> int | None:
+def physical_core_count() -> Optional[int]:
     """Try to return the number of physical cores
 
     An accurate number of physical cores will only be returned if the extension
@@ -36,7 +37,7 @@ def physical_core_count() -> int | None:
         return os.cpu_count()
 
 
-def virtual_core_count() -> int | None:
+def virtual_core_count() -> Optional[int]:
     """Return the number of threads the CPU can process simultaniously"""
     return os.cpu_count()
 

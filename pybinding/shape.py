@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from numpy.typing import ArrayLike
 from collections.abc import Callable
 import matplotlib
+from typing import Optional, Union
 
 from . import _cpp
 from . import pltutils
@@ -80,7 +81,7 @@ class Line(_cpp.Line):
     a, b : Union[float, array_like]
         Start and end points.
     """
-    def __init__(self, a: float | ArrayLike, b: float | ArrayLike):
+    def __init__(self, a: Union[float, ArrayLike], b: Union[float, ArrayLike]):
         a, b = map(np.array, (a, b))
         a.resize(2)
         b.resize(2)
@@ -161,7 +162,7 @@ class FreeformShape(_cpp.FreeformShape, _CompositionMixin):
 
     def with_offset(self, vector: ArrayLike):
         """Return a copy that's offset by the given vector"""
-        def contains(x: float | ArrayLike, y: float | ArrayLike, z: float | ArrayLike) -> 'FreeformShape':
+        def contains(x: Union[float, ArrayLike], y: Union[float, ArrayLike], z: Union[float, ArrayLike]) -> 'FreeformShape':
             r0 = [x, y, z]
             r = [v0 - v for v0, v in zip(r0, vector)] + r0[len(vector):]
             return self.contains(*r)
@@ -235,7 +236,7 @@ class CompositeShape(_cpp.Shape, _CompositionMixin):
         return _plot_freeform_shape(self.vertices, self.contains, resolution, **kwargs)
 
 
-def primitive(a1: int | float = 1, a2: int | float = 1, a3: int | float = 1) -> _cpp.Primitive:
+def primitive(a1: Union[int, float] = 1, a2: Union[int, float] = 1, a3: Union[int, float] = 1) -> _cpp.Primitive:
     """Follow the primitive lattice shape -- just repeat the unit cell a number of times
 
     Parameters
@@ -250,7 +251,7 @@ def primitive(a1: int | float = 1, a2: int | float = 1, a3: int | float = 1) -> 
     return _cpp.Primitive(a1, a2, a3)
 
 
-def line(a: float | ArrayLike, b: float | ArrayLike) -> Line:
+def line(a: Union[float, ArrayLike], b: Union[float, ArrayLike]) -> Line:
     """A line shape intended for 1D lattices or to specify leads for 2D lattices
 
     Parameters
@@ -265,7 +266,7 @@ def line(a: float | ArrayLike, b: float | ArrayLike) -> Line:
     return Line(a, b)
 
 
-def rectangle(x: float, y: float | None = None) -> Polygon:
+def rectangle(x: float, y: Optional[float] = None) -> Polygon:
     """A rectangle in the xy plane
 
     Parameters
@@ -324,8 +325,8 @@ def circle(radius: float, center: ArrayLike = (0, 0)) -> FreeformShape:
     return FreeformShape(contains, [2 * radius] * 2, center)
 
 
-def translational_symmetry(a1: bool | float = True, a2: bool | float = True,
-                           a3: bool | float = True) -> _cpp.TranslationalSymmetry:
+def translational_symmetry(a1: Union[bool, float] = True, a2: Union[bool, float] = True,
+                           a3: Union[bool, float] = True) -> _cpp.TranslationalSymmetry:
     """Simple translational symmetry
 
     Parameters

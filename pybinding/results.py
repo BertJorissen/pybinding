@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from numpy.typing import ArrayLike
 from collections.abc import Iterable
-from typing import Literal
+from typing import Literal, Optional, Union, Tuple
 import matplotlib
 
 from .system import _CppSites
@@ -179,7 +179,7 @@ class Series:
     labels : dict
         Plot labels: 'variable', 'data', 'title' and 'columns'.
     """
-    def __init__(self, variable: ArrayLike, data: ArrayLike, labels: dict | None = None):
+    def __init__(self, variable: ArrayLike, data: ArrayLike, labels: Optional[dict] = None):
         self.variable = np.atleast_1d(variable)
         self.data = np.atleast_1d(data)
         self.labels = with_defaults(labels, variable="x", data="y", columns="")
@@ -223,7 +223,7 @@ class Series:
 class SpatialMap:
     """Represents some spatially dependent property: data mapped to site positions"""
     # TODO: check typing
-    def __init__(self, data: ArrayLike, positions: ArrayLike | AbstractSites, sublattices=None):
+    def __init__(self, data: ArrayLike, positions: Union[ArrayLike, AbstractSites], sublattices=None):
         self._data = np.atleast_1d(data)
         if sublattices is None and isinstance(positions, AbstractSites):
             self._sites = positions
@@ -294,7 +294,7 @@ class SpatialMap:
             for x, y, d in zip(self.x, self.y, self.data):
                 file.write(("{:13.5e}" * 3 + '\n').format(x, y, d))
 
-    def __getitem__(self, idx: int | ArrayLike):
+    def __getitem__(self, idx: Union[int, ArrayLike]):
         """Same rules as numpy indexing"""
         if hasattr(idx, "contains"):
             idx = idx.contains(*self.positions)  # got a Shape object -> evaluate it
@@ -454,7 +454,7 @@ class StructureMap(SpatialMap):
         from .system import (plot_sites, plot_hoppings, plot_periodic_boundaries,
                              structure_plot_properties, decorate_structure_plot)
 
-        def to_radii(data: np.ndarray) -> float | tuple | list:
+        def to_radii(data: np.ndarray) -> Union[float, tuple, list]:
             if not isinstance(site_radius, (tuple, list)):
                 return site_radius
 
@@ -492,7 +492,7 @@ class Structure:
     Similar to :class:`StructureMap`, but only holds the structure without 
     mapping to any actual data.
     """
-    def __init__(self, sites: Sites | _CppSites, hoppings: Hoppings, boundaries=()):
+    def __init__(self, sites: Union[Sites, _CppSites], hoppings: Hoppings, boundaries=()):
         # TODO: add typing
         self._sites = sites
         self._hoppings = hoppings
@@ -548,7 +548,7 @@ class Structure:
         """Boundary hoppings between different translation units (only for infinite systems)"""
         return self._boundaries
 
-    def __getitem__(self, idx: int | list[int]) -> 'Structure':
+    def __getitem__(self, idx: Union[int, list[int]]) -> 'Structure':
         """Same rules as numpy indexing"""
         if hasattr(idx, "contains"):
             idx = idx.contains(*self.positions)  # got a Shape object -> evaluate it
@@ -630,7 +630,7 @@ class Eigenvalues:
     values : np.ndarray
     probability : np.ndarray
     """
-    def __init__(self, eigenvalues: np.ndarray, probability: np.ndarray | None = None):
+    def __init__(self, eigenvalues: np.ndarray, probability: Optional[np.ndarray] = None):
         self.values = np.atleast_1d(eigenvalues)
         self.probability = np.atleast_1d(probability)
 
@@ -677,7 +677,7 @@ class Eigenvalues:
         self._decorate_plot(mark_degenerate, show_indices)
 
     def plot_heatmap(self, size: tuple[int, int] = (7, 77), mark_degenerate: bool = True, show_indices: bool = False,
-                     **kwargs) -> float | None:
+                     **kwargs) -> Optional[float]:
         """Eigenvalues scatter plot with a heatmap indicating probability density
 
         Parameters
@@ -802,8 +802,8 @@ class Sweep:
     tags : dict
         Any additional user defined variables.
     """
-    def __init__(self, x: ArrayLike, y: ArrayLike, data: ArrayLike, labels: dict | None = None,
-                 tags: dict | None = None):
+    def __init__(self, x: ArrayLike, y: ArrayLike, data: ArrayLike, labels: Optional[dict] = None,
+                 tags: Optional[dict] = None):
         self.x = np.atleast_1d(x)
         self.y = np.atleast_1d(y)
         self.data = np.atleast_2d(data)
@@ -811,7 +811,7 @@ class Sweep:
         self.labels = with_defaults(labels, title="", x="x", y="y", data="data")
         self.tags = tags
 
-    def __getitem__(self, item: tuple[int, int] | int) -> 'Sweep':
+    def __getitem__(self, item: Union[Tuple[int, int], int]) -> 'Sweep':
         """Same rules as numpy indexing"""
         if isinstance(item, tuple):
             idx_x, idx_y = item
@@ -850,7 +850,7 @@ class Sweep:
                 values = ("{:12.5e}".format(v) for v in row)
                 file.write(" ".join(values) + "\n")
 
-    def cropped(self, x: tuple[float, float] | None = None, y: tuple[float, float] | None = None) -> 'Sweep':
+    def cropped(self, x: Optional[tuple[float, float]] = None, y: Optional[tuple[float, float]] = None) -> 'Sweep':
         """Return a copy with data cropped to the limits in the x and/or y axes
 
         A call with x=[-1, 2] will leave data only where -1 <= x <= 2.
@@ -892,7 +892,8 @@ class Sweep:
         else:
             RuntimeError("Invalid axis")
 
-    def interpolated(self, mul: int | tuple[int, int] | None = None, size: int | tuple[int, int] | None = None,
+    def interpolated(self, mul: Optional[Union[int, tuple[int, int]]] = None,
+                     size: Optional[Union[int, tuple[int, int]]] = None,
                      kind: Literal['linear', 'nearest', 'nearest-up', 'zero', 'slinear', 'quadratic', 'cubic',
                                    'previous', 'next', 'zero', 'slinear', 'quadratic', 'cubic'] = 'linear') -> 'Sweep':
         """Return a copy with interpolate data using :class:`scipy.interpolate.interp1d`
@@ -1059,7 +1060,8 @@ class NDSweep:
     tags : dict
         Any additional user defined variables.
     """
-    def __init__(self, variables: ArrayLike, data: np.ndarray, labels: dict | None = None, tags: dict | None = None):
+    def __init__(self, variables: ArrayLike, data: np.ndarray, labels: Optional[dict] = None,
+                 tags: Optional[dict] = None):
         self.variables = variables
         self.data = np.reshape(data, [len(v) for v in variables])
 

@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib.collections import Collection
 from matplotlib.artist import allow_rasterization
 from numpy.typing import ArrayLike
-from typing import Literal
+from typing import Literal, Union
 
 # noinspection PyAbstractClass
 class CircleCollection(Collection):
@@ -37,7 +37,7 @@ class CircleCollection(Collection):
 
 
 class Circle3DCollection(CircleCollection):
-    def __init__(self, radius: ArrayLike, zs: ArrayLike | float = 0,
+    def __init__(self, radius: ArrayLike, zs: Union[ArrayLike, float] = 0,
                  zdir: Literal['x', 'y', 'z', '-x', '-y', '-z'] = 'z', depthshade: bool = True, **kwargs):
         super().__init__(radius, **kwargs)
         self._depthshade = depthshade
@@ -48,7 +48,7 @@ class Circle3DCollection(CircleCollection):
         self._A0 = array
         super().set_array(array)
 
-    def set_3d_properties(self, zs: ArrayLike | float, zdir: Literal['x', 'y', 'z', '-x', '-y', '-z']) -> None:
+    def set_3d_properties(self, zs: Union[ArrayLike, float], zdir: Literal['x', 'y', 'z', '-x', '-y', '-z']) -> None:
         # Force the collection to initialize the face and edgecolors
         # just in case it is a scalarmappable with a colormap.
         self.update_scalarmappable()

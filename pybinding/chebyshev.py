@@ -8,7 +8,7 @@ import warnings
 import numpy as np
 from numpy.typing import ArrayLike
 from scipy.sparse import csr_matrix, eye
-from typing import Literal
+from typing import Literal, Optional, Union
 
 from . import _cpp
 from . import results
@@ -20,6 +20,7 @@ from .support.deprecated import LoudDeprecationWarning
 __all__ = ['KPM', 'kpm', 'kpm_cuda', 'SpatialLDOS',
            'jackson_kernel', 'lorentz_kernel', 'dirichlet_kernel']
 
+KernelType = Union[_cpp.KPMKernel, Literal["default"]]
 
 class SpatialLDOS:
     """Holds the results of :meth:`KPM.calc_spatial_ldos`
@@ -73,7 +74,7 @@ class KPM:
     All implementations are based on: https://doi.org/10.1103/RevModPhys.78.275
     """
 
-    def __init__(self, impl: _cpp.kpm | _cpp.kpm_cuda):
+    def __init__(self, impl: Union[_cpp.kpm, _cpp.kpm_cuda]):
         if isinstance(impl, Model):
             raise TypeError("You're probably looking for `pb.kpm()` (lowercase).")
         self.impl = impl
@@ -116,8 +117,8 @@ class KPM:
         warnings.warn("Use .calc_greens() instead", LoudDeprecationWarning)
         return self.calc_greens(*args, **kwargs)
 
-    def moments(self, num_moments: int, alpha: ArrayLike, beta: ArrayLike | None = None,
-                op: csr_matrix | None = None) -> np.ndarray:
+    def moments(self, num_moments: int, alpha: ArrayLike, beta: Optional[ArrayLike] = None,
+                op: Optional[csr_matrix] = None) -> np.ndarray:
         r"""Calculate KPM moments in the form of expectation values
 
         The result is an array of moments where each value is equal to:
@@ -343,9 +344,9 @@ class _ComputeProgressReporter:
             self.pbar += delta
 
 
-def kpm(model: Model, energy_range: tuple[float, float] | None = None,
-        kernel: _cpp.KPMKernel | Literal["default"] = "default",
-        num_threads: int | Literal["auto"] = "auto", silent: bool = False, **kwargs) -> KPM:
+def kpm(model: Model, energy_range: Optional[tuple[float, float]] = None,
+        kernel: KernelType = "default",
+        num_threads: Union[int, Literal["auto"]] = "auto", silent: bool = False, **kwargs) -> KPM:
     """The default CPU implementation of the Kernel Polynomial Method
 
     This implementation works on any system and is well optimized.
@@ -387,8 +388,8 @@ def kpm(model: Model, energy_range: tuple[float, float] | None = None,
     return KPM(_cpp.kpm(model, energy_range or (0, 0), **kwargs))
 
 
-def kpm_cuda(model: Model, energy_range: tuple[float, float] | None = None,
-             kernel: _cpp.KPMKernel | Literal["default"] = "default", **kwargs) -> KPM:
+def kpm_cuda(model: Model, energy_range: Optional[tuple[float, float]] = None,
+             kernel: KernelType = "default", **kwargs) -> KPM:
     """Same as :func:`kpm` except that it's executed on the GPU using CUDA (if supported)
 
     See :func:`kpm` for detailed parameter documentation.
@@ -588,7 +589,8 @@ class _PythonImpl:
         return fmt.format_map(stats)
 
 
-def _kpm_python(model: Model, energy_range: np.ndarray | None = None, kernel: _cpp.KPMKernel | str = "default", **kwargs) -> KPM:
+def _kpm_python(model: Model, energy_range: Optional[np.ndarray] = None,
+                kernel: KernelType = "default", **kwargs) -> KPM:
     """Basic Python/SciPy implementation of KPM"""
     if kernel == "default":
         kernel = jackson_kernel()

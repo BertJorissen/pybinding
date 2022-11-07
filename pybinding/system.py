@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import scipy.sparse
 from matplotlib.collections import LineCollection
 from numpy.typing import ArrayLike
-from typing import Literal
+from typing import Literal, Optional, Union
 from matplotlib.pyplot import Axes as plt_axes
 from collections.abc import Iterable
 
@@ -58,7 +58,7 @@ class System(Structure):
 
     Stores positions, sublattice and hopping IDs for all lattice sites.
     """
-    def __init__(self, impl: _cpp.System, lattice: Lattice | None = None):
+    def __init__(self, impl: _cpp.System, lattice: Optional[Lattice] = None):
         super().__init__(_CppSites(impl), impl.hopping_blocks, impl.boundaries)
         self.impl = impl
         self.lattice = lattice
@@ -66,7 +66,7 @@ class System(Structure):
     def __getstate__(self) -> dict:
         return self.__dict__
 
-    def __setstate__(self, state: dict | _cpp.System):
+    def __setstate__(self, state: Union[dict, _cpp.System]):
         if isinstance(state, dict):
             self.__init__(state["impl"], state["lattice"])
         else:
@@ -164,8 +164,8 @@ class System(Structure):
 
 
 def structure_plot_properties(axes: Literal['xyz', 'xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 'xyz',
-                              site: dict | None = None, hopping: dict | None = None, boundary: dict | None = None,
-                              **kwargs) -> dict:
+                              site: Optional[dict] = None, hopping: Optional[dict] = None,
+                              boundary: Optional[dict] = None, **kwargs) -> dict:
     """Process structure plot properties
 
     Parameters
@@ -217,7 +217,7 @@ def decorate_structure_plot(axes: Literal['xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 
         pltutils.despine()
 
 
-def _data_units_to_points(ax: plt_axes, value: float | np.ndarray) -> float | np.ndarray:
+def _data_units_to_points(ax: plt_axes, value: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
     """Convert a value from data units to points"""
     fig = ax.get_figure()
     length = fig.bbox_inches.width * ax.get_position().width
@@ -226,10 +226,10 @@ def _data_units_to_points(ax: plt_axes, value: float | np.ndarray) -> float | np
     return value * (length / data_range)
 
 
-def plot_sites(positions: tuple[ArrayLike, ArrayLike, ArrayLike], data: ArrayLike, radius: float | ArrayLike = 0.025,
+def plot_sites(positions: tuple[ArrayLike, ArrayLike, ArrayLike], data: ArrayLike, radius: Union[float, ArrayLike] = 0.025,
                offset: tuple[float, float, float] = (0, 0, 0), blend: float = 1.0,
-               cmap: str | list[str] = 'auto', axes: Literal['xyz', 'xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 'xyz',
-               **kwargs) -> matplotlib.collections.CircleCollection | None:
+               cmap: Union[str, list[str]] = 'auto', axes: Literal['xyz', 'xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 'xyz',
+               **kwargs) -> Optional[matplotlib.collections.CircleCollection]:
     """Plot circles at lattice site `positions` with colors based on `data`
 
     Parameters
@@ -335,7 +335,7 @@ def plot_hoppings(positions: tuple[ArrayLike, ArrayLike, ArrayLike], hoppings: s
                   width: float = 1.0, offset: tuple[float, float, float] = (0, 0, 0), blend: float = 1.0,
                   color: str = '#666666', axes: Literal['xyz', 'xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 'xyz',
                   boundary: tuple[int, ArrayLike] = (), draw_only: Iterable[str] = (),
-                  **kwargs) -> matplotlib.collections.LineCollection | None:
+                  **kwargs) -> Optional[matplotlib.collections.LineCollection]:
     """Plot lines between lattice sites at `positions` based on the `hoppings` matrix
 
     Parameters
@@ -446,7 +446,7 @@ def plot_hoppings(positions: tuple[ArrayLike, ArrayLike, ArrayLike], hoppings: s
     return col
 
 
-def _make_shift_set(boundaries: list[_cpp.Boundary], level: int | list[int]) -> FuzzySet:
+def _make_shift_set(boundaries: list[_cpp.Boundary], level: Union[int, list[int]]) -> FuzzySet:
     """Return a set of boundary shift combinations for the given repetition level"""
     if level == 0:
         return FuzzySet([np.zeros(3)])
