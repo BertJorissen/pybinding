@@ -188,7 +188,7 @@ def _make_modifier(func: Callable, kind, init: dict, keywords: str, has_sites: b
 
 @decorator_decorator
 def site_state_modifier(min_neighbors: int = 0) -> functools.partial:
-    """Modify the state (valid or invalid) of lattice sites, e.g.\  to create vacancies
+    """Modify the state (valid or invalid) of lattice sites, e.g. to create vacancies
 
     Parameters
     ----------
@@ -242,7 +242,7 @@ def site_state_modifier(min_neighbors: int = 0) -> functools.partial:
 def site_position_modifier(*_) -> functools.partial:
     """site_position_modifier()
     
-    Modify the position of lattice sites, e.g.\  to apply geometric deformations
+    Modify the position of lattice sites, e.g. to apply geometric deformations
 
     Notes
     -----
@@ -285,7 +285,7 @@ def site_position_modifier(*_) -> functools.partial:
 
 @decorator_decorator
 def onsite_energy_modifier(is_double: bool = False, **kwargs) -> functools.partial:
-    """Modify the onsite energy, e.g.\  to apply an electric field
+    """Modify the onsite energy, e.g. to apply an electric field
 
     Parameters
     ----------
@@ -338,7 +338,7 @@ def onsite_energy_modifier(is_double: bool = False, **kwargs) -> functools.parti
 
 @decorator_decorator
 def hopping_energy_modifier(is_double: bool = False, is_complex: bool = False, **kwargs) -> functools.partial:
-    """Modify the hopping energy, e.g.\  to apply a magnetic field
+    """Modify the hopping energy, e.g. to apply a magnetic field
 
     Parameters
     ----------

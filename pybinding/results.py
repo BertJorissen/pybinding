@@ -25,7 +25,7 @@ __all__ = ['Bands', 'Path', 'Eigenvalues', 'NDSweep', 'Series', 'SpatialMap', 'S
 def _make_crop_indices(obj, limits):
     # TODO add typing--> can't add Structure or SpatialMap due to picklable
     """Return the indices into `obj` which retain only the data within the given limits"""
-    idx = np.ones(obj.num_sites, dtype=np.bool)
+    idx = np.ones(obj.num_sites, dtype=bool)
     for name, limit in limits.items():
         v = getattr(obj, name)
         idx = np.logical_and(idx, v >= limit[0])
