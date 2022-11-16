@@ -74,7 +74,7 @@ class KPM:
     All implementations are based on: https://doi.org/10.1103/RevModPhys.78.275
     """
 
-    def __init__(self, impl: Union[_cpp.kpm, _cpp.kpm_cuda]):
+    def __init__(self, impl: Union[_cpp.kpm]):
         if isinstance(impl, Model):
             raise TypeError("You're probably looking for `pb.kpm()` (lowercase).")
         self.impl = impl

@@ -12,7 +12,6 @@ from collections.abc import Iterable
 from typing import Literal, Optional, Union, Tuple
 import matplotlib
 
-from .system import _CppSites
 from . import pltutils
 from .utils import with_defaults, x_pi
 from .support.pickle import pickleable, save, load
@@ -492,7 +491,7 @@ class Structure:
     Similar to :class:`StructureMap`, but only holds the structure without 
     mapping to any actual data.
     """
-    def __init__(self, sites: Union[Sites, _CppSites], hoppings: Hoppings, boundaries=()):
+    def __init__(self, sites: Union[Sites, '_CppSites'], hoppings: Hoppings, boundaries=()):
         # TODO: add typing
         self._sites = sites
         self._hoppings = hoppings

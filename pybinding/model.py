@@ -8,7 +8,6 @@ from . import results
 from .system import System, decorate_structure_plot
 from .lattice import Lattice
 from .leads import Leads
-from .support.kwant import KwantFiniteSystem
 
 __all__ = ['Model']
 
@@ -95,7 +94,7 @@ class Model(_cpp.Model):
         """
         return self.system.with_data(data)
 
-    def tokwant(self) -> KwantFiniteSystem:
+    def tokwant(self) -> 'KwantFiniteSystem':
         """Convert this model into `kwant <http://kwant-project.org/>`_ format (finalized)
 
         This is intended for compatibility with the kwant package: http://kwant-project.org/.

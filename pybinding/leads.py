@@ -13,7 +13,6 @@ from numpy.typing import ArrayLike
 from . import _cpp
 from . import pltutils, results
 from .lattice import Lattice
-from results import Bands
 from .system import (System, plot_sites, plot_hoppings, structure_plot_properties,
                      decorate_structure_plot)
 
@@ -58,7 +57,7 @@ class Lead:
         """Hamiltonian which connects who unit cells, :class:`~scipy.sparse.csr_matrix`"""
         return self.impl.h1
 
-    def calc_bands(self, start: float = -pi, end: float = pi, step: float = 0.05) -> Bands:
+    def calc_bands(self, start: float = -pi, end: float = pi, step: float = 0.05) -> results.Bands:
         """Calculate the band structure of an infinite lead
 
         Parameters
@@ -85,7 +84,7 @@ class Lead:
 
         k_path = results.make_path(start, end, step=step)
         bands = [eigenvalues(k) for k in k_path.flatten()]
-        return Bands(k_path, np.vstack(bands))
+        return results.Bands(k_path, np.vstack(bands))
 
     def plot(self, lead_length: int = 6, **kwargs) -> None:
         """Plot the sites, hoppings and periodic boundaries of the lead

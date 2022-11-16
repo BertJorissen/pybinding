@@ -6,10 +6,6 @@ import pybinding.solver
 from pybinding.repository.graphene import a, t
 from pybinding.results import make_path
 
-# import statement to run under WSL, it can be that you enabled QT5, then use 'use("Qt5Agg")'
-from matplotlib import use
-use("TkAGG")
-
 
 def make_mutliband_graphene():
     lat = pb.Lattice(
@@ -58,7 +54,6 @@ def calc_band_graphene_pydacp(l=5):
         filter_order=12,
         tol=1e-3
     )
-    use("TkAgg")
     bz = solver.model.lattice.brillouin_zone()
     gamma = bz[3] * 0
     k = bz[3] / l
