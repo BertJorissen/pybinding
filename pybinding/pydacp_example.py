@@ -36,7 +36,8 @@ def make_mutliband_graphene():
 
 def get_bands(solver: pybinding.solver.Solver, k_path: pybinding.results.Path):
     eigenvalues = []
-    for n_k, k_point in enumerate(k_path):
+    from tqdm import tqdm
+    for n_k, k_point in enumerate(tqdm(k_path)):
         solver.set_wave_vector(k_point)
         eigenvalues.append(solver.eigenvalues)
     return eigenvalues
@@ -63,7 +64,8 @@ def calc_band_graphene_pydacp(l=5):
 
 
 if __name__ == "__main__":
-    eigenvalues, solver_test, k_path_test = calc_band_graphene_pydacp(l=40)
+    eigenvalues, solver_test, k_path_test = calc_band_graphene_pydacp(l=6)
+    print('ok')
     plt.close('all')
     fig = plt.figure(figsize=(12, 4))
     grid = plt.GridSpec(1, 3, hspace=0, wspace=0)
@@ -76,4 +78,5 @@ if __name__ == "__main__":
     for n_energy, energy in enumerate(eigenvalues):
         plt.scatter(n_energy * np.ones(len(energy)), energy)
     # bands.plot(point_labels=[r"$\Gamma$", r"$K$", r"$M$", r"$\Gamma$"])
+    print('ok')
     plt.show()
