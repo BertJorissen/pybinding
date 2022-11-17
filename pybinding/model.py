@@ -1,6 +1,7 @@
 """Main model definition interface"""
 import numpy as np
 from scipy.sparse import csr_matrix
+from numpy.typing import ArrayLike
 
 from . import _cpp
 from . import results
@@ -32,14 +33,14 @@ class Model(_cpp.Model):
         * Any number of modifiers can be added. Adding the same modifier more than once
           is allowed: this will usually multiply the modifier's effect.
     """
-    def __init__(self, lattice, *args):
+    def __init__(self, lattice: Lattice, *args):
         super().__init__(lattice.impl)
 
         self._lattice = lattice
         self._shape = None
         self.add(*args)
 
-    def add(self, *args):
+    def add(self, *args) -> None:
         """Add parameter(s) to the model
 
         Parameters
@@ -47,6 +48,7 @@ class Model(_cpp.Model):
         *args
             Any of: shape, symmetry, modifiers. Tuples and lists of parameters are expanded
             automatically, so `M.add(p0, [p1, p2])` is equivalent to `M.add(p0, p1, p2)`.
+        TODO: Add types
         """
         for arg in args:
             if arg is None:
@@ -59,7 +61,7 @@ class Model(_cpp.Model):
                 if isinstance(arg, _cpp.Shape):
                     self._shape = arg
 
-    def attach_lead(self, direction, contact):
+    def attach_lead(self, direction: int, contact: _cpp.Shape) -> None:
         """Attach a lead to the main system
 
         Not valid for 1D lattices.
@@ -78,7 +80,7 @@ class Model(_cpp.Model):
         """
         super().attach_lead(direction, contact)
 
-    def structure_map(self, data):
+    def structure_map(self, data: ArrayLike) -> results.StructureMap:
         """Return a :class:`.StructureMap` of the model system mapped to the specified `data`
 
         Parameters
@@ -92,7 +94,7 @@ class Model(_cpp.Model):
         """
         return self.system.with_data(data)
 
-    def tokwant(self):
+    def tokwant(self) -> 'KwantFiniteSystem':
         """Convert this model into `kwant <http://kwant-project.org/>`_ format (finalized)
 
         This is intended for compatibility with the kwant package: http://kwant-project.org/.
@@ -121,12 +123,12 @@ class Model(_cpp.Model):
         return self._lattice
     
     @property
-    def leads(self):
+    def leads(self) -> Leads:
         """List of :class:`.Lead` objects"""
         return Leads(super().leads, self.lattice)
 
     @property
-    def shape(self):
+    def shape(self) -> _cpp.Shape:
         """:class:`.Polygon` or :class:`.FreeformShape` object"""
         return self._shape
 
@@ -141,7 +143,7 @@ class Model(_cpp.Model):
         """:class:`.StructureMap` of the onsite energy"""
         return self.structure_map(np.real(self.hamiltonian.diagonal()))
 
-    def plot(self, num_periods=1, lead_length=6, axes='xy', **kwargs):
+    def plot(self, num_periods: int = 1, lead_length: int = 6, axes: str = 'xy', **kwargs) -> None:
         """Plot the structure of the model: sites, hoppings, boundaries and leads
 
         Parameters

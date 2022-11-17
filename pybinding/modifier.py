@@ -8,6 +8,9 @@ import functools
 import warnings
 
 import numpy as np
+from collections.abc import Callable
+from numpy.typing import ArrayLike
+from typing import Tuple, Union
 
 from . import _cpp
 from .system import Sites
@@ -21,10 +24,11 @@ __all__ = ['constant_potential', 'force_double_precision', 'force_complex_number
            'site_generator', 'site_position_modifier', 'site_state_modifier']
 
 
-def _process_modifier_args(args, keywords, requested_argnames):
+def _process_modifier_args(args, keywords: list[str], requested_argnames: Union[list[str], Tuple[str, ...]]) -> dict:
     """Return only the requested modifier arguments
 
     Also process any special args like 'sub_id', 'hop_id' and 'sites'.
+    TODO: add typing for any
     """
     prime_arg = args[0]
     if isinstance(prime_arg, np.ndarray):
@@ -39,7 +43,8 @@ def _process_modifier_args(args, keywords, requested_argnames):
             shape = prime_arg.shape
             orbs = 1, 1
 
-    def process(obj):
+    def process(obj: Union[str, np.ndarray, ArrayLike]) -> Union[AliasIndex, np.ndarray, ArrayLike]:
+        # TODO: check ArrayLike
         if isinstance(obj, str):
             return AliasIndex(SplitName(obj), shape, orbs)
         elif isinstance(obj, np.ndarray) and obj.size == shape[0]:
@@ -62,7 +67,7 @@ def _process_modifier_args(args, keywords, requested_argnames):
     return requested_kwargs
 
 
-def _check_modifier_spec(func, keywords, has_sites=False):
+def _check_modifier_spec(func: Callable, keywords: list[str], has_sites: bool = False) -> None:
     """Make sure the arguments are specified correctly
 
     Parameters
@@ -84,7 +89,8 @@ def _check_modifier_spec(func, keywords, has_sites=False):
                            "Arguments must be any of: {expected}".format(**locals()))
 
 
-def _sanitize_modifier_result(result, args, expected_num_return, can_be_complex):
+def _sanitize_modifier_result(result, args, expected_num_return, can_be_complex) -> np.ndarray:
+    # TODO: add typing
     """Make sure the modifier returns ndarrays with type and shape matching the input `args`"""
     result = result if isinstance(result, tuple) else (result,)
     prime_arg = args[0]
@@ -122,7 +128,8 @@ def _sanitize_modifier_result(result, args, expected_num_return, can_be_complex)
     return result[0] if expected_num_return == 1 else result
 
 
-def _make_modifier(func, kind, init, keywords, has_sites=True, num_return=1, can_be_complex=False):
+def _make_modifier(func: Callable, kind, init: dict, keywords: str, has_sites: bool = True, num_return: int = 1,
+                   can_be_complex: bool = False) -> 'Modifier':
     """Turn a regular function into a modifier of the desired kind
 
     Parameters
@@ -145,6 +152,7 @@ def _make_modifier(func, kind, init, keywords, has_sites=True, num_return=1, can
     Returns
     -------
     Modifier
+    TODO: check types
     """
     keywords = [word.strip() for word in keywords.split(",")]
     _check_modifier_spec(func, keywords, has_sites)
@@ -166,7 +174,7 @@ def _make_modifier(func, kind, init, keywords, has_sites=True, num_return=1, can
             super().__init__(apply_func, **init)
             self.apply = apply_func
 
-        def __str__(self):
+        def __str__(self) -> str:
             return str(self.callsig)
 
         def __repr__(self):
@@ -179,8 +187,8 @@ def _make_modifier(func, kind, init, keywords, has_sites=True, num_return=1, can
 
 
 @decorator_decorator
-def site_state_modifier(min_neighbors=0):
-    """Modify the state (valid or invalid) of lattice sites, e.g.\  to create vacancies
+def site_state_modifier(min_neighbors: int = 0) -> functools.partial:
+    """Modify the state (valid or invalid) of lattice sites, e.g. to create vacancies
 
     Parameters
     ----------
@@ -231,10 +239,10 @@ def site_state_modifier(min_neighbors=0):
 
 
 @decorator_decorator
-def site_position_modifier(*_):
+def site_position_modifier(*_) -> functools.partial:
     """site_position_modifier()
     
-    Modify the position of lattice sites, e.g.\  to apply geometric deformations
+    Modify the position of lattice sites, e.g. to apply geometric deformations
 
     Notes
     -----
@@ -276,8 +284,8 @@ def site_position_modifier(*_):
 
 
 @decorator_decorator
-def onsite_energy_modifier(is_double=False, **kwargs):
-    """Modify the onsite energy, e.g.\  to apply an electric field
+def onsite_energy_modifier(is_double: bool = False, **kwargs) -> functools.partial:
+    """Modify the onsite energy, e.g. to apply an electric field
 
     Parameters
     ----------
@@ -329,8 +337,8 @@ def onsite_energy_modifier(is_double=False, **kwargs):
 
 
 @decorator_decorator
-def hopping_energy_modifier(is_double=False, is_complex=False, **kwargs):
-    """Modify the hopping energy, e.g.\  to apply a magnetic field
+def hopping_energy_modifier(is_double: bool = False, is_complex: bool = False, **kwargs) -> functools.partial:
+    """Modify the hopping energy, e.g. to apply a magnetic field
 
     Parameters
     ----------
@@ -388,7 +396,7 @@ def hopping_energy_modifier(is_double=False, is_complex=False, **kwargs):
                              keywords="energy, x1, y1, z1, x2, y2, z2, hop_id")
 
 
-def constant_potential(magnitude):
+def constant_potential(magnitude: float) -> Callable:
     """Apply a constant onsite energy to every lattice site
 
     Parameters
@@ -397,28 +405,29 @@ def constant_potential(magnitude):
         In units of eV.
     """
     @onsite_energy_modifier
-    def f(energy, sub_id):
+    def f(energy: Union[float, complex, np.ndarray], sub_id: AliasIndex) -> Union[float, complex, np.ndarray]:
         return energy + sub_id.eye * magnitude
     return f
 
 
-def force_double_precision():
+def force_double_precision() -> Callable:
     """Forces the model to use double precision even if that's not require by any modifier"""
     @onsite_energy_modifier(is_double=True)
-    def f(energy):
+    def f(energy: Union[float, complex, np.ndarray]) -> Union[float, complex, np.ndarray]:
         return energy
     return f
 
 
-def force_complex_numbers():
+def force_complex_numbers() -> Callable:
     """Forces the model to use complex numbers even if that's not require by any modifier"""
     @hopping_energy_modifier(is_complex=True)
-    def f(energy):
+    def f(energy: Union[float, complex, np.ndarray]) -> Union[float, complex, np.ndarray]:
         return energy
     return f
 
 
-def _make_generator(func, kind, name, energy, keywords, process_result=lambda x, *_: x):
+def _make_generator(func: Callable, kind, name: str, energy: Union[float, complex, np.ndarray], keywords: str,
+                    process_result: Callable = lambda x, *_: x) -> 'Generator':
     """Turn a regular function into a generator of the desired kind
 
     Parameters
@@ -431,6 +440,7 @@ def _make_generator(func, kind, name, energy, keywords, process_result=lambda x,
         String of comma separated names: the expected arguments of a modifier function.
     process_result : Callable
         Apply additional processing on the generator result
+    TODO: add typing
     """
     keywords = [word.strip() for word in keywords.split(",")]
     _check_modifier_spec(func, keywords)
@@ -464,7 +474,7 @@ def _make_generator(func, kind, name, energy, keywords, process_result=lambda x,
 
 
 @decorator_decorator
-def site_generator(name, energy):
+def site_generator(name: str, energy: Union[float, complex, np.ndarray]) -> functools.partial:
     """Introduce a new site family (with a new `sub_id`) via a list of site positions
 
     This can be used to create new sites independent of the main :class:`Lattice` definition.
@@ -497,7 +507,7 @@ def site_generator(name, energy):
 
 
 @decorator_decorator
-def hopping_generator(name, energy):
+def hopping_generator(name: str, energy: Union[float, complex, np.ndarray]) -> functools.partial:
     """Introduce a new hopping family (with a new `hop_id`) via a list of index pairs
 
     This can be used to create new hoppings independent of the main :class:`Lattice` definition.
@@ -523,6 +533,7 @@ def hopping_generator(name, energy):
 
     Tuple[np.ndarray, np.ndarray]
         A pair of arrays of indices which form the new hoppings.
+    TODO: Add typing
     """
     def process_result(result, system):
         def process(v):

@@ -16,13 +16,17 @@ import time
 import math
 
 import numpy as np
+from scipy.sparse import csr_matrix
+from numpy.typing import ArrayLike
+from collections.abc import Iterable, Callable
+from typing import Optional, Union
 
 from . import _cpp
 from . import results
 from .model import Model
 from .system import System
 
-__all__ = ['Solver', 'arpack', 'feast', 'lapack']
+__all__ = ['Solver', 'arpack', 'feast', 'lapack', 'dacp']
 
 
 class Solver:
@@ -33,7 +37,7 @@ class Solver:
     and :func:`.feast`. Those functions will set up their specific solver strategy and
     return a properly configured :class:`.Solver` object.
     """
-    def __init__(self, impl: _cpp.Solver):
+    def __init__(self, impl: Union[_cpp.Solver, '_SolverPythonImpl']):
         self.impl = impl
 
     @property
@@ -42,7 +46,7 @@ class Solver:
         return self.impl.model
 
     @model.setter
-    def model(self, model):
+    def model(self, model: Model):
         self.impl.model = model
 
     @property
@@ -78,7 +82,7 @@ class Solver:
         """Clear the computed results and start over"""
         self.impl.clear()
 
-    def report(self, shortform=False) -> str:
+    def report(self, shortform: bool = False) -> str:
         """Return a report of the last :meth:`solve()` computation
 
         Parameters
@@ -88,7 +92,7 @@ class Solver:
         """
         return self.impl.report(shortform)
 
-    def set_wave_vector(self, k):
+    def set_wave_vector(self, k: ArrayLike):
         """Set the wave vector for periodic models
 
         Parameters
@@ -104,7 +108,7 @@ class Solver:
         """Get the wave vector for periodic models"""
         return self.model.get_wave_vector
 
-    def calc_eigenvalues(self, map_probability_at=None):
+    def calc_eigenvalues(self, map_probability_at: Optional[ArrayLike] = None) -> results.Eigenvalues:
         """Return an :class:`.Eigenvalues` result object with an optional probability colormap
 
         While the :attr:`.eigenvalues` property returns the raw values array, this
@@ -134,7 +138,7 @@ class Solver:
 
             return results.Eigenvalues(self.eigenvalues, probability)
 
-    def calc_probability(self, n, reduce=1e-5):
+    def calc_probability(self, n: Union[int, ArrayLike], reduce: float = 1e-5) -> results.StructureMap:
         r"""Calculate the spatial probability density
 
         .. math::
@@ -165,7 +169,7 @@ class Solver:
             probability = np.sum(probability, axis=1)
         return self.system.with_data(probability)
 
-    def calc_dos(self, energies, broadening):
+    def calc_dos(self, energies: ArrayLike, broadening:float) -> results.Series:
         r"""Calculate the density of states as a function of energy
 
         .. math::
@@ -194,7 +198,8 @@ class Solver:
             dos = scale * np.sum(np.exp(-0.5 * delta**2 / broadening**2), axis=0)
         return results.Series(energies, dos, labels=dict(variable="E (eV)", data="DOS"))
 
-    def calc_ldos(self, energies, broadening, position, sublattice="", reduce=True):
+    def calc_ldos(self, energies: ArrayLike, broadening: float, position: ArrayLike, sublattice: str = "",
+                  reduce: bool = True) -> results.Series:
         r"""Calculate the local density of states as a function of energy at the given position
 
         .. math::
@@ -239,7 +244,7 @@ class Solver:
             sys_idx = self.system.find_nearest(position, sublattice)
             ham_idx = self.system.to_hamiltonian_indices(sys_idx)
 
-            def calc_single(index):
+            def calc_single(index: int) -> float:
                 psi2 = np.abs(self.eigenvectors[index])**2
                 return scale * np.sum(psi2[:, np.newaxis] * gaussian, axis=0)
 
@@ -250,7 +255,7 @@ class Solver:
         return results.Series(energies, ldos.squeeze(), labels=dict(variable="E (eV)", data="LDOS",
                                                                     columns="orbitals"))
 
-    def calc_spatial_ldos(self, energy, broadening):
+    def calc_spatial_ldos(self, energy: float, broadening: float) -> results.StructureMap:
         r"""Calculate the spatial local density of states at the given energy
 
         .. math::
@@ -282,7 +287,7 @@ class Solver:
 
         return self.system.with_data(ldos)
 
-    def calc_bands(self, k0, k1, *ks, step=0.1):
+    def calc_bands(self, k0: ArrayLike, k1: ArrayLike, *ks: Iterable[ArrayLike], step: float = 0.1) -> results.Bands:
         """Calculate the band structure on a path in reciprocal space
 
         Parameters
@@ -309,7 +314,7 @@ class Solver:
         return results.Bands(k_path, np.vstack(bands))
 
     @staticmethod
-    def find_degenerate_states(energies, abs_tolerance=1e-5):
+    def find_degenerate_states(energies: ArrayLike, abs_tolerance: float = 1e-5) -> list[list[float]]:
         """Return groups of indices which belong to degenerate states
 
         Parameters
@@ -343,7 +348,7 @@ class _SolverPythonImpl:
 
     This is intended to make use of scipy's LAPACK and ARPACK solvers.
     """
-    def __init__(self, solve_func, model, **kwargs):
+    def __init__(self, solve_func: Callable, model: Model, **kwargs):
         self.solve_func = solve_func
         self._model = model
 
@@ -352,22 +357,22 @@ class _SolverPythonImpl:
         self.vecs = np.empty(0)
         self.compute_time = .0
 
-    def clear(self):
+    def clear(self) -> None:
         self.vals = np.empty(0)
         self.vecs = np.empty(0)
         self.compute_time = .0
 
     @property
-    def model(self):
+    def model(self) -> Model:
         return self._model
 
     @model.setter
-    def model(self, model):
+    def model(self, model: Model):
         self.clear()
         self._model = model
 
     @property
-    def system(self):
+    def system(self) -> System:
         return self.model.system.impl
 
     @property
@@ -380,7 +385,7 @@ class _SolverPythonImpl:
         self.solve()
         return self.vecs
 
-    def solve(self):
+    def solve(self) -> None:
         if len(self.vals):
             return
 
@@ -393,12 +398,12 @@ class _SolverPythonImpl:
 
         self.compute_time = time.time() - start_time
 
-    def report(self, _=False):
+    def report(self, _=False) -> str:
         from .utils.time import pretty_duration
         return "Converged in " + pretty_duration(self.compute_time)
 
 
-def lapack(model, **kwargs):
+def lapack(model: Model, **kwargs) -> Solver:
     """LAPACK :class:`.Solver` implementation for dense matrices
 
     This solver is intended for small models which are best represented by
@@ -417,14 +422,14 @@ def lapack(model, **kwargs):
     -------
     :class:`~pybinding.solver.Solver`
     """
-    def solver_func(hamiltonian, **kw):
+    def solver_func(hamiltonian: csr_matrix, **kw) -> tuple[np.ndarray, np.ndarray]:
         from scipy.linalg import eigh
         return eigh(hamiltonian.toarray(), **kw)
 
     return Solver(_SolverPythonImpl(solver_func, model, **kwargs))
 
 
-def arpack(model, k, sigma=0, **kwargs):
+def arpack(model: Model, k: int, sigma: float = 0, **kwargs) -> Solver:
     """ARPACK :class:`.Solver` implementation for sparse matrices
 
     This solver is intended for large models with sparse Hamiltonian matrices.
@@ -456,7 +461,43 @@ def arpack(model, k, sigma=0, **kwargs):
     return Solver(_SolverPythonImpl(eigsh, model, k=k, sigma=sigma, **kwargs))
 
 
-def feast(model, energy_range, initial_size_guess, recycle_subspace=False, is_verbose=False):
+def dacp(model: Model, window: tuple[float, float] = (-2, 2), random_vectors: int = 100,
+         filter_order: int = 30, tol: float = 1e-3, **kwargs)-> Solver:
+    """pyDACP :class:`.Solver` implementation for DACP method matrices
+
+    Some more text about DACP blablabla...
+    ALso look at https://gitlab.kwant-project.org/qt/pyDACP and install it with
+    >>pip install git+https://gitlab.kwant-project.org/qt/pyDACP
+
+    Parameters
+    ----------
+    model : Model
+        Model which will provide the Hamiltonian matrix.
+    **kwargs
+        Advanced arguments: forwarded to :func:`scipy.sparse.linalg.eigsh`.
+
+    Returns
+    -------
+    :class:`~pybinding.solver.Solver`
+    """
+
+    def solver_func(hamiltonian: csr_matrix, **kw) -> tuple[np.ndarray, np.ndarray]:
+        from dacp.dacp import eigvalsh
+        eigenvalues = eigvalsh(
+            hamiltonian.toarray(),
+            window=window,
+            random_vectors=random_vectors,
+            filter_order=filter_order,
+            tol=tol,
+            **kw
+        )
+        return eigenvalues, np.zeros((eigenvalues.shape[0], eigenvalues.shape[0]))
+
+    return Solver(_SolverPythonImpl(solver_func, model, **kwargs))
+
+
+def feast(model: Model, energy_range: tuple[float, float], initial_size_guess: int, recycle_subspace: bool = False,
+          is_verbose: bool = False) -> Solver:
     """FEAST :class:`.Solver` implementation for sparse matrices
 
     This solver is only available if the C++ extension module was compiled with FEAST.

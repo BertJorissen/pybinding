@@ -1,6 +1,10 @@
 """System shape and symmetry"""
 import numpy as np
 import matplotlib.pyplot as plt
+from numpy.typing import ArrayLike
+from collections.abc import Callable
+import matplotlib
+from typing import Optional, Union
 
 from . import _cpp
 from . import pltutils
@@ -11,7 +15,8 @@ __all__ = ['FreeformShape', 'Polygon', 'CompositeShape',
            'translational_symmetry']
 
 
-def _plot_freeform_shape(vertices, contains, resolution=(1000, 1000), **kwargs):
+def _plot_freeform_shape(vertices: list[ArrayLike], contains: Callable, resolution: tuple[int, int] = (1000, 1000),
+                         **kwargs) -> matplotlib.image.AxesImage:
     """Plot the area where `contains(x, y, z)` is True within the polygon given by `vertices`
 
     Parameters
@@ -49,6 +54,7 @@ def _plot_freeform_shape(vertices, contains, resolution=(1000, 1000), **kwargs):
 
 class _CompositionMixin:
     """Provides logical and arithmetic operators to form composite shapes"""
+    # TODO: add typing
     def __and__(self, other):
         return CompositeShape(self, other, np.logical_and)
 
@@ -75,7 +81,7 @@ class Line(_cpp.Line):
     a, b : Union[float, array_like]
         Start and end points.
     """
-    def __init__(self, a, b):
+    def __init__(self, a: Union[float, ArrayLike], b: Union[float, ArrayLike]):
         a, b = map(np.array, (a, b))
         a.resize(2)
         b.resize(2)
@@ -83,11 +89,11 @@ class Line(_cpp.Line):
         self.a = a
         self.b = b
 
-    def with_offset(self, vector):
+    def with_offset(self, vector: ArrayLike) -> 'Line':
         """Return a copy that's offset by the given vector"""
         return Line(self.a + vector[0], self.b + vector[1])
 
-    def plot(self, **kwargs):
+    def plot(self, **kwargs) -> None:
         """Show the line
 
         Parameters
@@ -106,18 +112,18 @@ class Polygon(_cpp.Polygon, _CompositionMixin):
     vertices : List[array_like]
         Must be defined in clockwise or counterclockwise order.
     """
-    def __init__(self, vertices):
+    def __init__(self, vertices: list[ArrayLike]):
         if len(vertices) < 3:
             raise RuntimeError("A polygon must have at least 3 sides")
         super().__init__(vertices)
 
-    def with_offset(self, vector):
+    def with_offset(self, vector: ArrayLike) -> 'Polygon':
         """Return a copy that's offset by the given vector"""
         v = np.zeros(3)
         v[:len(vector)] = vector
         return Polygon([v0 + v for v0 in self.vertices])
 
-    def plot(self, **kwargs):
+    def plot(self, **kwargs) -> None:
         """Line plot of the polygon
 
         Parameters
@@ -154,15 +160,15 @@ class FreeformShape(_cpp.FreeformShape, _CompositionMixin):
         self.width = np.atleast_1d(width)
         self.center = np.atleast_1d(center)
 
-    def with_offset(self, vector):
+    def with_offset(self, vector: ArrayLike):
         """Return a copy that's offset by the given vector"""
-        def contains(x, y, z):
+        def contains(x: Union[float, ArrayLike], y: Union[float, ArrayLike], z: Union[float, ArrayLike]) -> 'FreeformShape':
             r0 = [x, y, z]
             r = [v0 - v for v0, v in zip(r0, vector)] + r0[len(vector):]
             return self.contains(*r)
         return FreeformShape(contains, self.width, self.center[:len(vector)] + vector)
 
-    def plot(self, resolution=(1000, 1000), **kwargs):
+    def plot(self, resolution: tuple[int, int] = (1000, 1000), **kwargs) -> matplotlib.image.AxesImage:
         """Plot a lightly shaded silhouette of the freeform shape
 
         This method only works for 2D shapes.
@@ -190,7 +196,7 @@ class CompositeShape(_cpp.Shape, _CompositionMixin):
     op : Callable
         A logical operator (and, or, xor...) to use for the composition. 
     """
-    def __init__(self, shape1, shape2, op):
+    def __init__(self, shape1: _cpp.Shape, shape2: _cpp.Shape, op: Callable):
         from scipy.spatial import ConvexHull
 
         # The bounding vertices are always taken as the convex hull of the combined vertices.
@@ -203,7 +209,7 @@ class CompositeShape(_cpp.Shape, _CompositionMixin):
         super().__init__(vertices, lambda x, y, z: op(shape1.contains(x, y, z),
                                                       shape2.contains(x, y, z)))
 
-    def with_offset(self, vector):
+    def with_offset(self, vector: ArrayLike) -> 'CompositeShape':
         """Return a copy that's offset by the given vector"""
         def contains(x, y, z):
             r0 = [x, y, z]
@@ -217,7 +223,7 @@ class CompositeShape(_cpp.Shape, _CompositionMixin):
         super(CompositeShape, shape).__init__(vertices, contains)
         return shape
 
-    def plot(self, resolution=(1000, 1000), **kwargs):
+    def plot(self, resolution: tuple[int, int] = (1000, 1000), **kwargs) -> matplotlib.image.AxesImage:
         """Plot a lightly shaded silhouette of the composite shape
 
         Parameters
@@ -230,7 +236,7 @@ class CompositeShape(_cpp.Shape, _CompositionMixin):
         return _plot_freeform_shape(self.vertices, self.contains, resolution, **kwargs)
 
 
-def primitive(a1=1, a2=1, a3=1):
+def primitive(a1: Union[int, float] = 1, a2: Union[int, float] = 1, a3: Union[int, float] = 1) -> _cpp.Primitive:
     """Follow the primitive lattice shape -- just repeat the unit cell a number of times
 
     Parameters
@@ -245,7 +251,7 @@ def primitive(a1=1, a2=1, a3=1):
     return _cpp.Primitive(a1, a2, a3)
 
 
-def line(a, b):
+def line(a: Union[float, ArrayLike], b: Union[float, ArrayLike]) -> Line:
     """A line shape intended for 1D lattices or to specify leads for 2D lattices
 
     Parameters
@@ -260,7 +266,7 @@ def line(a, b):
     return Line(a, b)
 
 
-def rectangle(x, y=None):
+def rectangle(x: float, y: Optional[float] = None) -> Polygon:
     """A rectangle in the xy plane
 
     Parameters
@@ -279,7 +285,7 @@ def rectangle(x, y=None):
     return Polygon([[x0, y0], [x0, -y0], [-x0, -y0], [-x0, y0]])
 
 
-def regular_polygon(num_sides, radius, angle=0):
+def regular_polygon(num_sides: int, radius: float, angle: float = 0) -> Polygon:
     """A polygon shape where all sides have equal length
 
     Parameters
@@ -300,7 +306,7 @@ def regular_polygon(num_sides, radius, angle=0):
     return Polygon([(radius * sin(a), radius * cos(a)) for a in angles])
 
 
-def circle(radius, center=(0, 0)):
+def circle(radius: float, center: ArrayLike = (0, 0)) -> FreeformShape:
     """A circle in the xy plane
 
     Parameters
@@ -312,14 +318,15 @@ def circle(radius, center=(0, 0)):
     -------
     :class:`~pybinding.FreeformShape`
     """
-    def contains(x, y, z):
+    def contains(x: float, y: float, z: float) -> bool:
         x0, y0 = center
         return np.sqrt((x - x0)**2 + (y - y0)**2) < radius
 
     return FreeformShape(contains, [2 * radius] * 2, center)
 
 
-def translational_symmetry(a1=True, a2=True, a3=True):
+def translational_symmetry(a1: Union[bool, float] = True, a2: Union[bool, float] = True,
+                           a3: Union[bool, float] = True) -> _cpp.TranslationalSymmetry:
     """Simple translational symmetry
 
     Parameters

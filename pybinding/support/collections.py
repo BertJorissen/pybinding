@@ -1,7 +1,9 @@
+import matplotlib.backend_bases
 import numpy as np
 from matplotlib.collections import Collection
 from matplotlib.artist import allow_rasterization
-
+from numpy.typing import ArrayLike
+from typing import Literal, Union
 
 # noinspection PyAbstractClass
 class CircleCollection(Collection):
@@ -12,7 +14,7 @@ class CircleCollection(Collection):
     like a much faster version of a `PatchCollection` of `Circle`.
     The implementation is similar to `EllipseCollection`.
     """
-    def __init__(self, radius, **kwargs):
+    def __init__(self, radius: ArrayLike, **kwargs):
         super().__init__(**kwargs)
         from matplotlib import path, transforms
         self.radius = np.atleast_1d(radius)
@@ -20,7 +22,7 @@ class CircleCollection(Collection):
         self.set_transform(transforms.IdentityTransform())
         self._transforms = np.empty((0, 3, 3))
 
-    def _set_transforms(self):
+    def _set_transforms(self) -> None:
         ax = self.axes
         self._transforms = np.zeros((self.radius.size, 3, 3))
         self._transforms[:, 0, 0] = self.radius * ax.bbox.width / ax.viewLim.width
@@ -28,23 +30,25 @@ class CircleCollection(Collection):
         self._transforms[:, 2, 2] = 1
 
     @allow_rasterization
-    def draw(self, renderer):
+    def draw(self, renderer: matplotlib.backend_bases.RendererBase) -> None:
+        # TODO: check typing
         self._set_transforms()
         super().draw(renderer)
 
 
 class Circle3DCollection(CircleCollection):
-    def __init__(self, radius, zs=0, zdir='z', depthshade=True, **kwargs):
+    def __init__(self, radius: ArrayLike, zs: Union[ArrayLike, float] = 0,
+                 zdir: Literal['x', 'y', 'z', '-x', '-y', '-z'] = 'z', depthshade: bool = True, **kwargs):
         super().__init__(radius, **kwargs)
         self._depthshade = depthshade
         self.set_3d_properties(zs, zdir)
         self._A0 = self._A
 
-    def set_array(self, array):
+    def set_array(self, array: ArrayLike) -> None:
         self._A0 = array
         super().set_array(array)
 
-    def set_3d_properties(self, zs, zdir):
+    def set_3d_properties(self, zs: Union[ArrayLike, float], zdir: Literal['x', 'y', 'z', '-x', '-y', '-z']) -> None:
         # Force the collection to initialize the face and edgecolors
         # just in case it is a scalarmappable with a colormap.
         self.update_scalarmappable()
@@ -60,7 +64,8 @@ class Circle3DCollection(CircleCollection):
         self._facecolor3d = self.get_facecolor()
         self._edgecolor3d = self.get_edgecolor()
 
-    def do_3d_projection(self, renderer):
+    def do_3d_projection(self, renderer) -> float:
+        # TODO: DEPRECATED --> find workaround
         from mpl_toolkits.mplot3d import proj3d
         from mpl_toolkits.mplot3d.art3d import zalpha
         from matplotlib import colors as mcolors

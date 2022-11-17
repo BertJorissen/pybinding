@@ -3,10 +3,12 @@ from collections import namedtuple
 
 import numpy as np
 from numpy import ma
+from numpy.typing import ArrayLike
 from scipy.sparse import csr_matrix, coo_matrix
+from typing import Optional, Union
 
 
-def _slice_csr_matrix(csr, idx):
+def _slice_csr_matrix(csr: csr_matrix, idx: Union[int, ArrayLike]):
     """Return a slice of a CSR matrix matching the given indices (applied to both rows and cols"""
     from copy import copy
 
@@ -56,7 +58,7 @@ class AbstractSites(metaclass=ABCMeta):
     def __getitem__(self, item):
         """Matches numpy indexing behavior and applies it to all attributes"""
 
-    def __len__(self):
+    def __len__(self) -> int:
         """Total number of sites"""
         return self.x.size
 
@@ -75,7 +77,7 @@ class AbstractSites(metaclass=ABCMeta):
         """Return a new array with shape=(N, 3). Convenient, but slow for big systems."""
         return np.array(self.positions).T
 
-    def distances(self, target_position):
+    def distances(self, target_position: ArrayLike) -> np.ndarray:
         """Return the distances of all sites from the target position
 
         Parameters
@@ -93,7 +95,7 @@ class AbstractSites(metaclass=ABCMeta):
         positions = np.stack(self.positions[:ndim], axis=1)
         return np.linalg.norm(positions - target_position, axis=1)
 
-    def find_nearest(self, target_position, target_site_family=""):
+    def find_nearest(self, target_position: ArrayLike, target_site_family: str = "") -> int:
         """Return the index of the position nearest the target
 
         Parameters
@@ -120,7 +122,7 @@ class AbstractSites(metaclass=ABCMeta):
         else:
             return ma.argmin(ma.array(distances, mask=(self.ids != target_site_family)))
 
-    def argsort_nearest(self, target_position, target_site_family=None):
+    def argsort_nearest(self, target_position: ArrayLike, target_site_family: Optional[int] = None) -> np.ndarray:
         """Return an ndarray of site indices, sorted by distance from the target
 
         Parameters
@@ -151,7 +153,7 @@ class AbstractSites(metaclass=ABCMeta):
 class Sites(AbstractSites):
     """Reference implementation of :class:`AbstractSites`"""
 
-    def __init__(self, positions, ids=None):
+    def __init__(self, positions: ArrayLike, ids: Optional[ArrayLike] = None):
         self._x, self._y, self._z = np.atleast_1d(tuple(positions))
         if ids is not None:
             self._ids = np.atleast_1d(ids)
@@ -185,7 +187,7 @@ class AbstractHoppings(metaclass=ABCMeta):
 
     @property
     @abstractmethod
-    def nnz(self):
+    def nnz(self) -> int:
         """Total number of hoppings"""
 
     @abstractmethod
@@ -204,11 +206,11 @@ class AbstractHoppings(metaclass=ABCMeta):
 class Hoppings(AbstractHoppings):
     """Reference implementation which stores a CSR matrix internally"""
 
-    def __init__(self, hoppings):
+    def __init__(self, hoppings: AbstractHoppings):
         self._csr = hoppings.tocsr()
 
     @property
-    def nnz(self):
+    def nnz(self) -> int:
         return self._csr.nnz
 
     def tocsr(self) -> csr_matrix:
@@ -217,14 +219,14 @@ class Hoppings(AbstractHoppings):
     def tocoo(self) -> coo_matrix:
         return self._csr.tocoo()
 
-    def __getitem__(self, idx):
+    def __getitem__(self, idx) -> 'Hoppings':
         return self.__class__(_slice_csr_matrix(self._csr, idx))
 
 
 class Boundary:
     """Describes a boundary between translation units of an infinite periodic system"""
 
-    def __init__(self, shift, hoppings):
+    def __init__(self, shift: np.ndarray, hoppings: AbstractHoppings):
         self._shift = shift
         self._hoppings = hoppings
 
@@ -238,6 +240,6 @@ class Boundary:
         """Hopping between the destination translation unit and the original"""
         return self._hoppings
 
-    def __getitem__(self, item):
+    def __getitem__(self, item) -> 'Boundary':
         """Matches numpy indexing behavior and applies it to hoppings"""
         return self.__class__(self.shift, self.hoppings[item])

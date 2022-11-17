@@ -3,9 +3,12 @@ import warnings
 from contextlib import contextmanager, suppress
 
 import numpy as np
+from matplotlib.pyplot import Axes as plt_axes
 import matplotlib as mpl
 import matplotlib.style as mpl_style
 import matplotlib.pyplot as plt
+from matplotlib.spines import Spine
+from typing import Literal
 
 from .utils import with_defaults
 
@@ -13,7 +16,7 @@ __all__ = ['cm2inch', 'colorbar', 'despine', 'despine_all', 'get_palette', 'lege
            'set_palette', 'use_style']
 
 
-def _set_smart_bounds(spine, value):
+def _set_smart_bounds(spine: Spine, value: bool):
     """Hold on to the deprecated `set_smart_bounds()` for a little while longer
 
     `set_smart_bounds()` was deprecated in matplotlib 3.2 and will be removed in the future.
@@ -21,6 +24,7 @@ def _set_smart_bounds(spine, value):
     there) without any deprecation warnings. And when it is removed, suppress `AttributeError`
     to make it a no-op. It's purely aesthetic change to the plots, but it's nice to keep it
     while it's there.
+    TODO: remove this; it's not there anymore
     """
     with warnings.catch_warnings(), suppress(AttributeError):
         warnings.simplefilter("ignore", mpl.MatplotlibDeprecationWarning)
@@ -28,7 +32,7 @@ def _set_smart_bounds(spine, value):
 
 
 @contextmanager
-def axes(ax):
+def axes(ax: plt_axes) -> None:
     """A context manager that sets the active Axes instance to `ax`
 
     Parameters
@@ -53,7 +57,7 @@ def axes(ax):
 
 
 @contextmanager
-def backend(new_backend):
+def backend(new_backend: str) -> None:
     """Change the backend within this context
 
     Parameters
@@ -69,7 +73,7 @@ def backend(new_backend):
         plt.switch_backend(old_backend)
 
 
-def despine(trim=False):
+def despine(trim: bool = False) -> None:
     """Remove the top and right spines
 
     Parameters
@@ -98,7 +102,7 @@ def despine(trim=False):
             getattr(ax, "set_{}ticks".format(v))(ticks)
 
 
-def despine_all():
+def despine_all() -> None:
     """Remove all spines, axes labels and ticks"""
     ax = plt.gca()
     if ax.name == '3d':
@@ -115,7 +119,7 @@ def despine_all():
     ax.set_yticks([])
 
 
-def respine():
+def respine() -> None:
     """Redraw all spines, opposite of :func:`despine`"""
     ax = plt.gca()
     for side in ['top', 'right', 'bottom', 'left']:
@@ -125,7 +129,7 @@ def respine():
     ax.yaxis.set_ticks_position('both')
 
 
-def set_min_axis_length(length, axis='xy'):
+def set_min_axis_length(length: float, axis: Literal['x', 'y', 'xy'] = 'xy'):
     """Set minimum axis length
 
     Parameters
