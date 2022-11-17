@@ -8,7 +8,7 @@ import matplotlib as mpl
 import matplotlib.style as mpl_style
 import matplotlib.pyplot as plt
 from matplotlib.spines import Spine
-from typing import Literal
+from typing import Literal, Optional
 
 from .utils import with_defaults
 
@@ -73,15 +73,18 @@ def backend(new_backend: str) -> None:
         plt.switch_backend(old_backend)
 
 
-def despine(trim: bool = False) -> None:
+def despine(trim: bool = False, ax: Optional[plt.Axes] = None) -> None:
     """Remove the top and right spines
 
     Parameters
     ----------
     trim : bool
         Trim spines so that they don't extend beyond the last major ticks.
+    ax : Optional[plt.Axes]
+        Axes to despine.
     """
-    ax = plt.gca()
+    if ax is None:
+        ax = plt.gca()
     if ax.name == '3d':
         return
 
@@ -102,9 +105,15 @@ def despine(trim: bool = False) -> None:
             getattr(ax, "set_{}ticks".format(v))(ticks)
 
 
-def despine_all() -> None:
-    """Remove all spines, axes labels and ticks"""
-    ax = plt.gca()
+def despine_all(ax: Optional[plt.Axes] = None) -> None:
+    """Remove all spines, axes labels and ticks
+
+    Parameters
+    ----------
+    ax : Optional[plt.Axes]
+        Axes to despine."""
+    if ax is None:
+        ax = plt.gca()
     if ax.name == '3d':
         return
 
@@ -119,9 +128,15 @@ def despine_all() -> None:
     ax.set_yticks([])
 
 
-def respine() -> None:
-    """Redraw all spines, opposite of :func:`despine`"""
-    ax = plt.gca()
+def respine(ax: Optional[plt.Axes] = None) -> None:
+    """Redraw all spines, opposite of :func:`despine`
+
+    Parameters
+    ----------
+    ax : Optional[plt.Axes]
+        Axes to respine."""
+    if ax is None:
+        ax = plt.gca()
     for side in ['top', 'right', 'bottom', 'left']:
         ax.spines[side].set_visible(True)
         _set_smart_bounds(ax.spines[side], False)
@@ -129,7 +144,7 @@ def respine() -> None:
     ax.yaxis.set_ticks_position('both')
 
 
-def set_min_axis_length(length: float, axis: Literal['x', 'y', 'xy'] = 'xy'):
+def set_min_axis_length(length: float, axis: Literal['x', 'y', 'xy'] = 'xy', ax: Optional[plt.Axes] = None):
     """Set minimum axis length
 
     Parameters
@@ -138,8 +153,11 @@ def set_min_axis_length(length: float, axis: Literal['x', 'y', 'xy'] = 'xy'):
         Minimum range in data coordinates
     axis : {'x', 'y', 'xy'}
         Apply to a single axis ('x', 'y') or both ('xy').
+    ax : Optional[plt.Axes]
+        Axes to set minimum.
     """
-    ax = plt.gca()
+    if ax is None:
+        ax = plt.gca()
     for a in axis:
         _min, _max = getattr(ax, "get_{}lim".format(a))()
         if abs(_max - _min) < length:
@@ -171,7 +189,7 @@ def set_min_axis_ratio(ratio):
         plt.ylim(center - lim, center + lim)
 
 
-def add_margin(margin=0.08, axis='xy'):
+def add_margin(margin=0.08, axis='xy', ax: Optional[plt.Axes] = None):
     """Adjust the axis length to include a margin (after autoscale)
 
     Parameters
@@ -180,8 +198,11 @@ def add_margin(margin=0.08, axis='xy'):
         Fraction of the original length.
     axis : {'x', 'y', 'xy'}
         Apply to a single axis ('x', 'y') or both ('xy').
+    ax : Optional[plt.Axes]
+        Axes to set margin.
     """
-    ax = plt.gca()
+    if ax is None:
+        ax = plt.gca()
     for a in axis:
         _min, _max = getattr(ax, "get_{}lim".format(a))()
         set_min_axis_length(abs(_max - _min) * (1 + margin), axis=a)
@@ -238,7 +259,7 @@ def colorbar(mappable=None, cax=None, ax=None, label="", powerlimits=(0, 0), **k
     return cbar
 
 
-def annotate_box(s, xy, fontcolor='black', **kwargs):
+def annotate_box(s, xy, fontcolor='black', ax: Optional[plt.Axes] = None, **kwargs):
     """Annotate with a box around the text
 
     Parameters
@@ -249,6 +270,8 @@ def annotate_box(s, xy, fontcolor='black', **kwargs):
         Text position.
     fontcolor : color
         Setting 'white' will make the background black.
+    ax : Optional[plt.Axes]
+        Axis to set the box on.
     **kwargs
         Forwarded to `plt.annotate()`.
     """
@@ -262,8 +285,9 @@ def annotate_box(s, xy, fontcolor='black', **kwargs):
         kwargs['arrowprops'] = with_defaults(
             kwargs['arrowprops'], dict(arrowstyle="->", color=fontcolor)
         )
-
-    plt.annotate(s, xy, **with_defaults(kwargs, color=fontcolor, horizontalalignment='center',
+    if ax is None:
+        ax = plt.gca()
+    ax.annotate(s, xy, **with_defaults(kwargs, color=fontcolor, horizontalalignment='center',
                                         verticalalignment='center'))
 
 
@@ -286,7 +310,7 @@ def cm2inch(*values):
     return tuple(v / 2.54 for v in values)
 
 
-def legend(*args, reverse=False, facecolor='0.98', lw=0, **kwargs):
+def legend(*args, reverse=False, facecolor='0.98', lw=0, ax: Optional[plt.Axes] = None, **kwargs):
     """Custom legend with modified style and option to reverse label order
 
     Parameters
@@ -297,10 +321,14 @@ def legend(*args, reverse=False, facecolor='0.98', lw=0, **kwargs):
         Legend background color.
     lw : float
         Frame width.
+    ax : Optional[plt.Axes]
+        Axis to add the legend to.
     *args, **kwargs
         Forwarded to :func:`matplotlib.pyplot.legend`.
     """
-    handles, labels = plt.gca().get_legend_handles_labels()
+    if ax is None:
+        ax = plt.gca()
+    handles, labels = ax.get_legend_handles_labels()
     if not any([handles, args, kwargs]):
         return None
 
@@ -350,7 +378,7 @@ def get_palette(name=None, num_colors=8, start=0):
     return [list(color) for color in palette]
 
 
-def set_palette(name=None, num_colors=8, start=0):
+def set_palette(name=None, num_colors=8, start=0, ax: Optional[plt.Axes] = None):
     """Set the active color palette
 
     Parameters
@@ -361,11 +389,15 @@ def set_palette(name=None, num_colors=8, start=0):
         Number of colors to retrieve.
     start : int
         Staring from this color number.
+    ax : Optional[plt.Axes]
+        Axis to set the palette to.
     """
+    if ax is None:
+        ax = plt.gca()
     palette = get_palette(name, num_colors, start)
     mpl.rcParams["axes.prop_cycle"] = plt.cycler('color', palette)
     mpl.rcParams["patch.facecolor"] = palette[0]
-    plt.gca().set_prop_cycle(mpl.rcParams["axes.prop_cycle"])
+    ax.set_prop_cycle(mpl.rcParams["axes.prop_cycle"])
 
 
 def direct_cmap_norm(data, colors, blend=1):

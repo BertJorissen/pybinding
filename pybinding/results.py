@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from numpy.typing import ArrayLike
 from collections.abc import Iterable
-from typing import Literal, Optional, Union, Tuple
+from typing import Literal, Optional, Union, Tuple, List
 import matplotlib
 
 from . import pltutils
@@ -33,17 +33,20 @@ def _make_crop_indices(obj, limits):
 
 
 class Path(np.ndarray):
-    """An ndarray which represents a path connecting certain points
+    """A ndarray which represents a path connecting certain points
 
     Attributes
     ----------
     point_indices : List[int]
         Indices of the significant points along the path. Minimum 2: start and end.
+    point_labels : Optional[List[str]]
+        Labels for the significant points along the path.
     """
-    def __new__(cls, array: ArrayLike, point_indices: list[int]):
+    def __new__(cls, array: ArrayLike, point_indices: List[int], point_labels: Optional[List[str]] = None):
         obj = np.asarray(array).view(cls)
         assert len(point_indices) >= 2
         obj.point_indices = point_indices
+        obj.point_labels = point_labels
         return obj
 
     def __array_finalize__(self, obj):
@@ -51,6 +54,7 @@ class Path(np.ndarray):
             return
         default_indices = [0, obj.shape[0] - 1] if len(obj.shape) >= 1 else []
         self.point_indices = getattr(obj, 'point_indices', default_indices)
+        self.point_labels = getattr(obj, 'point_labels', [str(i) for i in default_indices])
 
     def __reduce__(self):
         r = super().__reduce__()
@@ -94,19 +98,22 @@ class Path(np.ndarray):
             else:  # return the first axis with non-zero length
                 return self[:, np.flatnonzero(np.diff(self.points, axis=0))[0]]
         else:
-            return np.arange(self.shape[0])
+            return np.append([0], np.sqrt((np.diff(self, axis=0) ** 2).dot([[1]] * self.shape[0])).cumsum())
 
-    def plot(self, point_labels: list = None, **kwargs):
+    def plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None, **kwargs):
         """Quiver plot of the path
 
         Parameters
         ----------
         point_labels : List[str]
             Labels for the :attr:`.Path.points`.
+        ax : Optional[plt.Axes]
+            The axis to plot on.
         **kwargs
             Forwarded to :func:`~matplotlib.pyplot.quiver`.
         """
-        ax = plt.gca()
+        if ax is None:
+            ax = plt.gca()
         ax.set_aspect('equal')
 
         default_color = pltutils.get_palette('Set1')[1]
@@ -114,20 +121,24 @@ class Path(np.ndarray):
                                lw=1.5, color=default_color, edgecolor=default_color)
 
         x, y = map(np.array, zip(*self.points))
-        plt.quiver(x[:-1], y[:-1], np.diff(x), np.diff(y), **kwargs)
+        ax.quiver(x[:-1], y[:-1], np.diff(x), np.diff(y), **kwargs)
 
         ax.autoscale_view()
-        pltutils.add_margin(0.5)
-        pltutils.despine(trim=True)
+        pltutils.add_margin(0.5, ax=ax)
+        pltutils.despine(trim=True, ax=ax)
+
+        if point_labels is None:
+            point_labels = self.point_labels
 
         if point_labels:
             for k_point, label in zip(self.points, point_labels):
                 ha, va = pltutils.align(*(-k_point))
                 pltutils.annotate_box(label, k_point * 1.05, fontsize='large',
-                                      ha=ha, va=va, bbox=dict(lw=0))
+                                      ha=ha, va=va, bbox=dict(lw=0), ax=ax)
 
 
-def make_path(k0: ArrayLike, k1: ArrayLike, *ks: Iterable[ArrayLike], step: float = 0.1) -> Path:
+def make_path(k0: ArrayLike, k1: ArrayLike, *ks: Iterable[ArrayLike], step: float = 0.1,
+              point_labels: Optional[List[str]] = None) -> Path:
     """Create a path which connects the given k points
 
     Parameters
@@ -136,6 +147,8 @@ def make_path(k0: ArrayLike, k1: ArrayLike, *ks: Iterable[ArrayLike], step: floa
         Points in k-space to connect.
     step : float
         Length in k-space between two samples. Smaller step -> finer detail.
+    point_labels : Optional[List[str]]
+        The labels for the points.
 
     Examples
     --------
@@ -160,7 +173,7 @@ def make_path(k0: ArrayLike, k1: ArrayLike, *ks: Iterable[ArrayLike], step: floa
         point_indices.append(point_indices[-1] + num_steps)
     k_paths.append(k_points[-1])
 
-    return Path(np.vstack(k_paths), point_indices)
+    return Path(np.vstack(k_paths), point_indices, point_labels)
 
 
 @pickleable
@@ -335,8 +348,9 @@ class SpatialMap:
         self._data = data
 
     @staticmethod
-    def _decorate_plot():
-        ax = plt.gca()
+    def _decorate_plot(ax: Optional[plt.Axes] = None):
+        if ax is None:
+            ax = plt.gca()
         ax.set_aspect('equal')
         ax.set_xlabel('x (nm)')
         ax.set_ylabel('y (nm)')
@@ -595,7 +609,6 @@ class Structure:
         return StructureMap(data, self._sites, self._hoppings, self._boundaries)
 
     def plot(self, num_periods: int = 1, **kwargs):
-        #TODO: add typing
         """Plot the structure: sites, hoppings and periodic boundaries (if any)
 
         Parameters
@@ -637,15 +650,18 @@ class Eigenvalues:
     def indices(self) -> np.ndarray:
         return np.arange(0, self.values.size)
 
-    def _decorate_plot(self, mark_degenerate: bool, number_states: bool, margin: float = 0.1) -> None:
+    def _decorate_plot(self, mark_degenerate: bool, number_states: bool, margin: float = 0.1,
+                       ax: Optional[plt.Axes] = None) -> None:
         """Common elements for the two eigenvalue plots"""
+        if ax is None:
+            ax = plt.gca()
         if mark_degenerate:
             # draw lines between degenerate states
             from .solver import Solver
             from matplotlib.collections import LineCollection
             pairs = ((s[0], s[-1]) for s in Solver.find_degenerate_states(self.values))
             lines = [[(i, self.values[i]) for i in pair] for pair in pairs]
-            plt.gca().add_collection(LineCollection(lines, color='black', alpha=0.5))
+            ax.add_collection(LineCollection(lines, color='black', alpha=0.5))
 
         if number_states:
             # draw a number next to each state
@@ -720,12 +736,13 @@ class Bands:
         Energy values for the bands along the path in k-space.
     """
     def __init__(self, k_path: Path, energy: np.ndarray):
-        self.k_path = np.atleast_1d(k_path).view(Path)
+        self.k_path: Path = np.atleast_1d(k_path).view(Path)
         self.energy = np.atleast_1d(energy)
 
-    @staticmethod
-    def _point_names(k_points: list[float]) -> list[str]:
+    def _point_names(self, k_points: list[float]) -> list[str]:
         names = []
+        if self.k_path.point_labels:
+            return self.k_path.point_labels
         for k_point in k_points:
             k_point = np.atleast_1d(k_point)
             values = map(x_pi, k_point)
@@ -737,16 +754,20 @@ class Bands:
     def num_bands(self) -> int:
         return self.energy.shape[1]
 
-    def plot(self, point_labels: list or None = None, **kwargs) -> None:
+    def plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None, **kwargs) -> None:
         """Line plot of the band structure
 
         Parameters
         ----------
-        point_labels : List[str]
+        point_labels : Optional[List[str]]
             Labels for the `k_points`.
+        ax : Optional[plt.Axes]
+            The Axis to plot the bands on.
         **kwargs
             Forwarded to `plt.plot()`.
         """
+        if ax is None:
+            ax = plt.gca()
         default_color = pltutils.get_palette('Set1')[1]
         default_linewidth = np.clip(5 / self.num_bands, 1.1, 1.6)
         kwargs = with_defaults(kwargs, color=default_color, lw=default_linewidth)
@@ -764,19 +785,19 @@ class Bands:
         plt.xticks(k_space[self.k_path.point_indices], point_labels)
 
         # Draw vertical lines at significant points. Because of the `transLimits.transform`,
-        # this must be the done last, after all other plot elements are positioned.
+        # this must be the done last, after all others plot elements are positioned.
         for idx in self.k_path.point_indices:
-            ymax = plt.gca().transLimits.transform([0, max(self.energy[idx])])[1]
+            ymax = ax.transLimits.transform([0, max(self.energy[idx])])[1]
             plt.axvline(k_space[idx], ymax=ymax, color="0.4", lw=0.8, ls=":", zorder=-1)
 
-    def plot_kpath(self, point_labels: list or None = None, **kwargs) -> None:
+    def plot_kpath(self, point_labels: Optional[List[str]] = None, **kwargs) -> None:
         """Quiver plot of the k-path along which the bands were computed
 
         Combine with :meth:`.Lattice.plot_brillouin_zone` to see the path in context.
 
         Parameters
         ----------
-        point_labels : List[str]
+        point_labels : Optional[List[str]]
             Labels for the k-points.
         **kwargs
             Forwarded to :func:`~matplotlib.pyplot.quiver`.
@@ -998,7 +1019,6 @@ class Sweep:
         return mesh
 
     def colorbar(self, **kwargs):
-        # TODO: add typing
         """Draw a colorbar with the label of :attr:`Sweep.data`"""
         return pltutils.colorbar(**with_defaults(kwargs, label=self.labels['data']))
 

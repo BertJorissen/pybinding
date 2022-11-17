@@ -513,17 +513,20 @@ class Lattice:
         pltutils.set_min_axis_length(abs(max(y) - min(y)), 'y')
         pltutils.add_margin()
 
-    def plot_brillouin_zone(self, decorate: bool = True, **kwargs) -> None:
+    def plot_brillouin_zone(self, decorate: bool = True, ax: Optional[plt.Axes] = None, **kwargs) -> None:
         """Plot the Brillouin zone and reciprocal lattice vectors
 
         Parameters
         ----------
         decorate : bool
             Label the vertices of the Brillouin zone and show the reciprocal vectors
+        ax : Optional[plt.Axes]
+            Axis to plot the billouin-zone on.
         **kwargs
             Forwarded to `plt.plot()`.
         """
-        ax = plt.gca()
+        if ax is None:
+            ax = plt.gca()
         ax.set_aspect('equal')
         ax.set_xlabel(r"$k_x (nm^{-1})$")
 

@@ -203,9 +203,11 @@ def structure_plot_properties(axes: Literal['xyz', 'xy', 'xz', 'yx', 'yz', 'zx',
 
 
 def decorate_structure_plot(axes: Literal['xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 'xy', add_margin: bool = True,
-                            **_) -> None:
-    plt.gca().set_aspect('equal')
-    plt.gca().autoscale_view()
+                            ax: Optional[plt.Axes] = None, **_) -> None:
+    if ax is None:
+        ax = plt.gca()
+    ax.set_aspect('equal')
+    ax.autoscale_view()
     plt.xlabel("{} (nm)".format(axes[0]))
     plt.ylabel("{} (nm)".format(axes[1]))
     if add_margin:
@@ -226,10 +228,11 @@ def _data_units_to_points(ax: plt_axes, value: Union[float, np.ndarray]) -> Unio
     return value * (length / data_range)
 
 
-def plot_sites(positions: tuple[ArrayLike, ArrayLike, ArrayLike], data: ArrayLike, radius: Union[float, ArrayLike] = 0.025,
+def plot_sites(positions: tuple[ArrayLike, ArrayLike, ArrayLike], data: ArrayLike,
+               radius: Union[float, ArrayLike] = 0.025,
                offset: tuple[float, float, float] = (0, 0, 0), blend: float = 1.0,
                cmap: Union[str, list[str]] = 'auto', axes: Literal['xyz', 'xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 'xyz',
-               **kwargs) -> Optional[matplotlib.collections.CircleCollection]:
+               ax: Optional[plt.Axes] = None, **kwargs) -> Optional[matplotlib.collections.CircleCollection]:
     """Plot circles at lattice site `positions` with colors based on `data`
 
     Parameters
@@ -256,6 +259,8 @@ def plot_sites(positions: tuple[ArrayLike, ArrayLike, ArrayLike], data: ArrayLik
         used instead.
     axes : str
         The spatial axes to plot. E.g. 'xy', 'yz', etc.
+    ax : Optional[plt.Axes]
+        The axis to plot on.
     **kwargs
         Forwarded to :class:`matplotlib.collections.CircleCollection`.
 
@@ -287,7 +292,8 @@ def plot_sites(positions: tuple[ArrayLike, ArrayLike, ArrayLike], data: ArrayLik
     # create array of (x, y) points
     points = np.array(positions[:2]).T + offset[:2]
 
-    ax = plt.gca()
+    if ax is None:
+        ax = plt.gca()
     if ax.name != '3d':
         # sort based on z position to get proper 2D z-order
         z = positions[2]
@@ -335,7 +341,7 @@ def plot_hoppings(positions: tuple[ArrayLike, ArrayLike, ArrayLike], hoppings: s
                   width: float = 1.0, offset: tuple[float, float, float] = (0, 0, 0), blend: float = 1.0,
                   color: str = '#666666', axes: Literal['xyz', 'xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 'xyz',
                   boundary: tuple[int, ArrayLike] = (), draw_only: Iterable[str] = (),
-                  **kwargs) -> Optional[matplotlib.collections.LineCollection]:
+                  ax: Optional[plt.Axes] = None, **kwargs) -> Optional[matplotlib.collections.LineCollection]:
     """Plot lines between lattice sites at `positions` based on the `hoppings` matrix
 
     Parameters
@@ -361,6 +367,8 @@ def plot_hoppings(positions: tuple[ArrayLike, ArrayLike, ArrayLike], hoppings: s
         If given, apply the boundary (sign, shift).
     draw_only : Iterable[str]
         Only draw lines for the hoppings named in this list.
+    ax : Optional[plt.Axes]
+        The axis to plot on.
     **kwargs
         Forwarded to :class:`matplotlib.collections.LineCollection`.
 
@@ -400,8 +408,8 @@ def plot_hoppings(positions: tuple[ArrayLike, ArrayLike, ArrayLike], hoppings: s
         hoppings.data = hoppings.data[keep]
         hoppings.col = hoppings.col[keep]
         hoppings.row = hoppings.row[keep]
-
-    ax = plt.gca()
+    if ax is None:
+        ax = plt.gca()
     ndims = 3 if ax.name == '3d' else 2
     pos = np.array(positions[:ndims]).T + np.array(offset[:ndims])
 

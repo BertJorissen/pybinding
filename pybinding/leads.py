@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 from math import pi
 from scipy.sparse import csr_matrix
 from numpy.typing import ArrayLike
+from typing import Optional
 
 from . import _cpp
 from . import pltutils, results
@@ -119,7 +120,7 @@ class Lead:
         decorate_structure_plot(**props)
 
     def plot_contact(self, line_width: float = 1.6, arrow_length: float = 0.5,
-                     shade_width: float = 0.3, shade_color: str = '#d40a0c') -> None:
+                     shade_width: float = 0.3, shade_color: str = '#d40a0c', ax: Optional[plt.Axes] = None) -> None:
         """Plot the shape and direction of the lead contact region
 
         Parameters
@@ -132,7 +133,11 @@ class Lead:
             Width of the shaded area as a fraction of the arrow length.
         shade_color : str
             Color of the shaded area.
+        ax : Optional[plt.Axes]
+            The axis to plot the contact.
         """
+        if ax is None:
+            ax = plt.gca()
         lead_spec = self.impl.spec
         vectors = self.lattice.vectors
         if len(lead_spec.shape.vertices) != 2 or len(vectors) != 2:
@@ -143,7 +148,7 @@ class Lead:
 
         def plot_contact_line() -> None:
             # Not using plt.plot() because it would reset axis limits
-            plt.gca().add_patch(plt.Polygon([a, b], color='black', lw=line_width))
+            ax.add_patch(plt.Polygon([a, b], color='black', lw=line_width))
 
         def rescale_lattice_vector(vec: np.ndarray) -> np.ndarray:
             line_length = np.linalg.norm(a - b)
@@ -160,8 +165,7 @@ class Lead:
                                   bbox=dict(lw=0, alpha=0.6))
 
         def plot_polygon(w: float) -> None:
-            plt.gca().add_patch(plt.Polygon([a - w, a + w, b + w, b - w],
-                                            color=shade_color, alpha=0.25, lw=0))
+            ax.add_patch(plt.Polygon([a - w, a + w, b + w, b - w], color=shade_color, alpha=0.25, lw=0))
 
         plot_contact_line()
         v = rescale_lattice_vector(vectors[lead_spec.axis] * lead_spec.sign)
@@ -170,7 +174,7 @@ class Lead:
         pltutils.despine(trim=True)
         pltutils.add_margin()
 
-    def plot_bands(self, start: float = -pi, end: float = pi, step:float = 0.05, **kwargs) -> None:
+    def plot_bands(self, start: float = -pi, end: float = pi, step: float = 0.05, **kwargs) -> None:
         """Plot the band structure of an infinite lead
 
         Parameters
