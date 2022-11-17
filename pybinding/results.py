@@ -98,7 +98,7 @@ class Path(np.ndarray):
             else:  # return the first axis with non-zero length
                 return self[:, np.flatnonzero(np.diff(self.points, axis=0))[0]]
         else:
-            return np.append([0], np.sqrt((np.diff(self, axis=0) ** 2).dot([[1]] * self.shape[0])).cumsum())
+            return np.append([0], np.sqrt((np.diff(self, axis=0) ** 2).dot(np.ones((self.shape[1], 1)))).cumsum())
 
     def plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None, **kwargs):
         """Quiver plot of the path
