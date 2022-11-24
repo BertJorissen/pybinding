@@ -50,10 +50,42 @@ def calc_band_graphene_pydacp(l=5):
             pb.primitive(l, l),
             pb.translational_symmetry(l * a, l * a)
         ),
-        window=[-2.7, 2.7],
-        random_vectors=20,
+        window=[-3., 3],
+        random_vectors=5,
         filter_order=12,
-        tol=1e-3
+        tol=1e-4
+    )
+    bz = solver.model.lattice.brillouin_zone()
+    gamma = bz[3] * 0
+    k = bz[3] / l
+    m = (bz[3] + bz[4]) / 2 / l
+    path = make_path(gamma, k, m, gamma)
+    return get_bands(solver, path), solver, path
+
+def calc_band_graphene_arpack(l=5):
+    solver = pb.solver.arpack(
+        pb.Model(
+            make_mutliband_graphene(),
+            pb.primitive(l, l),
+            pb.translational_symmetry(l * a, l * a)
+        ),
+        k=12,
+        sigma=2
+    )
+    bz = solver.model.lattice.brillouin_zone()
+    gamma = bz[3] * 0
+    k = bz[3] / l
+    m = (bz[3] + bz[4]) / 2 / l
+    path = make_path(gamma, k, m, gamma)
+    return get_bands(solver, path), solver, path
+
+def calc_band_graphene_lapack(l=5):
+    solver = pb.solver.lapack(
+        pb.Model(
+            make_mutliband_graphene(),
+            pb.primitive(l, l),
+            pb.translational_symmetry(l * a, l * a)
+        )
     )
     bz = solver.model.lattice.brillouin_zone()
     gamma = bz[3] * 0
@@ -64,8 +96,16 @@ def calc_band_graphene_pydacp(l=5):
 
 
 if __name__ == "__main__":
-    eigenvalues, solver_test, k_path_test = calc_band_graphene_pydacp(l=6)
-    print('ok')
+    l = 20
+    dacp = False
+    arpack = True
+    lapack = True
+    if dacp:
+        eigenvalues, solver_test, k_path_test = calc_band_graphene_pydacp(l=l)
+    if arpack:
+        eigenvalues_a, solver_test, k_path_test = calc_band_graphene_arpack(l=l)
+    if lapack:
+        eigenvalues_l, solver_test, k_path_test = calc_band_graphene_lapack(l=l)
     plt.close('all')
     fig = plt.figure(figsize=(12, 4))
     grid = plt.GridSpec(1, 3, hspace=0, wspace=0)
@@ -75,8 +115,15 @@ if __name__ == "__main__":
     solver_test.model.lattice.plot_brillouin_zone()
     k_path_test.plot(point_labels=[r"$\Gamma$", r"$K$", r"$M$", r"$\Gamma$"])
     plt.subplot(grid[2], title="Low-energy bands")
-    for n_energy, energy in enumerate(eigenvalues):
-        plt.scatter(n_energy * np.ones(len(energy)), energy)
+
+    if dacp:
+        for n_energy, energy in enumerate(eigenvalues):
+            plt.scatter(n_energy * np.ones(len(energy)), energy, color="C0", s=50)
     # bands.plot(point_labels=[r"$\Gamma$", r"$K$", r"$M$", r"$\Gamma$"])
-    print('ok')
+    if arpack:
+        for n_energy, energy in enumerate(eigenvalues_a):
+            plt.scatter(n_energy * np.ones(len(energy)), energy, color="C1", s=20)
+    if lapack:
+        for n_energy, energy in enumerate(eigenvalues_l):
+            plt.scatter(n_energy * np.ones(len(energy)), energy, color="C2", s=5)
     plt.show()
