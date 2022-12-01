@@ -185,7 +185,7 @@ cpb::HoppingModifier constant_magnetic_field(CartesianX value) {
 namespace {
     struct LinearOnsite {
         CartesianX k;
-        Eigen::Ref<CartesianXArray const> x;
+        CartesianXArray x;
 
         template<class Array>
         void operator()(Array energy) const {
@@ -198,7 +198,7 @@ namespace {
 cpb::OnsiteModifier linear_onsite(CartesianX k) {
     return {[k](ComplexArrayRef energy, CartesianArrayConstRef pos, string_view) {
         num::match<ArrayX>(energy, LinearOnsite{k, pos.x()});
-    }};
+    }, /*is_complex*/false, /*is_double*/false};
 }
 
 namespace {
