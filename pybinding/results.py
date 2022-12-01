@@ -233,7 +233,9 @@ class Series:
         pltutils.despine(ax=ax)
 
         if self.data.ndim > 1:
-            labels = self["orbitals"] if "orbitals" in self.labels else [str(i) for i in range(self.data.shape[-1])]
+            labels = [str(i) for i in range(self.data.shape[-1])]
+            if "orbitals" in self.labels:
+                labels = self.labels["orbitals"]
             pltutils.legend(labels=labels, title=self.labels["columns"], ax=ax)
 
 
