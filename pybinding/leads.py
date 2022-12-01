@@ -87,16 +87,20 @@ class Lead:
         bands = [eigenvalues(k) for k in k_path.flatten()]
         return results.Bands(k_path, np.vstack(bands))
 
-    def plot(self, lead_length: int = 6, **kwargs) -> None:
+    def plot(self, lead_length: int = 6, ax: Optional[plt.Axes] = None, **kwargs) -> None:
         """Plot the sites, hoppings and periodic boundaries of the lead
 
         Parameters
         ----------
         lead_length : int
             Number of times to repeat the lead's periodic boundaries.
+        ax : Optional[plt.Axes]
+            The axis to plot on.
         **kwargs
             Additional plot arguments as specified in :func:`.structure_plot_properties`.
         """
+        if ax is None:
+            ax = plt.gca()
         pos = self.system.positions
         sub = self.system.sublattices
         inner_hoppings = self.system.hoppings.tocoo()
@@ -109,15 +113,15 @@ class Lead:
         blend_gradient = np.linspace(0.5, 0.1, lead_length)
         for i, blend in enumerate(blend_gradient):
             offset = i * boundary.shift
-            plot_sites(pos, sub, offset=offset, blend=blend, **props['site'])
-            plot_hoppings(pos, inner_hoppings, offset=offset, blend=blend, **props['hopping'])
+            plot_sites(pos, sub, offset=offset, blend=blend, **props['site'], ax=ax)
+            plot_hoppings(pos, inner_hoppings, offset=offset, blend=blend, **props['hopping'], ax=ax)
             plot_hoppings(pos, outer_hoppings, offset=offset - boundary.shift, blend=blend,
-                          boundary=(1, boundary.shift), **props['boundary'])
+                          boundary=(1, boundary.shift), **props['boundary'], ax=ax)
 
         label_pos = _center(pos, lead_length * boundary.shift * 1.5)
-        pltutils.annotate_box("lead {}".format(self.index), label_pos, bbox=dict(alpha=0.7))
+        pltutils.annotate_box("lead {}".format(self.index), label_pos, bbox=dict(alpha=0.7), ax=ax)
 
-        decorate_structure_plot(**props)
+        decorate_structure_plot(**props, ax=ax)
 
     def plot_contact(self, line_width: float = 1.6, arrow_length: float = 0.5,
                      shade_width: float = 0.3, shade_color: str = '#d40a0c', ax: Optional[plt.Axes] = None) -> None:
@@ -158,11 +162,11 @@ class Lead:
         def plot_arrow(xy: np.ndarray, vec: np.ndarray, spec: _cpp.Lead.spec, head_width: float = 0.08,
                        head_length: float = 0.2) -> None:
             vnorm = np.linalg.norm(vec)
-            plt.arrow(xy[0], xy[1], *vec, color='black', alpha=0.9, length_includes_head=True,
-                      head_width=vnorm * head_width, head_length=vnorm * head_length)
+            ax.arrow(xy[0], xy[1], *vec, color='black', alpha=0.9, length_includes_head=True,
+                     head_width=vnorm * head_width, head_length=vnorm * head_length)
             label = r"${}a_{}$".format("-" if spec.sign < 0 else "", spec.axis + 1)
             pltutils.annotate_box(label, xy + vec / 5, fontsize='large',
-                                  bbox=dict(lw=0, alpha=0.6))
+                                  bbox=dict(lw=0, alpha=0.6), ax=ax)
 
         def plot_polygon(w: float) -> None:
             ax.add_patch(plt.Polygon([a - w, a + w, b + w, b - w], color=shade_color, alpha=0.25, lw=0))
@@ -171,8 +175,8 @@ class Lead:
         v = rescale_lattice_vector(vectors[lead_spec.axis] * lead_spec.sign)
         plot_arrow(xy=(a + b) / 2, vec=v, spec=lead_spec)
         plot_polygon(w=shade_width * v)
-        pltutils.despine(trim=True)
-        pltutils.add_margin()
+        pltutils.despine(trim=True, ax=ax)
+        pltutils.add_margin(ax=ax)
 
     def plot_bands(self, start: float = -pi, end: float = pi, step: float = 0.05, **kwargs) -> None:
         """Plot the band structure of an infinite lead

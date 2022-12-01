@@ -167,26 +167,30 @@ def set_min_axis_length(length: float, axis: Literal['x', 'y', 'xy'] = 'xy', ax:
             getattr(ax, "set_{}lim".format(a))(_min, _max, auto=None)
 
 
-def set_min_axis_ratio(ratio):
+def set_min_axis_ratio(ratio, ax: Optional[plt.Axes] = None):
     """Set minimum ratio between axes limits
 
     Parameters
     ----------
     ratio : float
+    ax : Optional[plt.Axes]
+        Axes to set minimum.
     """
-    xmin, xmax = plt.xlim()
-    ymin, ymax = plt.ylim()
+    if ax is None:
+        ax = plt.gca()
+    xmin, xmax = ax.get_xlim()
+    ymin, ymax = ax.get_ylim()
     x = (xmax - xmin) / 2
     y = (ymax - ymin) / 2
 
     if y != 0 and x / y < ratio:
         center = (xmax + xmin) / 2
         lim = ratio * y
-        plt.xlim(center - lim, center + lim)
+        ax.set_xlim(center - lim, center + lim)
     elif y / x < ratio:
         center = (ymax + ymin) / 2
         lim = ratio * x
-        plt.ylim(center - lim, center + lim)
+        ax.set_ylim(center - lim, center + lim)
 
 
 def add_margin(margin=0.08, axis='xy', ax: Optional[plt.Axes] = None):
@@ -205,7 +209,7 @@ def add_margin(margin=0.08, axis='xy', ax: Optional[plt.Axes] = None):
         ax = plt.gca()
     for a in axis:
         _min, _max = getattr(ax, "get_{}lim".format(a))()
-        set_min_axis_length(abs(_max - _min) * (1 + margin), axis=a)
+        set_min_axis_length(abs(_max - _min) * (1 + margin), axis=a, ax=ax)
 
 
 def blend_colors(color, bg, factor):

@@ -208,15 +208,15 @@ def decorate_structure_plot(axes: Literal['xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 
         ax = plt.gca()
     ax.set_aspect('equal')
     ax.autoscale_view()
-    plt.xlabel("{} (nm)".format(axes[0]))
-    plt.ylabel("{} (nm)".format(axes[1]))
+    ax.set_xlabel("{} (nm)".format(axes[0]))
+    ax.set_ylabel("{} (nm)".format(axes[1]))
     if add_margin:
-        pltutils.set_min_axis_length(0.5)
-        pltutils.set_min_axis_ratio(0.4)
-        pltutils.despine(trim=True)
-        pltutils.add_margin()
+        pltutils.set_min_axis_length(0.5, ax=ax)
+        pltutils.set_min_axis_ratio(0.4, ax=ax)
+        pltutils.despine(trim=True, ax=ax)
+        pltutils.add_margin(ax=ax)
     else:
-        pltutils.despine()
+        pltutils.despine(ax=ax)
 
 
 def _data_units_to_points(ax: plt_axes, value: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
@@ -468,7 +468,8 @@ def _make_shift_set(boundaries: list[_cpp.Boundary], level: Union[int, list[int]
 
 
 def plot_periodic_boundaries(positions: tuple[ArrayLike, ArrayLike, ArrayLike], hoppings: scipy.sparse.coo_matrix,
-                             boundaries: list[_cpp.Boundary], data: ArrayLike, num_periods: int = 1, **kwargs) -> None:
+                             boundaries: list[_cpp.Boundary], data: ArrayLike, num_periods: int = 1,
+                             ax: Optional[plt.Axes] = None, **kwargs) -> None:
     """Plot the periodic boundaries of a system
 
     Parameters
@@ -485,9 +486,13 @@ def plot_periodic_boundaries(positions: tuple[ArrayLike, ArrayLike, ArrayLike], 
         Color data at each site. Should be a 1D array of the same size as `positions`.
     num_periods : int
         Number of times to repeat the periodic boundaries.
+    ax : Optional[plt.Axes]
+        The axis to plot on.
     **kwargs
         Additional plot arguments as specified in :func:`.structure_plot_properties`.
     """
+    if ax is None:
+        ax = plt.gca()
     props = structure_plot_properties(**kwargs)
 
     # the periodic parts will fade out gradually at each level of repetition
@@ -497,8 +502,8 @@ def plot_periodic_boundaries(positions: tuple[ArrayLike, ArrayLike, ArrayLike], 
     for level, blend in enumerate(blend_gradient, start=1):
         shift_set = _make_shift_set(boundaries, level)
         for s in shift_set:
-            plot_sites(positions, data, offset=s, **{"blend": blend, **props["site"]})
-            plot_hoppings(positions, hoppings, offset=s, **{"blend": blend, **props["hopping"]})
+            plot_sites(positions, data, offset=s, **{"blend": blend, **props["site"]}, ax=ax)
+            plot_hoppings(positions, hoppings, offset=s, **{"blend": blend, **props["hopping"]}, ax=ax)
 
     # periodic boundary hoppings
     for level, blend in enumerate(blend_gradient, start=1):
@@ -511,27 +516,35 @@ def plot_periodic_boundaries(positions: tuple[ArrayLike, ArrayLike, ArrayLike], 
                 continue  # skip existing
 
             plot_hoppings(positions, boundary.hoppings.tocoo(), offset=shift,
-                          boundary=(sign, boundary.shift), **{"blend": blend, **props["boundary"]})
+                          boundary=(sign, boundary.shift), **{"blend": blend, **props["boundary"]}, ax=ax)
 
 
-def plot_site_indices(system: System) -> None:
+def plot_site_indices(system: System, ax: Optional[plt.Axes] = None) -> None:
     """Show the Hamiltonian index next to each atom (mainly for debugging)
 
     Parameters
     ----------
     system : System
+    ax : Optional[plt.Axes]
+        The axis to plot on.
     """
+    if ax is None:
+        ax = plt.gca()
     for i, xy in enumerate(zip(system.x, system.y)):
-        pltutils.annotate_box(i, xy)
+        pltutils.annotate_box(i, xy, ax=ax)
 
 
-def plot_hopping_values(system: System) -> None:
+def plot_hopping_values(system: System,  ax: Optional[plt.Axes] = None) -> None:
     """Show the hopping energy over each hopping line (mainly for debugging)
 
     Parameters
     ----------
     system : System
+    ax : Optional[plt.Axes]
+        The axis to plot on.
     """
+    if ax is None:
+        ax = plt.gca()
     pos = system.xyz[:, :2]
 
     def get_energy(hopping_id):
@@ -540,10 +553,10 @@ def plot_hopping_values(system: System) -> None:
 
     coo = system.hoppings.tocoo()
     for i, j, k in zip(coo.row, coo.col, coo.data):
-        pltutils.annotate_box(get_energy(k), (pos[i] + pos[j]) / 2)
+        pltutils.annotate_box(get_energy(k), (pos[i] + pos[j]) / 2, ax=ax)
 
     for boundary in system.boundaries:
         coo = boundary.hoppings.tocoo()
         for i, j, k in zip(coo.row, coo.col, coo.data):
-            pltutils.annotate_box(get_energy(k), (pos[i] + pos[j] + boundary.shift[:2]) / 2)
-            pltutils.annotate_box(get_energy(k), (pos[i] + pos[j] - boundary.shift[:2]) / 2)
+            pltutils.annotate_box(get_energy(k), (pos[i] + pos[j] + boundary.shift[:2]) / 2, ax=ax)
+            pltutils.annotate_box(get_energy(k), (pos[i] + pos[j] - boundary.shift[:2]) / 2, ax=ax)

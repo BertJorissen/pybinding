@@ -11,6 +11,7 @@ from numpy.typing import ArrayLike
 from collections.abc import Iterable
 from typing import Literal, Optional, Union, Tuple, List
 import matplotlib
+from matplotlib.quiver import Quiver
 
 from . import pltutils
 from .utils import with_defaults, x_pi
@@ -100,7 +101,8 @@ class Path(np.ndarray):
         else:
             return np.append([0], np.sqrt((np.diff(self, axis=0) ** 2).dot(np.ones((self.shape[1], 1)))).cumsum())
 
-    def plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None, **kwargs):
+    def plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None,
+             **kwargs) -> Quiver:
         """Quiver plot of the path
 
         Parameters
@@ -115,13 +117,13 @@ class Path(np.ndarray):
         if ax is None:
             ax = plt.gca()
         ax.set_aspect('equal')
-
+        # TODO: plot in 3D
         default_color = pltutils.get_palette('Set1')[1]
         kwargs = with_defaults(kwargs, scale_units='xy', angles='xy', scale=1, zorder=2,
                                lw=1.5, color=default_color, edgecolor=default_color)
 
         x, y = map(np.array, zip(*self.points))
-        ax.quiver(x[:-1], y[:-1], np.diff(x), np.diff(y), **kwargs)
+        quiver_out = ax.quiver(x[:-1], y[:-1], np.diff(x), np.diff(y), **kwargs)
 
         ax.autoscale_view()
         pltutils.add_margin(0.5, ax=ax)
@@ -135,6 +137,7 @@ class Path(np.ndarray):
                 ha, va = pltutils.align(*(-k_point))
                 pltutils.annotate_box(label, k_point * 1.05, fontsize='large',
                                       ha=ha, va=va, bbox=dict(lw=0), ax=ax)
+        return quiver_out
 
 
 def make_path(k0: ArrayLike, k1: ArrayLike, *ks: Iterable[ArrayLike], step: float = 0.1,
@@ -210,25 +213,27 @@ class Series:
         """
         return self.with_data(self.data.sum(axis=1))
 
-    def plot(self, **kwargs) -> None:
+    def plot(self, ax: Optional[plt.Axes] = None, **kwargs) -> None:
         """Labeled line plot
 
         Parameters
         ----------
+         ax : Optional[plt.Axes]
+            The Axis to plot the results on.
         **kwargs
             Forwarded to `plt.plot()`.
         """
-        plt.plot(self.variable, self.data, **kwargs)
-        plt.xlim(self.variable.min(), self.variable.max())
-        plt.xlabel(self.labels["variable"])
-        plt.ylabel(self.labels["data"])
+        ax.plot(self.variable, self.data, **kwargs)
+        ax.set_xlim(self.variable.min(), self.variable.max())
+        ax.set_xlabel(self.labels["variable"])
+        ax.set_ylabel(self.labels["data"])
         if "title" in self.labels:
-            plt.title(self.labels["title"])
-        pltutils.despine()
+            ax.set_title(self.labels["title"])
+        pltutils.despine(ax=ax)
 
         if self.data.ndim > 1:
-            labels = [str(i) for i in range(self.data.shape[-1])]
-            pltutils.legend(labels=labels, title=self.labels["columns"])
+            labels = self["orbitals"] if "orbitals" in self.labels else [str(i) for i in range(self.data.shape[-1])]
+            pltutils.legend(labels=labels, title=self.labels["columns"], ax=ax)
 
 
 @pickleable
@@ -354,24 +359,28 @@ class SpatialMap:
         ax.set_aspect('equal')
         ax.set_xlabel('x (nm)')
         ax.set_ylabel('y (nm)')
-        pltutils.despine(trim=True)
+        pltutils.despine(trim=True, ax=ax)
 
-    def plot_pcolor(self, **kwargs):
+    def plot_pcolor(self, ax: Optional[plt.Axes] = None, **kwargs):
         # TODO: add typing
         """Color plot of the xy plane
 
         Parameters
         ----------
+        ax : Optional[plt.Axes]
+            The axis to plot on.
         **kwargs
             Forwarded to :func:`~matplotlib.pyplot.tripcolor`.
         """
+        if ax is None:
+            ax = plt.gca()
         x, y, _ = self.positions
         kwargs = with_defaults(kwargs, shading='gouraud', rasterized=True)
-        pcolor = plt.tripcolor(x, y, self.data, **kwargs)
-        self._decorate_plot()
+        pcolor = ax.tripcolor(x, y, self.data, **kwargs)
+        self._decorate_plot(ax=ax)
         return pcolor
 
-    def plot_contourf(self, num_levels: int = 50, **kwargs):
+    def plot_contourf(self, num_levels: int = 50, ax: Optional[plt.Axes] = None, **kwargs):
         # TODO: add typing
         """Filled contour plot of the xy plane
 
@@ -379,31 +388,39 @@ class SpatialMap:
         ----------
         num_levels : int
             Number of contour levels.
+        ax : Optional[plt.Axes]
+            The axis to plot on.
         **kwargs
             Forwarded to :func:`~matplotlib.pyplot.tricontourf`.
         """
+        if ax is None:
+            ax = plt.gca()
         levels = np.linspace(self.data.min(), self.data.max(), num=num_levels)
         x, y, _ = self.positions
         kwargs = with_defaults(kwargs, levels=levels)
-        contourf = plt.tricontourf(x, y, self.data, **kwargs)
+        contourf = ax.tricontourf(x, y, self.data, **kwargs)
         # Each collection has to be rasterized, `tricontourf()` does not accept `rasterized=True`
         for collection in contourf.collections:
             collection.set_rasterized(True)
-        self._decorate_plot()
+        self._decorate_plot(ax=ax)
         return contourf
 
-    def plot_contour(self, **kwargs):
+    def plot_contour(self, ax: Optional[plt.Axes] = None, **kwargs):
         # TODO: add typing
         """Contour plot of the xy plane
 
         Parameters
         ----------
+        ax : Optional[plt.Axes]
+            The axis to plot on.
         **kwargs
             Forwarded to :func:`~matplotlib.pyplot.tricontour`.
         """
+        if ax is None:
+            ax = plt.gca()
         x, y, _ = self.positions
-        contour = plt.tricontour(x, y, self.data, **kwargs)
-        self._decorate_plot()
+        contour = ax.tricontour(x, y, self.data, **kwargs)
+        self._decorate_plot(ax=ax)
         return contour
 
 
@@ -445,8 +462,8 @@ class StructureMap(SpatialMap):
         result._data = data
         return result
 
-    def plot(self, cmap: str = 'YlGnBu', site_radius: tuple[float, float] = (0.03, 0.05), num_periods: int =1,
-             **kwargs):
+    def plot(self, cmap: str = 'YlGnBu', site_radius: tuple[float, float] = (0.03, 0.05), num_periods: int = 1,
+             ax: Optional[plt.Axes] = None, **kwargs) -> Optional[matplotlib.collections.CircleCollection]:
         # TODO: add typing
         """Plot the spatial structure with a colormap of :attr:`data` at the lattice sites
 
@@ -461,9 +478,13 @@ class StructureMap(SpatialMap):
             represent the magnitude of the data.
         num_periods : int
             Number of times to repeat periodic boundaries.
+        ax : Optional[plt.Axes]
+            The axis to plot on.
         **kwargs
             Additional plot arguments as specified in :func:`.structure_plot_properties`.
         """
+        if ax is None:
+            ax = plt.gca()
         from .system import (plot_sites, plot_hoppings, plot_periodic_boundaries,
                              structure_plot_properties, decorate_structure_plot)
 
@@ -481,17 +502,17 @@ class StructureMap(SpatialMap):
 
         props = structure_plot_properties(**kwargs)
         props['site'] = with_defaults(props['site'], radius=to_radii(self.data), cmap=cmap)
-        collection = plot_sites(self.positions, self.data, **props['site'])
+        collection = plot_sites(self.positions, self.data, **props['site'], ax=ax)
 
         hop = self.hoppings.tocoo()
         props['hopping'] = with_defaults(props['hopping'], color='#bbbbbb')
-        plot_hoppings(self.positions, hop, **props['hopping'])
+        plot_hoppings(self.positions, hop, **props['hopping'], ax=ax)
 
         props['site']['alpha'] = props['hopping']['alpha'] = 0.5
         plot_periodic_boundaries(self.positions, hop, self.boundaries, self.data,
-                                 num_periods, **props)
+                                 num_periods, **props, ax=ax)
 
-        decorate_structure_plot(**props)
+        decorate_structure_plot(**props, ax=ax)
 
         if collection:
             plt.sci(collection)
@@ -608,16 +629,21 @@ class Structure:
         """Map some data to this structure"""
         return StructureMap(data, self._sites, self._hoppings, self._boundaries)
 
-    def plot(self, num_periods: int = 1, **kwargs):
+    def plot(self, num_periods: int = 1, ax: Optional[plt.Axes] = None,
+             **kwargs) -> Optional[matplotlib.collections.CircleCollection]:
         """Plot the structure: sites, hoppings and periodic boundaries (if any)
 
         Parameters
         ----------
         num_periods : int
             Number of times to repeat the periodic boundaries.
+        ax : Optional[plt.Axes]
+            The axis to plot on.
         **kwargs
             Additional plot arguments as specified in :func:`.structure_plot_properties`.
         """
+        if ax is None:
+            ax = plt.gca()
         from .system import (plot_sites, plot_hoppings, plot_periodic_boundaries,
                              structure_plot_properties, decorate_structure_plot)
 
@@ -625,12 +651,13 @@ class Structure:
         if hasattr(self, "lattice"):
             props["site"].setdefault("radius", self.lattice.site_radius_for_plot())
 
-        plot_hoppings(self.positions, self._hoppings, **props['hopping'])
-        plot_sites(self.positions, self.sublattices, **props['site'])
+        plot_hoppings(self.positions, self._hoppings, **props['hopping'], ax=ax)
+        collection = plot_sites(self.positions, self.sublattices, **props['site'], ax=ax)
         plot_periodic_boundaries(self.positions, self._hoppings, self._boundaries,
-                                 self.sublattices, num_periods, **props)
+                                 self.sublattices, num_periods, **props, ax=ax)
 
-        decorate_structure_plot(**props)
+        decorate_structure_plot(**props, ax=ax)
+        return collection
 
 
 @pickleable
@@ -667,16 +694,17 @@ class Eigenvalues:
             # draw a number next to each state
             for index, energy in enumerate(self.values):
                 pltutils.annotate_box(index, (index, energy), fontsize='x-small',
-                                      xytext=(0, -10), textcoords='offset points')
+                                      xytext=(0, -10), textcoords='offset points', ax=ax)
             margin = 0.25
 
-        plt.xlabel('state')
-        plt.ylabel('E (eV)')
-        plt.xlim(-1, len(self.values))
-        pltutils.despine(trim=True)
-        pltutils.add_margin(margin, axis="y")
+        ax.set_xlabel('state')
+        ax.set_ylabel('E (eV)')
+        ax.set_xlim(-1, len(self.values))
+        pltutils.despine(trim=True, ax=ax)
+        pltutils.add_margin(margin, axis="y", ax=ax)
 
-    def plot(self, mark_degenerate: bool = True, show_indices: bool = False, **kwargs) -> None:
+    def plot(self, mark_degenerate: bool = True, show_indices: bool = False, ax: Optional[plt.Axes] = None,
+             **kwargs) -> matplotlib.collections.PathCollection:
         """Standard eigenvalues scatter plot
 
         Parameters
@@ -685,14 +713,19 @@ class Eigenvalues:
             Plot a line which connects degenerate states.
         show_indices : bool
             Plot index number next to all states.
+        ax : Optional[plt.Axes]
+            The axis to plot on.
         **kwargs
             Forwarded to plt.scatter().
         """
-        plt.scatter(self.indices, self.values, **with_defaults(kwargs, c='#377ec8', s=15, lw=0.1))
-        self._decorate_plot(mark_degenerate, show_indices)
+        if ax is None:
+            ax = plt.gca()
+        collection = ax.scatter(self.indices, self.values, **with_defaults(kwargs, c='#377ec8', s=15, lw=0.1))
+        self._decorate_plot(mark_degenerate, show_indices, ax=ax)
+        return collection
 
     def plot_heatmap(self, size: tuple[int, int] = (7, 77), mark_degenerate: bool = True, show_indices: bool = False,
-                     **kwargs) -> Optional[float]:
+                     ax: Optional[plt.Axes] = None, **kwargs) -> Optional[float]:
         """Eigenvalues scatter plot with a heatmap indicating probability density
 
         Parameters
@@ -703,11 +736,16 @@ class Eigenvalues:
             Plot a line which connects degenerate states.
         show_indices : bool
             Plot index number next to all states.
+        ax : Optional[plt.Axes]
+            The axis to plot on.
         **kwargs
             Forwarded to plt.scatter().
         """
+        if ax is None:
+            ax = plt.gca()
         if not np.any(self.probability):
-            return self.plot(mark_degenerate, show_indices, **kwargs)
+            self.plot(mark_degenerate, show_indices, **kwargs, ax=ax)
+            return 0
 
         # higher probability states should be drawn above lower ones
         idx = np.argsort(self.probability)
@@ -715,9 +753,9 @@ class Eigenvalues:
                                         (self.indices, self.values, self.probability))
 
         scatter_point_sizes = size[0] + size[1] * probability / probability.max()
-        plt.scatter(indices, energy, **with_defaults(kwargs, cmap='YlOrRd', lw=0.2, alpha=0.85,
-                                                     c=probability, s=scatter_point_sizes,
-                                                     edgecolor="k"))
+        ax.scatter(indices, energy, **with_defaults(kwargs, cmap='YlOrRd', lw=0.2, alpha=0.85,
+                                                    c=probability, s=scatter_point_sizes,
+                                                    edgecolor="k"))
 
         self._decorate_plot(mark_degenerate, show_indices)
         return self.probability.max()
@@ -1001,22 +1039,26 @@ class Sweep:
 
         return self._with_data(x, y, data)
 
-    def plot(self, **kwargs) -> matplotlib.collections.QuadMesh:
+    def plot(self, ax: Optional[plt.Axes] = None, **kwargs) -> matplotlib.collections.QuadMesh:
         """Plot a 2D colormap of :attr:`Sweep.data`
 
         Parameters
         ----------
+        ax : Optional[plt.Axes]
+            The axis to plot on.
         **kwargs
             Forwarded to :func:`matplotlib.pyplot.pcolormesh`.
         """
-        mesh = plt.pcolormesh(self.x, self.y, self.data.T,
-                              **with_defaults(kwargs, cmap='RdYlBu_r', rasterized=True))
-        plt.xlim(self.x.min(), self.x.max())
-        plt.ylim(self.y.min(), self.y.max())
+        if ax is None:
+            ax = plt.gca()
+        mesh = ax.pcolormesh(self.x, self.y, self.data.T,
+                             **with_defaults(kwargs, cmap='RdYlBu_r', rasterized=True))
+        ax.set_xlim(self.x.min(), self.x.max())
+        ax.set_ylim(self.y.min(), self.y.max())
 
-        plt.title(self.labels['title'])
-        plt.xlabel(self.labels['x'])
-        plt.ylabel(self.labels['y'])
+        ax.set_title(self.labels['title'])
+        ax.set_xlabel(self.labels['x'])
+        ax.set_ylabel(self.labels['y'])
 
         return mesh
 
@@ -1024,18 +1066,21 @@ class Sweep:
         """Draw a colorbar with the label of :attr:`Sweep.data`"""
         return pltutils.colorbar(**with_defaults(kwargs, label=self.labels['data']))
 
-    def _plot_slice(self, axis: Literal['x', 'y'], x: np.ndarray, y: ArrayLike, value: float, **kwargs) -> None:
-        plt.plot(x, y, **kwargs)
+    def _plot_slice(self, axis: Literal['x', 'y'], x: np.ndarray, y: ArrayLike, value: float,
+                    ax: Optional[plt.Axes] = None, **kwargs) -> None:
+        if ax is None:
+            ax = plt.gca()
+        ax.plot(x, y, **kwargs)
 
         split = self.labels[axis].split(' ', 1)
         label = split[0]
         unit = '' if len(split) == 1 else split[1].strip('()')
-        plt.title('{}, {} = {:.2g} {}'.format(self.labels['title'], label, value, unit))
+        ax.set_title('{}, {} = {:.2g} {}'.format(self.labels['title'], label, value, unit))
 
-        plt.xlim(x.min(), x.max())
-        plt.xlabel(self.labels['x' if axis == 'y' else 'y'])
-        plt.ylabel(self.labels['data'])
-        pltutils.despine()
+        ax.set_xlim(x.min(), x.max())
+        ax.set_xlabel(self.labels['x' if axis == 'y' else 'y'])
+        ax.set_ylabel(self.labels['data'])
+        pltutils.despine(ax=ax)
 
     def _slice_x(self, x: float) -> np.ndarray:
         """Return a slice of data nearest to x and the found values of x.

@@ -16,16 +16,20 @@ __all__ = ['FreeformShape', 'Polygon', 'CompositeShape',
 
 
 def _plot_freeform_shape(vertices: list[ArrayLike], contains: Callable, resolution: tuple[int, int] = (1000, 1000),
-                         **kwargs) -> matplotlib.image.AxesImage:
+                         ax: Optional[plt.Axes] = None, **kwargs) -> matplotlib.image.AxesImage:
     """Plot the area where `contains(x, y, z)` is True within the polygon given by `vertices`
 
     Parameters
     ----------
     resolution : Tuple[int, int]
         The (x, y) pixel resolution of the generated image.
+    ax : Optional[plt.Axes]
+        The axis to plot on.
     **kwargs
         Forwarded to :func:`matplotlib.pyplot.imshow`.
     """
+    if ax is None:
+        ax = plt.gca()
     if any(z != 0 for _, _, z in vertices):
         raise RuntimeError("This method only works for 2D shapes.")
 
@@ -43,11 +47,11 @@ def _plot_freeform_shape(vertices: list[ArrayLike], contains: Callable, resoluti
     im = plt.imshow(area, extent=(min(x), max(x), min(y), max(y)),
                     **with_defaults(kwargs, cmap="gray", alpha=0.15, interpolation="bicubic"))
 
-    plt.axis("scaled")
-    plt.xlabel("x (nm)")
-    plt.ylabel("y (nm)")
-    pltutils.despine(trim=True)
-    pltutils.add_margin()
+    ax.axis("scaled")
+    ax.set_xlabel("x (nm)")
+    ax.set_ylabel("y (nm)")
+    pltutils.despine(trim=True, ax=ax)
+    pltutils.add_margin(ax=ax)
 
     return im
 
@@ -93,15 +97,19 @@ class Line(_cpp.Line):
         """Return a copy that's offset by the given vector"""
         return Line(self.a + vector[0], self.b + vector[1])
 
-    def plot(self, **kwargs) -> None:
+    def plot(self, ax: Optional[plt.Axes] = None, **kwargs) -> None:
         """Show the line
 
         Parameters
         ----------
+        ax : Optional[plt.Axes]
+            The axis to plot on.
         **kwargs
             Forwarded to :func:`matplotlib.pyplot.plot`.
         """
-        plt.plot(*zip(self.a, self.b), **with_defaults(kwargs, color='black', lw=1.6))
+        if ax is None:
+            ax = plt.gca()
+        ax.plot(*zip(self.a, self.b), **with_defaults(kwargs, color='black', lw=1.6))
 
 
 class Polygon(_cpp.Polygon, _CompositionMixin):
@@ -123,21 +131,25 @@ class Polygon(_cpp.Polygon, _CompositionMixin):
         v[:len(vector)] = vector
         return Polygon([v0 + v for v0 in self.vertices])
 
-    def plot(self, **kwargs) -> None:
+    def plot(self, ax: Optional[plt.Axes] = None, **kwargs) -> None:
         """Line plot of the polygon
 
         Parameters
         ----------
+        ax : Optional[plt.Axes]
+            The axis to plot on.
         **kwargs
             Forwarded to :func:`matplotlib.pyplot.plot`.
         """
+        if ax is None:
+            ax = plt.gca()
         x, y, _ = zip(*self.vertices)
         plt.plot(np.append(x, x[0]), np.append(y, y[0]), **with_defaults(kwargs, color='black'))
-        plt.axis("scaled")
-        plt.xlabel("x (nm)")
-        plt.ylabel("y (nm)")
-        pltutils.despine(trim=True)
-        pltutils.add_margin()
+        ax.axis("scaled")
+        ax.set_xlabel("x (nm)")
+        ax.set_ylabel("y (nm)")
+        pltutils.despine(trim=True, ax=ax)
+        pltutils.add_margin(ax=ax)
 
 
 class FreeformShape(_cpp.FreeformShape, _CompositionMixin):

@@ -348,23 +348,24 @@ class Lattice:
         else:
             raise RuntimeError("3D Brillouin zones are not currently supported")
 
+    # TODO: move to pltutils and replace plt.quiver with this function.
     @staticmethod
     def _plot_vectors(vectors: ArrayLike, position: ArrayLike = (0, 0), name: str = "a", scale: float = 1.0,
-                      head_width: float = 0.08, head_length: float = 0.2) -> None:
+                      head_width: float = 0.08, head_length: float = 0.2, ax: Optional[plt.Axes] = None) -> None:
         vnorm = np.average([np.linalg.norm(v) for v in vectors]) * scale
         for i, vector in enumerate(vectors):
             v2d = np.array(vector[:2]) * scale
             if np.allclose(v2d, [0, 0]):
                 continue  # nonzero only in z dimension, but the plot is 2D
 
-            plt.arrow(position[0], position[1], *v2d, color='black', length_includes_head=True,
-                      head_width=vnorm * head_width, head_length=vnorm * head_length)
+            ax.arrow(position[0], position[1], *v2d, color='black', length_includes_head=True,
+                     head_width=vnorm * head_width, head_length=vnorm * head_length)
             pltutils.annotate_box(r"${}_{}$".format(name, i+1), position[:2] + v2d / 2,
-                                  fontsize='large', bbox=dict(lw=0, alpha=0.6))
-        pltutils.despine(trim=True)
-        pltutils.add_margin()
+                                  fontsize='large', bbox=dict(lw=0, alpha=0.6), ax=ax)
+        pltutils.despine(trim=True, ax=ax)
+        pltutils.add_margin(ax=ax)
 
-    def plot_vectors(self, position: ArrayLike, scale: float = 1.0) -> None:
+    def plot_vectors(self, position: ArrayLike, scale: float = 1.0, ax: Optional[plt.Axes] = None) -> None:
         """Plot lattice vectors in the xy plane
 
         Parameters
@@ -373,8 +374,12 @@ class Lattice:
             Cartesian position to be used as the origin for the vectors.
         scale : float
             Multiply the length of the vectors by this number.
+        ax : Optional[plt.Axes]
+            The axis to plot on.
         """
-        self._plot_vectors(self.vectors, position, scale=scale)
+        if ax is None:
+            ax = plt.gca()
+        self._plot_vectors(self.vectors, position, scale=scale, ax=ax)
 
     def _visible_sublattices(self, axes: plt_axes) -> dict:
         """Return the sublattices which are visible when viewed top-down in the `axes` plane"""
@@ -449,7 +454,8 @@ class Lattice:
         r2 = max_fraction * shortest_site_spacing(self)
         return min(r1, r2)
 
-    def plot(self, axes: str = "xy", vector_position: ArrayLike or str = "center", **kwargs) -> None:
+    def plot(self, axes: str = "xy", vector_position: ArrayLike or str = "center",
+             ax: Optional[plt.Axes] = None, **kwargs) -> None:
         """Illustrate the lattice by plotting the primitive cell and its nearest neighbors
 
         Parameters
@@ -459,16 +465,21 @@ class Lattice:
         vector_position : array_like or 'center'
             Cartesian position to be used as the origin for the lattice vectors.
             By default the origin is placed in the center of the primitive cell.
+        ax : Optional[plt.Axes]
+            The axis to plot on.
         **kwargs
             Forwarded to `System.plot()`.
         """
+        if ax is None:
+            ax = plt.gca()
+        # TODO: add the boundary of the unit-cell and shift unit-vectors to the lower boundary instead
         from .model import Model
         from .shape import translational_symmetry
 
         # reuse model plotting code (kind of meta)
         model = Model(self, translational_symmetry())
         model.system.plot(**with_defaults(kwargs, hopping=dict(color='#777777', width=1),
-                                          axes=axes))
+                                          axes=axes), ax=ax)
 
         # by default, plot the lattice vectors from the center of the unit cell
         vectors = [np.array(rotate_axes(v, axes)) for v in self.vectors]
@@ -476,12 +487,12 @@ class Lattice:
         sub_center = rotate_axes(sub_center, axes)
         if vector_position is not None:
             vector_position = sub_center if vector_position == "center" else vector_position
-            self._plot_vectors(vectors, vector_position)
+            self._plot_vectors(vectors, vector_position, ax=ax)
 
         # annotate sublattice names
         for name, sub in self._visible_sublattices(axes).items():
             pltutils.annotate_box(name, xy=rotate_axes(sub.position, axes)[:2],
-                                  bbox=dict(boxstyle="circle,pad=0.3", alpha=0.2, lw=0))
+                                  bbox=dict(boxstyle="circle,pad=0.3", alpha=0.2, lw=0), ax=ax)
 
         # collect relative indices where annotations should be drawn
         relative_indices = []
@@ -503,15 +514,15 @@ class Lattice:
             # align the text so that it goes away from the original cell
             ha, va = pltutils.align(*(-offset[:2]))
             pltutils.annotate_box(text, xy=(sub_center[:2] + offset[:2]) * 1.05,
-                                  ha=ha, va=va, clip_on=True, bbox=dict(lw=0))
+                                  ha=ha, va=va, clip_on=True, bbox=dict(lw=0), ax=ax)
 
         # ensure there is some padding around the lattice
         offsets += [(0, 0, 0)]
         points = [n * v + o for n in (-0.5, 0.5) for v in vectors for o in offsets]
         x, y, _ = zip(*points)
-        pltutils.set_min_axis_length(abs(max(x) - min(x)), 'x')
-        pltutils.set_min_axis_length(abs(max(y) - min(y)), 'y')
-        pltutils.add_margin()
+        pltutils.set_min_axis_length(abs(max(x) - min(x)), 'x', ax=ax)
+        pltutils.set_min_axis_length(abs(max(y) - min(y)), 'y', ax=ax)
+        pltutils.add_margin(ax=ax)
 
     def plot_brillouin_zone(self, decorate: bool = True, ax: Optional[plt.Axes] = None, **kwargs) -> None:
         """Plot the Brillouin zone and reciprocal lattice vectors
@@ -536,13 +547,13 @@ class Lattice:
         if self.ndim == 1:
             x1, x2 = vertices
             y = x2 / 10
-            plt.plot([x1, x2], [y, y], **with_defaults(kwargs, color=default_color))
+            ax.plot([x1, x2], [y, y], **with_defaults(kwargs, color=default_color))
 
             ticks = [x1, 0, x2]
-            plt.xticks(ticks, [x_pi(t) for t in ticks])
+            ax.set_xticks(ticks, [x_pi(t) for t in ticks])
 
-            plt.ylim(0, 2 * y)
-            plt.yticks([])
+            ax.set_ylim(0, 2 * y)
+            ax.set_yticks([])
             ax.spines['left'].set_visible(False)
         else:
             ax.add_patch(plt.Polygon(
@@ -551,17 +562,17 @@ class Lattice:
 
             if decorate:
                 self._plot_vectors(self.reciprocal_vectors(), name="b",
-                                   head_width=0.05, head_length=0.12)
+                                   head_width=0.05, head_length=0.12, ax=ax)
 
                 for vertex in vertices:
                     text = "[" + ", ".join(map(x_pi, vertex)) + "]"
                     # align the text so that it goes away from the origin
                     ha, va = pltutils.align(*(-vertex))
-                    pltutils.annotate_box(text, vertex * 1.05, ha=ha, va=va, bbox=dict(lw=0))
+                    pltutils.annotate_box(text, vertex * 1.05, ha=ha, va=va, bbox=dict(lw=0), ax=ax)
 
             x, y = zip(*vertices)
-            pltutils.set_min_axis_length(abs(max(x) - min(x)) * 2, 'x')
-            pltutils.set_min_axis_length(abs(max(y) - min(y)) * 2, 'y')
+            pltutils.set_min_axis_length(abs(max(x) - min(x)) * 2, 'x', ax=ax)
+            pltutils.set_min_axis_length(abs(max(y) - min(y)) * 2, 'y', ax=ax)
             ax.set_ylabel(r"$k_y (nm^{-1})$")
 
         pltutils.despine(trim=True)
