@@ -222,6 +222,8 @@ class Series:
         **kwargs
             Forwarded to `plt.plot()`.
         """
+        if ax is None:
+            ax = plt.gca()
         ax.plot(self.variable, self.data, **kwargs)
         ax.set_xlim(self.variable.min(), self.variable.max())
         ax.set_xlabel(self.labels["variable"])
