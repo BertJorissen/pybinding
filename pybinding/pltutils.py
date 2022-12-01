@@ -560,7 +560,7 @@ def use_style(style=pb_style):
 
 def plot_vectors(vectors: ArrayLike, position: ArrayLike = (0, 0), name: Optional[str] = "a", scale: float = 1.0,
                  head_width: float = 0.08, head_length: float = 0.2, arrow_width: float = 0.01,
-                 ax: Optional[plt.Axes] = None) -> FancyArrow:
+                 ax: Optional[plt.Axes] = None, **kwargs) -> FancyArrow:
     """ Visualize vectors, alternative to plt.quiver()
 
     Parameters
@@ -581,7 +581,8 @@ def plot_vectors(vectors: ArrayLike, position: ArrayLike = (0, 0), name: Optiona
         The length for the arrow head. Default: 0.2 .
     ax : optional[plt.Axes]
         The axis to draw on. If None, ax=plt.gca(). Default: ax.
-
+    **kwargs
+         Forwarded to :func:`matplotlib.pyplot.arrow`.
     Returns
     -------
     matplotlib.patches.FancyArrow
@@ -597,8 +598,8 @@ def plot_vectors(vectors: ArrayLike, position: ArrayLike = (0, 0), name: Optiona
             continue  # nonzero only in z dimension, but the plot is 2D
         pos = np.array(position if np.ndim(position) == 1 else position[i]) * scale
         out.append(
-            ax.arrow(pos[0], pos[1], *v2d, color='black', length_includes_head=True,
-                     head_width=vnorm * head_width, head_length=vnorm * head_length, width=arrow_width * vnorm)
+            ax.arrow(pos[0], pos[1], *v2d, length_includes_head=True, head_width=vnorm * head_width,
+                     head_length=vnorm * head_length, width=arrow_width * vnorm, **kwargs)
         )
         if name:
             annotate_box(r"${}_{}$".format(name, i + 1), pos[:2] + v2d / 2,

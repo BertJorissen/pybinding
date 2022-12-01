@@ -19,7 +19,7 @@ import numpy as np
 from scipy.sparse import csr_matrix
 from numpy.typing import ArrayLike
 from collections.abc import Iterable, Callable
-from typing import Optional, Union, Tuple
+from typing import Optional, Union, Tuple, List
 
 from . import _cpp
 from . import results
@@ -287,7 +287,8 @@ class Solver:
 
         return self.system.with_data(ldos)
 
-    def calc_bands(self, k0: ArrayLike, k1: ArrayLike, *ks: Iterable[ArrayLike], step: float = 0.1) -> results.Bands:
+    def calc_bands(self, k0: ArrayLike, k1: ArrayLike, *ks: Iterable[ArrayLike], step: float = 0.1,
+                   point_labels: Optional[List[str]] = None) -> results.Bands:
         """Calculate the band structure on a path in reciprocal space
 
         Parameters
@@ -298,13 +299,15 @@ class Solver:
         step : float, optional
             Calculation step length in reciprocal space units. Lower `step` values
             will return more detailed results.
+        point_labels : list[str], optional
+            The point_labels for plots
 
         Returns
         -------
         :class:`~pybinding.Bands`
         """
         k_points = [np.atleast_1d(k) for k in (k0, k1) + ks]
-        k_path = results.make_path(*k_points, step=step)
+        k_path = results.make_path(*k_points, step=step, point_labels=point_labels)
 
         bands = []
         for k in k_path:

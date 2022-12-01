@@ -11,7 +11,7 @@ from numpy.typing import ArrayLike
 from collections.abc import Iterable
 from typing import Literal, Optional, Union, Tuple, List
 import matplotlib
-from matplotlib.quiver import Quiver
+from matplotlib.patches import FancyArrow
 
 from . import pltutils
 from .utils import with_defaults, x_pi
@@ -102,7 +102,7 @@ class Path(np.ndarray):
             return np.append([0], np.sqrt((np.diff(self, axis=0) ** 2).dot(np.ones((self.shape[1], 1)))).cumsum())
 
     def plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None,
-             **kwargs) -> Quiver:
+             **kwargs) -> FancyArrow:
         """Quiver plot of the path
 
         Parameters
@@ -112,18 +112,17 @@ class Path(np.ndarray):
         ax : Optional[plt.Axes]
             The axis to plot on.
         **kwargs
-            Forwarded to :func:`~matplotlib.pyplot.quiver`.
+            Forwarded to :func:`~matplotlib.pyplot.arrow`.
         """
         if ax is None:
             ax = plt.gca()
         ax.set_aspect('equal')
         # TODO: plot in 3D
         default_color = pltutils.get_palette('Set1')[1]
-        kwargs = with_defaults(kwargs, scale_units='xy', angles='xy', scale=1, zorder=2,
-                               lw=1.5, color=default_color, edgecolor=default_color)
+        kwargs = with_defaults(kwargs, scale=1, zorder=2, lw=1.5, color=default_color,
+                               name=None, head_width=0.08, head_length=0.2)
 
-        x, y = map(np.array, zip(*self.points))
-        quiver_out = ax.quiver(x[:-1], y[:-1], np.diff(x), np.diff(y), **kwargs)
+        out = pltutils.plot_vectors(np.diff(self.points, axis=0), self.points[0:], ax=ax, **kwargs)
 
         ax.autoscale_view()
         pltutils.add_margin(0.5, ax=ax)
@@ -137,7 +136,7 @@ class Path(np.ndarray):
                 ha, va = pltutils.align(*(-k_point))
                 pltutils.annotate_box(label, k_point * 1.05, fontsize='large',
                                       ha=ha, va=va, bbox=dict(lw=0), ax=ax)
-        return quiver_out
+        return out
 
 
 def make_path(k0: ArrayLike, k1: ArrayLike, *ks: Iterable[ArrayLike], step: float = 0.1,

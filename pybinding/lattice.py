@@ -362,7 +362,7 @@ class Lattice:
         """
         if ax is None:
             ax = plt.gca()
-        pltutils.plot_vectors(self.vectors, position, scale=scale, ax=ax)
+        pltutils.plot_vectors(self.vectors, position, scale=scale, ax=ax, color="black")
 
     def _visible_sublattices(self, axes: plt_axes) -> dict:
         """Return the sublattices which are visible when viewed top-down in the `axes` plane"""
@@ -470,7 +470,7 @@ class Lattice:
         sub_center = rotate_axes(sub_center, axes)
         if vector_position is not None:
             vector_position = sub_center if vector_position == "center" else vector_position
-            pltutils.plot_vectors(vectors, vector_position, ax=ax)
+            pltutils.plot_vectors(vectors, vector_position, ax=ax, color="black")
 
         # annotate sublattice names
         for name, sub in self._visible_sublattices(axes).items():
@@ -544,8 +544,7 @@ class Lattice:
             ))
 
             if decorate:
-                pltutils.plot_vectors(self.reciprocal_vectors(), name="b",
-                                   head_width=0.05, head_length=0.12, ax=ax)
+                pltutils.plot_vectors(self.reciprocal_vectors(), name="b", ax=ax, color="black")
 
                 for vertex in vertices:
                     text = "[" + ", ".join(map(x_pi, vertex)) + "]"
