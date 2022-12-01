@@ -461,7 +461,7 @@ def arpack(model: Model, k: int, sigma: float = 0, **kwargs) -> Solver:
     return Solver(_SolverPythonImpl(eigsh, model, k=k, sigma=sigma, **kwargs))
 
 
-def dacp(model: Model, window: tuple[float, float] = (-2, 2), random_vectors: int = 100,
+def dacp(model: Model, window: Tuple[float, float] = (-2, 2), random_vectors: int = 100,
          filter_order: int = 30, tol: float = 1e-3, **kwargs)-> Solver:
     """pyDACP :class:`.Solver` implementation for DACP method matrices
 

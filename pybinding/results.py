@@ -754,7 +754,8 @@ class Bands:
     def num_bands(self) -> int:
         return self.energy.shape[1]
 
-    def plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None, **kwargs) -> None:
+    def plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None,
+             **kwargs) -> List[plt.Line2D]:
         """Line plot of the band structure
 
         Parameters
@@ -773,22 +774,23 @@ class Bands:
         kwargs = with_defaults(kwargs, color=default_color, lw=default_linewidth)
 
         k_space = self.k_path.as_1d()
-        plt.plot(k_space, self.energy, **kwargs)
+        lines_out = ax.plot(k_space, self.energy, **kwargs)
 
-        plt.xlim(k_space.min(), k_space.max())
-        plt.xlabel('k-space')
-        plt.ylabel('E (eV)')
-        pltutils.add_margin()
-        pltutils.despine(trim=True)
+        ax.set_xlim(k_space.min(), k_space.max())
+        ax.set_xlabel('k-space')
+        ax.set_ylabel('E (eV)')
+        pltutils.add_margin(ax=ax)
+        pltutils.despine(trim=True, ax=ax)
 
         point_labels = point_labels or self._point_names(self.k_path.points)
-        plt.xticks(k_space[self.k_path.point_indices], point_labels)
+        ax.set_xticks(k_space[self.k_path.point_indices], point_labels)
 
         # Draw vertical lines at significant points. Because of the `transLimits.transform`,
         # this must be the done last, after all others plot elements are positioned.
         for idx in self.k_path.point_indices:
             ymax = ax.transLimits.transform([0, max(self.energy[idx])])[1]
-            plt.axvline(k_space[idx], ymax=ymax, color="0.4", lw=0.8, ls=":", zorder=-1)
+            ax.axvline(k_space[idx], ymax=ymax, color="0.4", lw=0.8, ls=":", zorder=-1)
+        return lines_out
 
     def plot_kpath(self, point_labels: Optional[List[str]] = None, **kwargs) -> None:
         """Quiver plot of the k-path along which the bands were computed
