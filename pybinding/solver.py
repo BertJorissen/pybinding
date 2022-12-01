@@ -19,7 +19,7 @@ import numpy as np
 from scipy.sparse import csr_matrix
 from numpy.typing import ArrayLike
 from collections.abc import Iterable, Callable
-from typing import Optional, Union
+from typing import Optional, Union, Tuple
 
 from . import _cpp
 from . import results
@@ -462,7 +462,7 @@ def arpack(model: Model, k: int, sigma: float = 0, **kwargs) -> Solver:
 
 
 def dacp(model: Model, window: Tuple[float, float] = (-2, 2), random_vectors: int = 100,
-         filter_order: int = 30, tol: float = 1e-3, **kwargs)-> Solver:
+         filter_order: int = 30, tol: float = 1e-3, **kwargs) -> Solver:
     """pyDACP :class:`.Solver` implementation for DACP method matrices
 
     Some more text about DACP blablabla...

@@ -4,11 +4,13 @@ from contextlib import contextmanager, suppress
 
 import numpy as np
 from matplotlib.pyplot import Axes as plt_axes
+from matplotlib.patches import FancyArrow
 import matplotlib as mpl
 import matplotlib.style as mpl_style
 import matplotlib.pyplot as plt
 from matplotlib.spines import Spine
-from typing import Literal, Optional
+from typing import Literal, Optional, List
+from numpy.typing import ArrayLike
 
 from .utils import with_defaults
 
@@ -554,3 +556,53 @@ def use_style(style=pb_style):
     # the style shouldn't override inline backend settings
     if _is_notebook_inline_backend():
         _reset_notebook_inline_backend()
+
+
+def plot_vectors(vectors: ArrayLike, position: ArrayLike = (0, 0), name: Optional[str] = "a", scale: float = 1.0,
+                 head_width: float = 0.08, head_length: float = 0.2, arrow_width: float = 0.01,
+                 ax: Optional[plt.Axes] = None) -> FancyArrow:
+    """ Visualize vectors, alternative to plt.quiver()
+
+    Parameters
+    ----------
+    vectors : array_like
+        The length of the vectors to be drawn.
+    position : array_like
+        The origin for the vectors. If 1D, all the vectors originate from the same point. If 2D, all the vectors
+        originate from the given starting vector. Default: (0, 0)
+    name : optional[str]
+        The name to be drawn on the vector, the vectors will be labeled by "{name}_{idx}". If None, the label will not
+        be drawn. Default: "a".
+    scale : float
+        The scaling for the vectors. Default: 1 .
+    head_width : float
+        The width for the head of the arrow. Default: 0.08 .
+    head_length : float
+        The length for the arrow head. Default: 0.2 .
+    ax : optional[plt.Axes]
+        The axis to draw on. If None, ax=plt.gca(). Default: ax.
+
+    Returns
+    -------
+    matplotlib.patches.FancyArrow
+    """
+    if ax is None:
+        ax = plt.gca()
+    ax.set_aspect("equal")
+    vnorm = np.average([np.linalg.norm(v) for v in vectors]) * scale
+    out = []
+    for i, vector in enumerate(vectors):
+        v2d = np.array(vector[:2]) * scale
+        if np.allclose(v2d, [0, 0]):
+            continue  # nonzero only in z dimension, but the plot is 2D
+        pos = np.array(position if np.ndim(position) == 1 else position[i]) * scale
+        out.append(
+            ax.arrow(pos[0], pos[1], *v2d, color='black', length_includes_head=True,
+                     head_width=vnorm * head_width, head_length=vnorm * head_length, width=arrow_width * vnorm)
+        )
+        if name:
+            annotate_box(r"${}_{}$".format(name, i + 1), pos[:2] + v2d / 2,
+                         fontsize='large', bbox=dict(lw=0, alpha=0.6), ax=ax)
+    despine(trim=True, ax=ax)
+    add_margin(ax=ax)
+    return out[-1]

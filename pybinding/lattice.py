@@ -348,23 +348,6 @@ class Lattice:
         else:
             raise RuntimeError("3D Brillouin zones are not currently supported")
 
-    # TODO: move to pltutils and replace plt.quiver with this function.
-    @staticmethod
-    def _plot_vectors(vectors: ArrayLike, position: ArrayLike = (0, 0), name: str = "a", scale: float = 1.0,
-                      head_width: float = 0.08, head_length: float = 0.2, ax: Optional[plt.Axes] = None) -> None:
-        vnorm = np.average([np.linalg.norm(v) for v in vectors]) * scale
-        for i, vector in enumerate(vectors):
-            v2d = np.array(vector[:2]) * scale
-            if np.allclose(v2d, [0, 0]):
-                continue  # nonzero only in z dimension, but the plot is 2D
-
-            ax.arrow(position[0], position[1], *v2d, color='black', length_includes_head=True,
-                     head_width=vnorm * head_width, head_length=vnorm * head_length)
-            pltutils.annotate_box(r"${}_{}$".format(name, i+1), position[:2] + v2d / 2,
-                                  fontsize='large', bbox=dict(lw=0, alpha=0.6), ax=ax)
-        pltutils.despine(trim=True, ax=ax)
-        pltutils.add_margin(ax=ax)
-
     def plot_vectors(self, position: ArrayLike, scale: float = 1.0, ax: Optional[plt.Axes] = None) -> None:
         """Plot lattice vectors in the xy plane
 
@@ -379,7 +362,7 @@ class Lattice:
         """
         if ax is None:
             ax = plt.gca()
-        self._plot_vectors(self.vectors, position, scale=scale, ax=ax)
+        pltutils.plot_vectors(self.vectors, position, scale=scale, ax=ax)
 
     def _visible_sublattices(self, axes: plt_axes) -> dict:
         """Return the sublattices which are visible when viewed top-down in the `axes` plane"""
@@ -487,7 +470,7 @@ class Lattice:
         sub_center = rotate_axes(sub_center, axes)
         if vector_position is not None:
             vector_position = sub_center if vector_position == "center" else vector_position
-            self._plot_vectors(vectors, vector_position, ax=ax)
+            pltutils.plot_vectors(vectors, vector_position, ax=ax)
 
         # annotate sublattice names
         for name, sub in self._visible_sublattices(axes).items():
@@ -561,7 +544,7 @@ class Lattice:
             ))
 
             if decorate:
-                self._plot_vectors(self.reciprocal_vectors(), name="b",
+                pltutils.plot_vectors(self.reciprocal_vectors(), name="b",
                                    head_width=0.05, head_length=0.12, ax=ax)
 
                 for vertex in vertices:

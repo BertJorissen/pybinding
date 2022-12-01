@@ -2,6 +2,7 @@
 import numpy as np
 from scipy.sparse import csr_matrix
 from numpy.typing import ArrayLike
+from typing import Literal
 
 from . import _cpp
 from . import results
@@ -143,7 +144,8 @@ class Model(_cpp.Model):
         """:class:`.StructureMap` of the onsite energy"""
         return self.structure_map(np.real(self.hamiltonian.diagonal()))
 
-    def plot(self, num_periods: int = 1, lead_length: int = 6, axes: str = 'xy', **kwargs) -> None:
+    def plot(self, num_periods: int = 1, lead_length: int = 6,
+             axes: Literal['xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 'xy', **kwargs) -> None:
         """Plot the structure of the model: sites, hoppings, boundaries and leads
 
         Parameters
