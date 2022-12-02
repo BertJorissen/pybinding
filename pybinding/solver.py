@@ -169,7 +169,7 @@ class Solver:
             probability = np.sum(probability, axis=1)
         return self.system.with_data(probability)
 
-    def calc_dos(self, energies: ArrayLike, broadening:float) -> results.Series:
+    def calc_dos(self, energies: ArrayLike, broadening: float) -> results.Series:
         r"""Calculate the density of states as a function of energy
 
         .. math::

@@ -824,6 +824,10 @@ class Bands:
         pltutils.despine(trim=True, ax=ax)
 
         point_labels = point_labels or self._point_names(self.k_path.points)
+        assert len(point_labels) == len(self.k_path.point_indices),\
+            "The length of point_labels and point_indices aren't the same, len({0}) != len({1})".format(
+                point_labels, self.k_path.point_indices
+            )
         ax.set_xticks(k_space[self.k_path.point_indices], point_labels)
 
         # Draw vertical lines at significant points. Because of the `transLimits.transform`,
@@ -846,6 +850,36 @@ class Bands:
             Forwarded to :func:`~matplotlib.pyplot.quiver`.
         """
         self.k_path.plot(point_labels, **kwargs)
+
+    def dos(self, energies: Optional[ArrayLike] = None, broadening: float = 0.05) -> Series:
+        r"""Calculate the density of states as a function of energy
+
+        .. math::
+            \text{DOS}(E) = \frac{1}{c \sqrt{2\pi}}
+                            \sum_n{e^{-\frac{(E_n - E)^2}{2 c^2}}}
+
+        for each :math:`E` in `energies`, where :math:`c` is `broadening` and
+        :math:`E_n` is `eigenvalues[n]`.
+
+        Parameters
+        ----------
+        energies : array_like
+            Values for which the DOS is calculated. Default: min/max from Bands().energy, subdivided in 100 parts [ev].
+        broadening : float
+            Controls the width of the Gaussian broadening applied to the DOS. Default: 0.05 [ev].
+
+        Returns
+        -------
+        :class:`~pybinding.Series`
+        """
+        if energies is None:
+            energies = np.linspace(np.min(self.energy), np.max(self.energy), 100)
+        scale = 1 / (broadening * np.sqrt(2 * np.pi) * self.energy.shape[0])
+        dos = np.zeros(len(energies))
+        for eigenvalue in self.energy:
+            delta = eigenvalue[:, np.newaxis] - energies
+            dos += scale * np.sum(np.exp(-0.5 * delta**2 / broadening**2), axis=0)
+        return Series(energies, dos, labels=dict(variable="E (eV)", data="DOS"))
 
 
 @pickleable
