@@ -339,9 +339,9 @@ def legend(*args, reverse=False, facecolor='0.98', lw=0, ax: Optional[plt.Axes] 
         return None
 
     if not reverse or not handles:
-        ret = plt.legend(*args, **kwargs)
+        ret = ax.legend(*args, **kwargs)
     else:
-        ret = plt.legend(handles[::-1], labels[::-1], *args, **kwargs)
+        ret = ax.legend(handles[::-1], labels[::-1], *args, **kwargs)
 
     frame = ret.get_frame()
     frame.set_facecolor(facecolor)
