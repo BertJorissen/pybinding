@@ -212,22 +212,31 @@ class Series:
         """
         return self.with_data(self.data.sum(axis=1))
 
-    def plot(self, ax: Optional[plt.Axes] = None, **kwargs) -> None:
+    def plot(self, ax: Optional[plt.Axes] = None, axes: Literal['xy', 'yx'] = 'xy', **kwargs) -> None:
         """Labeled line plot
 
         Parameters
         ----------
          ax : Optional[plt.Axes]
             The Axis to plot the results on.
+        axes : Literal['xy', 'yx']
+            The order of the axes, default: 'xy'.
         **kwargs
             Forwarded to `plt.plot()`.
         """
         if ax is None:
             ax = plt.gca()
-        ax.plot(self.variable, self.data, **kwargs)
-        ax.set_xlim(self.variable.min(), self.variable.max())
-        ax.set_xlabel(self.labels["variable"])
-        ax.set_ylabel(self.labels["data"])
+        if axes == "xy":
+            ax.plot(self.variable, self.data, **kwargs)
+            ax.set_xlim(self.variable.min(), self.variable.max())
+            ax.set_xlabel(self.labels["variable"])
+            ax.set_ylabel(self.labels["data"])
+        elif axes == "yx":
+            ax.plot(self.data, self.variable, **kwargs)
+            ax.set_ylim(self.variable.min(), self.variable.max())
+            ax.set_xlabel(self.labels["data"])
+            ax.set_ylabel(self.labels["variable"])
+
         if "title" in self.labels:
             ax.set_title(self.labels["title"])
         pltutils.despine(ax=ax)
