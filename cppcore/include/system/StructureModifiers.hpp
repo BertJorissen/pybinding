@@ -104,6 +104,19 @@ template<class M> constexpr bool is_generator(M const&) { return false; }
 constexpr bool is_generator(SiteGenerator const&) { return true; }
 constexpr bool is_generator(HoppingGenerator const&) { return true; }
 
+template<class M> std::vector<SiteGenerator> get_site_generator(M const&) { return {}; }
+std::vector<SiteGenerator> get_site_generator(SiteGenerator const&);
+
+template<class M> std::vector<HoppingGenerator> get_hopping_generator(M const&) { return {}; }
+std::vector<HoppingGenerator> get_hopping_generator(HoppingGenerator const&);
+
+template<class M> std::vector<SiteStateModifier> get_site_state_modifier(M const&) { return {}; }
+std::vector<SiteStateModifier> get_site_state_modifier(SiteStateModifier const&);
+
+template<class M> std::vector<PositionModifier> get_position_modifier(M const&) { return {}; }
+std::vector<PositionModifier> get_position_modifier(PositionModifier const&);
+
+
 /**
  Polymorphic storage for system/foundation modifiers
 
@@ -122,6 +135,10 @@ public:
     friend void apply(StructureModifier const& x, System& s) { x.impl->v_apply(s); }
     friend bool requires_system(StructureModifier const& x) { return x.impl->v_requires_system(); }
     friend bool is_generator(StructureModifier const& x) { return x.impl->v_is_generator(); }
+    friend std::vector<SiteGenerator> get_site_generator(StructureModifier const& x) { return x.impl->v_get_site_generator(); }
+    friend std::vector<HoppingGenerator> get_hopping_generator(StructureModifier const& x) { return x.impl->v_get_hopping_generator(); }
+    friend std::vector<SiteStateModifier> get_site_state_modifier(StructureModifier const& x) { return x.impl->v_get_site_state_modifier(); }
+    friend std::vector<PositionModifier> get_position_modifier(StructureModifier const& x) { return x.impl->v_get_position_modifier(); }
 
 private:
     struct Interface {
@@ -137,6 +154,10 @@ private:
         virtual void v_apply(System&) const = 0;
         virtual bool v_requires_system() const = 0;
         virtual bool v_is_generator() const = 0;
+        virtual std::vector<SiteGenerator> v_get_site_generator() const = 0;
+        virtual std::vector<HoppingGenerator> v_get_hopping_generator() const = 0;
+        virtual std::vector<SiteStateModifier> v_get_site_state_modifier() const = 0;
+        virtual std::vector<PositionModifier> v_get_position_modifier() const = 0;
     };
 
     template<class T>
@@ -147,6 +168,10 @@ private:
         void v_apply(System& s) const override { apply(data, s); }
         bool v_requires_system() const override { return requires_system(data); }
         bool v_is_generator() const override { return is_generator(data); }
+        std::vector<SiteGenerator> v_get_site_generator() const override { return get_site_generator(data); }
+        std::vector<HoppingGenerator> v_get_hopping_generator() const override { return get_hopping_generator(data); }
+        std::vector<SiteStateModifier> v_get_site_state_modifier() const override { return get_site_state_modifier(data); }
+        std::vector<PositionModifier> v_get_position_modifier() const override { return get_position_modifier(data); }
 
         T data;
     };

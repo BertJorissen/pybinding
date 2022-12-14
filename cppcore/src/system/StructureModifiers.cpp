@@ -66,4 +66,9 @@ void apply(HoppingGenerator const& g, System& s) {
                             std::move(pairs.from), std::move(pairs.to));
 }
 
+std::vector<SiteStateModifier> get_site_state_modifier(SiteStateModifier const& m) { return {m}; }
+std::vector<PositionModifier> get_position_modifier(PositionModifier const& m) { return {m}; }
+std::vector<SiteGenerator> get_site_generator(SiteGenerator const& g) { return {g}; }
+std::vector<HoppingGenerator> get_hopping_generator(HoppingGenerator const& g) { return {g}; }
+
 } // namespace cpb
