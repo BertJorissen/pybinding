@@ -129,6 +129,26 @@ void build_periodic(SparseMatrixX<scalar_t>& matrix, System const& system,
             matrix.coeffRef(j, i) += num::conjugate(hopping * phase);
         });
     }
+
+    /// Add overall phase induced by exp(i k.r) within unit cell after total building of the matrix
+    ///  - get vector with the row indices
+    ///  - get vector with the col indices
+    ///  - get positions (x,y,z) for the indices of the row-index-vector
+    ///  - get positions (x,y,z) for the indices of the col-index-vector
+    ///  - get vector for distance between vectors (x,y,z)
+    ///  - get vector with phase exp(i k.r)
+    ///  - map vector back to matrix and multiply with the matrix
+
+    using constant::i1;
+    CartesianArray pos_expanded = system.expanded_positions();
+    for (int k=0; k<matrix.outerSize(); ++k)
+        for (typename SparseMatrixX<scalar_t>::InnerIterator it(matrix, k); it; ++it)
+        {
+            Cartesian pos_1 = pos_expanded[it.row()];
+            Cartesian pos_2 = pos_expanded[it.col()];
+            it.valueRef() *= num::force_cast<scalar_t>(exp(i1 * k_vector.dot(pos_1 - pos_2)));
+        }
+
 }
 
 /// Check that all the values in the matrix are finite
