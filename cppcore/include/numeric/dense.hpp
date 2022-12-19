@@ -50,7 +50,7 @@ using Eigen::MatrixXcd;
 
 // convenient type aliases, define all the positions as doubles or floats
 
-#ifdef CPB_CARTESIAN_FLAOT
+#ifdef CPB_CARTESIAN_FLOAT
 using Cartesian = Eigen::Vector3f;
 using CartesianXArray = Eigen::ArrayXf;
 using CartesianX = float;

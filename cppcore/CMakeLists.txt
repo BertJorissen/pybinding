@@ -8,7 +8,7 @@ option(PB_TESTS "Enable testing" ON)
 option(PB_NATIVE_SIMD "Enable all instruction sets supported by the local machine" ON)
 option(PB_MKL "Use Intel's Math Kernel Library" OFF)
 option(PB_CUDA "Enable compilation of components written in CUDA" OFF)
-option(PB_CARTESIAN_FLAOT "Use floats for positions" OFF)
+option(PB_CARTESIAN_FLOAT "Use floats for positions" OFF)
 
 add_library(cppcore
     include/compute/eigen3/lanczos.hpp
@@ -150,6 +150,6 @@ if(PB_TESTS)
     add_subdirectory(tests)
 endif()
 
-if(PB_CARTESIAN_FLAOT)
-    target_compile_definitions(cppcore PUBLIC CPB_CARTESIAN_FLAOT)
+if(PB_CARTESIAN_FLOAT)
+    target_compile_definitions(cppcore PUBLIC CPB_CARTESIAN_FLOAT)
 endif()

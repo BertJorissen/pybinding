@@ -46,7 +46,7 @@ class CMakeBuild(build_ext):
                        "-DPB_NATIVE_SIMD=" + os.environ.get("PB_NATIVE_SIMD", "ON"),
                        "-DPB_MKL=" + os.environ.get("PB_MKL", "OFF"),
                        "-DPB_CUDA=" + os.environ.get("PB_CUDA", "OFF"),
-                       "-DPB_CARTESIAN_FLAOT=" + os.environ.get("PB_CARTESIAN_FLAOT", "OFF")]
+                       "-DPB_CARTESIAN_FLOAT=" + os.environ.get("PB_CARTESIAN_FLOAT", "OFF")]
 
         cfg = os.environ.get("PB_BUILD_TYPE", "Release")
         build_args = ["--config", cfg]

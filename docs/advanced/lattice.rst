@@ -222,4 +222,4 @@ command in terminal::
 
 Finally, reinstall it with `float` turned on::
 
-    PB_CARTESIAN_FLAOT=ON pip3 install pybinding --no-binary pybinding
+    PB_CARTESIAN_FLOAT=ON pip3 install pybinding --no-binary pybinding
