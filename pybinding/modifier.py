@@ -19,7 +19,7 @@ from .support.alias import AliasIndex, SplitName
 from .support.deprecated import LoudDeprecationWarning
 from .utils.misc import decorator_decorator
 
-__all__ = ['constant_potential', 'force_double_precision', 'force_complex_numbers',
+__all__ = ['constant_potential', 'force_double_precision', 'force_complex_numbers', 'force_phase',
            'hopping_energy_modifier', 'hopping_generator', 'onsite_energy_modifier',
            'site_generator', 'site_position_modifier', 'site_state_modifier']
 
@@ -284,7 +284,7 @@ def site_position_modifier(*_) -> functools.partial:
 
 
 @decorator_decorator
-def onsite_energy_modifier(is_double: bool = False, **kwargs) -> functools.partial:
+def onsite_energy_modifier(is_double: bool = False, phase: bool = False, **kwargs) -> functools.partial:
     """Modify the onsite energy, e.g. to apply an electric field
 
     Parameters
@@ -292,6 +292,8 @@ def onsite_energy_modifier(is_double: bool = False, **kwargs) -> functools.parti
     is_double : bool
         Requires the model to use double precision floating point values.
         Defaults to single precision otherwise.
+    phase : bool
+        Define the phase of the reciprocal space so that the different eigenvectors have the same guage.
 
     Notes
     -----
@@ -332,12 +334,13 @@ def onsite_energy_modifier(is_double: bool = False, **kwargs) -> functools.parti
         warnings.warn("Use `is_double` parameter name instead of `double`", LoudDeprecationWarning)
         is_double = kwargs["double"]
     return functools.partial(_make_modifier, kind=_cpp.OnsiteModifier,
-                             init=dict(is_double=is_double), can_be_complex=True,
+                             init=dict(is_double=is_double, phase=phase), can_be_complex=True,
                              keywords="energy, x, y, z, sub_id")
 
 
 @decorator_decorator
-def hopping_energy_modifier(is_double: bool = False, is_complex: bool = False, **kwargs) -> functools.partial:
+def hopping_energy_modifier(is_double: bool = False, is_complex: bool = False, phase: bool = False,
+                            **kwargs) -> functools.partial:
     """Modify the hopping energy, e.g. to apply a magnetic field
 
     Parameters
@@ -351,6 +354,8 @@ def hopping_energy_modifier(is_double: bool = False, is_complex: bool = False, *
         modifier has returned complex numbers for real input. Manually setting this
         argument to `True` will speed up model build time slightly, but it's not
         necessary for correct operation.
+    phase : bool
+        Define the phase of the reciprocal space so that the different eigenvectors have the same guage.
 
     Notes
     -----
@@ -391,7 +396,7 @@ def hopping_energy_modifier(is_double: bool = False, is_complex: bool = False, *
         warnings.warn("Use `is_double` parameter name instead of `double`", LoudDeprecationWarning)
         is_double = kwargs["double"]
     return functools.partial(_make_modifier, kind=_cpp.HoppingModifier,
-                             init=dict(is_double=is_double, is_complex=is_complex),
+                             init=dict(is_double=is_double, is_complex=is_complex, phase=phase),
                              can_be_complex=True, has_sites=False,
                              keywords="energy, x1, y1, z1, x2, y2, z2, hop_id")
 
@@ -421,6 +426,14 @@ def force_double_precision() -> Callable:
 def force_complex_numbers() -> Callable:
     """Forces the model to use complex numbers even if that's not require by any modifier"""
     @hopping_energy_modifier(is_complex=True)
+    def f(energy: Union[float, complex, np.ndarray]) -> Union[float, complex, np.ndarray]:
+        return energy
+    return f
+
+
+def force_phase() -> Callable:
+    """Forces the model to add the phase so that eigenvectors have the right phase"""
+    @onsite_energy_modifier(phase=True)
     def f(energy: Union[float, complex, np.ndarray]) -> Union[float, complex, np.ndarray]:
         return energy
     return f

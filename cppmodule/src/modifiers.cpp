@@ -184,7 +184,7 @@ void wrap_modifiers(py::module& m) {
         )");
 
     py::class_<OnsiteModifier>(m, "OnsiteModifier")
-        .def(py::init([](py::object apply, bool is_complex, bool is_double) {
+        .def(py::init([](py::object apply, bool is_complex, bool is_double, bool phase) {
             return new OnsiteModifier(
                 [apply](ComplexArrayRef energy, CartesianArrayConstRef p, string_view sublattice) {
                     py::gil_scoped_acquire guard{};
@@ -193,11 +193,12 @@ void wrap_modifiers(py::module& m) {
                     );
                     num::match<ArrayX>(energy, ExtractModifierResult{result});
                 },
-                is_complex, is_double
+                is_complex, is_double, phase
             );
-        }), "apply"_a, "is_complex"_a=false, "is_double"_a=false)
+        }), "apply"_a, "is_complex"_a=false, "is_double"_a=false, "phase"_a=false)
         .def_readwrite("is_complex", &OnsiteModifier::is_complex)
         .def_readwrite("is_double", &OnsiteModifier::is_double)
+        .def_readwrite("phase", &OnsiteModifier::phase)
         .def("apply", [](OnsiteModifier const& o, VectorXcd energy, RefX x, RefX y, RefX z,
                 string_view sub_id) {
             py::gil_scoped_acquire guard{};
@@ -224,7 +225,7 @@ void wrap_modifiers(py::module& m) {
 
 
     py::class_<HoppingModifier>(m, "HoppingModifier")
-        .def(py::init([](py::object apply, bool is_complex, bool is_double) {
+        .def(py::init([](py::object apply, bool is_complex, bool is_double, bool phase) {
             return new HoppingModifier(
                 [apply](ComplexArrayRef energy, CartesianArrayConstRef p1,
                         CartesianArrayConstRef p2, string_view hopping_family) {
@@ -235,11 +236,12 @@ void wrap_modifiers(py::module& m) {
                     );
                     num::match<ArrayX>(energy, ExtractModifierResult{result});
                 },
-                is_complex, is_double
+                is_complex, is_double, phase
             );
-        }), "apply"_a, "is_complex"_a=false, "is_double"_a=false)
+        }), "apply"_a, "is_complex"_a=false, "is_double"_a=false, "phase"_a=false)
         .def_readwrite("is_complex", &HoppingModifier::is_complex)
         .def_readwrite("is_double", &HoppingModifier::is_double)
+        .def_readwrite("phase", &HoppingModifier::phase)
             .def("apply", [](HoppingModifier const& h, VectorXcd energy, RefX x1, RefX y1, RefX z1,
                              RefX x2, RefX y2, RefX z2, string_view hop_id) {
                 py::gil_scoped_acquire guard{};

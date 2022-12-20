@@ -49,6 +49,8 @@ public:
     bool is_double() const;
     /// Uses complex values in the Hamiltonian matrix?
     bool is_complex() const;
+    /// Uses complex values in the Hamiltonian matrix?
+    bool is_phase() const;
 
 public: // get parameters
     Lattice const& get_lattice() const { return lattice; }

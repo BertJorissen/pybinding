@@ -92,6 +92,10 @@ bool Model::is_double() const {
     return hamiltonian_modifiers.any_double();
 }
 
+bool Model::is_phase() const {
+    return hamiltonian_modifiers.any_phase();
+}
+
 bool Model::is_complex() const {
     return site_registry.any_complex_terms() || hopping_registry.any_complex_terms()
            || hamiltonian_modifiers.any_complex() || symmetry || complex_override;
@@ -187,9 +191,9 @@ Hamiltonian Model::make_hamiltonian() const {
     if (!is_complex()) {
         try {
             if (!is_double()) {
-                return ham::make<float>(built_system, lattice, modifiers, k, simple_build);
+                return ham::make<float>(built_system, lattice, modifiers, k, simple_build, is_phase());
             } else {
-                return ham::make<double>(built_system, lattice, modifiers, k, simple_build);
+                return ham::make<double>(built_system, lattice, modifiers, k, simple_build, is_phase());
             }
         } catch (ComplexOverride const&) {
             complex_override = true;
@@ -197,9 +201,9 @@ Hamiltonian Model::make_hamiltonian() const {
     }
 
     if (!is_double()) {
-        return ham::make<std::complex<float>>(built_system, lattice, modifiers, k, simple_build);
+        return ham::make<std::complex<float>>(built_system, lattice, modifiers, k, simple_build, is_phase());
     } else {
-        return ham::make<std::complex<double>>(built_system, lattice, modifiers, k, simple_build);
+        return ham::make<std::complex<double>>(built_system, lattice, modifiers, k, simple_build, is_phase());
     }
 }
 
