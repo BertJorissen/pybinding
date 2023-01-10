@@ -171,9 +171,9 @@ TEST_CASE("Lattice") {
 TEST_CASE("Lattice translate coordinates") {
     auto const lattice = Lattice({1, 0, 0}, {1, 1, 0});
 
-    REQUIRE(lattice.translate_coordinates({1, 0, 0}).isApprox(Vector3f(1, 0, 0)));
-    REQUIRE(lattice.translate_coordinates({1.5, 0.5, 0}).isApprox(Vector3f(1, 0.5, 0)));
-    REQUIRE(lattice.translate_coordinates({0, 0, 1}).isApprox(Vector3f(0, 0, 0)));
+    REQUIRE(lattice.translate_coordinates({1, 0, 0}).isApprox(Cartesian(1, 0, 0)));
+    REQUIRE(lattice.translate_coordinates({1.5, 0.5, 0}).isApprox(Cartesian(1, 0.5, 0)));
+    REQUIRE(lattice.translate_coordinates({0, 0, 1}).isApprox(Cartesian(0, 0, 0)));
 }
 
 TEST_CASE("Optimized unit cell") {

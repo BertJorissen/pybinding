@@ -48,10 +48,24 @@ using Eigen::MatrixXcf;
 using Eigen::MatrixXd;
 using Eigen::MatrixXcd;
 
-// convenient type aliases
+// convenient type aliases, define all the positions as doubles or floats
+
+#ifdef CPB_CARTESIAN_FLOAT
 using Cartesian = Eigen::Vector3f;
+using CartesianXArray = Eigen::ArrayXf;
+using CartesianX = float;
+#else
+using Cartesian = Eigen::Vector3d;
+using CartesianXArray = Eigen::ArrayXd;
+using CartesianX = double;
+#endif
+
+using EnergyXArray = Eigen::ArrayXd;
+using EnergyX = double;
+
 using Index3D = Eigen::Vector3i;
 using Vector3b = Eigen::Matrix<bool, 3, 1>;
+
 template<class T> using ArrayX = Eigen::Array<T, Eigen::Dynamic, 1>;
 template<class T> using ArrayXX = Eigen::Array<T, Eigen::Dynamic, Eigen::Dynamic>;
 template<class T> using VectorX = Eigen::Matrix<T, Eigen::Dynamic, 1>;
@@ -144,8 +158,8 @@ template<class Derived> inline bool none_of(const DenseBase<Derived>& v) { retur
 template<bool is_const>
 class BasicCartesianArrayRef {
 public:
-    using Reference = std14::conditional_t<!is_const, Eigen::Ref<ArrayXf>,
-                                           Eigen::Ref<ArrayXf const>>;
+    using Reference = std14::conditional_t<!is_const, Eigen::Ref<CartesianXArray>,
+                                           Eigen::Ref<CartesianXArray const>>;
 
     BasicCartesianArrayRef(Reference x, Reference y,  Reference z)
         : x_ref(x), y_ref(y), z_ref(z) {}
@@ -172,15 +186,15 @@ using CartesianArrayRef = BasicCartesianArrayRef<false>;
 class CartesianArray {
 private:
     struct CartesianRef {
-        float &x, &y, &z;
+        CartesianX &x, &y, &z;
         CartesianRef& operator=(const Cartesian& r) { x = r[0]; y = r[1]; z = r[2]; return *this; }
         operator Cartesian() { return {x, y, z}; }
     };
 
 public:
     CartesianArray() = default;
-    CartesianArray(idx_t size) : x(size), y(size), z(size) {}
-    CartesianArray(ArrayXf x, ArrayXf y, ArrayXf z)
+    explicit CartesianArray(idx_t size) : x(size), y(size), z(size) {}
+    CartesianArray(CartesianXArray x, CartesianXArray y, CartesianXArray z)
         : x(std::move(x)), y(std::move(y)), z(std::move(z)) {}
 
     CartesianRef operator[](idx_t i) { return {x[i], y[i], z[i]}; }
@@ -213,15 +227,15 @@ public:
     }
 
     void resize(idx_t size) {
-        for_each([size](ArrayX<float>& a) { a.resize(size); });
+        for_each([size](ArrayX<CartesianX>& a) { a.resize(size); });
     }
 
     void conservativeResize(idx_t size) {
-        for_each([size](ArrayX<float>& a) { a.conservativeResize(size); });
+        for_each([size](ArrayX<CartesianX>& a) { a.conservativeResize(size); });
     }
 
 public:
-    ArrayX<float> x, y, z;
+    ArrayX<CartesianX> x, y, z;
 };
 
 namespace num {

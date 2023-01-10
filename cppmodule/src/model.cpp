@@ -33,6 +33,12 @@ void wrap_model(py::module& m) {
         .def_property_readonly("get_wave_vector", &Model::get_wave_vector)
         .def("eval", &Model::eval)
         .def("report", &Model::report, "Return a string with information about the last build")
+        .def("site_state_modifiers", &Model::site_state_modifiers)
+        .def("position_modifiers", &Model::position_modifiers)
+        .def("onsite_modifiers", &Model::onsite_modifiers)
+        .def("hopping_modifiers", &Model::hopping_modifiers)
+        .def("site_generators", &Model::site_generators)
+        .def("hopping_generators", &Model::hopping_generators)
         .def_property_readonly("system_build_seconds", &Model::system_build_seconds)
         .def_property_readonly("hamiltonian_build_seconds", &Model::hamiltonian_build_seconds);
 

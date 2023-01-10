@@ -53,6 +53,7 @@ struct static_vec_caster {
 };
 
 template<> struct type_caster<Eigen::Vector3f> : static_vec_caster<Eigen::Vector3f> {};
+template<> struct type_caster<Eigen::Vector3d> : static_vec_caster<Eigen::Vector3d> {};
 template<> struct type_caster<Eigen::Vector3i> : static_vec_caster<Eigen::Vector3i> {};
 
 template<bool is_const>

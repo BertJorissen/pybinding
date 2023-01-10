@@ -130,7 +130,7 @@ void MomentMultiplication::normalize(idx_t total) {
 }
 
 struct Velocity {
-    ArrayXf const& alpha;
+    CartesianXArray const& alpha;
 
     template<class scalar_t>
     VariantCSR operator()(SparseMatrixRC<scalar_t> const& ham) const {
@@ -143,15 +143,15 @@ struct Velocity {
         for (auto row = idx_t{0}; row < size; ++row) {
             for (auto n = indptr[row]; n < indptr[row + 1]; ++n) {
                 const auto col = indices[n];
-                data[n] *= static_cast<scalar_t>(alpha[row] - alpha[col]);
+                data[n] *= static_cast<num::get_real_t<scalar_t>>(alpha[row] - alpha[col]);
             }
         }
 
-        return std::move(result);
+        return result;
     }
 };
 
-VariantCSR velocity(Hamiltonian const& hamiltonian, ArrayXf const& alpha) {
+VariantCSR velocity(Hamiltonian const& hamiltonian, CartesianXArray const& alpha) {
     return var::apply_visitor(Velocity{alpha}, hamiltonian.get_variant());
 }
 

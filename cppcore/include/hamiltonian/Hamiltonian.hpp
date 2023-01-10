@@ -118,7 +118,7 @@ void build_main(SparseMatrixX<scalar_t>& matrix, System const& system, Lattice c
 
 template<class scalar_t>
 void build_periodic(SparseMatrixX<scalar_t>& matrix, System const& system,
-                    HamiltonianModifiers const& modifiers, Cartesian k_vector) {
+                    HamiltonianModifiers const& modifiers, Cartesian k_vector, bool add_phase) {
     for (auto n = size_t{0}, size = system.boundaries.size(); n < size; ++n) {
         using constant::i1;
         auto const& d = system.boundaries[n].shift;
@@ -128,6 +128,25 @@ void build_periodic(SparseMatrixX<scalar_t>& matrix, System const& system,
             matrix.coeffRef(i, j) += hopping * phase;
             matrix.coeffRef(j, i) += num::conjugate(hopping * phase);
         });
+    }
+
+    /// Add overall phase induced by exp(i k.r) within unit cell after total building of the matrix
+    ///  - get vector with the row indices
+    ///  - get vector with the col indices
+    ///  - get positions (x,y,z) for the indices of the row-index-vector
+    ///  - get positions (x,y,z) for the indices of the col-index-vector
+    ///  - get vector for distance between vectors (x,y,z)
+    ///  - get vector with phase exp(i k.r)
+    ///  - map vector back to matrix and multiply with the matrix
+    if (add_phase) {
+        using constant::i1;
+        CartesianArray pos_expanded = system.expanded_positions();
+        for (int k = 0; k < matrix.outerSize(); ++k)
+            for (typename SparseMatrixX<scalar_t>::InnerIterator it(matrix, k); it; ++it) {
+                Cartesian pos_1 = pos_expanded[it.row()];
+                Cartesian pos_2 = pos_expanded[it.col()];
+                it.valueRef() *= num::force_cast<scalar_t>(exp(-i1 * k_vector.dot(pos_1 - pos_2)));
+            }
     }
 }
 
@@ -162,11 +181,11 @@ inline bool is(Hamiltonian const& h) {
 
 template<class scalar_t>
 Hamiltonian make(System const& system, Lattice const& lattice,
-                 HamiltonianModifiers const& modifiers, Cartesian k_vector, bool simple_build) {
+                 HamiltonianModifiers const& modifiers, Cartesian k_vector, bool simple_build, bool add_phase) {
     auto matrix = std::make_shared<SparseMatrixX<scalar_t>>();
 
     detail::build_main(*matrix, system, lattice, modifiers, simple_build);
-    detail::build_periodic(*matrix, system, modifiers, k_vector);
+    detail::build_periodic(*matrix, system, modifiers, k_vector, add_phase);
 
     matrix->makeCompressed();
     detail::throw_if_invalid(*matrix);

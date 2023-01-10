@@ -127,9 +127,9 @@ public: // utilities
      Translate Cartesian `position` into lattice vector coordinates
 
      Return vector {n1, n2, n3} which satisfies `position = n1*a1 + n2*a2 + n3*a3`,
-     where a1, a2 and a3 are lattice vectors. Note that the return vector is `float`.
+     where a1, a2 and a3 are lattice vectors. Note that the return vector is `double`.
      */
-    Vector3f translate_coordinates(Cartesian position) const;
+    Cartesian translate_coordinates(Cartesian position) const;
 
 private:
     /// Access sublattice information by name or ID

@@ -49,6 +49,8 @@ public:
     bool is_double() const;
     /// Uses complex values in the Hamiltonian matrix?
     bool is_complex() const;
+    /// Uses complex values in the Hamiltonian matrix?
+    bool is_phase() const;
 
 public: // get parameters
     Lattice const& get_lattice() const { return lattice; }
@@ -77,6 +79,48 @@ public: // get information
     std::string report();
     double system_build_seconds() const { return system_build_time.elapsed_seconds(); }
     double hamiltonian_build_seconds() const { return hamiltonian_build_time.elapsed_seconds(); }
+    std::vector<SiteStateModifier> site_state_modifiers() const {
+        std::vector<SiteStateModifier> out_vector;
+        for (auto const& modifier : structure_modifiers) {
+            std::vector<SiteStateModifier> tmp_modifier = get_site_state_modifier(modifier);
+            if (!tmp_modifier.empty()) {
+                out_vector.push_back(tmp_modifier.back());
+            }
+        }
+        return out_vector;
+    }
+    std::vector<PositionModifier> position_modifiers() const {
+        std::vector<PositionModifier> out_vector;
+        for (auto const& modifier : structure_modifiers) {
+            std::vector<PositionModifier> tmp_modifier = get_position_modifier(modifier);
+            if (!tmp_modifier.empty()) {
+                out_vector.push_back(tmp_modifier.back());
+            }
+        }
+        return out_vector;
+    }
+    std::vector<SiteGenerator> site_generators() const {
+        std::vector<SiteGenerator> out_vector;
+        for (auto const& modifier : structure_modifiers) {
+            std::vector<SiteGenerator> tmp_modifier = get_site_generator(modifier);
+            if (!tmp_modifier.empty()) {
+                out_vector.push_back(tmp_modifier.back());
+            }
+        }
+        return out_vector;
+    }
+    std::vector<HoppingGenerator> hopping_generators() const {
+        std::vector<HoppingGenerator> out_vector;
+        for (auto const& modifier : structure_modifiers) {
+            std::vector<HoppingGenerator> tmp_modifier = get_hopping_generator(modifier);
+            if (!tmp_modifier.empty()) {
+                out_vector.push_back(tmp_modifier.back());
+            }
+        }
+        return out_vector;
+    }
+    std::vector<OnsiteModifier> onsite_modifiers() const { return hamiltonian_modifiers.onsite; }
+    std::vector<HoppingModifier> hopping_modifiers() const { return hamiltonian_modifiers.hopping; }
 
 public:
     void clear_structure_modifiers() { structure_modifiers.clear(); }

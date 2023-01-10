@@ -1,5 +1,6 @@
 import os
 from .. import _cpp
+from typing import Optional
 
 _cached_info = None
 
@@ -17,7 +18,7 @@ def cpu_info():
     return _cached_info
 
 
-def physical_core_count():
+def physical_core_count() -> Optional[int]:
     """Try to return the number of physical cores
 
     An accurate number of physical cores will only be returned if the extension
@@ -36,12 +37,12 @@ def physical_core_count():
         return os.cpu_count()
 
 
-def virtual_core_count():
+def virtual_core_count() -> Optional[int]:
     """Return the number of threads the CPU can process simultaniously"""
     return os.cpu_count()
 
 
-def summary():
+def summary() -> str:
     """Return a short description of the host CPU
 
     The returned SIMD instruction set is the one that the extension module was
@@ -52,12 +53,10 @@ def summary():
         return "py-cpuinfo is not installed"
 
     info = info.copy()
-    hz_raw, scale = info['hz_advertised_raw']
-    info['ghz'] = hz_raw * 10**(scale - 9)
     info['physical'] = physical_core_count()
     info['virtual'] = virtual_core_count()
     info['simd'] = _cpp.simd_info()
-    return "{brand}\n{physical}/{virtual} cores @ {ghz:.2g} GHz with {simd}".format_map(info)
+    return "{brand_raw}\n{physical}/{virtual} cores with {simd}".format_map(info)
 
 
 if __name__ == '__main__':

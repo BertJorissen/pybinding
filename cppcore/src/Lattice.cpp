@@ -191,7 +191,7 @@ Cartesian Lattice::calc_position(Index3D index, string_view sublattice_name) con
     auto position = offset;
     // Bravais lattice position
     for (auto i = 0, size = ndim(); i < size; ++i) {
-        position += static_cast<float>(index[i]) * vectors[i];
+        position += static_cast<CartesianX>(index[i]) * vectors[i];
     }
     if (!sublattice_name.empty()) {
         position += sublattice(sublattice_name).position;
@@ -199,10 +199,10 @@ Cartesian Lattice::calc_position(Index3D index, string_view sublattice_name) con
     return position;
 }
 
-Vector3f Lattice::translate_coordinates(Cartesian position) const {
+Cartesian Lattice::translate_coordinates(Cartesian position) const {
     auto const size = ndim();
     auto const lattice_matrix = [&]{
-        auto m = ColMajorMatrixX<float>(size, size);
+        auto m = ColMajorMatrixX<CartesianX>(size, size);
         for (auto i = 0; i < size; ++i) {
             m.col(i) = vectors[i].head(size);
         }
@@ -211,7 +211,7 @@ Vector3f Lattice::translate_coordinates(Cartesian position) const {
 
     // Solve `lattice_matrix * v = p`
     auto const& p = position.head(size);
-    auto v = Vector3f(0, 0, 0);
+    auto v = Cartesian(0, 0, 0);
     v.head(size) = lattice_matrix.colPivHouseholderQr().solve(p);
     return v;
 }

@@ -35,9 +35,10 @@ public:
     Function apply; ///< to be user-implemented
     bool is_complex = false; ///< the modeled effect requires complex values
     bool is_double = false; ///< the modeled effect requires double precision
+    bool phase = false; ///< if the phase of the eigenvectors needs to be changed
 
-    OnsiteModifier(Function const& apply, bool is_complex = false, bool is_double = false)
-        : apply(apply), is_complex(is_complex), is_double(is_double) {}
+    OnsiteModifier(Function const& apply, bool is_complex = false, bool is_double = false, bool phase = false)
+        : apply(apply), is_complex(is_complex), is_double(is_double), phase(phase) {}
 
     explicit operator bool() const { return static_cast<bool>(apply); }
 };
@@ -52,9 +53,10 @@ public:
     Function apply; ///< to be user-implemented
     bool is_complex = false; ///< the modeled effect requires complex values
     bool is_double = false; ///< the modeled effect requires double precision
+    bool phase = false; ///< if the phase of the eigenvectors needs to be changed
 
-    HoppingModifier(Function const& apply, bool is_complex = false, bool is_double = false)
-        : apply(apply), is_complex(is_complex), is_double(is_double) {}
+    HoppingModifier(Function const& apply, bool is_complex = false, bool is_double = false, bool phase = false)
+        : apply(apply), is_complex(is_complex), is_double(is_double), phase(phase) {}
 
     explicit operator bool() const { return static_cast<bool>(apply); }
 };
@@ -71,6 +73,9 @@ struct HamiltonianModifiers {
 
     /// Do any of the modifiers require double precision?
     bool any_double() const;
+
+    /// Do any of the modifiers require the right phase?
+    bool any_phase() const;
 
     /// Remove all modifiers
     void clear();
@@ -269,7 +274,7 @@ void HamiltonianModifiers::apply_to_hoppings_impl(System const& system,
         auto const index_translator = IndexTranslator(system, hopping_energy);
 
         auto buffer = HoppingBuffer<scalar_t>(hopping_energy, block.size());
-        for (auto const coo_slice : sliced(block.coordinates(), buffer.size)) {
+        for (auto const& coo_slice : sliced(block.coordinates(), buffer.size)) {
             auto size = idx_t{0};
             for (auto const& coo : coo_slice) {
                 buffer.pos1[size] = system.positions[coo.row];

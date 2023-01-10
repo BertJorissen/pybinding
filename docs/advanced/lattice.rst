@@ -210,3 +210,16 @@ of the coordinate system. The :meth:`.Lattice.with_offset` makes it easy to posi
 as needed. Note that the given offset must be within half the length of a primitive lattice vector
 (positive or negative). Beyond that length the lattice repeats periodically, so it doesn't make
 sense to shift it any father.
+
+
+Position data types
+-------------------
+By default, the data types for the positions are given in `double`. If you want to change this to `float`,
+remove any existing pybinding installation by executing the following
+command in terminal::
+
+    pip3 uninstall pybinding
+
+Finally, reinstall it with `float` turned on::
+
+    PB_CARTESIAN_FLOAT=ON pip3 install pybinding --no-binary pybinding

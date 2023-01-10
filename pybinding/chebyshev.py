@@ -6,7 +6,9 @@ in a series of Chebyshev polynomials.
 import warnings
 
 import numpy as np
-import scipy
+from numpy.typing import ArrayLike
+from scipy.sparse import csr_matrix, eye
+from typing import Literal, Optional, Union
 
 from . import _cpp
 from . import results
@@ -18,6 +20,7 @@ from .support.deprecated import LoudDeprecationWarning
 __all__ = ['KPM', 'kpm', 'kpm_cuda', 'SpatialLDOS',
            'jackson_kernel', 'lorentz_kernel', 'dirichlet_kernel']
 
+KernelType = Union[_cpp.KPMKernel, Literal["default"]]
 
 class SpatialLDOS:
     """Holds the results of :meth:`KPM.calc_spatial_ldos`
@@ -25,12 +28,12 @@ class SpatialLDOS:
     It behaves like a product of a :class:`.Series` and a :class:`.StructureMap`.
     """
 
-    def __init__(self, data, energy, structure):
+    def __init__(self, data: np.ndarray, energy: np.ndarray, structure: results.Structure):
         self.data = data
         self.energy = energy
         self.structure = structure
 
-    def structure_map(self, energy):
+    def structure_map(self, energy: float) -> results.StructureMap:
         """Return a :class:`.StructureMap` of the spatial LDOS at the given energy
 
         Parameters
@@ -45,7 +48,7 @@ class SpatialLDOS:
         idx = np.argmin(abs(self.energy - energy))
         return self.structure.with_data(self.data[idx])
 
-    def ldos(self, position, sublattice=""):
+    def ldos(self, position: ArrayLike, sublattice: str = "") -> results.Series:
         """Return the LDOS as a function of energy at a specific position
 
         Parameters
@@ -71,7 +74,7 @@ class KPM:
     All implementations are based on: https://doi.org/10.1103/RevModPhys.78.275
     """
 
-    def __init__(self, impl):
+    def __init__(self, impl: Union[_cpp.kpm]):
         if isinstance(impl, Model):
             raise TypeError("You're probably looking for `pb.kpm()` (lowercase).")
         self.impl = impl
@@ -82,7 +85,7 @@ class KPM:
         return self.impl.model
 
     @model.setter
-    def model(self, model):
+    def model(self, model: Model):
         self.impl.model = model
 
     @property
@@ -91,16 +94,16 @@ class KPM:
         return System(self.impl.system, self.model.lattice)
 
     @property
-    def scaling_factors(self) -> tuple:
+    def scaling_factors(self) -> tuple[float, float]:
         """A tuple of KPM scaling factors `a` and `b`"""
         return self.impl.scaling_factors
 
     @property
-    def kernel(self):
+    def kernel(self) -> _cpp.KPMKernel:
         """The damping kernel"""
         return self.impl.kernel
 
-    def report(self, shortform=False):
+    def report(self, shortform: bool = False) -> str:
         """Return a report of the last computation
 
         Parameters
@@ -110,11 +113,12 @@ class KPM:
         """
         return self.impl.report(shortform)
 
-    def __call__(self, *args, **kwargs):
+    def __call__(self, *args, **kwargs) -> np.ndarray:
         warnings.warn("Use .calc_greens() instead", LoudDeprecationWarning)
         return self.calc_greens(*args, **kwargs)
 
-    def moments(self, num_moments, alpha, beta=None, op=None):
+    def moments(self, num_moments: int, alpha: ArrayLike, beta: Optional[ArrayLike] = None,
+                op: Optional[csr_matrix] = None) -> np.ndarray:
         r"""Calculate KPM moments in the form of expectation values
 
         The result is an array of moments where each value is equal to:
@@ -148,7 +152,7 @@ class KPM:
             op = op.tocsr()
         return self.impl.moments(num_moments, alpha, beta, op)
 
-    def calc_greens(self, i, j, energy, broadening):
+    def calc_greens(self, i: int, j: int, energy: np.ndarray, broadening: float) -> np.ndarray:
         """Calculate Green's function of a single Hamiltonian element
 
         Parameters
@@ -170,7 +174,8 @@ class KPM:
         """
         return self.impl.calc_greens(i, j, energy, broadening)
 
-    def calc_ldos(self, energy, broadening, position, sublattice="", reduce=True):
+    def calc_ldos(self, energy: np.ndarray, broadening: float, position: ArrayLike, sublattice: str = "",
+                  reduce: bool = True) -> results.Series:
         """Calculate the local density of states as a function of energy
 
         Parameters
@@ -189,7 +194,7 @@ class KPM:
             The default value considers any sublattice.
         reduce : bool
             This option is only relevant for multi-orbital models. If true, the
-            resulting LDOS will summed over all the orbitals at the target site
+            resulting LDOS will be summed over all the orbitals at the target site
             and the result will be a 1D array. If false, the individual orbital
             results will be preserved and the result will be a 2D array with
             `shape == (energy.size, num_orbitals)`.
@@ -202,7 +207,8 @@ class KPM:
         return results.Series(energy, ldos.squeeze(), labels=dict(variable="E (eV)", data="LDOS",
                                                                   columns="orbitals"))
 
-    def calc_spatial_ldos(self, energy, broadening, shape, sublattice=""):
+    def calc_spatial_ldos(self, energy: np.ndarray, broadening: float, shape: tuple,
+                          sublattice: str = "") -> SpatialLDOS:
         """Calculate the LDOS as a function of energy and space (in the area of the given shape)
 
         Parameters
@@ -228,7 +234,7 @@ class KPM:
             smap = smap[smap.sub == sublattice]
         return SpatialLDOS(ldos, energy, smap)
 
-    def calc_dos(self, energy, broadening, num_random=1):
+    def calc_dos(self, energy: np.ndarray, broadening: float, num_random: int = 1) -> results.Series:
         """Calculate the density of states as a function of energy
 
         Parameters
@@ -252,7 +258,8 @@ class KPM:
         dos = self.impl.calc_dos(energy, broadening, num_random)
         return results.Series(energy, dos, labels=dict(variable="E (eV)", data="DOS"))
 
-    def deferred_ldos(self, energy, broadening, position, sublattice=""):
+    def deferred_ldos(self, energy: np.ndarray, broadening: float, position: ArrayLike,
+                      sublattice: str = "") -> _cpp.DeferredXd:
         """Same as :meth:`calc_ldos` but for parallel computation: see the :mod:`.parallel` module
 
         Parameters
@@ -272,12 +279,12 @@ class KPM:
 
         Returns
         -------
-        Deferred
         """
         return self.impl.deferred_ldos(energy, broadening, position, sublattice)
 
-    def calc_conductivity(self, chemical_potential, broadening, temperature,
-                          direction="xx", volume=1.0, num_random=1, num_points=1000):
+    def calc_conductivity(self, chemical_potential: ArrayLike, broadening: float, temperature: float,
+                          direction: Literal['xx', 'xy', 'xz', 'yx', 'yy', 'yz', 'zx', 'zy', 'zz'] = "xx",
+                          volume: float = 1.0, num_random: int = 1, num_points: int = 1000) -> results.Series:
         """Calculate Kubo-Bastin electrical conductivity as a function of chemical potential
 
         The return value is in units of the conductance quantum (e^2 / hbar) not taking into
@@ -316,10 +323,11 @@ class KPM:
         if volume != 1.0:
             data /= volume
         return results.Series(chemical_potential, data,
-                              labels=dict(variable=r"$\mu$ (eV)", data="$\sigma (e^2/h)$"))
+                              labels=dict(variable=r"$\mu$ (eV)", data=r"$\sigma (e^2/h)$"))
 
 
 class _ComputeProgressReporter:
+    # TODO: add typing
     def __init__(self):
         from .utils.progressbar import ProgressBar
         self.pbar = ProgressBar(0)
@@ -338,7 +346,9 @@ class _ComputeProgressReporter:
             self.pbar += delta
 
 
-def kpm(model, energy_range=None, kernel="default", num_threads="auto", silent=False, **kwargs):
+def kpm(model: Model, energy_range: Optional[tuple[float, float]] = None,
+        kernel: KernelType = "default",
+        num_threads: Union[int, Literal["auto"]] = "auto", silent: bool = False, **kwargs) -> KPM:
     """The default CPU implementation of the Kernel Polynomial Method
 
     This implementation works on any system and is well optimized.
@@ -380,7 +390,8 @@ def kpm(model, energy_range=None, kernel="default", num_threads="auto", silent=F
     return KPM(_cpp.kpm(model, energy_range or (0, 0), **kwargs))
 
 
-def kpm_cuda(model, energy_range=None, kernel="default", **kwargs):
+def kpm_cuda(model: Model, energy_range: Optional[tuple[float, float]] = None,
+             kernel: KernelType = "default", **kwargs) -> KPM:
     """Same as :func:`kpm` except that it's executed on the GPU using CUDA (if supported)
 
     See :func:`kpm` for detailed parameter documentation.
@@ -406,7 +417,7 @@ def kpm_cuda(model, energy_range=None, kernel="default", **kwargs):
                         "Use a different KPM implementation or recompile the module with CUDA.")
 
 
-def jackson_kernel():
+def jackson_kernel() -> _cpp.KPMKernel:
     """The Jackson kernel -- a good general-purpose kernel, appropriate for most applications
 
     Imposes Gaussian broadening `sigma = pi / N` where `N` is the number of moments. The
@@ -417,7 +428,7 @@ def jackson_kernel():
     return _cpp.jackson_kernel()
 
 
-def lorentz_kernel(lambda_value=4.0):
+def lorentz_kernel(lambda_value: float = 4.0) -> _cpp.KPMKernel:
     """The Lorentz kernel -- best for Green's function
 
     This kernel is most appropriate for the expansion of the Green’s function because it most
@@ -434,7 +445,7 @@ def lorentz_kernel(lambda_value=4.0):
     return _cpp.lorentz_kernel(lambda_value)
 
 
-def dirichlet_kernel():
+def dirichlet_kernel() -> _cpp.KPMKernel:
     """The Dirichlet kernel -- returns raw moments, least favorable choice
 
     This kernel doesn't modify the moments at all. The resulting moments represent just
@@ -447,10 +458,18 @@ def dirichlet_kernel():
     return _cpp.dirichlet_kernel()
 
 
+class AttrDict(dict):
+    """Allows dict items to be retrieved as attributes: d["item"] == d.item"""
+    # TODO: move to utils
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__dict__ = self
+
+
 class _PythonImpl:
     """Basic Python/SciPy implementation of KPM"""
 
-    def __init__(self, model, energy_range, kernel, **_):
+    def __init__(self, model: Model, energy_range: tuple[float, float], kernel: _cpp.KPMKernel, **_):
         self.model = model
         self.energy_range = energy_range
         self.kernel = kernel
@@ -458,19 +477,13 @@ class _PythonImpl:
         self._stats = {}
 
     @property
-    def stats(self):
-        class AttrDict(dict):
-            """Allows dict items to be retrieved as attributes: d["item"] == d.item"""
-            def __init__(self, *args, **kwargs):
-                super().__init__(*args, **kwargs)
-                self.__dict__ = self
-
+    def stats(self) -> AttrDict:
         s = AttrDict(self._stats)
         s.update({k: v.elapsed for k, v in s.items() if "_time" in k})
         s["eps"] = s["nnz"] / s["moments_time"]
         return s
 
-    def _scaling_factors(self):
+    def _scaling_factors(self) -> tuple[float, float]:
         """Compute the energy bounds of the model and return the appropriate KPM scaling factors"""
         def find_bounds():
             if self.energy_range[0] != self.energy_range[1]:
@@ -492,12 +505,12 @@ class _PythonImpl:
         b = 0.5 * (emax + emin)
         return a, b
 
-    def _rescale_hamiltonian(self, h, a, b):
+    def _rescale_hamiltonian(self, h: csr_matrix, a: float, b: float) -> csr_matrix:
         size = h.shape[0]
         with timed() as self._stats["rescale_time"]:
-            return (h - b * scipy.sparse.eye(size)) * (2 / a)
+            return (h - b * eye(size)) * (2 / a)
 
-    def _compute_diagonal_moments(self, num_moments, starter, h2):
+    def _compute_diagonal_moments(self, num_moments: int, starter: np.ndarray, h2: csr_matrix) -> np.ndarray:
         """Procedure for computing KPM moments when the two vectors are identical"""
         r0 = starter.copy()
         r1 = h2.dot(r0) * 0.5
@@ -516,18 +529,18 @@ class _PythonImpl:
         self._stats["nnz"] = h2.nnz * num_moments / 2
         self._stats["vector_memory"] = r0.nbytes + r1.nbytes
         self._stats["matrix_memory"] = (h2.data.nbytes + h2.indices.nbytes + h2.indptr.nbytes
-                                        if isinstance(h2, scipy.sparse.csr_matrix) else 0)
+                                        if isinstance(h2, csr_matrix) else 0)
         return moments
 
     @staticmethod
-    def _exval_starter(h2, index):
+    def _exval_starter(h2: csr_matrix, index: int) -> np.ndarray:
         """Initial vector for the expectation value procedure"""
         r0 = np.zeros(h2.shape[0], dtype=h2.dtype)
         r0[index] = 1
         return r0
 
     @staticmethod
-    def _reconstruct_real(moments, energy, a, b):
+    def _reconstruct_real(moments: np.ndarray, energy: np.ndarray, a: float, b: float) -> np.ndarray:
         """Reconstruct a real function from KPM moments"""
         scaled_energy = (energy - b) / a
         ns = np.arange(moments.size)
@@ -535,7 +548,7 @@ class _PythonImpl:
         return np.array([k / np.sqrt(1 - w**2) * np.sum(moments.real * np.cos(ns * np.arccos(w)))
                          for w in scaled_energy])
 
-    def _ldos(self, index, energy, broadening):
+    def _ldos(self, index: int, energy: np.ndarray, broadening: float) -> np.ndarray:
         """Calculate the LDOS at the given Hamiltonian index"""
         a, b = self._scaling_factors()
         num_moments = self.kernel.required_num_moments(broadening / a)
@@ -549,7 +562,8 @@ class _PythonImpl:
             moments *= self.kernel.damping_coefficients(num_moments)
             return self._reconstruct_real(moments, energy, a, b)
 
-    def calc_ldos(self, energy, broadening, position, sublattice="", reduce=True):
+    def calc_ldos(self, energy: np.ndarray, broadening: float, position: ArrayLike, sublattice: str = "",
+                  reduce: bool = True) -> np.ndarray:
         """Calculate the LDOS at the given position/sublattice"""
         with timed() as self._stats["total_time"]:
             system_index = self.model.system.find_nearest(position, sublattice)
@@ -560,7 +574,7 @@ class _PythonImpl:
             else:
                 return result_data
 
-    def report(self, *_):
+    def report(self, *_) -> str:
         from .utils import with_suffix, pretty_duration
 
         stats = self.stats.copy()
@@ -577,7 +591,8 @@ class _PythonImpl:
         return fmt.format_map(stats)
 
 
-def _kpm_python(model, energy_range=None, kernel="default", **kwargs):
+def _kpm_python(model: Model, energy_range: Optional[np.ndarray] = None,
+                kernel: KernelType = "default", **kwargs) -> KPM:
     """Basic Python/SciPy implementation of KPM"""
     if kernel == "default":
         kernel = jackson_kernel()

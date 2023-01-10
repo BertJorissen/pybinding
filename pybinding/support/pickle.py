@@ -4,12 +4,14 @@ import os
 import pathlib
 import pickle
 
+from pathlib import Path
 from ..utils import decorator_decorator
+from typing import Union
 
 __all__ = ['pickleable', 'save', 'load']
 
 
-def _normalize(file):
+def _normalize(file: Union[str, Path]) -> str:
     """Convenience function to support path objects."""
     if 'Path' in type(file).__name__:
         return str(file)
@@ -17,7 +19,7 @@ def _normalize(file):
         return file
 
 
-def _add_extension(file):
+def _add_extension(file: Union[str, Path]) -> Union[str, Path]:
     """Append '.pbz' if the file has no extension
     
     Examples
@@ -37,7 +39,7 @@ def _add_extension(file):
         return file
 
 
-def save(obj, file):
+def save(obj, file: Union[str, Path]) -> None:
     """Save an object to a compressed file
 
     Essentially, this is just a wrapper for :func:`pickle.dump()` with a few conveniences,
@@ -56,7 +58,7 @@ def save(obj, file):
         pickle.dump(obj, f, protocol=4)
 
 
-def load(file):
+def load(file: Union[str, Path]):
     """Load an object from a compressed file
 
     Wraps :func:`pickle.load()` with the same conveniences as :func:`pb.save() <save>`.
@@ -76,7 +78,7 @@ def load(file):
 
 
 @decorator_decorator
-def pickleable(props="", version: int=0):
+def pickleable(props: str = "", version: int = 0) -> callable:
     props = props.split()
 
     def getstate(self):

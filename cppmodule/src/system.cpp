@@ -25,7 +25,7 @@ void wrap_system(py::module& m) {
         .def(py::pickle([](CartesianArray const& a) {
             return py::make_tuple(arrayref(a.x), arrayref(a.y), arrayref(a.z));
         }, [](py::tuple t) {
-            using T = ArrayXf;
+            using T = CartesianXArray;
             return new CartesianArray(t[0].cast<T>(), t[1].cast<T>(), t[2].cast<T>());
         }));
 

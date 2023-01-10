@@ -3,8 +3,8 @@
 namespace cpb { namespace compute {
 
 struct CalcDOS {
-    ArrayXf const& target_energies;
-    float broadening;
+    EnergyXArray const& target_energies;
+    EnergyX broadening;
 
     template<class Array>
     ArrayXd operator()(Array En) {
@@ -22,17 +22,17 @@ struct CalcDOS {
 };
 
 struct CalcSpatialLDOS {
-    float target_energy;
-    float broadening;
+    EnergyX target_energy;
+    EnergyX broadening;
 
     template<class Array1D, class Array2D>
-    ArrayXd operator()(Array1D En, Array2D psi) {
+    EnergyXArray operator()(Array1D En, Array2D psi) {
         using scalar_t = typename Array1D::Scalar;
         auto const scale = 1 / (broadening * sqrt(2 * constant::pi));
         auto const constant = -0.5f / pow(broadening, 2);
 
         // DOS(r) = 1 / (b * sqrt(2pi)) * sum(|psi(r)|^2 * exp(-0.5 * (En-E)^2 / b^2))
-        ArrayXd ldos(psi.rows());
+        EnergyXArray ldos(psi.rows());
         for (auto i = 0; i < ldos.size(); ++i) {
             ArrayX<scalar_t> psi2 = psi.row(i).abs2();
             auto gaussian = exp((En - target_energy).square() * constant);
@@ -85,11 +85,11 @@ ComplexArrayConstRef BaseSolver::eigenvectors() {
     return strategy->eigenvectors();
 }
 
-ArrayXd BaseSolver::calc_dos(ArrayXf target_energies, float broadening) {
+ArrayXd BaseSolver::calc_dos(EnergyXArray target_energies, EnergyX broadening) {
     return num::match<ArrayX>(eigenvalues(), compute::CalcDOS{target_energies, broadening});
 }
 
-ArrayXd BaseSolver::calc_spatial_ldos(float target_energy, float broadening) {
+ArrayXd BaseSolver::calc_spatial_ldos(EnergyX target_energy, EnergyX broadening) {
     return num::match2sp<ArrayX, ColMajorArrayXX>(
         eigenvalues(), eigenvectors(),
         compute::CalcSpatialLDOS{target_energy, broadening}

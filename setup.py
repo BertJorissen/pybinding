@@ -45,7 +45,8 @@ class CMakeBuild(build_ext):
                        "-DPB_TESTS=" + os.environ.get("PB_TESTS", "OFF"),
                        "-DPB_NATIVE_SIMD=" + os.environ.get("PB_NATIVE_SIMD", "ON"),
                        "-DPB_MKL=" + os.environ.get("PB_MKL", "OFF"),
-                       "-DPB_CUDA=" + os.environ.get("PB_CUDA", "OFF")]
+                       "-DPB_CUDA=" + os.environ.get("PB_CUDA", "OFF"),
+                       "-DPB_CARTESIAN_FLOAT=" + os.environ.get("PB_CARTESIAN_FLOAT", "OFF")]
 
         cfg = os.environ.get("PB_BUILD_TYPE", "Release")
         build_args = ["--config", cfg]
@@ -127,7 +128,7 @@ setup(
     package_dir={'pybinding.tests': 'tests'},
     include_package_data=True,
     ext_modules=[CMakeExtension('_pybinding')],
-    install_requires=['numpy>=1.12', 'scipy>=0.19', 'matplotlib>=2.0', 'pytest>=5.0'],
+    install_requires=['numpy>=1.12', 'scipy>=0.19', 'matplotlib>=2.0', 'pytest>=5.0', 'dacp @ git+https://gitlab.kwant-project.org/qt/pyDACP.git#egg=dacp-0.1', 'tqdm>=4.60'],
     zip_safe=False,
     cmdclass=dict(build_ext=CMakeBuild)
 )

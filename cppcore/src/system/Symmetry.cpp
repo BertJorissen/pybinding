@@ -3,7 +3,7 @@
 
 namespace cpb {
 
-TranslationalSymmetry::TranslationalSymmetry(float a1, float a2, float a3)
+TranslationalSymmetry::TranslationalSymmetry(CartesianX a1, CartesianX a2, CartesianX a3)
     : length(a1, a2, a3), enabled_directions(a1 >= 0, a2 >= 0, a3 >= 0) {}
 
 bool SymmetryArea::contains(Index3D const& index) const {

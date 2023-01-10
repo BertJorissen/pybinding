@@ -116,7 +116,7 @@ std::vector<ArrayXcd> Core::greens_vector(idx_t row, std::vector<idx_t> const& c
     }
 }
 
-ArrayXcd Core::conductivity(ArrayXf const& left_coords, ArrayXf const& right_coords,
+ArrayXcd Core::conductivity(CartesianXArray const& left_coords, CartesianXArray const& right_coords,
                             ArrayXd const& chemical_potential, double broadening,
                             double temperature, idx_t num_random, idx_t num_points) {
     auto const scale = bounds.scaling_factors();

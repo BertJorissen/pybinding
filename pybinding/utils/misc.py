@@ -1,6 +1,9 @@
 import os
 from functools import wraps
 from contextlib import contextmanager
+from typing import Callable, Any
+from pathlib import Path
+from typing import Union, Optional
 
 import numpy as np
 
@@ -21,7 +24,7 @@ def to_list(o):
         return [o] if o is not None else []
 
 
-def with_defaults(options: dict, defaults_dict: dict=None, **defaults_kwargs):
+def with_defaults(options: dict, defaults_dict: Optional[dict] = None, **defaults_kwargs) -> dict:
     """Return a dict where missing keys are filled in by defaults
 
     >>> options = dict(hello=0)
@@ -39,7 +42,7 @@ def with_defaults(options: dict, defaults_dict: dict=None, **defaults_kwargs):
     return dict(defaults_kwargs, **options)
 
 
-def x_pi(value):
+def x_pi(value: float) -> str:
     """Return str of value in 'multiples of pi' latex representation
 
     >>> x_pi(6.28) == r"2$\pi$"
@@ -60,7 +63,7 @@ def x_pi(value):
         return r"{:.2g}$\pi$".format(n)
 
 
-def decorator_decorator(decorator_wrapper):
+def decorator_decorator(decorator_wrapper) -> Callable[[Any], Callable]:
     """A decorator decorator which allows it to be used with or without arguments
 
     Parameters
@@ -107,7 +110,7 @@ def decorator_decorator(decorator_wrapper):
 
 
 @contextmanager
-def cd(directory):
+def cd(directory: Union[str, Path]):
     """Change directory within this context
 
     Parameters
@@ -122,7 +125,7 @@ def cd(directory):
         os.chdir(previous_dir)
 
 
-def with_suffix(number, base=1000):
+def with_suffix(number: float, base=1000) -> str:
     """Convert number to string with SI suffix, e.g.: 14226 -> 14.2k, 5395984 -> 5.39M"""
     mapping = {base**3: "G", base**2: "M", base: "k"}
     for bucket, suffix in mapping.items():

@@ -125,7 +125,7 @@ Lattice monolayer() {
 
 namespace shape {
 
-Shape rectangle(float x, float y) {
+Shape rectangle(CartesianX x, CartesianX y) {
     auto const x0 = x / 2;
     auto const y0 = y / 2;
     return Polygon({{x0, y0, 0}, {x0, -y0, 0}, {-x0, -y0, 0}, {-x0, y0, 0}});
@@ -137,7 +137,7 @@ namespace field {
 
 namespace {
     struct OnsiteEnergyOp {
-        float value;
+        CartesianX value;
 
         template<class Array>
         void operator()(Array energy) const {
@@ -147,7 +147,7 @@ namespace {
     };
 }
 
-cpb::OnsiteModifier constant_potential(float value) {
+cpb::OnsiteModifier constant_potential(CartesianX value) {
     return {[value](ComplexArrayRef energy, CartesianArrayConstRef, string_view) {
         num::match<ArrayX>(energy, OnsiteEnergyOp{value});
     }};
@@ -155,7 +155,7 @@ cpb::OnsiteModifier constant_potential(float value) {
 
 namespace {
     struct MagneticFieldOp {
-        float magnitude;
+        CartesianX magnitude;
         CartesianArrayConstRef pos1;
         CartesianArrayConstRef pos2;
 
@@ -175,17 +175,17 @@ namespace {
     };
 }
 
-cpb::HoppingModifier constant_magnetic_field(float value) {
+cpb::HoppingModifier constant_magnetic_field(CartesianX value) {
     return {[value](ComplexArrayRef energy, CartesianArrayConstRef pos1,
                     CartesianArrayConstRef pos2, string_view) {
         num::match<ArrayX>(energy, MagneticFieldOp{value, pos1, pos2});
-    }, /*is_complex*/true, /*is_double*/false};
+    }, /*is_complex*/true, /*is_double*/false, /*phase*/false};
 }
 
 namespace {
     struct LinearOnsite {
-        float k;
-        Eigen::Ref<ArrayXf const> x;
+        CartesianX k;
+        CartesianXArray x;
 
         template<class Array>
         void operator()(Array energy) const {
@@ -195,16 +195,16 @@ namespace {
     };
 }
 
-cpb::OnsiteModifier linear_onsite(float k) {
+cpb::OnsiteModifier linear_onsite(CartesianX k) {
     return {[k](ComplexArrayRef energy, CartesianArrayConstRef pos, string_view) {
         num::match<ArrayX>(energy, LinearOnsite{k, pos.x()});
-    }};
+    }, /*is_complex*/false, /*is_double*/false, /*phase*/false};
 }
 
 namespace {
     struct LinearHopping {
-        float k;
-        ArrayXf x;
+        CartesianX k;
+        CartesianXArray x;
 
         template<class Array>
         void operator()(Array energy) const {
@@ -214,21 +214,21 @@ namespace {
     };
 }
 
-cpb::HoppingModifier linear_hopping(float k) {
+cpb::HoppingModifier linear_hopping(CartesianX k) {
     return {[k](ComplexArrayRef energy, CartesianArrayConstRef pos1,
                 CartesianArrayConstRef pos2, string_view) {
         num::match<ArrayX>(energy, LinearHopping{k, 0.5f * (pos1.x() + pos2.x())});
-    }, /*is_complex*/false, /*is_double*/false};
+    }, /*is_complex*/false, /*is_double*/false, /*phase*/false};
 }
 
 cpb::HoppingModifier force_double_precision() {
     auto nop = [](ComplexArrayRef, CartesianArrayConstRef, CartesianArrayConstRef, string_view) {};
-    return cpb::HoppingModifier(nop, /*is_complex*/false, /*is_double*/true);
+    return cpb::HoppingModifier(nop, /*is_complex*/false, /*is_double*/true, /*phase*/false);
 }
 
 cpb::HoppingModifier force_complex_numbers() {
     auto nop = [](ComplexArrayRef, CartesianArrayConstRef, CartesianArrayConstRef, string_view) {};
-    return cpb::HoppingModifier(nop, /*is_complex*/true, /*is_double*/false);
+    return cpb::HoppingModifier(nop, /*is_complex*/true, /*is_double*/false, /*phase*/false);
 }
 
 } // namespace field
@@ -237,7 +237,7 @@ cpb::HoppingModifier force_complex_numbers() {
 namespace generator {
 
 cpb::HoppingGenerator do_nothing_hopping(std::string const& name) {
-    return {name, 0.0, [](System const&) {
+    return {name, 0.0f, [](System const&) {
         return HoppingGenerator::Result{ArrayXi{}, ArrayXi{}};
     }};
 }

@@ -6,7 +6,7 @@ but great for examples and testing.
 import pybinding as pb
 
 
-def chain_lattice(a=1, t=-1, v=0):
+def chain_lattice(a: float = 1, t: float = -1, v: float = 0) -> pb.Lattice:
     """1D lattice
 
     Parameters
@@ -24,7 +24,7 @@ def chain_lattice(a=1, t=-1, v=0):
     return lat
 
 
-def square_lattice(d=0.2, t=-1):
+def square_lattice(d: float = 0.2, t: float = -1) -> pb.Lattice:
     """A simple square lattice
 
     Parameters

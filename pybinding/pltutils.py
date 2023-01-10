@@ -3,9 +3,14 @@ import warnings
 from contextlib import contextmanager, suppress
 
 import numpy as np
+from matplotlib.pyplot import Axes as plt_axes
+from matplotlib.patches import FancyArrow
 import matplotlib as mpl
 import matplotlib.style as mpl_style
 import matplotlib.pyplot as plt
+from matplotlib.spines import Spine
+from typing import Literal, Optional, List
+from numpy.typing import ArrayLike
 
 from .utils import with_defaults
 
@@ -13,7 +18,7 @@ __all__ = ['cm2inch', 'colorbar', 'despine', 'despine_all', 'get_palette', 'lege
            'set_palette', 'use_style']
 
 
-def _set_smart_bounds(spine, value):
+def _set_smart_bounds(spine: Spine, value: bool):
     """Hold on to the deprecated `set_smart_bounds()` for a little while longer
 
     `set_smart_bounds()` was deprecated in matplotlib 3.2 and will be removed in the future.
@@ -21,6 +26,7 @@ def _set_smart_bounds(spine, value):
     there) without any deprecation warnings. And when it is removed, suppress `AttributeError`
     to make it a no-op. It's purely aesthetic change to the plots, but it's nice to keep it
     while it's there.
+    TODO: remove this; it's not there anymore
     """
     with warnings.catch_warnings(), suppress(AttributeError):
         warnings.simplefilter("ignore", mpl.MatplotlibDeprecationWarning)
@@ -28,7 +34,7 @@ def _set_smart_bounds(spine, value):
 
 
 @contextmanager
-def axes(ax):
+def axes(ax: plt_axes) -> None:
     """A context manager that sets the active Axes instance to `ax`
 
     Parameters
@@ -53,7 +59,7 @@ def axes(ax):
 
 
 @contextmanager
-def backend(new_backend):
+def backend(new_backend: str) -> None:
     """Change the backend within this context
 
     Parameters
@@ -69,15 +75,18 @@ def backend(new_backend):
         plt.switch_backend(old_backend)
 
 
-def despine(trim=False):
+def despine(trim: bool = False, ax: Optional[plt.Axes] = None) -> None:
     """Remove the top and right spines
 
     Parameters
     ----------
     trim : bool
         Trim spines so that they don't extend beyond the last major ticks.
+    ax : Optional[plt.Axes]
+        Axes to despine.
     """
-    ax = plt.gca()
+    if ax is None:
+        ax = plt.gca()
     if ax.name == '3d':
         return
 
@@ -98,9 +107,15 @@ def despine(trim=False):
             getattr(ax, "set_{}ticks".format(v))(ticks)
 
 
-def despine_all():
-    """Remove all spines, axes labels and ticks"""
-    ax = plt.gca()
+def despine_all(ax: Optional[plt.Axes] = None) -> None:
+    """Remove all spines, axes labels and ticks
+
+    Parameters
+    ----------
+    ax : Optional[plt.Axes]
+        Axes to despine."""
+    if ax is None:
+        ax = plt.gca()
     if ax.name == '3d':
         return
 
@@ -115,9 +130,15 @@ def despine_all():
     ax.set_yticks([])
 
 
-def respine():
-    """Redraw all spines, opposite of :func:`despine`"""
-    ax = plt.gca()
+def respine(ax: Optional[plt.Axes] = None) -> None:
+    """Redraw all spines, opposite of :func:`despine`
+
+    Parameters
+    ----------
+    ax : Optional[plt.Axes]
+        Axes to respine."""
+    if ax is None:
+        ax = plt.gca()
     for side in ['top', 'right', 'bottom', 'left']:
         ax.spines[side].set_visible(True)
         _set_smart_bounds(ax.spines[side], False)
@@ -125,7 +146,7 @@ def respine():
     ax.yaxis.set_ticks_position('both')
 
 
-def set_min_axis_length(length, axis='xy'):
+def set_min_axis_length(length: float, axis: Literal['x', 'y', 'xy'] = 'xy', ax: Optional[plt.Axes] = None):
     """Set minimum axis length
 
     Parameters
@@ -134,8 +155,11 @@ def set_min_axis_length(length, axis='xy'):
         Minimum range in data coordinates
     axis : {'x', 'y', 'xy'}
         Apply to a single axis ('x', 'y') or both ('xy').
+    ax : Optional[plt.Axes]
+        Axes to set minimum.
     """
-    ax = plt.gca()
+    if ax is None:
+        ax = plt.gca()
     for a in axis:
         _min, _max = getattr(ax, "get_{}lim".format(a))()
         if abs(_max - _min) < length:
@@ -145,29 +169,33 @@ def set_min_axis_length(length, axis='xy'):
             getattr(ax, "set_{}lim".format(a))(_min, _max, auto=None)
 
 
-def set_min_axis_ratio(ratio):
+def set_min_axis_ratio(ratio, ax: Optional[plt.Axes] = None):
     """Set minimum ratio between axes limits
 
     Parameters
     ----------
     ratio : float
+    ax : Optional[plt.Axes]
+        Axes to set minimum.
     """
-    xmin, xmax = plt.xlim()
-    ymin, ymax = plt.ylim()
+    if ax is None:
+        ax = plt.gca()
+    xmin, xmax = ax.get_xlim()
+    ymin, ymax = ax.get_ylim()
     x = (xmax - xmin) / 2
     y = (ymax - ymin) / 2
 
     if y != 0 and x / y < ratio:
         center = (xmax + xmin) / 2
         lim = ratio * y
-        plt.xlim(center - lim, center + lim)
+        ax.set_xlim(center - lim, center + lim)
     elif y / x < ratio:
         center = (ymax + ymin) / 2
         lim = ratio * x
-        plt.ylim(center - lim, center + lim)
+        ax.set_ylim(center - lim, center + lim)
 
 
-def add_margin(margin=0.08, axis='xy'):
+def add_margin(margin=0.08, axis='xy', ax: Optional[plt.Axes] = None):
     """Adjust the axis length to include a margin (after autoscale)
 
     Parameters
@@ -176,11 +204,14 @@ def add_margin(margin=0.08, axis='xy'):
         Fraction of the original length.
     axis : {'x', 'y', 'xy'}
         Apply to a single axis ('x', 'y') or both ('xy').
+    ax : Optional[plt.Axes]
+        Axes to set margin.
     """
-    ax = plt.gca()
+    if ax is None:
+        ax = plt.gca()
     for a in axis:
         _min, _max = getattr(ax, "get_{}lim".format(a))()
-        set_min_axis_length(abs(_max - _min) * (1 + margin), axis=a)
+        set_min_axis_length(abs(_max - _min) * (1 + margin), axis=a, ax=ax)
 
 
 def blend_colors(color, bg, factor):
@@ -234,7 +265,7 @@ def colorbar(mappable=None, cax=None, ax=None, label="", powerlimits=(0, 0), **k
     return cbar
 
 
-def annotate_box(s, xy, fontcolor='black', **kwargs):
+def annotate_box(s, xy, fontcolor='black', ax: Optional[plt.Axes] = None, **kwargs):
     """Annotate with a box around the text
 
     Parameters
@@ -245,6 +276,8 @@ def annotate_box(s, xy, fontcolor='black', **kwargs):
         Text position.
     fontcolor : color
         Setting 'white' will make the background black.
+    ax : Optional[plt.Axes]
+        Axis to set the box on.
     **kwargs
         Forwarded to `plt.annotate()`.
     """
@@ -258,8 +291,9 @@ def annotate_box(s, xy, fontcolor='black', **kwargs):
         kwargs['arrowprops'] = with_defaults(
             kwargs['arrowprops'], dict(arrowstyle="->", color=fontcolor)
         )
-
-    plt.annotate(s, xy, **with_defaults(kwargs, color=fontcolor, horizontalalignment='center',
+    if ax is None:
+        ax = plt.gca()
+    ax.annotate(s, xy, **with_defaults(kwargs, color=fontcolor, horizontalalignment='center',
                                         verticalalignment='center'))
 
 
@@ -282,7 +316,7 @@ def cm2inch(*values):
     return tuple(v / 2.54 for v in values)
 
 
-def legend(*args, reverse=False, facecolor='0.98', lw=0, **kwargs):
+def legend(*args, reverse=False, facecolor='0.98', lw=0, ax: Optional[plt.Axes] = None, **kwargs):
     """Custom legend with modified style and option to reverse label order
 
     Parameters
@@ -293,17 +327,21 @@ def legend(*args, reverse=False, facecolor='0.98', lw=0, **kwargs):
         Legend background color.
     lw : float
         Frame width.
+    ax : Optional[plt.Axes]
+        Axis to add the legend to.
     *args, **kwargs
         Forwarded to :func:`matplotlib.pyplot.legend`.
     """
-    handles, labels = plt.gca().get_legend_handles_labels()
+    if ax is None:
+        ax = plt.gca()
+    handles, labels = ax.get_legend_handles_labels()
     if not any([handles, args, kwargs]):
         return None
 
     if not reverse or not handles:
-        ret = plt.legend(*args, **kwargs)
+        ret = ax.legend(*args, **kwargs)
     else:
-        ret = plt.legend(handles[::-1], labels[::-1], *args, **kwargs)
+        ret = ax.legend(handles[::-1], labels[::-1], *args, **kwargs)
 
     frame = ret.get_frame()
     frame.set_facecolor(facecolor)
@@ -346,7 +384,7 @@ def get_palette(name=None, num_colors=8, start=0):
     return [list(color) for color in palette]
 
 
-def set_palette(name=None, num_colors=8, start=0):
+def set_palette(name=None, num_colors=8, start=0, ax: Optional[plt.Axes] = None):
     """Set the active color palette
 
     Parameters
@@ -357,11 +395,15 @@ def set_palette(name=None, num_colors=8, start=0):
         Number of colors to retrieve.
     start : int
         Staring from this color number.
+    ax : Optional[plt.Axes]
+        Axis to set the palette to.
     """
+    if ax is None:
+        ax = plt.gca()
     palette = get_palette(name, num_colors, start)
     mpl.rcParams["axes.prop_cycle"] = plt.cycler('color', palette)
     mpl.rcParams["patch.facecolor"] = palette[0]
-    plt.gca().set_prop_cycle(mpl.rcParams["axes.prop_cycle"])
+    ax.set_prop_cycle(mpl.rcParams["axes.prop_cycle"])
 
 
 def direct_cmap_norm(data, colors, blend=1):
@@ -514,3 +556,54 @@ def use_style(style=pb_style):
     # the style shouldn't override inline backend settings
     if _is_notebook_inline_backend():
         _reset_notebook_inline_backend()
+
+
+def plot_vectors(vectors: ArrayLike, position: ArrayLike = (0, 0), name: Optional[str] = "a", scale: float = 1.0,
+                 head_width: float = 0.08, head_length: float = 0.2, arrow_width: float = 0.01,
+                 ax: Optional[plt.Axes] = None, **kwargs) -> FancyArrow:
+    """ Visualize vectors, alternative to plt.quiver()
+
+    Parameters
+    ----------
+    vectors : array_like
+        The length of the vectors to be drawn.
+    position : array_like
+        The origin for the vectors. If 1D, all the vectors originate from the same point. If 2D, all the vectors
+        originate from the given starting vector. Default: (0, 0)
+    name : optional[str]
+        The name to be drawn on the vector, the vectors will be labeled by "{name}_{idx}". If None, the label will not
+        be drawn. Default: "a".
+    scale : float
+        The scaling for the vectors. Default: 1 .
+    head_width : float
+        The width for the head of the arrow. Default: 0.08 .
+    head_length : float
+        The length for the arrow head. Default: 0.2 .
+    ax : optional[plt.Axes]
+        The axis to draw on. If None, ax=plt.gca(). Default: ax.
+    **kwargs
+         Forwarded to :func:`matplotlib.pyplot.arrow`.
+    Returns
+    -------
+    matplotlib.patches.FancyArrow
+    """
+    if ax is None:
+        ax = plt.gca()
+    ax.set_aspect("equal")
+    vnorm = np.average([np.linalg.norm(v) for v in vectors]) * scale
+    out = []
+    for i, vector in enumerate(vectors):
+        v2d = np.array(vector[:2]) * scale
+        if np.allclose(v2d, [0, 0]):
+            continue  # nonzero only in z dimension, but the plot is 2D
+        pos = np.array(position if np.ndim(position) == 1 else position[i]) * scale
+        out.append(
+            ax.arrow(pos[0], pos[1], *v2d, length_includes_head=True, head_width=vnorm * head_width,
+                     head_length=vnorm * head_length, width=arrow_width * vnorm, **kwargs)
+        )
+        if name:
+            annotate_box(r"${}_{}$".format(name, i + 1), pos[:2] + v2d / 2,
+                         fontsize='large', bbox=dict(lw=0, alpha=0.6), ax=ax)
+    despine(trim=True, ax=ax)
+    add_margin(ax=ax)
+    return out[-1]

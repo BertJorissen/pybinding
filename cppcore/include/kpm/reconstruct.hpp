@@ -25,7 +25,7 @@ struct SpectralDensity {
         auto const scaled_energy = scale(energy.cast<real_t>());
         auto const real_moments = ArrayX<real_t>(moments.real());
         auto const ns = make_integer_range<real_t>(moments.size());
-        auto const k = real_t{2 / constant::pi} / scale.a;
+        auto const k = static_cast<real_t>(2 / constant::pi) / scale.a ;
 
         return transform<ArrayX>(scaled_energy, [&](real_t E) {
             return k / sqrt(1 - E*E) * sum(real_moments * cos(ns * acos(E)));
@@ -41,7 +41,7 @@ struct SpectralDensity {
         auto const scaled_energy = scale(energy.cast<real_t>());
         auto const real_moments = ArrayXX<real_t>(moments.real());
         auto const ns = make_integer_range<real_t>(num_moments);
-        auto const k = real_t{2 / constant::pi} / scale.a;
+        auto const k = static_cast<real_t>(2 / constant::pi) / scale.a ;
 
         auto result = ArrayXXdCM(scaled_energy.size(), moments.cols());
         for (auto i = idx_t{0}; i < scaled_energy.size(); ++i) {
