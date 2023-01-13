@@ -76,6 +76,8 @@ public:
                           ArrayXd const& chemical_potential, double broadening,
                           double temperature, idx_t num_random, idx_t num_points);
 
+    OptimizedHamiltonian const& get_optimized_hamiltonian() const { return optimized_hamiltonian; }
+
 private:
     void timed_compute(MomentsRef, Starter const&, AlgorithmConfig const&);
 

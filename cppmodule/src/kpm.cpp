@@ -99,7 +99,10 @@ void wrap_greens(py::module& m) {
         .def_property_readonly("kernel", [](KPM& kpm) {
             return kpm.get_core().get_config().kernel;
         })
-        .def_property_readonly("stats", [](KPM& kpm) { return kpm.get_core().get_stats(); });
+        .def_property_readonly("stats", [](KPM& kpm) { return kpm.get_core().get_stats(); })
+        .def_property_readonly("optimized_hamiltonian", [](KPM& kpm) {
+            return kpm.get_core().get_optimized_hamiltonian();
+        });
 
     wrap_kpm_strategy(m, "kpm");
 
@@ -122,5 +125,11 @@ void wrap_greens(py::module& m) {
         })
         .def_property_readonly("indices", [](kpm::OptimizedHamiltonian const& self) {
             return self.idx().dest;
+        })
+        .def_property_readonly("block_diagonal", [](kpm::OptimizedHamiltonian const& self) {
+            return self.block_diagonal();
+        })
+        .def_property_readonly("zero_row", [](kpm::OptimizedHamiltonian const& self) {
+            return self.zero_row();
         });
 }

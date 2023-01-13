@@ -156,6 +156,8 @@ public:
     SliceMap const& map() const { return slice_map; }
     VariantMatrix const& matrix() const { return optimized_matrix; }
     var::scalar_tag scalar_tag() const { return tag; }
+    std::vector<storage_idx_t> const& block_diagonal() const {return block_diagonal_idx; }
+    std::vector<storage_idx_t> const& zero_row() const {return zero_row_idx; }
 
 private:
     /// Just scale the Hamiltonian: H2 = (H - I*b) * (2/a)
@@ -189,6 +191,8 @@ private:
 
     MatrixFormat matrix_format;
     bool is_reordered;
+    std::vector<storage_idx_t> block_diagonal_idx; ///< index of block-diagonal parts of new matrix
+    std::vector<storage_idx_t> zero_row_idx; ///< index of zero row/columns in new matrix
     Chrono timer;
 
     friend struct Stats;

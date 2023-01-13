@@ -64,26 +64,26 @@ class Circle3DCollection(CircleCollection):
         self._facecolor3d = self.get_facecolor()
         self._edgecolor3d = self.get_edgecolor()
 
-    def do_3d_projection(self, renderer) -> float:
+    def do_3d_projection(self, renderer=None) -> float:
         # TODO: DEPRECATED --> find workaround
         from mpl_toolkits.mplot3d import proj3d
-        from mpl_toolkits.mplot3d.art3d import zalpha
+        #from mpl_toolkits.mplot3d.art3d import zalpha
         from matplotlib import colors as mcolors
 
         # transform and sort in z direction
-        v = np.array(proj3d.proj_transform_clip(*self._offsets3d, M=renderer.M)[:3])
-        idx = v[2].argsort()[::-1]
-        vzs = v[2, idx]
+        #v = np.array(proj3d.proj_transform_clip(*self._offsets3d, M=renderer.M)[:3])
+        #idx = v[2].argsort()[::-1]
+        #vzs = v[2, idx]
 
-        self.set_offsets(v[:2, idx].transpose())
-        super().set_array(self._A0[idx])
+        #self.set_offsets(v[:2, idx].transpose())
+        #super().set_array(self._A0[idx])
 
-        fcs = zalpha(self._facecolor3d, vzs) if self._depthshade else self._facecolor3d
-        fcs = mcolors.colorConverter.to_rgba_array(fcs, self._alpha)
-        self.set_facecolors(fcs)
+        #fcs = zalpha(self._facecolor3d, vzs) if self._depthshade else self._facecolor3d
+        #fcs = mcolors.colorConverter.to_rgba_array(fcs, self._alpha)
+        #self.set_facecolors(fcs)
 
-        ecs = zalpha(self._edgecolor3d, vzs) if self._depthshade else self._edgecolor3d
-        ecs = mcolors.colorConverter.to_rgba_array(ecs, self._alpha)
-        self.set_edgecolors(ecs)
+        #ecs = zalpha(self._edgecolor3d, vzs) if self._depthshade else self._edgecolor3d
+        #ecs = mcolors.colorConverter.to_rgba_array(ecs, self._alpha)
+        #self.set_edgecolors(ecs)
 
-        return min(vzs) if vzs.size > 0 else np.nan
+        return 1 #min(vzs) if vzs.size > 0 else np.nan

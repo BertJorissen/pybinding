@@ -8,7 +8,7 @@ import warnings
 import numpy as np
 from numpy.typing import ArrayLike
 from scipy.sparse import csr_matrix, eye
-from typing import Literal, Optional, Union
+from typing import Literal, Optional, Union, List
 
 from . import _cpp
 from . import results
@@ -103,6 +103,16 @@ class KPM:
         """The damping kernel"""
         return self.impl.kernel
 
+    @property
+    def block_diagonal(self) -> List[int]:
+        """The first index of the reordered matrix where a block of a block-diagonal matrix ends."""
+        return self.impl.optimized_hamiltonian.block_diagonal
+
+    @property
+    def zero_row(self) -> List[int]:
+        """The index of a row of zeros in the reordered matrix."""
+        return self.impl.optimized_hamiltonian.zero_row
+
     def report(self, shortform: bool = False) -> str:
         """Return a report of the last computation
 
@@ -160,7 +170,7 @@ class KPM:
         i : int or list
             Hamiltonian index.
         j : int
-            Hamiltonian indix.
+            Hamiltonian index.
         energy : ndarray
             Energy value array.
         broadening : float
@@ -207,7 +217,7 @@ class KPM:
         return results.Series(energy, ldos.squeeze(), labels=dict(variable="E (eV)", data="LDOS",
                                                                   columns="orbitals"))
 
-    def calc_spatial_ldos(self, energy: np.ndarray, broadening: float, shape: tuple,
+    def calc_spatial_ldos(self, energy: np.ndarray, broadening: float, shape: _cpp.Shape,
                           sublattice: str = "") -> SpatialLDOS:
         """Calculate the LDOS as a function of energy and space (in the area of the given shape)
 

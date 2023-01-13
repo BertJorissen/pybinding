@@ -6,6 +6,7 @@
 
 #include "numeric/dense.hpp"
 #include "numeric/sparse.hpp"
+#include "Shape.hpp"
 
 #include <vector>
 #include <memory>
@@ -55,11 +56,20 @@ struct System {
     /// The [start, end) range (pair of system indices) of all sites of a sublattice
     Range sublattice_range(string_view sublattice) const;
 
+    /// The [start, end) range (pair of hamiltonian indices) of all sites of a sublattice
+    Range sublattice_expanded_range(string_view sublattice) const;
+
     /// Find the index of the site nearest to the given position. Optional: filter by sublattice.
     idx_t find_nearest(Cartesian position, string_view sublattice_name = "") const;
 
     /// Expand `positions` to `hamiltonian_size` by replicating site positions for each orbital
     CartesianArray expanded_positions() const;
+
+    /// Find the indices in the hamiltonian that lie with in the given shape
+    std::vector<idx_t> select_idx_hamiltonian_shape(Shape const& shape, string_view sublattice) const;
+
+    /// List with at the places of the index of the Hamiltonian the corresponding system index
+    std::vector<idx_t> expanded_sys_index() const;
 };
 
 /**
