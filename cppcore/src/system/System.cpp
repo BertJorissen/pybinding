@@ -114,6 +114,18 @@ CartesianArray System::expanded_positions() const {
     return ep;
 }
 
+ArrayX<storage_idx_t> System::expanded_sublattices() const {
+    auto es = ArrayX<storage_idx_t>(hamiltonian_size());
+    for (auto const& sub : compressed_sublattices) {
+        auto const norb = sub.num_orbitals();
+        auto n = sub.ham_start();
+        for (auto i = sub.sys_start(); i < sub.sys_end(); ++i) {
+            es.segment(n, norb).setConstant(sub.id().value());
+            n += norb;
+        }
+    }
+    return es;
+}
 
 std::vector<idx_t> System::select_idx_hamiltonian_shape(Shape const& shape, string_view sublattice) const {
     auto const& p = expanded_positions();

@@ -9,8 +9,10 @@ import matplotlib as mpl
 import matplotlib.style as mpl_style
 import matplotlib.pyplot as plt
 from matplotlib.spines import Spine
-from typing import Literal, Optional, List
+from typing import Literal, Optional, List, Union
 from numpy.typing import ArrayLike
+from matplotlib.collections import LineCollection
+from matplotlib.colors import ListedColormap
 
 from .utils import with_defaults
 
@@ -607,3 +609,48 @@ def plot_vectors(vectors: ArrayLike, position: ArrayLike = (0, 0), name: Optiona
     despine(trim=True, ax=ax)
     add_margin(ax=ax)
     return out[-1]
+
+
+def plot_color(x: ArrayLike, y: ArrayLike, z: ArrayLike, ax: Optional[plt.Axes] = None,
+               cmap: Union[str, ListedColormap] = 'viridis', **kwargs) -> Optional[LineCollection]:
+    """Function to plot the values as changing colors in a plot.
+
+    Parameters
+    ----------
+    x : ArrayLike
+        The x-data
+    y : ArrayLike
+        The y-data
+    z : ArrayLike
+        The z-data
+    ax : plt.Axes
+        The axes to draw onto
+    cmap : str
+        The used colormap
+    """
+    if ax is None:
+        ax = plt.gca()
+
+    x = np.array(x)
+    y = np.array(y)
+    z = np.array(z)
+
+    if y.ndim == 1:
+        y = np.array([y]).T
+    if z.ndim == 1:
+        z = np.array([z] * y.shape[1]).T
+        print(z.shape)
+
+    assert np.shape(x)[0] == np.shape(y)[0], "x and y-data size differ, {0} != {1}".format(x.shape, y.shape)
+    assert np.shape(x)[0] == np.shape(z)[0] + 1, "x and z-data size differ, {0} != {1}".format(x.shape, z.shape)
+    assert np.shape(y)[1] == np.shape(z)[1], "y and z-data size differ, {0} != {1}".format(y.shape, z.shape)
+
+    line = None
+    for y_i, z_i in zip(y.T, z.T):
+        points = np.array([x, y_i]).T.reshape(-1, 1, 2)
+        segments = np.concatenate([points[:-1], points[1:]], axis=1)
+        norm = plt.Normalize(z.min(), z.max())
+        lc = LineCollection(segments, cmap=cmap, norm=norm, **kwargs)
+        lc.set_array(z_i)
+        line = ax.add_collection(lc)
+    return line

@@ -65,6 +65,9 @@ struct System {
     /// Expand `positions` to `hamiltonian_size` by replicating site positions for each orbital
     CartesianArray expanded_positions() const;
 
+    /// Expand `sublattices` to `hamiltonian_size` by replicating site positions for each orbital
+    ArrayX<storage_idx_t> expanded_sublattices() const;
+
     /// Find the indices in the hamiltonian that lie with in the given shape
     std::vector<idx_t> select_idx_hamiltonian_shape(Shape const& shape, string_view sublattice) const;
 

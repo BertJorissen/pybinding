@@ -92,6 +92,7 @@ void wrap_system(py::module& m) {
         .def_readonly("boundaries", &System::boundaries)
         .def_property_readonly("hamiltonian_size", &System::hamiltonian_size)
         .def_property_readonly("expanded_positions", &System::expanded_positions)
+        .def("expanded_sublattices", [](System const& c) { return c.expanded_sublattices(); })
         .def(py::pickle([](System const& s) {
             return py::dict("site_registry"_a=s.site_registry,
                             "hopping_registry"_a=s.hopping_registry,

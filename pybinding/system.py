@@ -78,6 +78,11 @@ class System(Structure):
         return self.impl.expanded_positions
 
     @property
+    def expanded_sublattices(self) -> AliasArray:
+        """`sublattices` expanded to `hamiltonian_size` by replicating for each orbital"""
+        return AliasArray(self.impl.expanded_sublattices(), self.impl.site_registry.name_map)
+
+    @property
     def hamiltonian_size(self) -> int:
         """The size of the Hamiltonian matrix constructed from this system
 
