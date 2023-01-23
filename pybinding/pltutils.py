@@ -649,7 +649,7 @@ def plot_color(x: ArrayLike, y: ArrayLike, z: ArrayLike, ax: Optional[plt.Axes] 
     for y_i, z_i in zip(y.T, z.T):
         points = np.array([x, y_i]).T.reshape(-1, 1, 2)
         segments = np.concatenate([points[:-1], points[1:]], axis=1)
-        norm = plt.Normalize(z.min(), z.max())
+        norm = plt.Normalize(np.nanmin(z), np.nanmax(z))
         lc = LineCollection(segments, cmap=cmap, norm=norm, **kwargs)
         lc.set_array(z_i)
         line = ax.add_collection(lc)
