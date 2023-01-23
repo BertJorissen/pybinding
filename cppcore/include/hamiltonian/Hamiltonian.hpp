@@ -118,7 +118,7 @@ void build_main(SparseMatrixX<scalar_t>& matrix, System const& system, Lattice c
 
 template<class scalar_t>
 void build_periodic(SparseMatrixX<scalar_t>& matrix, System const& system,
-                    HamiltonianModifiers const& modifiers, Cartesian k_vector, bool add_phase) {
+                    HamiltonianModifiers const& modifiers, const Cartesian& k_vector, bool add_phase) {
     for (auto n = size_t{0}, size = system.boundaries.size(); n < size; ++n) {
         using constant::i1;
         auto const& d = system.boundaries[n].shift;

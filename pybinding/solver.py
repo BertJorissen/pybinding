@@ -14,6 +14,7 @@ eigenvalues and eigenvectors. See :class:`._SolverPythonImpl` for example.
 """
 import time
 import math
+import warnings
 
 import numpy as np
 from scipy.sparse import csr_matrix
@@ -315,6 +316,38 @@ class Solver:
             bands.append(self.eigenvalues)
 
         return results.Bands(k_path, np.vstack(bands))
+
+    def calc_wavefunction(self, k0: ArrayLike, k1: ArrayLike, *ks: Iterable[ArrayLike], step: float = 0.1,
+                          point_labels: Optional[List[str]] = None) -> results.Wavefunction:
+        """Calculate the wavefunction on a path in reciprocal space
+
+        Parameters
+        ----------
+        k0, k1, *ks : array_like
+            Points in reciprocal space which form the path for the band calculation.
+            At least two points are required.
+        step : float, optional
+            Calculation step length in reciprocal space units. Lower `step` values
+            will return more detailed results.
+        point_labels : list[str], optional
+            The point_labels for plots
+
+        Returns
+        -------
+        :class:`~pybinding.Wavefunction`
+        """
+
+        k_points = [np.atleast_1d(k) for k in (k0, k1) + ks]
+        k_path = results.make_path(*k_points, step=step, point_labels=point_labels)
+
+        bands = []
+        wavefunction = []
+        for k in k_path:
+            self.set_wave_vector(k)
+            bands.append(self.eigenvalues)
+            wavefunction.append(self.eigenvectors.T)
+
+        return results.Wavefunction(results.Bands(k_path, np.vstack(bands)), np.array(wavefunction, dtype=complex))
 
     @staticmethod
     def find_degenerate_states(energies: ArrayLike, abs_tolerance: float = 1e-5) -> list[list[float]]:

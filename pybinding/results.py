@@ -19,7 +19,7 @@ from .support.pickle import pickleable, save, load
 from .support.structure import Positions, AbstractSites, Sites, Hoppings
 
 __all__ = ['Bands', 'Path', 'Eigenvalues', 'NDSweep', 'Series', 'SpatialMap', 'StructureMap',
-           'Sweep', 'make_path', 'save', 'load']
+           'Sweep', 'make_path', 'save', 'load', 'Wavefunction', 'Disentangle']
 
 
 def _make_crop_indices(obj, limits):
@@ -1270,12 +1270,12 @@ class Disentangle:
         # matrix to store value of the overlap
         keep = np.zeros((n_k, n_b), dtype=bool)
 
-        if self.use_scipy == 0:
+        if self.routine == 0:
             func = self._linear_sum_approx
-        elif self.use_scipy == 1:
+        elif self.routine == 1:
             func = self._linear_sum_scipy
         else:
-            assert False, "The value for ise_scipy of {0} doesn't even exist".format(self.use_scipy)
+            assert False, "The value for ise_scipy of {0} doesn't even exist".format(self.routine)
 
         # loop over all the k-points
         for i_k in range(n_k):
@@ -1288,10 +1288,10 @@ class Disentangle:
         tmp_w_i = np.arange(n_b, dtype=int)
         for i_k in range(n_k):
             for i_b in range(n_b):
-                if not keep[i_k, i_b] and not self.disentangle_threshold == 0:
+                if not keep[i_k, i_b] and not self.threshold == 0:
                     tmp_w_i[i_b] = np.max(tmp_w_i) + 1
             working_indices[i_k] = tmp_w_i
-        if self.disentangle_threshold == 0:
+        if self.threshold == 0:
             assert np.max(working_indices) + 1 == n_b, "This shouldn't happen, the system should not increase in size."
         return ind, working_indices
 
@@ -1315,7 +1315,7 @@ class Disentangle:
             # first convert the relative new index to the new index, and find with old index this corresponds
             i_new = index_all.pop(i_max)
             ind[i_b] = i_new
-            keep[i_b] = matrix[i_b, i_new] > self.disentangle_threshold
+            keep[i_b] = matrix[i_b, i_new] > self.threshold
         return ind, keep
 
     def _linear_sum_scipy(self, matrix: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
@@ -1324,7 +1324,7 @@ class Disentangle:
         orig, perm = linear_sum_assignment(-matrix)
         assert np.all(orig == np.arange(matrix.shape[0])), \
             "The orig should be a list from 1 to number of bands, but is {0}".format(orig)
-        return np.array(perm, dtype=int), np.array(matrix[orig, perm] > self.disentangle_threshold, dtype=bool)
+        return np.array(perm, dtype=int), np.array(matrix[orig, perm] > self.threshold, dtype=bool)
 
     def _apply_disentanglement(self, matrix: np.ndarray) -> np.ndarray:
         """ Apply the disentanglement on a matrix

@@ -30,6 +30,10 @@ void wrap_model(py::module& m) {
             return self.hamiltonian().csrref();
         })
         .def_property_readonly("leads", &Model::leads)
+        .def_property_readonly("is_multiorbital", &Model::is_multiorbital)
+        .def_property_readonly("is_double", &Model::is_double)
+        .def_property_readonly("is_complex", &Model::is_complex)
+        .def_property_readonly("is_phase", &Model::is_phase)
         .def_property_readonly("get_wave_vector", &Model::get_wave_vector)
         .def("eval", &Model::eval)
         .def("report", &Model::report, "Return a string with information about the last build")
