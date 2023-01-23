@@ -1569,7 +1569,7 @@ class Wavefunction:
             keys = mapping.keys()
             data = np.zeros((self.bands.energy.shape[0], self.bands.energy.shape[1], len(keys)))
             for i_k, key in enumerate(keys):
-                data[:, :, i_k] = np.sum(probablitiy[:, :, self._sublattices == key])
+                data[:, :, i_k] = np.sum(probablitiy[:, :, self._sublattices == key], axis=2)
             labels["columns"] = keys
         else:
             data = probablitiy
