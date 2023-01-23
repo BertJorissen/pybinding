@@ -1017,7 +1017,6 @@ class FatBands(Bands):
         if energies is None:
             energies = np.linspace(np.nanmin(self.energy), np.nanmax(self.energy), interval)
         scale = 1 / (broadening * np.sqrt(2 * np.pi) * self.energy.shape[0])
-        print(scale)
         dos = np.zeros((self.data.shape[2] if self.data.ndim == 3 else 1, interval))
         for i_k, eigenvalue in enumerate(self.energy):
             delta = np.nan_to_num(eigenvalue[:, np.newaxis] - energies)
@@ -1574,3 +1573,13 @@ class Wavefunction:
         else:
             data = probablitiy
         return FatBands(self.bands, data, labels)
+
+    @property
+    def fatbands_disentangled(self) -> FatBands:
+        """ Return FatBands with the pDOS for each sublattice.
+
+        Returns : FatBands
+            The (sorted) bands with the pDOS.
+        """
+        fatbands = self.fatbands
+        return FatBands(self.bands_disentangled, self.disentangle(fatbands.data), fatbands.labels)
