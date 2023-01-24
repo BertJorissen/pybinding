@@ -199,7 +199,7 @@ class Series:
         self.variable = np.atleast_1d(variable)
         self.data = np.atleast_1d(data)
         self.labels = with_defaults(
-            labels, variable="x", data="y", columns="",
+            labels, variable="x", data="y", columns="", title="",
             orbitals=[str(i) for i in range(self.data.shape[1])] if self.data.ndim == 2 else [])
 
     def with_data(self, data: np.ndarray) -> 'Series':
@@ -913,7 +913,7 @@ class Bands:
         """
         self.k_path.plot(point_labels, **kwargs)
 
-    def dos(self, energies: Optional[ArrayLike] = None, broadening: float = 0.05, interval: int = 100) -> Series:
+    def dos(self, energies: Optional[ArrayLike] = None, broadening: Optional[float] = None) -> Series:
         r"""Calculate the density of states as a function of energy
 
         .. math::
@@ -929,16 +929,16 @@ class Bands:
             Values for which the DOS is calculated. Default: min/max from Bands().energy, subdivided in 100 parts [ev].
         broadening : float
             Controls the width of the Gaussian broadening applied to the DOS. Default: 0.05 [ev].
-        interval : int
-            Number of subdevisions for the energy.
         Returns
         -------
         :class:`~pybinding.Series`
         """
         if energies is None:
-            energies = np.linspace(np.nanmin(self.energy), np.nanmax(self.energy), interval)
+            energies = np.linspace(np.nanmin(self.energy), np.nanmax(self.energy), 100)
+        if broadening is None:
+            broadening = (np.nanmax(self.energy) - np.nanmin(self.energy)) / 100
         scale = 1 / (broadening * np.sqrt(2 * np.pi) * self.energy.shape[0])
-        dos = np.zeros(interval)
+        dos = np.zeros(len(energies))
         for eigenvalue in self.energy:
             delta = eigenvalue[:, np.newaxis] - energies
             dos += scale * np.sum(np.exp(-0.5 * delta**2 / broadening**2), axis=0)
@@ -963,7 +963,9 @@ class FatBands(Bands):
     def __init__(self, bands: Bands, data: ArrayLike, labels: Optional[dict] = None):
         super().__init__(bands.k_path, bands.energy)
         self.data = np.atleast_2d(data)
-        self.labels = with_defaults(labels, data="", columns="", title="")
+        self.labels = with_defaults(
+            labels, variable="E (eV)", data="pDOS", columns="", title="",
+            orbitals=[str(i) for i in range(self.data.shape[1])] if self.data.ndim == 2 else [])
         self._line_plot = False
 
     def with_data(self, data: np.ndarray) -> 'FatBands':
@@ -972,13 +974,65 @@ class FatBands(Bands):
         result.data = data
         return result
 
-    def reduced(self) -> 'FatBands':
+    def __add__(self, other: 'FatBands') -> 'FatBands':
+        """Add together the data of two FatBands object in a new object."""
+        if self.data.ndim < other.data.ndim:
+            # keep information about the orbitals, so take the other series as a reference
+            return other.with_data(self.data[:, :, np.newaxis] + other.data)
+        elif self.data.ndim > other.data.ndim:
+            return self.with_data(self.data + other.data[:, :, np.newaxis])
+        else:
+            return self.with_data(self.data + other.data)
+
+    def __sub__(self, other: 'FatBands') -> 'FatBands':
+        """Subtract the data of two FatBands object in a new object."""
+        if self.data.ndim < other.data.ndim:
+            # keep information about the orbitals, so take the other series as a reference
+            return other.with_data(self.data[:, :, np.newaxis] - other.data)
+        elif self.data.ndim > other.data.ndim:
+            return self.with_data(self.data - other.data[:, :, np.newaxis])
+        else:
+            return self.with_data(self.data - other.data)
+
+    def reduced(self, columns: Optional[List[int]] = None, orbitals: Optional[List[str]] = None,
+                fill_other: float = 0.) -> 'FatBands':
         """Return a copy where the data is summed over the columns
 
         Only applies to results which may have multiple columns of data, e.g.
         results for multiple orbitals for LDOS calculation.
+
+        Parameters
+        ----------
+        columns : Optional[List[int]]
+            The colummns to contract to the new array.
+            The length of `columns` agrees with the dimensions of data.shape[2].
+            The value at each position corresponds to the new column of the new Series object
+        orbitals: Optional[List[str]]
+            Optional new list of entries for the `orbitals` label in `labels`
+        fill_other : float
+            In case an array is made with a new column, fill it with this value. Default: 0.
         """
-        return self.with_data(self.data.sum(axis=1))
+        data = self.data
+        if data.ndim == 2:
+            data = self.data[:, np.newaxis]
+        col_idx = np.array(columns or np.zeros(data.shape[2]), dtype=int)
+        if np.all(col_idx == 0):
+            # case where all the axis are summed over, no 'orbital' label is needed
+            return self.with_data(data.sum(axis=2))
+        col_max = np.max(col_idx) + 1
+        if orbitals is None:
+            orb_list = [str(i) for i in range(col_max)]
+            for c_i in np.unique(col_idx):
+                orb_list[c_i] = self.labels["orbitals"][np.argmax(col_idx == c_i)]
+        else:
+            orb_list = orbitals
+        data_out = np.full((data.shape[0], data.shape[1], col_max), fill_other)
+        print(data.shape)
+        for c_i in np.unique(col_idx):
+            data_out[:, :, c_i] = np.nansum(data[:, :, col_idx == c_i], axis=2)
+        fatbands_out = self.with_data(data_out)
+        fatbands_out.labels["orbitals"] = orb_list
+        return fatbands_out
 
     def plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None, line_plot: bool = False,
              **kwargs) -> Optional[List[plt.Line2D]]:
@@ -1001,9 +1055,14 @@ class FatBands(Bands):
         lines = []
         data_length = self.data.shape[2] if self.data.ndim == 3 else 1
         for d_i in range(data_length):
-            lines.append(ax.scatter(k_space, self.energy,
-                                    s=(np.abs(self.data[:, :, d_i]) if self.data.ndim == 3 else self.data), alpha=0.5, **kwargs))
-        ax.legend(lines, self.labels["columns"], title=self.labels["data"])
+            lines.append(ax.scatter(
+                k_space,
+                self.energy,
+                s=np.nan_to_num(np.abs(self.data[:, :, d_i]) if self.data.ndim == 3 else self.data) * 20,
+                alpha=0.5,
+                **kwargs
+            ))
+        ax.legend(lines, self.labels["orbitals"], title=self.labels["columns"])
         ax.set_title(self.labels["title"])
         if line_plot:
             lines_plot_tmp = self._line_plot
@@ -1040,10 +1099,10 @@ class FatBands(Bands):
         line = pltutils.plot_color(k_space, self.energy, data[:-1, :], ax, **kwargs)
         super(FatBands, self).plot(point_labels=point_labels, ax=ax, **kwargs)
         if plot_colorbar:
-            plt.colorbar(line, ax=ax, label=self.labels["columns"][idx])
+            plt.colorbar(line, ax=ax, label=self.labels["orbitals"][idx])
         return line
 
-    def dos(self, energies: Optional[ArrayLike] = None, broadening: float = 0.05, interval: int = 100) -> Series:
+    def dos(self, energies: Optional[ArrayLike] = None, broadening: Optional[float] = None) -> Series:
         r"""Calculate the density of states as a function of energy
 
         .. math::
@@ -1065,13 +1124,18 @@ class FatBands(Bands):
         :class:`~pybinding.Series`
         """
         if energies is None:
-            energies = np.linspace(np.nanmin(self.energy), np.nanmax(self.energy), interval)
+            energies = np.linspace(np.nanmin(self.energy), np.nanmax(self.energy), 100)
+        if broadening is None:
+            broadening = (np.nanmax(self.energy) - np.nanmin(self.energy)) / 100
         scale = 1 / (broadening * np.sqrt(2 * np.pi) * self.energy.shape[0])
-        dos = np.zeros((self.data.shape[2] if self.data.ndim == 3 else 1, interval))
+        data = self.data if self.data.ndim == 3 else self.data[:, :, np.newaxis]
+        dos = np.zeros((data.shape[2], len(energies)))
         for i_k, eigenvalue in enumerate(self.energy):
-            delta = np.nan_to_num(eigenvalue[:, np.newaxis] - energies)
-            dos += scale * np.sum(np.nan_to_num(self.data[i_k]).T[:, :, np.newaxis] * np.exp(-0.5 * delta**2 / broadening**2), axis=1)
-        return Series(energies, dos.T, labels=dict(variable="E (eV)", data="pDOS", orbitals=self.labels["columns"], title=self.labels["title"], columns=self.labels["data"]))
+            delta = np.nan_to_num(eigenvalue[:, np.newaxis]) - energies
+            gauss = np.exp(-0.5 * delta**2 / broadening**2)
+            datal = np.nan_to_num(data[i_k])
+            dos += scale * np.sum(datal[:, :, np.newaxis] * gauss[:, np.newaxis, :], axis=0)
+        return Series(energies, dos.T, labels=self.labels)
 
 @pickleable
 class Sweep:
