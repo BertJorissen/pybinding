@@ -18,7 +18,7 @@ from .utils import with_defaults, x_pi
 from .support.pickle import pickleable, save, load
 from .support.structure import Positions, AbstractSites, Sites, Hoppings
 from .support.alias import AliasArray
-from matplotlib.collections import LineCollection
+from matplotlib.collections import LineCollection, PathCollection
 
 __all__ = ['Bands', 'Path', 'Eigenvalues', 'NDSweep', 'Series', 'SpatialMap', 'StructureMap',
            'Sweep', 'make_path', 'save', 'load', 'Wavefunction', 'Disentangle', 'FatBands']
@@ -840,7 +840,6 @@ class Bands:
     def __init__(self, k_path: Path, energy: np.ndarray):
         self.k_path: Path = np.atleast_1d(k_path).view(Path)
         self.energy = np.atleast_1d(energy)
-        self._line_plot: bool = True
 
     def _point_names(self, k_points: list[float]) -> list[str]:
         names = []
@@ -877,7 +876,25 @@ class Bands:
         kwargs = with_defaults(kwargs, color=default_color, lw=default_linewidth)
 
         k_space = self.k_path.as_1d()
-        lines_out = ax.plot(k_space, self.energy, **kwargs) if self._line_plot else None
+        lines_out = ax.plot(k_space, self.energy, **kwargs)
+
+        self._decorate_plot(point_labels, ax)
+        return lines_out
+
+    def _decorate_plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None) -> None:
+        """Decorate the band structure
+
+        Parameters
+        ----------
+        point_labels : Optional[List[str]]
+            Labels for the `k_points`.
+        ax : Optional[plt.Axes]
+            The Axis to plot the bands on.
+        """
+        if ax is None:
+            ax = plt.gca()
+
+        k_space = self.k_path.as_1d()
 
         ax.set_xlim(k_space.min(), k_space.max())
         ax.set_xlabel('k-space')
@@ -886,7 +903,7 @@ class Bands:
         pltutils.despine(trim=True, ax=ax)
 
         point_labels = point_labels or self._point_names(self.k_path.points)
-        assert len(point_labels) == len(self.k_path.point_indices),\
+        assert len(point_labels) == len(self.k_path.point_indices), \
             "The length of point_labels and point_indices aren't the same, len({0}) != len({1})".format(
                 point_labels, self.k_path.point_indices
             )
@@ -897,7 +914,6 @@ class Bands:
         for idx in self.k_path.point_indices:
             ymax = ax.transLimits.transform([0, np.nanmax(self.energy[idx])])[1]
             ax.axvline(k_space[idx], ymax=ymax, color="0.4", lw=0.8, ls=":", zorder=-1)
-        return lines_out
 
     def plot_kpath(self, point_labels: Optional[List[str]] = None, **kwargs) -> None:
         """Quiver plot of the k-path along which the bands were computed
@@ -966,7 +982,6 @@ class FatBands(Bands):
         self.labels = with_defaults(
             labels, variable="E (eV)", data="pDOS", columns="", title="",
             orbitals=[str(i) for i in range(self.data.shape[1])] if self.data.ndim == 2 else [])
-        self._line_plot = False
 
     def with_data(self, data: np.ndarray) -> 'FatBands':
         """Return a copy of this result object with different data"""
@@ -1027,15 +1042,14 @@ class FatBands(Bands):
         else:
             orb_list = orbitals
         data_out = np.full((data.shape[0], data.shape[1], col_max), fill_other)
-        print(data.shape)
         for c_i in np.unique(col_idx):
             data_out[:, :, c_i] = np.nansum(data[:, :, col_idx == c_i], axis=2)
         fatbands_out = self.with_data(data_out)
         fatbands_out.labels["orbitals"] = orb_list
         return fatbands_out
 
-    def plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None, line_plot: bool = False,
-             **kwargs) -> Optional[List[plt.Line2D]]:
+    def plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None,
+                  **kwargs) -> Optional[List[PathCollection]]:
         """Line plot of the band structure with the given data
 
         Parameters
@@ -1044,8 +1058,6 @@ class FatBands(Bands):
             Labels for the `k_points`.
         ax : Optional[plt.Axes]
             The Axis to plot the bands on.
-        line_plot : bool
-            Plot the lines from the normal `Bands`.
         **kwargs
             Forwarded to `plt.plot()`.
         """
@@ -1064,13 +1076,12 @@ class FatBands(Bands):
             ))
         ax.legend(lines, self.labels["orbitals"], title=self.labels["columns"])
         ax.set_title(self.labels["title"])
-        if line_plot:
-            lines_plot_tmp = self._line_plot
-            self._line_plot = line_plot
-        lines_out = super(FatBands, self).plot(point_labels=point_labels, ax=ax, **kwargs)
-        if line_plot:
-            self._line_plot = lines_plot_tmp
-        return lines_out
+        self._decorate_plot(point_labels, ax)
+        return lines
+
+    def plot_bands(self, **kwargs) -> List[plt.Line2D]:
+        """Line plot of the band structure like in Bands."""
+        return super().plot(**kwargs)
 
     def line_plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None, idx: int = 0,
                   plot_colorbar: bool = True, **kwargs) -> Optional[LineCollection]:
@@ -1097,7 +1108,7 @@ class FatBands(Bands):
         ax.set_ylim(np.nanmin(self.energy), np.nanmax(self.energy))
         ax.set_title(self.labels["title"])
         line = pltutils.plot_color(k_space, self.energy, data[:-1, :], ax, **kwargs)
-        super(FatBands, self).plot(point_labels=point_labels, ax=ax, **kwargs)
+        self._decorate_plot(point_labels, ax)
         if plot_colorbar:
             plt.colorbar(line, ax=ax, label=self.labels["orbitals"][idx])
         return line
