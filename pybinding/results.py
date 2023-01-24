@@ -198,7 +198,9 @@ class Series:
     def __init__(self, variable: ArrayLike, data: ArrayLike, labels: Optional[dict] = None):
         self.variable = np.atleast_1d(variable)
         self.data = np.atleast_1d(data)
-        self.labels = with_defaults(labels, variable="x", data="y", columns="")
+        self.labels = with_defaults(
+            labels, variable="x", data="y", columns="",
+            orbitals=[str(i) for i in range(self.data.shape[1])] if self.data.ndim == 2 else [])
 
     def with_data(self, data: np.ndarray) -> 'Series':
         """Return a copy of this result object with different data"""
@@ -206,20 +208,68 @@ class Series:
         result.data = data
         return result
 
-    def reduced(self) -> 'Series':
+    def __add__(self, other: 'Series') -> 'Series':
+        """Add together the data of two Series object in a new object."""
+        if self.data.ndim < other.data.ndim:
+            # keep information about the orbitals, so take the other series as a reference
+            return other.with_data(self.data[:, np.newaxis] + other.data)
+        elif self.data.ndim > other.data.ndim:
+            return self.with_data(self.data + other.data[:, np.newaxis])
+        else:
+            return self.with_data(self.data + other.data)
+
+    def __sub__(self, other: 'Series') -> 'Series':
+        """Subtract the data of two Series object in a new object."""
+        if self.data.ndim < other.data.ndim:
+            # keep information about the orbitals, so take the other series as a reference
+            return other.with_data(self.data[:, np.newaxis] - other.data)
+        elif self.data.ndim > other.data.ndim:
+            return self.with_data(self.data - other.data[:, np.newaxis])
+        else:
+            return self.with_data(self.data - other.data)
+
+    def reduced(self, columns: Optional[List[int]] = None, orbitals: Optional[List[str]] = None,
+                fill_other: float = 0.) -> 'Series':
         """Return a copy where the data is summed over the columns
 
         Only applies to results which may have multiple columns of data, e.g.
         results for multiple orbitals for LDOS calculation.
+
+        Parameters
+        ----------
+        columns : Optional[List[int]]
+            The colummns to contract to the new array.
+            The length of `columns` agrees with the dimensions of data.shape[1].
+            The value at each position corresponds to the new column of the new Series object
+        orbitals: Optional[List[str]]
+            Optional new list of entries for the `orbitals` label in `labels`
+        fill_other : float
+            In case an array is made with a new column, fill it with this value. Default: 0.
         """
-        return self.with_data(self.data.sum(axis=1))
+        col_idx = np.array(columns or np.zeros(self.data.shape[1]), dtype=int)
+        if np.all(col_idx == 0):
+            # case where all the axis are summed over, no 'orbital' label is needed
+            return self.with_data(self.data.sum(axis=1))
+        col_max = np.max(col_idx) + 1
+        if orbitals is None:
+            orb_list = [str(i) for i in range(col_max)]
+            for c_i in np.unique(col_idx):
+                orb_list[c_i] = self.labels["orbitals"][np.argmax(col_idx == c_i)]
+        else:
+            orb_list = orbitals
+        data = np.full((self.data.shape[0], col_max), fill_other)
+        for c_i in np.unique(col_idx):
+            data[:, c_i] = np.sum(self.data[:, col_idx == c_i], axis=1)
+        series_out = self.with_data(data)
+        series_out.labels["orbitals"] = orb_list
+        return series_out
 
     def plot(self, ax: Optional[plt.Axes] = None, axes: Literal['xy', 'yx'] = 'xy', **kwargs) -> None:
         """Labeled line plot
 
         Parameters
         ----------
-         ax : Optional[plt.Axes]
+        ax : Optional[plt.Axes]
             The Axis to plot the results on.
         axes : Literal['xy', 'yx']
             The order of the axes, default: 'xy'.
