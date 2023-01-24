@@ -232,7 +232,7 @@ so we can look at a smaller circular area:
         smap = spatial_ldos.structure_map(energy)
         smap.plot(site_radius=(0.02, 0.15), axes=axes)
 
-The result of the calculation is a :class:`~.chebyshev.SpatialLDOS` object which stores the
+The result of the calculation is a :class:`~.results.SpatialLDOS` object which stores the
 spatial LDOS for several energy values. Calling :meth:`.SpatialLDOS.structure_map` selects
 a specific energy.
 

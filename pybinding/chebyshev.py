@@ -13,56 +13,15 @@ from typing import Literal, Optional, Union, List
 from . import _cpp
 from . import results
 from .model import Model
+from .results import SpatialLDOS
 from .system import System
 from .utils.time import timed
 from .support.deprecated import LoudDeprecationWarning
 
-__all__ = ['KPM', 'kpm', 'kpm_cuda', 'SpatialLDOS',
+__all__ = ['KPM', 'kpm', 'kpm_cuda',
            'jackson_kernel', 'lorentz_kernel', 'dirichlet_kernel']
 
 KernelType = Union[_cpp.KPMKernel, Literal["default"]]
-
-class SpatialLDOS:
-    """Holds the results of :meth:`KPM.calc_spatial_ldos`
-
-    It behaves like a product of a :class:`.Series` and a :class:`.StructureMap`.
-    """
-
-    def __init__(self, data: np.ndarray, energy: np.ndarray, structure: results.Structure):
-        self.data = data
-        self.energy = energy
-        self.structure = structure
-
-    def structure_map(self, energy: float) -> results.StructureMap:
-        """Return a :class:`.StructureMap` of the spatial LDOS at the given energy
-
-        Parameters
-        ----------
-        energy : float
-            Produce a structure map for LDOS data closest to this energy value.
-
-        Returns
-        -------
-        :class:`.StructureMap`
-        """
-        idx = np.argmin(abs(self.energy - energy))
-        return self.structure.with_data(self.data[idx])
-
-    def ldos(self, position: ArrayLike, sublattice: str = "") -> results.Series:
-        """Return the LDOS as a function of energy at a specific position
-
-        Parameters
-        ----------
-        position : array_like
-        sublattice : Optional[str]
-
-        Returns
-        -------
-        :class:`.Series`
-        """
-        idx = self.structure.find_nearest(position, sublattice)
-        return results.Series(self.energy, self.data[:, idx],
-                              labels=dict(variable="E (eV)", data="LDOS", columns="orbitals"))
 
 
 class KPM:

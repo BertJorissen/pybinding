@@ -21,7 +21,8 @@ from .support.alias import AliasArray
 from matplotlib.collections import LineCollection, PathCollection
 
 __all__ = ['Bands', 'Path', 'Eigenvalues', 'NDSweep', 'Series', 'SpatialMap', 'StructureMap',
-           'Sweep', 'make_path', 'save', 'load', 'Wavefunction', 'Disentangle', 'FatBands']
+           'Sweep', 'make_path', 'save', 'load', 'Wavefunction', 'Disentangle', 'FatBands',
+           'SpatialLDOS']
 
 
 def _make_crop_indices(obj, limits):
@@ -1148,6 +1149,7 @@ class FatBands(Bands):
             dos += scale * np.sum(datal[:, :, np.newaxis] * gauss[:, np.newaxis, :], axis=0)
         return Series(energies, dos.T, labels=self.labels)
 
+
 @pickleable
 class Sweep:
     """2D parameter sweep with `x` and `y` 1D array parameters and `data` 2D array result
@@ -1616,8 +1618,52 @@ class Disentangle:
         return out_values
 
 
+class SpatialLDOS:
+    """Holds the results of :meth:`KPM.calc_spatial_ldos`
+
+    It behaves like a product of a :class:`.Series` and a :class:`.StructureMap`.
+    """
+
+    def __init__(self, data: np.ndarray, energy: np.ndarray, structure: Structure):
+        self.data = data
+        self.energy = energy
+        self.structure = structure
+
+    def structure_map(self, energy: float) -> StructureMap:
+        """Return a :class:`.StructureMap` of the spatial LDOS at the given energy
+
+        Parameters
+        ----------
+        energy : float
+            Produce a structure map for LDOS data closest to this energy value.
+
+        Returns
+        -------
+        :class:`.StructureMap`
+        """
+        idx = np.argmin(abs(self.energy - energy))
+        return self.structure.with_data(self.data[idx])
+
+    def ldos(self, position: ArrayLike, sublattice: str = "") -> Series:
+        """Return the LDOS as a function of energy at a specific position
+
+        Parameters
+        ----------
+        position : array_like
+        sublattice : Optional[str]
+
+        Returns
+        -------
+        :class:`.Series`
+        """
+        idx = self.structure.find_nearest(position, sublattice)
+        return Series(self.energy, self.data[:, idx],
+                      labels=dict(variable="E (eV)", data="LDOS", columns="orbitals"))
+
+
 class Wavefunction:
-    def __init__(self, bands: Bands, wavefunction: np.ndarray, sublattices: Optional[AliasArray] = None):
+    def __init__(self, bands: Bands, wavefunction: np.ndarray, sublattices: Optional[AliasArray] = None,
+                 system=None):
         """ Class to store the results of a Wavefunction.
 
         Parameters:
@@ -1633,7 +1679,8 @@ class Wavefunction:
         self.wavefunction: np.ndarray = wavefunction
         self._overlap_matrix: Optional[np.ndarray] = None
         self._disentangle: Optional[Disentangle] = None
-        self._sublattices = sublattices
+        self._sublattices: Optional[AliasArray] = sublattices
+        self._system = system
 
     @property
     def overlap_matrix(self) -> np.ndarray:
@@ -1687,14 +1734,14 @@ class Wavefunction:
             The (unsorted) bands with the pDOS.
         """
         probablitiy = np.abs(self.wavefunction ** 2)
-        labels = {"data": "pDOS"}
+        labels = {"data": "pDOS", "columns": "orbital"}
         if self._sublattices is not None:
             mapping = self._sublattices.mapping
             keys = mapping.keys()
             data = np.zeros((self.bands.energy.shape[0], self.bands.energy.shape[1], len(keys)))
             for i_k, key in enumerate(keys):
                 data[:, :, i_k] = np.sum(probablitiy[:, :, self._sublattices == key], axis=2)
-            labels["columns"] = [str(key) for key in keys]
+            labels["orbitals"] = [str(key) for key in keys]
         else:
             data = probablitiy
         return FatBands(self.bands, data, labels)
@@ -1708,3 +1755,54 @@ class Wavefunction:
         """
         fatbands = self.fatbands
         return FatBands(self.bands_disentangled, self.disentangle(fatbands.data), fatbands.labels)
+
+    def spatial_ldos(self, energies: Optional[ArrayLike] = None,
+                     broadening: Optional[float] = None) -> Union[Series, SpatialLDOS]:
+        r"""Calculate the spatial local density of states at the given energy
+
+        .. math::
+            \text{LDOS}(r) = \frac{1}{c \sqrt{2\pi}}
+                             \sum_n{|\Psi_n(r)|^2 e^{-\frac{(E_n - E)^2}{2 c^2}}}
+
+        for each position :math:`r` in `system.positions`, where :math:`E` is `energy`,
+        :math:`c` is `broadening`, :math:`E_n` is `eigenvalues[n]` and :math:`\Psi_n(r)`
+        is `eigenvectors[:, n]`.
+
+        Parameters
+        ----------
+        energies : Arraylike
+            The energy value for which the spatial LDOS is calculated.
+        broadening : float
+            Controls the width of the Gaussian broadening applied to the DOS.
+
+        Returns
+        -------
+        :class:`~pybinding.StructureMap`
+        """
+        if energies is None:
+            energies = np.linspace(np.nanmin(self.bands.energy), np.nanmax(self.bands.energy), 100)
+        if broadening is None:
+            broadening = (np.nanmax(self.bands.energy) - np.nanmin(self.bands.energy)) / 100
+        scale = 1 / (broadening * np.sqrt(2 * np.pi) * self.bands.energy.shape[0])
+        ldos = np.zeros((self.wavefunction.shape[2], len(energies)))
+        for i_k, eigenvalue in enumerate(self.bands.energy):
+            delta = np.nan_to_num(eigenvalue)[:, np.newaxis] - energies
+            gauss = np.exp(-0.5 * delta**2 / broadening**2)
+            psi2 = np.nan_to_num(np.abs(self.wavefunction[i_k].T)**2)
+            ldos += scale * np.sum(psi2[:, :, np.newaxis] * gauss[np.newaxis, :, :], axis=1)
+        if self._system is not None:
+            return SpatialLDOS(ldos.T, energies, self._system)
+        else:
+            labels = {"variable": "E (eV)", "data": "sLDOS", "columns": "orbitals"}
+            if self._sublattices is not None:
+                mapping = self._sublattices.mapping
+                keys = mapping.keys()
+                data = np.zeros((len(energies), len(keys)))
+                for i_k, key in enumerate(keys):
+                    data[:, i_k] = np.sum(ldos[self._sublattices == key, :], axis=0)
+                labels["orbitals"] = [str(key) for key in keys]
+                ldos = data
+            else:
+                labels["orbitals"] = [str(i) for i in range(self.wavefunction.shape[2])]
+                ldos = ldos.T
+            return Series(energies, ldos, labels=labels)

@@ -349,7 +349,8 @@ class Solver:
 
         return results.Wavefunction(results.Bands(k_path, np.vstack(bands)),
                                     np.array(wavefunction, dtype=complex),
-                                    self.system.expanded_sublattices)
+                                    self.system.expanded_sublattices,
+                                    self.system)
 
     @staticmethod
     def find_degenerate_states(energies: ArrayLike, abs_tolerance: float = 1e-5) -> list[list[float]]:

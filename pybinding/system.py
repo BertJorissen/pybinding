@@ -154,7 +154,9 @@ class System(Structure):
         if data.size == self.num_sites:
             return data
         if data.ndim != 1 or data.size != self.hamiltonian_size:
-            raise RuntimeError("The given data does not match the Hamiltonian size")
+            raise RuntimeError("The given data does not match the Hamiltonian size, {0} != {1}".format(
+                data.size, self.hamiltonian_size
+            ))
 
         start = 0
         reduced_data = []
