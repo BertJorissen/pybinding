@@ -62,13 +62,14 @@ class Path(np.ndarray):
 
     def __reduce__(self):
         r = super().__reduce__()
-        state = r[2] + (self.point_indices,)
+        state = r[2] + (self.point_indices, self.point_labels)
         return r[0], r[1], state
 
     # noinspection PyMethodOverriding,PyArgumentList
     def __setstate__(self, state):
-        self.point_indices = state[-1]
-        super().__setstate__(state[:-1])
+        self.point_indices = state[-2]
+        self.point_labels = state[-1]
+        super().__setstate__(state[:-2])
 
     @property
     def points(self) -> np.ndarray:
