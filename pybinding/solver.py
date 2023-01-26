@@ -309,7 +309,21 @@ class Solver:
         """
         k_points = [np.atleast_1d(k) for k in (k0, k1) + ks]
         k_path = results.make_path(*k_points, step=step, point_labels=point_labels)
+        return self.calc_bands_path(k_path)
 
+    def calc_bands_path(self, k_path: results.Path) -> results.Bands:
+        """Calculate the band structure on a path in reciprocal space
+
+        Parameters
+        ----------
+        k_path : `~pybinding.Path`
+            Points in reciprocal space which form the path for the band calculation.
+            At least two points are required.
+
+        Returns
+        -------
+        :class:`~pybinding.Bands`
+        """
         bands = []
         for k in k_path:
             self.set_wave_vector(k)
@@ -339,7 +353,21 @@ class Solver:
 
         k_points = [np.atleast_1d(k) for k in (k0, k1) + ks]
         k_path = results.make_path(*k_points, step=step, point_labels=point_labels)
+        return self.calc_wavefunction_path(k_path)
 
+    def calc_wavefunction_path(self, k_path: results.Path) -> results.Wavefunction:
+        """Calculate the wavefunction on a path in reciprocal space
+
+        Parameters
+        ----------
+        k_path : `~pybinding.Path`
+            Points in reciprocal space which form the path for the band calculation.
+            At least two points are required.
+
+        Returns
+        -------
+        :class:`~pybinding.Wavefunction`
+        """
         bands = []
         wavefunction = []
         for k in k_path:
