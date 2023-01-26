@@ -62,13 +62,14 @@ class Path(np.ndarray):
 
     def __reduce__(self):
         r = super().__reduce__()
-        state = r[2] + (self.point_indices,)
+        state = r[2] + (self.point_indices, self.point_labels)
         return r[0], r[1], state
 
     # noinspection PyMethodOverriding,PyArgumentList
     def __setstate__(self, state):
-        self.point_indices = state[-1]
-        super().__setstate__(state[:-1])
+        self.point_indices = state[-2]
+        self.point_labels = state[-1]
+        super().__setstate__(state[:-2])
 
     @property
     def points(self) -> np.ndarray:
@@ -580,7 +581,8 @@ class StructureMap(SpatialMap):
         decorate_structure_plot(**props, ax=ax)
 
         if collection:
-            plt.sci(collection)
+            ax._sci(collection)
+            # dirty, but it is the same as plt.sci()
         return collection
 
 
@@ -1780,9 +1782,9 @@ class Wavefunction:
         :class:`~pybinding.StructureMap`
         """
         if energies is None:
-            energies = np.linspace(np.nanmin(self.bands.energy), np.nanmax(self.bands.energy), 100)
+            energies = np.linspace(np.nanmin(self.bands.energy), np.nanmax(self.bands.energy), 1000)
         if broadening is None:
-            broadening = (np.nanmax(self.bands.energy) - np.nanmin(self.bands.energy)) / 100
+            broadening = (np.nanmax(self.bands.energy) - np.nanmin(self.bands.energy)) / 1000
         scale = 1 / (broadening * np.sqrt(2 * np.pi) * self.bands.energy.shape[0])
         ldos = np.zeros((self.wavefunction.shape[2], len(energies)))
         for i_k, eigenvalue in enumerate(self.bands.energy):
