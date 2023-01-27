@@ -1082,7 +1082,8 @@ class FatBands(Bands):
                 alpha=0.5,
                 **kwargs
             ))
-        ax.legend(lines, self.labels["orbitals"], title=self.labels["columns"])
+        if legend:
+            ax.legend(lines, self.labels["orbitals"], title=self.labels["columns"])
         ax.set_title(self.labels["title"])
         self._decorate_plot(point_labels, ax)
         return lines
