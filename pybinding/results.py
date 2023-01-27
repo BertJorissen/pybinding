@@ -266,7 +266,8 @@ class Series:
         series_out.labels["orbitals"] = orb_list
         return series_out
 
-    def plot(self, ax: Optional[plt.Axes] = None, axes: Literal['xy', 'yx'] = 'xy', **kwargs) -> None:
+    def plot(self, ax: Optional[plt.Axes] = None, axes: Literal['xy', 'yx'] = 'xy', legend: bool = True,
+             **kwargs) -> None:
         """Labeled line plot
 
         Parameters
@@ -275,6 +276,8 @@ class Series:
             The Axis to plot the results on.
         axes : Literal['xy', 'yx']
             The order of the axes, default: 'xy'.
+        legend : bool
+            Plot the legend of the bands on the axes.
         **kwargs
             Forwarded to `plt.plot()`.
         """
@@ -295,7 +298,7 @@ class Series:
             ax.set_title(self.labels["title"])
         pltutils.despine(ax=ax)
 
-        if self.data.ndim > 1:
+        if self.data.ndim > 1 and legend:
             labels = [str(i) for i in range(self.data.shape[-1])]
             if "orbitals" in self.labels:
                 labels = self.labels["orbitals"]
@@ -1051,7 +1054,7 @@ class FatBands(Bands):
         fatbands_out.labels["orbitals"] = orb_list
         return fatbands_out
 
-    def plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None,
+    def plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None, legend: bool = True,
                   **kwargs) -> Optional[List[PathCollection]]:
         """Line plot of the band structure with the given data
 
@@ -1061,6 +1064,8 @@ class FatBands(Bands):
             Labels for the `k_points`.
         ax : Optional[plt.Axes]
             The Axis to plot the bands on.
+        legend : bool
+            Plot the legend of the bands on the axes.
         **kwargs
             Forwarded to `plt.plot()`.
         """
