@@ -66,12 +66,10 @@ ArrayXXdCM KPM::calc_ldos(ArrayXd const& energy, double broadening, Cartesian po
 
 ArrayXXdCM KPM::calc_spatial_ldos(ArrayXd const& energy, double broadening, Shape const& shape,
                                   string_view sublattice) const {
-    auto indices = model.system()->select_idx_hamiltonian_shape(shape, sublattice);
+    auto const indices = model.system()->select_idx_hamiltonian_shape(shape, sublattice);
 
     auto results = core.ldos(indices, energy, broadening);
 
-    //if (model.is_multiorbital())
-    //   results = ;
     calculation_timer.toc();
 
     return results;

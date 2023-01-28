@@ -147,21 +147,6 @@ std::vector<idx_t> System::select_idx_hamiltonian_shape(Shape const& shape, stri
     return indices;
 }
 
-std::vector<idx_t> System::expanded_sys_index() const {
-    auto ei = std::vector<idx_t> (hamiltonian_size(), -1);
-    for (auto const& sub : compressed_sublattices) {
-        auto const norb = sub.num_orbitals();
-        auto n = sub.ham_start();
-        for (auto i = sub.sys_start(); i < sub.sys_end(); ++i) {
-            for (auto m = 0; m < norb; ++m) {
-                ei[n + m] = i;
-            }
-            n += norb;
-        }
-    }
-    return ei;
-}
-
 namespace detail {
 
 void populate_system(System& system, Foundation const& foundation) {

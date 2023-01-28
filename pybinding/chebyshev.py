@@ -198,9 +198,18 @@ class KPM:
         :class:`SpatialLDOS`
         """
         ldos = self.impl.calc_spatial_ldos(energy, broadening, shape, sublattice)
-        smap = self.system[shape.contains(*self.system.positions)]
+
+        pos_cut = shape.contains(*self.system.positions)
+        smap = self.system[pos_cut]
         if sublattice:
-            smap = smap[smap.sub == sublattice]
+            sub = smap.sub == sublattice
+            smap = smap[sub]
+            pos_cut[pos_cut] = sub
+        if self.model.is_multiorbital:
+            ldos_reduced = np.zeros((ldos.shape[0], smap.num_sites))
+            for e_i in range(ldos.shape[0]):
+                ldos_reduced[e_i] = self.system.reduce_sliced_data(pos_cut, ldos[e_i])
+            ldos = ldos_reduced
         return SpatialLDOS(ldos, energy, smap)
 
     def calc_dos(self, energy: np.ndarray, broadening: float, num_random: int = 1) -> results.Series:

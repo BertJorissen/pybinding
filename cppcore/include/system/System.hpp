@@ -70,9 +70,6 @@ struct System {
 
     /// Find the indices in the hamiltonian that lie with in the given shape
     std::vector<idx_t> select_idx_hamiltonian_shape(Shape const& shape, string_view sublattice) const;
-
-    /// List with at the places of the index of the Hamiltonian the corresponding system index
-    std::vector<idx_t> expanded_sys_index() const;
 };
 
 /**
