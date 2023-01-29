@@ -22,7 +22,7 @@ from matplotlib.collections import LineCollection, PathCollection
 
 __all__ = ['Bands', 'Path', 'Eigenvalues', 'NDSweep', 'Series', 'SpatialMap', 'StructureMap',
            'Sweep', 'make_path', 'save', 'load', 'Wavefunction', 'Disentangle', 'FatBands',
-           'SpatialLDOS']
+           'SpatialLDOS', 'Positions']
 
 
 def _make_crop_indices(obj, limits):
@@ -53,12 +53,17 @@ class Path(np.ndarray):
         obj.point_labels = point_labels
         return obj
 
+    def _default_points(self, obj):
+        default_indices = [0, obj.shape[0] - 1] if len(obj.shape) >= 1 else []
+        default_labels = [str(i) for i in default_indices]
+        return default_indices, default_labels
+
     def __array_finalize__(self, obj):
         if obj is None:
             return
-        default_indices = [0, obj.shape[0] - 1] if len(obj.shape) >= 1 else []
+        default_indices, default_labels = self._default_points(obj)
         self.point_indices = getattr(obj, 'point_indices', default_indices)
-        self.point_labels = getattr(obj, 'point_labels', [str(i) for i in default_indices])
+        self.point_labels = getattr(obj, 'point_labels', default_labels)
 
     def __reduce__(self):
         r = super().__reduce__()
@@ -180,6 +185,75 @@ def make_path(k0: ArrayLike, k1: ArrayLike, *ks: Iterable[ArrayLike], step: floa
     k_paths.append(k_points[-1])
 
     return Path(np.vstack(k_paths), point_indices, point_labels)
+
+
+class Area(Path):
+    """A ndarray which represents a area connecting certain points
+
+    Attributes
+    ----------
+    point_indices : List[int]
+        Indices of the significant points along the path. Minimum 2: start and end.
+    point_labels : Optional[List[str]]
+        Labels for the significant points along the path.
+    """
+    def __new__(cls, array: ArrayLike, point_indices: Optional[Union[List[List[int]], List[int]]] = None,
+                point_labels: Optional[List[str]] = None):
+        assert np.ndim(array) >= 3, "The area should be at least a 2D area of a 1D k-space"
+        len_x, len_y = np.shape(array)[:2]
+        if point_indices is None:
+            point_indices = [0, int(len_x * len_y) - 1]
+        if np.ndim(point_indices) >= 2:
+            point_indices = np.array(point_indices, dtype=int).reshape(-1, 2)
+            idx_x, idx_y = np.transpose(point_indices)
+            point_indices = np.arange(len_x * len_y).reshape((len_x, len_y))[idx_x, idx_y]
+        return super().__new__(cls, array, point_indices, point_labels)
+
+    def _default_points(self, obj):
+        default_indices = [0, np.prod(obj.shape[:2]) - 1] if len(obj.shape) == 2 else super()._default_points(obj)[0]
+        default_labels = [str(i) for i in default_indices]
+        return default_indices, default_labels
+
+    @property
+    def points(self) -> np.ndarray:
+        """Significant points along the path, including start and end"""
+        return self[[int(idx // self.shape[0]) for idx in self.point_indices],
+                    [int(idx % self.shape[0]) for idx in self.point_indices]]
+
+    def plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None,
+             **kwargs) -> FancyArrow:
+        if ax is None:
+            ax = plt.gca()
+        out = super().plot(point_labels, ax, **kwargs)
+        ax.scatter(self[:, :, 0], self[:, :, 1])
+        return out
+
+
+def make_area(k0: ArrayLike, k1: ArrayLike, k_origin: Optional[ArrayLike] = None, step: float = 0.1):
+    """Create an area of k-point between k0 and k1, starting from k_origin.
+
+    Parameters
+    ----------
+    k0, k1
+        Point to which the area goes
+    k_origin
+        Point from which the area begins, default = [0, 0]
+    step : float
+        Length in k-space between two samples.
+    """
+    k0, k1 = [np.atleast_1d(k) for k in (k0, k1)]
+    if k_origin is None:
+        k_origin = np.zeros(np.shape(k0))
+    else:
+        k_origin = np.atleast_1d(k_origin)
+    if not all(k.shape == k_origin.shape for k in (k0, k1, k_origin)):
+        raise RuntimeError("All k-points must have the same shape")
+    num_steps = [int(np.linalg.norm(k - k_origin) // step) for k in (k0, k1)]
+    subdivs = [np.linspace(0, 1, num_step) for num_step in num_steps]
+    k_x, k_y = np.meshgrid(*subdivs)
+    return Area(np.array(k_x[:, :, np.newaxis] * k0[np.newaxis, np.newaxis, :]
+                        + k_y[:, :, np.newaxis] * k1[np.newaxis, np.newaxis, :]
+                        + k_origin[np.newaxis, np.newaxis, :]))
 
 
 @pickleable
