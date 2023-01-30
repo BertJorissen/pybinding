@@ -22,7 +22,7 @@ from matplotlib.collections import LineCollection, PathCollection
 
 __all__ = ['Bands', 'Path', 'Eigenvalues', 'NDSweep', 'Series', 'SpatialMap', 'StructureMap',
            'Sweep', 'make_path', 'save', 'load', 'Wavefunction', 'Disentangle', 'FatBands',
-           'SpatialLDOS', 'Positions', 'BandsArea']
+           'SpatialLDOS', 'Positions', 'BandsArea', 'FatBandsArea', 'WavefunctionArea', 'make_area']
 
 
 def _make_crop_indices(obj, limits):
@@ -392,7 +392,7 @@ class SpatialMap:
     """Represents some spatially dependent property: data mapped to site positions"""
     # TODO: check typing
     def __init__(self, data: ArrayLike, positions: Union[ArrayLike, AbstractSites], sublattices=None):
-        self._data = np.atleast_1d(data)
+        self.data = np.atleast_1d(data)
         if sublattices is None and isinstance(positions, AbstractSites):
             self._sites = positions
         else:
@@ -942,7 +942,19 @@ class Bands:
 
     @property
     def num_bands(self) -> int:
-        return self.energy.shape[1]
+        return self._energy.shape[1]
+
+    @property
+    def energy(self) -> np.ndarray:
+        return self._energy
+
+    @energy.setter
+    def energy(self, energy: np.ndarray) -> np.ndarray:
+        self._energy = energy
+
+    @property
+    def energy_1d(self) -> np.ndarray:
+        return self._energy
 
     def plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None,
              **kwargs) -> Optional[List[plt.Line2D]]:
@@ -964,7 +976,7 @@ class Bands:
         kwargs = with_defaults(kwargs, color=default_color, lw=default_linewidth)
 
         k_space = self.k_path.as_1d()
-        lines_out = ax.plot(k_space, self.energy, **kwargs)
+        lines_out = ax.plot(k_space, self.energy_1d, **kwargs)
 
         self._decorate_plot(point_labels, ax)
         return lines_out
@@ -1000,7 +1012,7 @@ class Bands:
         # Draw vertical lines at significant points. Because of the `transLimits.transform`,
         # this must be the done last, after all others plot elements are positioned.
         for idx in self.k_path.point_indices:
-            ymax = ax.transLimits.transform([0, np.nanmax(self.energy[idx])])[1]
+            ymax = ax.transLimits.transform([0, np.nanmax(self.energy_1d[idx])])[1]
             ax.axvline(k_space[idx], ymax=ymax, color="0.4", lw=0.8, ls=":", zorder=-1)
 
     def plot_kpath(self, point_labels: Optional[List[str]] = None, **kwargs) -> None:
@@ -1038,12 +1050,12 @@ class Bands:
         :class:`~pybinding.Series`
         """
         if energies is None:
-            energies = np.linspace(np.nanmin(self.energy), np.nanmax(self.energy), 100)
+            energies = np.linspace(np.nanmin(self.energy_1d), np.nanmax(self.energy_1d), 100)
         if broadening is None:
-            broadening = (np.nanmax(self.energy) - np.nanmin(self.energy)) / 100
-        scale = 1 / (broadening * np.sqrt(2 * np.pi) * self.energy.shape[0])
+            broadening = (np.nanmax(self.energy_1d) - np.nanmin(self.energy_1d)) / 100
+        scale = 1 / (broadening * np.sqrt(2 * np.pi) * self.energy_1d.shape[0])
         dos = np.zeros(len(energies))
-        for eigenvalue in self.energy:
+        for eigenvalue in self.energy_1d:
             delta = eigenvalue[:, np.newaxis] - energies
             dos += scale * np.sum(np.exp(-0.5 * delta**2 / broadening**2), axis=0)
         return Series(energies, dos, labels=dict(variable="E (eV)", data="DOS"))
@@ -1068,34 +1080,47 @@ class FatBands(Bands):
         super().__init__(bands.k_path, bands.energy)
         self.data = np.atleast_2d(data)
         self.labels = with_defaults(
-            labels, variable="E (eV)", data="pDOS", columns="", title="",
-            orbitals=[str(i) for i in range(self.data.shape[1])] if self.data.ndim == 2 else [])
+            labels, variable="E (eV)", data="pDOS", columns="Orbitals", title="",
+            orbitals=[str(i) for i in range(self.data_1d.shape[2])] if self.data_1d.ndim == 3 else []
+        )
+
+    @property
+    def data(self) -> np.ndarray:
+        return self._data
+
+    @data.setter
+    def data(self, data: np.ndarray):
+        self._data = data
+
+    @property
+    def data_1d(self) -> np.ndarray:
+        return self._data
 
     def with_data(self, data: np.ndarray) -> 'FatBands':
         """Return a copy of this result object with different data"""
         result = copy(self)
-        result.data = data
+        result._data = data
         return result
 
     def __add__(self, other: 'FatBands') -> 'FatBands':
         """Add together the data of two FatBands object in a new object."""
-        if self.data.ndim < other.data.ndim:
+        if self.data_1d.ndim < other.data_1d.ndim:
             # keep information about the orbitals, so take the other series as a reference
-            return other.with_data(self.data[:, :, np.newaxis] + other.data)
-        elif self.data.ndim > other.data.ndim:
-            return self.with_data(self.data + other.data[:, :, np.newaxis])
+            return other.with_data(self.data_1d[:, :, np.newaxis] + other.data_1d)
+        elif self.data_1d.ndim > other.data_1d.ndim:
+            return self.with_data(self.data_1d + other.data_1d[:, :, np.newaxis])
         else:
-            return self.with_data(self.data + other.data)
+            return self.with_data(self.data_1d + other.data_1d)
 
     def __sub__(self, other: 'FatBands') -> 'FatBands':
         """Subtract the data of two FatBands object in a new object."""
-        if self.data.ndim < other.data.ndim:
+        if self.data_1d.ndim < other.data_1d.ndim:
             # keep information about the orbitals, so take the other series as a reference
-            return other.with_data(self.data[:, :, np.newaxis] - other.data)
-        elif self.data.ndim > other.data.ndim:
-            return self.with_data(self.data - other.data[:, :, np.newaxis])
+            return other.with_data(self.data_1d[:, :, np.newaxis] - other.data_1d)
+        elif self.data_1d.ndim > other.data_1d.ndim:
+            return self.with_data(self.data_1d - other.data_1d[:, :, np.newaxis])
         else:
-            return self.with_data(self.data - other.data)
+            return self.with_data(self.data_1d - other.data_1d)
 
     def reduced(self, columns: Optional[List[int]] = None, orbitals: Optional[List[str]] = None,
                 fill_other: float = 0.) -> 'FatBands':
@@ -1115,9 +1140,9 @@ class FatBands(Bands):
         fill_other : float
             In case an array is made with a new column, fill it with this value. Default: 0.
         """
-        data = self.data
+        data = self.data_1d
         if data.ndim == 2:
-            data = self.data[:, np.newaxis]
+            data = self.data_1d[:, np.newaxis]
         col_idx = np.array(columns or np.zeros(data.shape[2]), dtype=int)
         if np.all(col_idx == 0):
             # case where all the axis are summed over, no 'orbital' label is needed
@@ -1137,7 +1162,7 @@ class FatBands(Bands):
         return fatbands_out
 
     def plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None, legend: bool = True,
-                  **kwargs) -> Optional[List[PathCollection]]:
+             **kwargs) -> Optional[List[PathCollection]]:
         """Line plot of the band structure with the given data
 
         Parameters
@@ -1153,14 +1178,14 @@ class FatBands(Bands):
         """
         if ax is None:
             ax = plt.gca()
-        k_space = np.ones(self.energy.shape) * self.k_path.as_1d()[:, np.newaxis]
+        k_space = np.ones(self.energy_1d.shape) * self.k_path.as_1d()[:, np.newaxis]
         lines = []
-        data_length = self.data.shape[2] if self.data.ndim == 3 else 1
+        data_length = self.data_1d.shape[2] if self.data_1d.ndim == 3 else 1
         for d_i in range(data_length):
             lines.append(ax.scatter(
                 k_space,
-                self.energy,
-                s=np.nan_to_num(np.abs(self.data[:, :, d_i]) if self.data.ndim == 3 else self.data) * 20,
+                self.energy_1d,
+                s=np.nan_to_num(np.abs(self.data_1d[:, :, d_i]) if self.data_1d.ndim == 3 else self.data_1d) * 20,
                 alpha=0.5,
                 **kwargs
             ))
@@ -1194,11 +1219,11 @@ class FatBands(Bands):
         if ax is None:
             ax = plt.gca()
         k_space = self.k_path.as_1d()
-        data = self.data[:, :, idx] if self.data.ndim == 3 else self.data
+        data = self.data_1d[:, :, idx] if self.data_1d.ndim == 3 else self.data_1d
         ax.set_xlim(np.nanmin(k_space), np.nanmax(k_space))
-        ax.set_ylim(np.nanmin(self.energy), np.nanmax(self.energy))
+        ax.set_ylim(np.nanmin(self.energy_1d), np.nanmax(self.energy_1d))
         ax.set_title(self.labels["title"])
-        line = pltutils.plot_color(k_space, self.energy, data[:-1, :], ax, **kwargs)
+        line = pltutils.plot_color(k_space, self.energy_1d, data[:-1, :], ax, **kwargs)
         self._decorate_plot(point_labels, ax)
         if plot_colorbar:
             plt.colorbar(line, ax=ax, label=self.labels["orbitals"][idx])
@@ -1226,13 +1251,13 @@ class FatBands(Bands):
         :class:`~pybinding.Series`
         """
         if energies is None:
-            energies = np.linspace(np.nanmin(self.energy), np.nanmax(self.energy), 100)
+            energies = np.linspace(np.nanmin(self.energy_1d), np.nanmax(self.energy_1d), 100)
         if broadening is None:
-            broadening = (np.nanmax(self.energy) - np.nanmin(self.energy)) / 100
-        scale = 1 / (broadening * np.sqrt(2 * np.pi) * self.energy.shape[0])
-        data = self.data if self.data.ndim == 3 else self.data[:, :, np.newaxis]
+            broadening = (np.nanmax(self.energy_1d) - np.nanmin(self.energy_1d)) / 100
+        scale = 1 / (broadening * np.sqrt(2 * np.pi) * self.energy_1d.shape[0])
+        data = self.data_1d if self.data_1d.ndim == 3 else self.data_1d[:, :, np.newaxis]
         dos = np.zeros((data.shape[2], len(energies)))
-        for i_k, eigenvalue in enumerate(self.energy):
+        for i_k, eigenvalue in enumerate(self.energy_1d):
             delta = np.nan_to_num(eigenvalue[:, np.newaxis]) - energies
             gauss = np.exp(-0.5 * delta**2 / broadening**2)
             datal = np.nan_to_num(data[i_k])
@@ -1255,10 +1280,20 @@ class BandsArea(Bands):
     def __init__(self, k_area: Area, energy: np.ndarray):
         self.k_dims = np.shape(k_area)
         k_path: Path = Path(
-            np.atleast_1d(k_area.reshape(-1, k_area.shape[-1])), k_area.point_indices, k_area.point_labels
+            np.atleast_1d(k_area.reshape(np.prod(self.k_dims[:2]), -1)),
+            k_area.point_indices,
+            k_area.point_labels
         )
-        energy = np.atleast_2d(energy.reshape(-1, k_area.shape[-1]))
-        super().__init__(k_path, energy)
+        energy = np.atleast_2d(energy)
+        Bands.__init__(self, k_path, energy)
+
+    @property
+    def energy(self) -> np.ndarray:
+        return self._energy.reshape((self.k_dims[0], self.k_dims[1], -1))
+
+    @energy.setter
+    def energy(self, energy: np.ndarray):
+        self._energy = energy.reshape((np.prod(self.k_dims[:2]), -1))
 
     @property
     def k_area(self) -> Area:
@@ -1281,6 +1316,45 @@ class BandsArea(Bands):
             Forwarded to :func:`~matplotlib.pyplot.scatter`.
         """
         self.k_area.plot(point_labels, **kwargs)
+    # TODO: add a function to make a area-plot for the results
+
+
+@pickleable
+class FatBandsArea(BandsArea, FatBands):
+    """Band structure with data per k-point, like SOC or pDOS
+
+    Attributes
+    ----------
+    bands : :class:`BandsArea`
+        The bands on wich the data is written
+    data : array_like
+        An array of values wich were computed as a function of the bands.k_path.
+        It can be 2D or 3D. In the latter case each column represents the result
+        of a different function applied to the same `variable` input.
+    labels : dict
+        Plot labels: 'data', 'title' and 'columns'.
+    """
+    def __init__(self, bands: BandsArea, data: ArrayLike, labels: Optional[dict] = None):
+        super().__init__(bands.k_area, bands.energy)
+        self.data = np.atleast_3d(data)
+        self.labels = with_defaults(
+            labels, variable="E (eV)", data="pDOS", columns="Orbitals", title="",
+            orbitals=[str(i) for i in range(self.data_1d.shape[2])] if self.data_1d.ndim == 3 else []
+        )
+
+    @property
+    def data(self) -> np.ndarray:
+        data_size = [self.k_dims[0], self.k_dims[1]]
+        for ds in self._data.shape[1:]:
+            data_size.append(ds)
+        return self._data.reshape(data_size)
+
+    @data.setter
+    def data(self, data: np.ndarray):
+        data_size = [self.k_dims[0] * self.k_dims[1]]
+        for ds in data.shape[2:]:
+            data_size.append(ds)
+        self._data = data.reshape(data_size)
 
 
 @pickleable
@@ -1816,6 +1890,18 @@ class Wavefunction:
         self._system = system
 
     @property
+    def wavefunction(self) -> np.ndarray:
+        return self._wavefunction
+
+    @wavefunction.setter
+    def wavefunction(self, wavefunction: np.ndarray):
+        self._wavefunction = wavefunction
+
+    @property
+    def wavefunction_1d(self) -> np.ndarray:
+        return self._wavefunction
+
+    @property
     def overlap_matrix(self) -> np.ndarray:
         """ Give back the overlap matrix
 
@@ -1833,11 +1919,11 @@ class Wavefunction:
             Returns : np.ndarray()
                 3D array with the relative coverlap between the k-point and the previous k-point
             """
-        assert len(self.wavefunction.shape) == 3, \
-            "The favefunction has the wrong shape, {0} and not 3".format(len(self.wavefunction.shape))
-        n_k = self.wavefunction.shape[0]
+        assert len(self.wavefunction_1d.shape) == 3, \
+            "The favefunction has the wrong shape, {0} and not 3".format(len(self.wavefunction_1d.shape))
+        n_k = self.wavefunction_1d.shape[0]
         assert n_k > 1, "There must be more than one k-point, first dimension is not larger than 1."
-        return np.array([np.abs(self.wavefunction[i_k] @ self.wavefunction[i_k + 1].T.conj())
+        return np.array([np.abs(self.wavefunction_1d[i_k] @ self.wavefunction_1d[i_k + 1].T.conj())
                          for i_k in range(n_k - 1)])
 
     @property
@@ -1857,7 +1943,7 @@ class Wavefunction:
 
         Returns : Bands
             The reordered eigenvalues in a Bands-class."""
-        return Bands(self.bands.k_path, self.disentangle(self.bands.energy))
+        return Bands(self.bands.k_path, self.disentangle(self.bands.energy_1d))
 
     @property
     def fatbands(self) -> FatBands:
@@ -1866,18 +1952,18 @@ class Wavefunction:
         Returns : FatBands
             The (unsorted) bands with the pDOS.
         """
-        probablitiy = np.abs(self.wavefunction ** 2)
+        probablitiy = np.abs(self.wavefunction_1d ** 2)
         labels = {"data": "pDOS", "columns": "orbital"}
         if self._sublattices is not None:
             mapping = self._sublattices.mapping
             keys = mapping.keys()
-            data = np.zeros((self.bands.energy.shape[0], self.bands.energy.shape[1], len(keys)))
+            data = np.zeros((self.bands.energy_1d.shape[0], self.bands.energy_1d.shape[1], len(keys)))
             for i_k, key in enumerate(keys):
                 data[:, :, i_k] = np.sum(probablitiy[:, :, self._sublattices == key], axis=2)
             labels["orbitals"] = [str(key) for key in keys]
         else:
             data = probablitiy
-        return FatBands(self.bands, data, labels)
+        return FatBands(Bands(self.bands.k_path, self.bands.energy_1d), data, labels)
 
     @property
     def fatbands_disentangled(self) -> FatBands:
@@ -1887,7 +1973,7 @@ class Wavefunction:
             The (sorted) bands with the pDOS.
         """
         fatbands = self.fatbands
-        return FatBands(self.bands_disentangled, self.disentangle(fatbands.data), fatbands.labels)
+        return FatBands(Bands(self.bands.k_path, self.bands_disentangled.energy_1d), self.disentangle(fatbands.data_1d), fatbands.labels)
 
     def spatial_ldos(self, energies: Optional[ArrayLike] = None,
                      broadening: Optional[float] = None) -> Union[Series, SpatialLDOS]:
@@ -1913,15 +1999,15 @@ class Wavefunction:
         :class:`~pybinding.StructureMap`
         """
         if energies is None:
-            energies = np.linspace(np.nanmin(self.bands.energy), np.nanmax(self.bands.energy), 1000)
+            energies = np.linspace(np.nanmin(self.bands.energy_1d), np.nanmax(self.bands.energy_1d), 1000)
         if broadening is None:
-            broadening = (np.nanmax(self.bands.energy) - np.nanmin(self.bands.energy)) / 1000
-        scale = 1 / (broadening * np.sqrt(2 * np.pi) * self.bands.energy.shape[0])
-        ldos = np.zeros((self.wavefunction.shape[2], len(energies)))
-        for i_k, eigenvalue in enumerate(self.bands.energy):
+            broadening = (np.nanmax(self.bands.energy_1d) - np.nanmin(self.bands.energy_1d)) / 1000
+        scale = 1 / (broadening * np.sqrt(2 * np.pi) * self.bands.energy_1d.shape[0])
+        ldos = np.zeros((self.wavefunction_1d.shape[2], len(energies)))
+        for i_k, eigenvalue in enumerate(self.bands.energy_1d):
             delta = np.nan_to_num(eigenvalue)[:, np.newaxis] - energies
             gauss = np.exp(-0.5 * delta**2 / broadening**2)
-            psi2 = np.nan_to_num(np.abs(self.wavefunction[i_k].T)**2)
+            psi2 = np.nan_to_num(np.abs(self.wavefunction_1d[i_k].T)**2)
             ldos += scale * np.sum(psi2[:, :, np.newaxis] * gauss[np.newaxis, :, :], axis=1)
         if self._system is not None:
             return SpatialLDOS(ldos.T, energies, self._system)
@@ -1936,6 +2022,56 @@ class Wavefunction:
                 labels["orbitals"] = [str(key) for key in keys]
                 ldos = data
             else:
-                labels["orbitals"] = [str(i) for i in range(self.wavefunction.shape[2])]
+                labels["orbitals"] = [str(i) for i in range(self.wavefunction_1d.shape[2])]
                 ldos = ldos.T
             return Series(energies, ldos, labels=labels)
+
+
+class WavefunctionArea(Wavefunction):
+    def __init__(self, bands: BandsArea, wavefunction: np.ndarray, sublattices: Optional[AliasArray] = None,
+                 system=None):
+        """ Class to store the results of a Wavefunction for an Area.
+
+        Parameters:
+            bands : BandsArea
+                The band structure, with eigenvalues and k_path, of the wavefunction
+            wavefunction : np.ndarray()
+                ND-array. The first dimension corresponds with the k-point, the second with the band (sorted values),
+                the last index with the relative dimension of the wavefunction. The wavefunction is complex,
+                and already rescaled to give a norm of 1. The np.dot-function is used to calculate the overlap
+                with the hermitian conjugate.
+        """
+        super().__init__(bands, wavefunction, sublattices, system)
+        self.bands: BandsArea = bands
+
+    @property
+    def wavefunction(self) -> np.ndarray:
+        wfc_size = [self.bands.k_dims[0], self.bands.k_dims[1]]
+        for ws in self._wavefunction.shape[1:]:
+            wfc_size.append(ws)
+        return self._wavefunction.reshape(wfc_size)
+
+    @wavefunction.setter
+    def wavefunction(self, wavefunction: np.ndarray):
+        wfc_size = [self.bands.k_dims[0] * self.bands.k_dims[1]]
+        for ws in wavefunction.shape[2:]:
+            wfc_size.append(ws)
+        self._wavefunction = wavefunction.reshape(wfc_size)
+
+    @property
+    def fatbandsarea(self) -> FatBandsArea:
+        data_size = [self.bands.k_dims[0], self.bands.k_dims[1]]
+        for ds in self.fatbands.data.shape[1:]:
+            data_size.append(ds)
+        return FatBandsArea(self.bands, self.fatbands.data.reshape(data_size), self.fatbands.labels)
+
+    @property
+    def fatbandsarea_disentangled(self) -> FatBandsArea:
+        data_size = [self.bands.k_dims[0], self.bands.k_dims[1]]
+        for ds in self.fatbands.data.shape[1:]:
+            data_size.append(ds)
+        energy_size = [self.bands.k_dims[0], self.bands.k_dims[1]]
+        for es in self.fatbands.energy.shape[1:]:
+            data_size.append(es)
+        return FatBandsArea(BandsArea(self.bands.k_area, self.bands_disentangled.energy_1d.reshape(energy_size)),
+                            self.disentangle(self.fatbands.data_1d).reshape(data_size), self.fatbands.labels)

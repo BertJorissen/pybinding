@@ -400,6 +400,31 @@ class Solver:
                                     self.system.expanded_sublattices,
                                     self.system)
 
+    def calc_wavefunction_area(self, k_area: results.Area) -> results.WavefunctionArea:
+        """Calculate the wavefunction on a path in reciprocal space
+
+        Parameters
+        ----------
+        k_path : `~pybinding.Path`
+            Points in reciprocal space which form the path for the band calculation.
+            At least two points are required.
+
+        Returns
+        -------
+        :class:`~pybinding.WavefunctionArea`
+        """
+        bands = []
+        wavefunction = []
+        for k in k_area.reshape((np.prod(k_area.shape[:2]), -1)):
+            self.set_wave_vector(k)
+            bands.append(self.eigenvalues)
+            wavefunction.append(self.eigenvectors.T)
+
+        return results.WavefunctionArea(
+            results.BandsArea(k_area, np.vstack(bands).reshape((k_area.shape[0], k_area.shape[1], -1))),
+            np.array(wavefunction, dtype=complex).reshape((k_area.shape[0], k_area.shape[1], np.shape(wavefunction)[1], np.shape(wavefunction)[1])),
+            self.system.expanded_sublattices, self.system)
+
     @staticmethod
     def find_degenerate_states(energies: ArrayLike, abs_tolerance: float = 1e-5) -> list[list[float]]:
         """Return groups of indices which belong to degenerate states
