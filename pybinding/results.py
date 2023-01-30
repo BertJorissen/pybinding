@@ -22,7 +22,7 @@ from matplotlib.collections import LineCollection, PathCollection
 
 __all__ = ['Bands', 'Path', 'Eigenvalues', 'NDSweep', 'Series', 'SpatialMap', 'StructureMap',
            'Sweep', 'make_path', 'save', 'load', 'Wavefunction', 'Disentangle', 'FatBands',
-           'SpatialLDOS', 'Positions']
+           'SpatialLDOS', 'Positions', 'BandsArea']
 
 
 def _make_crop_indices(obj, limits):
@@ -217,8 +217,8 @@ class Area(Path):
     @property
     def points(self) -> np.ndarray:
         """Significant points along the path, including start and end"""
-        return self[[int(idx // self.shape[0]) for idx in self.point_indices],
-                    [int(idx % self.shape[0]) for idx in self.point_indices]]
+        return self[[int(idx % self.shape[0]) for idx in self.point_indices],
+                    [int(idx // self.shape[0]) for idx in self.point_indices]]
 
     def plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None,
              **kwargs) -> FancyArrow:
@@ -229,7 +229,9 @@ class Area(Path):
         return out
 
 
-def make_area(k0: ArrayLike, k1: ArrayLike, k_origin: Optional[ArrayLike] = None, step: float = 0.1):
+def make_area(k0: ArrayLike, k1: ArrayLike, k_origin: Optional[ArrayLike] = None, step: float = 0.1,
+              point_indices: Optional[Union[List[int], List[List[int]]]] = None,
+              point_labels: Optional[List[str]] = None,) -> Area:
     """Create an area of k-point between k0 and k1, starting from k_origin.
 
     Parameters
@@ -240,6 +242,11 @@ def make_area(k0: ArrayLike, k1: ArrayLike, k_origin: Optional[ArrayLike] = None
         Point from which the area begins, default = [0, 0]
     step : float
         Length in k-space between two samples.
+    point_indices : Union[List[str], List[List[str]]
+        The indices that are spcial. If 1D, the N-th position in the array.flatten() will be taken.
+    point_labels : List[str]
+        The labels for the chosen special points.
+        If None, the default values from `pb.results.Area` will be used.
     """
     k0, k1 = [np.atleast_1d(k) for k in (k0, k1)]
     if k_origin is None:
@@ -251,9 +258,10 @@ def make_area(k0: ArrayLike, k1: ArrayLike, k_origin: Optional[ArrayLike] = None
     num_steps = [int(np.linalg.norm(k - k_origin) // step) for k in (k0, k1)]
     subdivs = [np.linspace(0, 1, num_step) for num_step in num_steps]
     k_x, k_y = np.meshgrid(*subdivs)
-    return Area(np.array(k_x[:, :, np.newaxis] * k0[np.newaxis, np.newaxis, :]
-                        + k_y[:, :, np.newaxis] * k1[np.newaxis, np.newaxis, :]
-                        + k_origin[np.newaxis, np.newaxis, :]))
+    k_points = k_x[:, :, np.newaxis] * k0[np.newaxis, np.newaxis, :]
+    k_points += k_y[:, :, np.newaxis] * k1[np.newaxis, np.newaxis, :]
+    k_points += k_origin[np.newaxis, np.newaxis, :]
+    return Area(k_points, point_indices, point_labels)
 
 
 @pickleable
@@ -1230,6 +1238,49 @@ class FatBands(Bands):
             datal = np.nan_to_num(data[i_k])
             dos += scale * np.sum(datal[:, :, np.newaxis] * gauss[:, np.newaxis, :], axis=0)
         return Series(energies, dos.T, labels=self.labels)
+
+
+@pickleable
+class BandsArea(Bands):
+    """Band structure alond an area in k-space
+
+    Attributes
+    ----------
+    k_area : :class:`Area`
+        The Area in reciprocal space for which the bands were calculated.
+        E.g. constructed using :func:`make_area`.
+    energy : array_like
+        Energy values for the bands along the path in k-space.
+    """
+    def __init__(self, k_area: Area, energy: np.ndarray):
+        self.k_dims = np.shape(k_area)
+        k_path: Path = Path(
+            np.atleast_1d(k_area.reshape(-1, k_area.shape[-1])), k_area.point_indices, k_area.point_labels
+        )
+        energy = np.atleast_2d(energy.reshape(-1, k_area.shape[-1]))
+        super().__init__(k_path, energy)
+
+    @property
+    def k_area(self) -> Area:
+        return Area(
+            self.k_path.reshape(self.k_dims[0], self.k_dims[1], -1),
+            self.k_path.point_indices,
+            self.k_path.point_labels
+        )
+
+    def plot_karea(self, point_labels: Optional[List[str]] = None, **kwargs) -> None:
+        """Scatter plot of the k-area along which the bands were computed
+
+        Combine with :meth:`.Lattice.plot_brillouin_zone` to see the path in context.
+
+        Parameters
+        ----------
+        point_labels : Optional[List[str]]
+            Labels for the k-points.
+        **kwargs
+            Forwarded to :func:`~matplotlib.pyplot.scatter`.
+        """
+        self.k_area.plot(point_labels, **kwargs)
 
 
 @pickleable

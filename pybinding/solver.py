@@ -331,6 +331,26 @@ class Solver:
 
         return results.Bands(k_path, np.vstack(bands))
 
+    def calc_bands_area(self, k_area: results.Area) -> results.BandsArea:
+        """Calculate the band structure on a path in reciprocal space
+
+        Parameters
+        ----------
+        k_area : `~pybinding.Area`
+            Points in reciprocal space which form the Area for the band calculation.
+            At least two points are required.
+
+        Returns
+        -------
+        :class:`~pybinding.BandsArea`
+        """
+        bands = []
+        for k in k_area.reshape((np.prod(k_area.shape[:2]), -1)):
+            self.set_wave_vector(k)
+            bands.append(self.eigenvalues)
+
+        return results.BandsArea(k_area, np.vstack(bands).reshape((k_area.shape[0], k_area.shape[1], -1)))
+
     def calc_wavefunction(self, k0: ArrayLike, k1: ArrayLike, *ks: Iterable[ArrayLike], step: float = 0.1,
                           point_labels: Optional[List[str]] = None) -> results.Wavefunction:
         """Calculate the wavefunction on a path in reciprocal space
