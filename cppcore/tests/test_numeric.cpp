@@ -52,25 +52,25 @@ TEST_CASE("Aligned size") {
 }
 
 TEST_CASE("concat") {
-    auto const x1 = ArrayXf::Constant(3, 1).eval();
-    auto const x2 = ArrayXf::LinSpaced(3, 2, 4).eval();
-    auto expected_x = ArrayXf(6);
+    auto const x1 = ArrayXd::Constant(3, 1).eval();
+    auto const x2 = ArrayXd::LinSpaced(3, 2, 4).eval();
+    auto expected_x = ArrayXd(6);
     expected_x << 1, 1, 1, 2, 3, 4;
 
     auto const result_x = concat(x1, x2);
     REQUIRE(result_x.isApprox(expected_x));
 
-    auto const y1 = ArrayXf::Constant(3, 2).eval();
-    auto const y2 = ArrayXf::LinSpaced(3, 3, 5).eval();
-    auto expected_y = ArrayXf(6);
+    auto const y1 = ArrayXd::Constant(3, 2).eval();
+    auto const y2 = ArrayXd::LinSpaced(3, 3, 5).eval();
+    auto expected_y = ArrayXd(6);
     expected_y << 2, 2, 2, 3, 4, 5;
 
     auto const result_y = concat(y1, y2);
     REQUIRE(result_y.isApprox(expected_y));
 
-    auto const z1 = ArrayXf::Constant(3, 0).eval();
-    auto const z2 = ArrayXf::Constant(3, -1).eval();
-    auto expected_z = ArrayXf(6);
+    auto const z1 = ArrayXd::Constant(3, 0).eval();
+    auto const z2 = ArrayXd::Constant(3, -1).eval();
+    auto expected_z = ArrayXd(6);
     expected_z << 0, 0, 0, -1, -1, -1;
 
     auto const result_z = concat(z1, z2);
