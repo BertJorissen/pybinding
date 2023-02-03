@@ -142,7 +142,7 @@ void OptimizedHamiltonian::create_reordered(Indices const& idx, Scale<> s) {
 
             // block-diagonal, but the first element is zero --> loop won't find element --> insert by hand
             bool zero_element = true;
-            h_view.for_each_in_row(row, [&](storage_idx_t col, scalar_t value) {
+            h_view.for_each_in_row(row, [&](storage_idx_t col, scalar_t) {
                 if (col == row) zero_element = false;
             });
             if (zero_element) {
