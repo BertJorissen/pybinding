@@ -440,7 +440,7 @@ def plot_hoppings(positions: tuple[ArrayLike, ArrayLike, ArrayLike], hoppings: s
 
     # leave only the desired hoppings
     if draw_only:
-        keep = np.zeros_like(hoppings.data, dtype=np.bool)
+        keep = np.zeros_like(hoppings.data, dtype=bool)
         for hop_id in draw_only:
             keep = np.logical_or(keep, hoppings.data == hop_id)
         hoppings.data = hoppings.data[keep]
