@@ -159,7 +159,7 @@ namespace {
         CartesianArrayConstRef pos1;
         CartesianArrayConstRef pos2;
 
-        static constexpr auto scale = 1e-18f;
+        static constexpr auto scale = 1e-18;
 
         template<class Array>
         void operator()(Array) const {}

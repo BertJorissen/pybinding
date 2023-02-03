@@ -78,7 +78,7 @@ def test_type_errors():
 
     with pytest.raises(TypeError) as excinfo:
         build_model(pb.site_position_modifier(lambda x: (np.ones_like(x, dtype=np.complex128),)*3))
-    assert "'complex128', but expected same kind as 'float32'" in str(excinfo.value)
+    assert "'complex128', but expected same kind as 'float64'" in str(excinfo.value)
 
 
 def test_cast():
