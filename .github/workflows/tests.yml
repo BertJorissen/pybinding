@@ -39,7 +39,7 @@ jobs:
       run: cd build_tests && make docs
     - name: Publish docs
       if: runner.os == 'Ubuntu'
-      uses: actions/github-pages-deploy-action@v4
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
         folder: docs/html
 
