@@ -23,7 +23,7 @@ jobs:
     - name: Install dependencies Pybinding
       run: python -m pip install wheel scipy matplotlib pytest cmake ninja
     - name: Set up MSVC
-      if: runner.os == 'windows-latest'
+      if: runner.os == 'Windows'
       uses: ilammy/msvc-dev-cmd@v1
     - name: Build with CMake and test Python / C++
       run: mkdir build_tests && cd build_tests && cmake .. && make tests && cd ..
@@ -36,7 +36,7 @@ jobs:
     - name: Test Documentation
       run: cd build_tests && make docs
     - name: Publish docs
-      if: runner.os == 'ubuntu-latest'
+      if: runner.os == 'Linux'
       uses: JamesIves/github-pages-deploy-action@v4
       with:
         folder: docs/html
