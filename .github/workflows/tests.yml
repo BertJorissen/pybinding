@@ -1,9 +1,12 @@
-name: tests
+name: tests and publish
 
 on: [push]
+permissions:
+  contents: write
 
 jobs:
   build:
+    concurrency: ci-${{ github.ref }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -17,16 +20,28 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
+    - name: Install dependencies Pybinding
       run: python -m pip install wheel scipy matplotlib pytest cmake ninja
     - name: Set up MSVC
       if: runner.os == 'Windows'
       uses: ilammy/msvc-dev-cmd@v1
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1
-    - name: Build
+    - name: Build with CMake and test Python / C++
+      run: mkdir build_tests && cd build_tests && cmake .. && make tests && cd ..
+    - name: Build with pip
       run: python -m pip install .
-    - name: Test
+    - name: Test Python
       run: python -c "import pybinding as pb; exit(pb.tests())"
-    - name: Test CPP
-      run: mkdir build_tests && cd build_tests && cmake .. && make tests
+    - name: Install dependencies Docs
+      run: python -m pip install sphinx-rtd-theme recommonmark numpydoc nbconvert
+    - name: Test Documentation
+      run: cd build_tests && make docs
+    - name: Publish docs
+      if: runner.os == 'Ubuntu'
+      uses: actions/github-pages-deploy-action@v4
+      with:
+        folder: docs/html
+
+
+
