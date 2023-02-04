@@ -1,0 +1,51 @@
+﻿StructureMap
+======================
+
+.. currentmodule:: pybinding
+
+.. autoclass:: StructureMap
+    :members:
+    :special-members:
+    :inherited-members:
+
+    
+    
+    .. rubric:: Attributes
+
+    .. autosummary::
+    
+        ~StructureMap.boundaries
+        ~StructureMap.callsig
+        ~StructureMap.data
+        ~StructureMap.hoppings
+        ~StructureMap.num_sites
+        ~StructureMap.positions
+        ~StructureMap.spatial_map
+        ~StructureMap.sub
+        ~StructureMap.sublattices
+        ~StructureMap.x
+        ~StructureMap.xyz
+        ~StructureMap.y
+        ~StructureMap.z
+    
+    
+
+    
+    
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~StructureMap.__getitem__
+        ~StructureMap._decorate_plot
+        ~StructureMap.clipped
+        ~StructureMap.convolve
+        ~StructureMap.cropped
+        ~StructureMap.plot
+        ~StructureMap.plot_contour
+        ~StructureMap.plot_contourf
+        ~StructureMap.plot_pcolor
+        ~StructureMap.save_txt
+        ~StructureMap.with_data
+    
+    

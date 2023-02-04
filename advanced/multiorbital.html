@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta content="Defining and solving multi-orbital tight-binding models in pybinding" name="description" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Multi-orbital models &mdash; pybinding</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Kwant compatibility" href="kwant.html" />
+    <link rel="prev" title="Composite shapes" href="shapes.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pybinding
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">About</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/index.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Additional Topics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="lattice.html">Lattice specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shapes.html">Composite shapes</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Multi-orbital models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#onsite-and-hopping-matrices">Onsite and hopping matrices</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#effect-on-modifier-functions">Effect on modifier functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#local-properties-and-plotting">Local properties and plotting</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="kwant.html">Kwant compatibility</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting/index.html">Plotting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Random Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference docs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../materials/index.html">Material Repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental/index.html">Experimental</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pybinding</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Additional Topics</a></li>
+      <li class="breadcrumb-item active">Multi-orbital models</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/advanced/multiorbital.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="multi-orbital-models">
+<h1>Multi-orbital models<a class="headerlink" href="#multi-orbital-models" title="Permalink to this heading">¶</a></h1>
+<p>In pybinding, if an onsite or hopping energy term is defined as a matrix (instead of a scalar),
+we refer to the resulting model as <em>multi-orbital</em>. The elements of the matrix term may correspond
+to different spins, electrons and holes, or any other degrees of freedom. These can have different
+physical meaning depending on the intend of the model. Because we’re talking in generic terms here,
+we’ll use <em>orbital</em> as a blanket term to refer to any degree of freedom, i.e. matrix element of an
+onsite or hopping term.</p>
+<p>This section describes how these models can be defined and how the presence of multiple orbitals
+affects modifier functions and the results obtained from solvers. In general, it is as simple as
+replacing a scalar value with a matrix while all of the principals described in the
+<a class="reference internal" href="../tutorial/index.html"><span class="doc">Tutorial</span></a> still apply.</p>
+<p><a class="reference download internal" download="" href="../_downloads/f88721401748ebfa7c238d1d692aa0b3/multiorbital.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
+<section id="onsite-and-hopping-matrices">
+<h2>Onsite and hopping matrices<a class="headerlink" href="#onsite-and-hopping-matrices" title="Permalink to this heading">¶</a></h2>
+<p>Starting from the very beginning, the orbital count of a site is determined by the shape of the
+onsite energy matrix. Let’s take a look at a few possibilities:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lat</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Lattice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="n">lat</span><span class="o">.</span><span class="n">add_sublattices</span><span class="p">(</span>
+    <span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">),</span>          <span class="c1"># single-orbital: scalar</span>
+    <span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="p">[[</span><span class="mf">1.5</span><span class="p">,</span>  <span class="mi">2</span><span class="n">j</span><span class="p">],</span>   <span class="c1"># two-orbital: 2x2 Hermitian matrix</span>
+                       <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">]]),</span>
+    <span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">2</span><span class="p">)),</span>  <span class="c1"># two-orbital: zero onsite term</span>
+    <span class="p">(</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="p">[[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>    <span class="c1"># three-orbital: only diagonal</span>
+                       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                       <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]),</span>
+    <span class="p">(</span><span class="s2">&quot;E&quot;</span><span class="p">,</span> <span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>     <span class="c1"># three-orbital: only diagonal, terse notation</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The onsite term is required to be a square Hermitian matrix. If a 1D array is given instead of
+a matrix, it will be interpreted as the main diagonal of a square matrix (see sublattices D and E
+which have identical onsite term specified with different notations).</p>
+<p>As seen above, sublattices don’t need to all have the same orbital count. The only thing to keep
+in mind is that the hopping matrix which connect a pair of sublattice sites must have the
+appropriate shape: the number of rows must match the orbital count of the source sublattice and
+the number of columns must match the destination sublattice.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lat</span><span class="o">.</span><span class="n">add_hoppings</span><span class="p">(</span>
+    <span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">),</span>          <span class="c1"># scalar</span>
+    <span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>       <span class="c1"># 2x2</span>
+                        <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]]),</span>
+    <span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>      <span class="c1"># 2x2</span>
+                        <span class="p">[</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]),</span>
+    <span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]]),</span>  <span class="c1"># 1x3</span>
+    <span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="mi">7</span><span class="p">],</span>          <span class="c1"># 3x1</span>
+                        <span class="p">[</span><span class="mi">8</span><span class="p">],</span>
+                        <span class="p">[</span><span class="mi">9</span><span class="p">]]),</span>
+    <span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">],</span>  <span class="c1"># 2x3</span>
+                        <span class="p">[</span><span class="mi">2</span><span class="p">,</span>  <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="n">j</span><span class="p">]])</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>If a matrix of the wrong shape is given, an informative error is raised:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">lat</span><span class="o">.</span><span class="n">add_one_hopping</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="s2">&quot;B&quot;</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">)</span>
+<span class="go">RuntimeError: Hopping size mismatch: from &#39;A&#39; (1) to &#39;B&#39; (2) with matrix (1, 1)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">lat</span><span class="o">.</span><span class="n">add_one_hopping</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+<span class="gp">... </span>                                       <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">]])</span>
+<span class="go">RuntimeError: Hopping size mismatch: from &#39;D&#39; (3) to &#39;D&#39; (3) with matrix (2, 3)</span>
+</pre></div>
+</div>
+<p>After the <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice" title="pybinding.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> is complete, a <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> can be built as usual:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">pb</span><span class="o">.</span><span class="n">primitive</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">num_sites</span>
+<span class="go">20  # &lt;-- 5 sites per unit cell and 2x2 cells: 5*2*2 == 20</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">hamiltonian</span><span class="o">.</span><span class="n">shape</span>
+<span class="go">(44, 44)  # &lt;-- 11 (1+2+2+3+3) orbitals per unit cell and 2x2 cells: 11*2*2 = 44</span>
+</pre></div>
+</div>
+<p>Sites refer to physical locations so their total count corresponds to the number of sublattices
+(A to E) multiplied by the number of times the unit cell is repeated. The Hamiltonian matrix is
+larger than <code class="samp docutils literal notranslate"><span class="pre">num_sites</span></code> due to the extra orbitals.</p>
+</section>
+<section id="effect-on-modifier-functions">
+<h2>Effect on modifier functions<a class="headerlink" href="#effect-on-modifier-functions" title="Permalink to this heading">¶</a></h2>
+<p>The <a class="reference internal" href="../_api/pybinding.onsite_energy_modifier.html#pybinding.onsite_energy_modifier" title="pybinding.onsite_energy_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;onsite_energy_modifier</span></code></a> and
+<a class="reference internal" href="../_api/pybinding.hopping_energy_modifier.html#pybinding.hopping_energy_modifier" title="pybinding.hopping_energy_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;hopping_energy_modifier</span></code></a> functions work equally well for
+single- and multi-orbital models. In case of the latter, the <code class="docutils literal notranslate"><span class="pre">energy</span></code> argument of the modifiers
+will have a shape matching the onsite/hopping matrix term.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span>
+<span class="k">def</span> <span class="nf">potential</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Linear onsite potential as a function of x for a 2-orbital model&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">energy</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
+</pre></div>
+</div>
+<p>Note the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.eye.html#numpy.eye" title="(in NumPy v1.24)"><code class="xref py py-func docutils literal notranslate"><span class="pre">np.eye(2)</span></code></a> in the code above. The number 2 matches the 2-orbital
+structure of a specific model. Without this, <code class="docutils literal notranslate"><span class="pre">energy</span> <span class="pre">+</span> <span class="pre">x</span></code> would also add the value to the
+off-diagonal elements of the onsite matrix which is not desirable in this case.</p>
+<p>The modifier defined above will only work for 2-orbital models. In general, we might want to
+create modifiers which work with any n-orbital model or with a mixed number of orbitals. For this
+we can use the <code class="docutils literal notranslate"><span class="pre">sub_id</span></code> modifier argument and its <code class="docutils literal notranslate"><span class="pre">.eye</span></code> attribute which supplies the correct
+matrix shape for any sublattice:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span>
+<span class="k">def</span> <span class="nf">potential</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">sub_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Same as above, but works for any n-orbital model&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">energy</span> <span class="o">+</span> <span class="n">sub_id</span><span class="o">.</span><span class="n">eye</span> <span class="o">*</span> <span class="n">x</span>
+</pre></div>
+</div>
+<p>Even more generally, if we wish to apply completely different functions to the various sublattices,
+the <code class="docutils literal notranslate"><span class="pre">sub_id</span></code> argument can be used to create different branches in the modifier:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span>
+<span class="k">def</span> <span class="nf">potential</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">sub_id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Applies different functions to different sublattices&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">sub_id</span> <span class="o">==</span> <span class="s2">&quot;A&quot;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">energy</span> <span class="o">+</span> <span class="n">x</span>  <span class="c1"># we know sublattice A is single-orbital</span>
+    <span class="k">elif</span> <span class="n">sub_id</span> <span class="o">==</span> <span class="s2">&quot;D&quot;</span><span class="p">:</span>
+        <span class="n">energy</span><span class="p">[</span><span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">sub_id</span><span class="o">.</span><span class="n">eye</span> <span class="o">*</span> <span class="n">x</span>  <span class="c1"># the notation can be mixed with numpy indexing</span>
+        <span class="k">return</span> <span class="n">energy</span>                    <span class="c1"># apply only to sites where x &gt; 0</span>
+    <span class="k">elif</span> <span class="n">sub_id</span> <span class="o">==</span> <span class="s2">&quot;B&quot;</span><span class="p">:</span>
+        <span class="n">sigma_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">],</span>
+                            <span class="p">[</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span>  <span class="mi">0</span><span class="p">]])</span>
+        <span class="k">return</span> <span class="n">energy</span> <span class="o">+</span> <span class="n">sigma_y</span> <span class="o">*</span> <span class="mf">1.3</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.6</span>  <span class="c1"># add multiple 2x2 matrices</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">energy</span>  <span class="c1"># leave the other sublattices unchanged</span>
+</pre></div>
+</div>
+<p>This branching behavior is only supported by the <code class="docutils literal notranslate"><span class="pre">sub_id</span></code> and <code class="docutils literal notranslate"><span class="pre">hop_id</span></code> arguments. Do not try
+to create branches like this using any of the other modifier arguments:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Creating a position-dependent potential&quot;&quot;&quot;</span>
+<span class="c1"># This is an error with anything except sub_id or hop_id</span>
+<span class="k">if</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">energy</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">energy</span> <span class="o">-</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use this notation instead</span>
+<span class="n">energy</span><span class="p">[</span><span class="n">x</span> <span class="o">&gt;</span>  <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="n">energy</span><span class="p">[</span><span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<p>On the other hand, <code class="docutils literal notranslate"><span class="pre">sub_id</span></code> and <code class="docutils literal notranslate"><span class="pre">hop_id</span></code> can be used with either of these variants with just a
+single caveat:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Sublattice-dependent potential&quot;&quot;&quot;</span>
+<span class="c1"># This always works with sub_id and hop_id</span>
+<span class="k">if</span> <span class="n">sub_id</span> <span class="o">==</span> <span class="s2">&quot;A&quot;</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">energy</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">energy</span> <span class="o">-</span> <span class="mi">1</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># This only works when all sublattices have the same number of orbitals,</span>
+<span class="c1"># but it will raise an error for mixed orbital counts.</span>
+<span class="n">energy</span><span class="p">[</span><span class="n">sub_id</span> <span class="o">==</span> <span class="s2">&quot;A&quot;</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="n">energy</span><span class="p">[</span><span class="n">sub_id</span> <span class="o">==</span> <span class="s2">&quot;B&quot;</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</section>
+<section id="local-properties-and-plotting">
+<h2>Local properties and plotting<a class="headerlink" href="#local-properties-and-plotting" title="Permalink to this heading">¶</a></h2>
+<p>When examining the local properties of a multi-orbital model, it is important to make the
+distinction between system indices which correspond to sites (unique positions) and Hamiltonian
+indices which correspond to the onsite or hopping terms in the Hamiltonian.</p>
+<p>As shown in one of the previous examples, the number of sites in a system does not have to be
+equal to the size of the Hamiltonian matrix (<code class="samp docutils literal notranslate"><span class="pre">hamiltonian.shape[0]</span> <span class="pre">&gt;=</span> <span class="pre">num_sites</span></code>). This affects
+how the system and Hamiltonian are indexed. System indices are always scalars and point to a single
+site position. For single-orbital models there is a 1:1 correspondence between system and
+Hamiltonian indices. However, for multi-orbital models the Hamiltonian indices are 1D arrays with
+a size corresponding to the number of orbitals on the target site.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">pb</span><span class="o">.</span><span class="n">primitive</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sys_idx</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">find_nearest</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">sublattice</span><span class="o">=</span><span class="s2">&quot;D&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">sys_idx</span>  <span class="c1"># &lt;-- Points to a site on sublattice D which is closest to the target position.</span>
+<span class="go">15           #     It&#39;s always a scalar.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">x</span><span class="p">[</span><span class="n">sys_idx</span><span class="p">]</span>
+<span class="go">0.1  # &lt;-- Not exactly 0 as requested, but the closest site to it.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="n">sys_idx</span><span class="p">]</span>
+<span class="go">0.0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ham_idx</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">to_hamiltonian_indices</span><span class="p">(</span><span class="n">sys_idx</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ham_idx</span>   <span class="c1"># &lt;-- Array of integers which can be used to index the Hamiltonian matrix.</span>
+<span class="go">[29, 30, 31]  #     Size 3 because the selected site is on the 3-orbital sublattice D.</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ham</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">hamiltonian</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ham</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ix_</span><span class="p">(</span><span class="n">ham_idx</span><span class="p">,</span> <span class="n">ham_idx</span><span class="p">)]</span>  <span class="c1"># Returns the onsite hopping term of sublattice D.</span>
+<span class="go">[[4, 0, 0],</span>
+<span class="go"> [0, 5, 0],</span>
+<span class="go"> [0, 0, 6]]</span>
+</pre></div>
+</div>
+<p>Functions which compute various local properties take into account the presence of multiple
+orbitals on a single site. For example, when calculating the local density of states, one of the
+input parameters is the target site position. By default, the resulting LDOS is calculated as the
+sum of all orbitals but this is optional as shown in the following example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Calculate the LDOS in the center of a MoS2 quantum dot&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">group6_tmd</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">group6_tmd</span><span class="o">.</span><span class="n">monolayer_3band</span><span class="p">(</span><span class="s2">&quot;MoS2&quot;</span><span class="p">),</span>
+                 <span class="n">pb</span><span class="o">.</span><span class="n">regular_polygon</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+
+<span class="n">kpm</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">kpm</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">energy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mf">3.8</span><span class="p">,</span> <span class="mi">500</span><span class="p">)</span>
+<span class="n">broadening</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">position</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.7</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Reduced -- sum of all orbitals&quot;</span><span class="p">)</span>
+<span class="n">ldos</span> <span class="o">=</span> <span class="n">kpm</span><span class="o">.</span><span class="n">calc_ldos</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">broadening</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
+<span class="n">ldos</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s2">&quot;C1&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Individual orbitals&quot;</span><span class="p">)</span>
+<span class="n">ldos</span> <span class="o">=</span> <span class="n">kpm</span><span class="o">.</span><span class="n">calc_ldos</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">broadening</span><span class="p">,</span> <span class="n">position</span><span class="p">,</span> <span class="n">reduce</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ldos</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/multiorbital-8.png" class="plot-directive" src="../_images/multiorbital-8.png" />
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="shapes.html" class="btn btn-neutral float-left" title="Composite shapes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="kwant.html" class="btn btn-neutral float-right" title="Kwant compatibility" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

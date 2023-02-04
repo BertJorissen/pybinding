@@ -1,0 +1,6 @@
+﻿primitive
+===================
+
+.. currentmodule:: pybinding
+
+.. autofunction:: primitive

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta content="Crystal lattice definition in pybinding" name="description" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2. Lattice &mdash; pybinding</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="3. Band structure" href="bands.html" />
+    <link rel="prev" title="1. Imports" href="import.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pybinding
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">About</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/index.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="import.html">1. Imports</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2. Lattice</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#square-lattice">2.1. Square lattice</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#graphene">2.2. Graphene</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#brillouin-zone">2.3. Brillouin zone</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#material-repository">2.4. Material repository</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#further-reading">2.5. Further reading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example">2.6. Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="bands.html">3. Band structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="finite.html">4. Finite size</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shape_symmetry.html">5. Shape and symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fields.html">6. Fields and effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strain.html">7. Defects and strain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generators.html">8. Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">9. Eigenvalue solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kpm.html">10. Kernel polynomial method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scattering.html">11. Scattering model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/index.html">Additional Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting/index.html">Plotting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Random Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference docs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../materials/index.html">Material Repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental/index.html">Experimental</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pybinding</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Tutorial</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">2. </span>Lattice</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorial/lattice.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="lattice">
+<h1><span class="section-number">2. </span>Lattice<a class="headerlink" href="#lattice" title="Permalink to this heading">¶</a></h1>
+<p>A <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice" title="pybinding.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> object describes the unit cell of a crystal lattice. This includes the
+primitive vectors, positions of sublattice sites and hopping parameters which connect those sites.
+All of this structural information is used to build up a larger system by translation.</p>
+<p><a class="reference download internal" download="" href="../_downloads/37a8aea8f4ee8b2066d9d979c4d6c993/lattice.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
+<section id="square-lattice">
+<h2><span class="section-number">2.1. </span>Square lattice<a class="headerlink" href="#square-lattice" title="Permalink to this heading">¶</a></h2>
+<p>Starting from the basics, we’ll create a simple square lattice.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pybinding</span> <span class="k">as</span> <span class="nn">pb</span>
+
+<span class="n">d</span> <span class="o">=</span> <span class="mf">0.2</span>  <span class="c1"># [nm] unit cell length</span>
+<span class="n">t</span> <span class="o">=</span> <span class="mi">1</span>    <span class="c1"># [eV] hopping energy</span>
+
+<span class="c1"># create a simple 2D lattice with vectors a1 and a2</span>
+<span class="n">lattice</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="n">a1</span><span class="o">=</span><span class="p">[</span><span class="n">d</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">a2</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">d</span><span class="p">])</span>
+<span class="n">lattice</span><span class="o">.</span><span class="n">add_sublattices</span><span class="p">(</span>
+    <span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>  <span class="c1"># add an atom called &#39;A&#39; at position [0, 0]</span>
+<span class="p">)</span>
+<span class="n">lattice</span><span class="o">.</span><span class="n">add_hoppings</span><span class="p">(</span>
+    <span class="c1"># (relative_index, from_sublattice, to_sublattice, energy)</span>
+    <span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span>
+    <span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>It may not be immediately obvious what this code does. Fortunately, <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice" title="pybinding.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> objects
+have a convenient <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice.plot" title="pybinding.Lattice.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Lattice.plot()</span></code></a> method to easily visualize the constructed lattice.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lattice</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>  <span class="c1"># plot the lattice that was just constructed</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>      <span class="c1"># standard matplotlib show() function</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Unit cell of a simple square crystal lattice" class="plot-directive" src="../_images/lattice-21.png" />
+</figure>
+<p>In the figure we see lattice vectors <span class="math notranslate nohighlight">\(a_1\)</span> and <span class="math notranslate nohighlight">\(a_2\)</span> which were used to initialize
+<a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice" title="pybinding.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a>. These vectors describe a Bravais lattice with an infinite set of positions,</p>
+<div class="math notranslate nohighlight">
+\[\vec{R} = n_1 \vec{a}_1 + n_2 \vec{a}_2,\]</div>
+<p>where <span class="math notranslate nohighlight">\(n_1\)</span> and <span class="math notranslate nohighlight">\(n_2\)</span> are integers. The blue circle labeled A represents the atom
+which was created with the <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice.add_sublattices" title="pybinding.Lattice.add_sublattices"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Lattice.add_sublattices()</span></code></a> method. The slightly faded out
+circles represent translations of the lattice in the primitive vector directions, i.e. using
+the integer index <span class="math notranslate nohighlight">\([n_1, n_2]\)</span>.</p>
+<p>The hoppings are specified using the <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice.add_hoppings" title="pybinding.Lattice.add_hoppings"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Lattice.add_hoppings()</span></code></a> method and each one consists
+of <code class="samp docutils literal notranslate"><span class="pre">(relative_index,</span> <span class="pre">from_sublattice,</span> <span class="pre">to_sublattice,</span> <span class="pre">energy)</span></code>:</p>
+<ul class="simple">
+<li><p>The main cell always has the index <span class="math notranslate nohighlight">\([n_1, n_2]\)</span> = [0, 0]. The <code class="samp docutils literal notranslate"><span class="pre">relative_index</span></code> represents
+the number of integer steps needed to reach another cell starting from the main one. Each cell
+is labeled with its <code class="samp docutils literal notranslate"><span class="pre">relative_index</span></code>, as seen in the figure.</p></li>
+<li><p>A hopping is created between the main cell and a neighboring cell specified by <code class="samp docutils literal notranslate"><span class="pre">relative_index</span></code>.
+Two hoppings are added in the definition: [0, 1] and [1, 0]. The opposite hoppings [0, -1] and
+[-1, 0] are added automatically to maintain hermiticity.</p></li>
+<li><p>This lattice consists of only one sublattice so the <code class="samp docutils literal notranslate"><span class="pre">from</span></code> and <code class="samp docutils literal notranslate"><span class="pre">to</span></code> sublattice fields
+are trivial. Generally, <code class="samp docutils literal notranslate"><span class="pre">from_sublattice</span></code> indicates the sublattice in the [0, 0] cell
+and <code class="samp docutils literal notranslate"><span class="pre">to_sublattice</span></code> in the neighboring cell. This will be explained further in the next example.</p></li>
+<li><p>The last parameter is simply the value of the hopping energy.</p></li>
+</ul>
+<p>It’s good practice to build the lattice inside a function to make it easily reusable.
+Here we define the same lattice as before, but note that the unit cell length and hopping energy
+are function arguments, which makes the lattice easily configurable.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">square_lattice</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="n">a1</span><span class="o">=</span><span class="p">[</span><span class="n">d</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">a2</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">d</span><span class="p">])</span>
+    <span class="n">lat</span><span class="o">.</span><span class="n">add_sublattices</span><span class="p">((</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+    <span class="n">lat</span><span class="o">.</span><span class="n">add_hoppings</span><span class="p">(([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span>
+                     <span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">lat</span>
+
+<span class="c1"># we can quickly set a shorter unit length `d`</span>
+<span class="n">lattice</span> <span class="o">=</span> <span class="n">square_lattice</span><span class="p">(</span><span class="n">d</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">t</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">lattice</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Unit cell of a simple square crystal lattice" class="plot-directive" src="../_images/lattice-31.png" />
+</figure>
+</section>
+<section id="graphene">
+<h2><span class="section-number">2.2. </span>Graphene<a class="headerlink" href="#graphene" title="Permalink to this heading">¶</a></h2>
+<p>The next example shows a slightly more complicated two-atom lattice of graphene.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+
+<span class="k">def</span> <span class="nf">monolayer_graphene</span><span class="p">():</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mf">0.24595</span>   <span class="c1"># [nm] unit cell length</span>
+    <span class="n">a_cc</span> <span class="o">=</span> <span class="mf">0.142</span>  <span class="c1"># [nm] carbon-carbon distance</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.8</span>      <span class="c1"># [eV] nearest neighbour hopping</span>
+
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="n">a1</span><span class="o">=</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                     <span class="n">a2</span><span class="o">=</span><span class="p">[</span><span class="n">a</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">a</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
+    <span class="n">lat</span><span class="o">.</span><span class="n">add_sublattices</span><span class="p">((</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">a_cc</span><span class="o">/</span><span class="mi">2</span><span class="p">]),</span>
+                        <span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span>  <span class="n">a_cc</span><span class="o">/</span><span class="mi">2</span><span class="p">]))</span>
+    <span class="n">lat</span><span class="o">.</span><span class="n">add_hoppings</span><span class="p">(</span>
+        <span class="c1"># inside the main cell</span>
+        <span class="p">([</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span>
+        <span class="c1"># between neighboring cells</span>
+        <span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span>
+        <span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">lat</span>
+
+<span class="n">lattice</span> <span class="o">=</span> <span class="n">monolayer_graphene</span><span class="p">()</span>
+<span class="n">lattice</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Unit cell of graphene's crystal lattice" class="plot-directive" src="../_images/lattice-41.png" />
+</figure>
+<p>The <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice.add_sublattices" title="pybinding.Lattice.add_sublattices"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Lattice.add_sublattices()</span></code></a> method creates atoms A and B (blue and orange) at different
+offsets: <span class="math notranslate nohighlight">\([0, -a_{cc}/2]\)</span> and <span class="math notranslate nohighlight">\([0, a_{cc}/2]\)</span>. Once again, the translated cells are
+given at positions <span class="math notranslate nohighlight">\(\vec{R} = n_1 \vec{a}_1 + n_2 \vec{a}_2\)</span>, however, this time the lattice
+vectors are not perpendicular which makes the integer indices <span class="math notranslate nohighlight">\([n_1, n_2]\)</span> slightly more
+complicate (see the labels in the figure).</p>
+<p>The hoppings are defined as follows:</p>
+<ul class="simple">
+<li><p><code class="samp docutils literal notranslate"><span class="pre">([0,</span>&#160; <span class="pre">0],</span> <span class="pre">'A',</span> <span class="pre">'B',</span> <span class="pre">t)</span></code> specifies the hopping inside the main cell, from atom A to B. The main
+[0,0] cell is never labeled in the figure, but it is always the central cell where the lattice
+vectors originate.</p></li>
+<li><p><code class="samp docutils literal notranslate"><span class="pre">([1,</span> <span class="pre">-1],</span> <span class="pre">'A',</span> <span class="pre">'B',</span> <span class="pre">t)</span></code> specifies the hopping between [0, 0] and [1, -1], from A to B. The
+opposite hopping is added automatically: [-1, 1], from B to A. In the tight-binding matrix
+representation, the opposite hopping is the Hermitian conjugate of the first one. The lattice
+specification always requires explicitly mentioning only one half of the hoppings while the
+other half is automatically added to guarantee hermiticity.</p></li>
+<li><p><code class="samp docutils literal notranslate"><span class="pre">([0,</span> <span class="pre">-1],</span> <span class="pre">'A',</span> <span class="pre">'B',</span> <span class="pre">t)</span></code> is handled in the very same way.</p></li>
+</ul>
+<p>The <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice.plot" title="pybinding.Lattice.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Lattice.plot()</span></code></a> method will always faithfully draw any lattice that has been specified.
+It serves as a handy visual inspection tool.</p>
+</section>
+<section id="brillouin-zone">
+<h2><span class="section-number">2.3. </span>Brillouin zone<a class="headerlink" href="#brillouin-zone" title="Permalink to this heading">¶</a></h2>
+<p>The method <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice.plot_brillouin_zone" title="pybinding.Lattice.plot_brillouin_zone"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Lattice.plot_brillouin_zone()</span></code></a> is another handy tool that does just as its
+name implies.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lattice</span> <span class="o">=</span> <span class="n">monolayer_graphene</span><span class="p">()</span>
+<span class="n">lattice</span><span class="o">.</span><span class="n">plot_brillouin_zone</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Brillouin zone of graphene" class="plot-directive" src="../_images/lattice-51.png" />
+</figure>
+<p>The reciprocal lattice vectors <span class="math notranslate nohighlight">\(b_1\)</span> and <span class="math notranslate nohighlight">\(b_2\)</span> are calculated automatically based
+on the real space vectors. There is no need to specify them manually. The first Brillouin zone
+is determined as the Wigner–Seitz cell in reciprocal space. By default, the plot method labels
+the vertices of the Brillouin zone.</p>
+</section>
+<section id="material-repository">
+<h2><span class="section-number">2.4. </span>Material repository<a class="headerlink" href="#material-repository" title="Permalink to this heading">¶</a></h2>
+<p>A few common lattices are included in pybinding’s <a class="reference internal" href="../materials/index.html"><span class="doc">Material Repository</span></a>. You can get started
+quickly by importing one of them. For example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+<span class="n">lattice</span> <span class="o">=</span> <span class="n">graphene</span><span class="o">.</span><span class="n">bilayer</span><span class="p">()</span>
+<span class="n">lattice</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Unit cell of bilayer graphene" class="plot-directive" src="../_images/lattice-61.png" />
+</figure>
+</section>
+<section id="further-reading">
+<h2><span class="section-number">2.5. </span>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this heading">¶</a></h2>
+<p>Additional features of the <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice" title="pybinding.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> class are explained in the <a class="reference internal" href="../advanced/lattice.html"><span class="doc">Advanced Topics</span></a>
+section. For more lattice specifications check out the <a class="reference internal" href="../examples/lattice/index.html"><span class="doc">examples section</span></a>.</p>
+</section>
+<section id="example">
+<h2><span class="section-number">2.6. </span>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h2>
+<p>This is a full example file which you can download and run with <code class="samp docutils literal notranslate"><span class="pre">python3</span> <span class="pre">lattice_example.py</span></code>.</p>
+<p><a class="reference download internal" download="" href="../_downloads/40e7278492c3d905df7bd0e74eecd3a2/lattice_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">source</span> <span class="pre">code</span></code></a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Create and plot a monolayer graphene lattice and it&#39;s Brillouin zone&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pybinding</span> <span class="k">as</span> <span class="nn">pb</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">use_style</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">monolayer_graphene</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the lattice specification for monolayer graphene&quot;&quot;&quot;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="mf">0.24595</span>   <span class="c1"># [nm] unit cell length</span>
+    <span class="n">a_cc</span> <span class="o">=</span> <span class="mf">0.142</span>  <span class="c1"># [nm] carbon-carbon distance</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.8</span>      <span class="c1"># [eV] nearest neighbour hopping</span>
+
+    <span class="c1"># create a lattice with 2 primitive vectors</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span>
+        <span class="n">a1</span><span class="o">=</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+        <span class="n">a2</span><span class="o">=</span><span class="p">[</span><span class="n">a</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">a</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+    <span class="p">)</span>
+
+    <span class="n">lat</span><span class="o">.</span><span class="n">add_sublattices</span><span class="p">(</span>
+        <span class="c1"># name and position</span>
+        <span class="p">(</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">a_cc</span><span class="o">/</span><span class="mi">2</span><span class="p">]),</span>
+        <span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span>  <span class="n">a_cc</span><span class="o">/</span><span class="mi">2</span><span class="p">])</span>
+    <span class="p">)</span>
+
+    <span class="n">lat</span><span class="o">.</span><span class="n">add_hoppings</span><span class="p">(</span>
+        <span class="c1"># inside the main cell</span>
+        <span class="p">([</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span>
+        <span class="c1"># between neighboring cells</span>
+        <span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span>
+        <span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">lat</span>
+
+
+<span class="n">lattice</span> <span class="o">=</span> <span class="n">monolayer_graphene</span><span class="p">()</span>
+<span class="n">lattice</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/lattice_example_00_00.png" class="plot-directive" src="../_images/lattice_example_00_00.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lattice</span><span class="o">.</span><span class="n">plot_brillouin_zone</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/lattice_example_01_00.png" class="plot-directive" src="../_images/lattice_example_01_00.png" />
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="import.html" class="btn btn-neutral float-left" title="1. Imports" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="bands.html" class="btn btn-neutral float-right" title="3. Band structure" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

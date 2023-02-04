@@ -1,0 +1,6 @@
+﻿hopping_energy_modifier
+=================================
+
+.. currentmodule:: pybinding
+
+.. autofunction:: hopping_energy_modifier

@@ -1,0 +1,6 @@
+﻿site_state_modifier
+=============================
+
+.. currentmodule:: pybinding
+
+.. autofunction:: site_state_modifier

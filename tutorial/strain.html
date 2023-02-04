@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta content="Adding defects and strain to a tight-binding model" name="description" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7. Defects and strain &mdash; pybinding</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="8. Generators" href="generators.html" />
+    <link rel="prev" title="6. Fields and effects" href="fields.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pybinding
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">About</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/index.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="import.html">1. Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lattice.html">2. Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bands.html">3. Band structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="finite.html">4. Finite size</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shape_symmetry.html">5. Shape and symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fields.html">6. Fields and effects</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7. Defects and strain</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#vacancies">7.1. Vacancies</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#layer-defect">7.2. Layer defect</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#strain">7.3. Strain</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#further-reading">7.4. Further reading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example">7.5. Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="generators.html">8. Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">9. Eigenvalue solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kpm.html">10. Kernel polynomial method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scattering.html">11. Scattering model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/index.html">Additional Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting/index.html">Plotting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Random Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference docs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../materials/index.html">Material Repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental/index.html">Experimental</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pybinding</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Tutorial</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">7. </span>Defects and strain</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorial/strain.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="defects-and-strain">
+<h1><span class="section-number">7. </span>Defects and strain<a class="headerlink" href="#defects-and-strain" title="Permalink to this heading">¶</a></h1>
+<p>This section will introduce <a class="reference internal" href="../_api/pybinding.site_state_modifier.html#pybinding.site_state_modifier" title="pybinding.site_state_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;site_state_modifier</span></code></a> and
+<a class="reference internal" href="../_api/pybinding.site_position_modifier.html#pybinding.site_position_modifier" title="pybinding.site_position_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;site_position_modifier</span></code></a> which can be used to add defects and
+strain to the model. These modifiers are applied to the structure of the system before the
+Hamiltonian matrix is created.</p>
+<p><a class="reference download internal" download="" href="../_downloads/f2a4ce01c0ddaa1467256d30e2422d7d/strain.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
+<section id="vacancies">
+<h2><span class="section-number">7.1. </span>Vacancies<a class="headerlink" href="#vacancies" title="Permalink to this heading">¶</a></h2>
+<p>A <a class="reference internal" href="../_api/pybinding.site_state_modifier.html#pybinding.site_state_modifier" title="pybinding.site_state_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;site_state_modifier</span></code></a> can be used to create vacancies in a crystal
+lattice. The definition is very similar to the onsite and hopping modifiers explained in the
+previous section.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">vacancy</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+    <span class="nd">@pb</span><span class="o">.</span><span class="n">site_state_modifier</span>
+    <span class="k">def</span> <span class="nf">modifier</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">position</span>
+        <span class="n">state</span><span class="p">[(</span><span class="n">x</span><span class="o">-</span><span class="n">x0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">y0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;</span> <span class="n">radius</span><span class="o">**</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">state</span>
+    <span class="k">return</span> <span class="n">modifier</span>
+</pre></div>
+</div>
+<p>The <code class="samp docutils literal notranslate"><span class="pre">state</span></code> argument indicates the current boolean state of a lattice site. Only valid sites
+(<code class="samp docutils literal notranslate"><span class="pre">True</span></code> state) will be included in the final Hamiltonian matrix. Therefore, setting the state of
+sites within a small radius to <code class="samp docutils literal notranslate"><span class="pre">False</span></code> will exclude them from the final system. The <code class="samp docutils literal notranslate"><span class="pre">x</span></code> and <code class="samp docutils literal notranslate"><span class="pre">y</span></code>
+arguments are lattice site positions. As with the other modifiers, the arguments are optional
+(<code class="samp docutils literal notranslate"><span class="pre">z</span></code> is not needed for this example) but the full signature of the site state modifier can be
+found on its <a class="reference internal" href="../_api/pybinding.site_state_modifier.html#pybinding.site_state_modifier" title="pybinding.site_state_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">API</span> <span class="pre">reference</span> <span class="pre">page</span></code></a>.</p>
+<p>This is actually very similar to the way a <a class="reference internal" href="../_api/pybinding.FreeformShape.html#pybinding.FreeformShape" title="pybinding.FreeformShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">FreeformShape</span></code></a> works. In fact, it is possible
+to create defects by defining them directly in the shape. However, such an approach would not be
+very flexible since we would need to create an entire new shape in order to change either the
+vacancy type or the shape itself. By defining the vacancy as a modifier, we can simply compose
+it with any existing shapes:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+    <span class="n">vacancy</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Divacancy in graphene" class="plot-directive" src="../_images/strain-2.png" />
+</figure>
+<p>The resulting 2-atom vacancy is visible in the center of the system. The two vacant sites are
+completely removed from the final Hamiltonian matrix. If we were to inspect the number of rows
+and columns by looking up <code class="samp docutils literal notranslate"><span class="pre">model.hamiltonian.shape</span></code>, we would see that the size of the matrix is
+reduced by 2.</p>
+<p>Any number of modifiers can be included in the model and they will compose as expected. We can
+take advantage of this and create four different vacancies, with 1 to 4 missing atoms:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+    <span class="n">vacancy</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.50</span><span class="p">,</span>  <span class="mf">0.50</span><span class="p">],</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">),</span>
+    <span class="n">vacancy</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">[</span> <span class="mf">0.50</span><span class="p">,</span>  <span class="mf">0.45</span><span class="p">],</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.15</span><span class="p">),</span>
+    <span class="n">vacancy</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">0.45</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.45</span><span class="p">],</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.15</span><span class="p">),</span>
+    <span class="n">vacancy</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">[</span> <span class="mf">0.50</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.50</span><span class="p">],</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.2</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Graphene vacancies with 1 to 4 missing atoms" class="plot-directive" src="../_images/strain-3.png" />
+</figure>
+</section>
+<section id="layer-defect">
+<h2><span class="section-number">7.2. </span>Layer defect<a class="headerlink" href="#layer-defect" title="Permalink to this heading">¶</a></h2>
+<p>The site state modifier also has access to sublattice information. This can be used, for example,
+with bilayer graphene to remove a single layer in a specific area. We’ll use the bilayer lattice
+that’s included in the <a class="reference internal" href="../materials/index.html"><span class="doc">Material Repository</span></a>. The <code class="xref py py-func docutils literal notranslate"><span class="pre">graphene.bilayer()</span></code>
+lattice is laid out so that sublattices A1 and B1 belong to the top layer, while A2 and B2 are on
+the bottom.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">scrape_top_layer</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Remove the top layer of graphene in the area specified by position and radius&quot;&quot;&quot;</span>
+    <span class="nd">@pb</span><span class="o">.</span><span class="n">site_state_modifier</span>
+    <span class="k">def</span> <span class="nf">modifier</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sub_id</span><span class="p">):</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">position</span>
+        <span class="n">is_within_radius</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">x0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">y0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;</span> <span class="n">radius</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">is_top_layer</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">(</span><span class="n">sub_id</span> <span class="o">==</span> <span class="s1">&#39;A1&#39;</span><span class="p">,</span> <span class="n">sub_id</span> <span class="o">==</span> <span class="s1">&#39;B1&#39;</span><span class="p">)</span>
+        <span class="n">final_condition</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">is_within_radius</span><span class="p">,</span> <span class="n">is_top_layer</span><span class="p">)</span>
+        <span class="n">state</span><span class="p">[</span><span class="n">final_condition</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">state</span>
+    <span class="k">return</span> <span class="n">modifier</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">bilayer</span><span class="p">(),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mi">2</span><span class="p">),</span>
+    <span class="n">scrape_top_layer</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">radius</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Local layer defect in bilayer graphene" class="plot-directive" src="../_images/strain-4.png" />
+</figure>
+<p>The central monolayer area is nicely visible in the figure. We can actually create the same
+structure in a different way: by considering the <code class="samp docutils literal notranslate"><span class="pre">z</span></code> position of the lattice site to distinguish
+the layers. An alternative modifier definition is given below. It would generate the same figure.
+Which method is more convenient is up to the user.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">scrape_top_layer_alt</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="n">radius</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Alternative definition of `scrape_top_layer`&quot;&quot;&quot;</span>
+    <span class="nd">@pb</span><span class="o">.</span><span class="n">site_state_modifier</span>
+    <span class="k">def</span> <span class="nf">modifier</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">position</span>
+        <span class="n">is_within_radius</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">x0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y</span><span class="o">-</span><span class="n">y0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">&lt;</span> <span class="n">radius</span><span class="o">**</span><span class="mi">2</span>
+        <span class="n">is_top_layer</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">final_condition</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">is_within_radius</span><span class="p">,</span> <span class="n">is_top_layer</span><span class="p">)</span>
+        <span class="n">state</span><span class="p">[</span><span class="n">final_condition</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="n">state</span>
+    <span class="k">return</span> <span class="n">modifier</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As with the onsite and hopping modifiers, all the arguments are given as numpy arrays.
+Therefore, we must use the array-specific <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.logical_or.html#numpy.logical_or" title="(in NumPy v1.24)"><code class="xref py py-data docutils literal notranslate"><span class="pre">np.logical_or()</span></code></a>/
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.logical_and.html#numpy.logical_and" title="(in NumPy v1.24)"><code class="xref py py-data docutils literal notranslate"><span class="pre">np.logical_and()</span></code></a> functions instead of the plain <code class="samp docutils literal notranslate"><span class="pre">or</span></code>/<code class="samp docutils literal notranslate"><span class="pre">and</span></code>
+keywords.</p>
+</div>
+</section>
+<section id="strain">
+<h2><span class="section-number">7.3. </span>Strain<a class="headerlink" href="#strain" title="Permalink to this heading">¶</a></h2>
+<p>A <a class="reference internal" href="../_api/pybinding.site_position_modifier.html#pybinding.site_position_modifier" title="pybinding.site_position_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;site_position_modifier</span></code></a> can be used to model the lattice site
+displacement caused by strain. Let’s start with a simple triangular system:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">regular_polygon</span><span class="p">(</span><span class="n">num_sides</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">pi</span><span class="p">),</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Triangular graphene quantum dot" class="plot-directive" src="../_images/strain-5.png" />
+</figure>
+<p>We’re going to apply strain in three directions, as if we are pulling outward on the vertices of
+the triangle. The displacement function for this kind of strain is given below. The <code class="samp docutils literal notranslate"><span class="pre">c</span></code> parameter
+lets us control the intensity of the strain.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">triaxial_displacement</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="nd">@pb</span><span class="o">.</span><span class="n">site_position_modifier</span>
+    <span class="k">def</span> <span class="nf">displacement</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="n">ux</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">c</span> <span class="o">*</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span>
+        <span class="n">uy</span> <span class="o">=</span> <span class="n">c</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">ux</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">uy</span><span class="p">,</span> <span class="n">z</span>
+    <span class="k">return</span> <span class="n">displacement</span>
+</pre></div>
+</div>
+<p>The modifier function takes the <code class="samp docutils literal notranslate"><span class="pre">x</span></code>, <code class="samp docutils literal notranslate"><span class="pre">y</span></code>, <code class="samp docutils literal notranslate"><span class="pre">z</span></code> coordinates as arguments. The displacement <code class="samp docutils literal notranslate"><span class="pre">ux</span></code>, <code class="samp docutils literal notranslate"><span class="pre">uy</span></code>
+is computed and the modified coordinates are returned. The <code class="samp docutils literal notranslate"><span class="pre">z</span></code> argument is returned unchanged but
+we still need it here because the modifier is expected to always return all three.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">regular_polygon</span><span class="p">(</span><span class="n">num_sides</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">pi</span><span class="p">),</span>
+    <span class="n">triaxial_displacement</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Triaxialy strained graphene" class="plot-directive" src="../_images/strain-7.png" />
+</figure>
+<p>As seen in the figure, the displacement has been applied to the lattice sites and the new position
+data is saved in the system. However, the hopping energies have not been modified yet. Every
+hopping element of the Hamiltonian matrix is equal to the hopping energy of pristine graphene:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">hamiltonian</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="o">-</span><span class="mf">2.8</span><span class="p">)</span>
+<span class="go">True</span>
+</pre></div>
+</div>
+<p>We now need to use the new position data to modify the hopping energy according to the relation
+<span class="math notranslate nohighlight">\(t = t_0 e^{-\beta (\frac{d}{a_{cc}} - 1)}\)</span>, where <span class="math notranslate nohighlight">\(t_0\)</span> is the original unstrained
+hopping energy, <span class="math notranslate nohighlight">\(\beta\)</span> controls the strength of the strain-induced hopping modulation,
+<span class="math notranslate nohighlight">\(d\)</span> is the strained distance between two atoms and <span class="math notranslate nohighlight">\(a_{cc}\)</span> is the unstrained
+carbon-carbon distance. This can be implemented using a
+<a class="reference internal" href="../_api/pybinding.hopping_energy_modifier.html#pybinding.hopping_energy_modifier" title="pybinding.hopping_energy_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;hopping_energy_modifier</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@pb</span><span class="o">.</span><span class="n">hopping_energy_modifier</span>
+<span class="k">def</span> <span class="nf">strained_hopping</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">):</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">x1</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y1</span><span class="o">-</span><span class="n">y2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">z1</span><span class="o">-</span><span class="n">z2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="mf">3.37</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">d</span> <span class="o">/</span> <span class="n">graphene</span><span class="o">.</span><span class="n">a_cc</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">energy</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">beta</span><span class="o">*</span><span class="n">w</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The structural modifiers (site state and position) are always automatically applied to the model
+before energy modifiers (onsite and hopping). Thus, our <code class="samp docutils literal notranslate"><span class="pre">strain_hopping</span></code> modifier will get the new
+displaced coordinates as its arguments, from which it will calculate the strained hopping energy.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">regular_polygon</span><span class="p">(</span><span class="n">num_sides</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">pi</span><span class="p">),</span>
+    <span class="n">triaxial_displacement</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="mf">0.15</span><span class="p">),</span>
+    <span class="n">strained_hopping</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Including the hopping modifier along with the displacement will yield position dependent hopping
+energy, thus the elements of the Hamiltonian will no longer be all equal:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">hamiltonian</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="o">-</span><span class="mf">2.8</span><span class="p">)</span>
+<span class="go">False</span>
+</pre></div>
+</div>
+<p>However, it isn’t convenient to keep track of the displacement and strained hoppings separately.
+Instead, we can package them together in one function which is going to return both modifiers:</p>
+<div class="highlight-python notranslate" id="strain-modifier"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">triaxial_strain</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">beta</span><span class="o">=</span><span class="mf">3.37</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Produce both the displacement and hopping energy modifier&quot;&quot;&quot;</span>
+    <span class="nd">@pb</span><span class="o">.</span><span class="n">site_position_modifier</span>
+    <span class="k">def</span> <span class="nf">displacement</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="n">ux</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">c</span> <span class="o">*</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span>
+        <span class="n">uy</span> <span class="o">=</span> <span class="n">c</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">ux</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">uy</span><span class="p">,</span> <span class="n">z</span>
+
+    <span class="nd">@pb</span><span class="o">.</span><span class="n">hopping_energy_modifier</span>
+    <span class="k">def</span> <span class="nf">strained_hopping</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">):</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">x1</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y1</span><span class="o">-</span><span class="n">y2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">z1</span><span class="o">-</span><span class="n">z2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">l</span> <span class="o">/</span> <span class="n">graphene</span><span class="o">.</span><span class="n">a_cc</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">energy</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">beta</span><span class="o">*</span><span class="n">w</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">displacement</span><span class="p">,</span> <span class="n">strained_hopping</span>
+</pre></div>
+</div>
+<p>The <code class="samp docutils literal notranslate"><span class="pre">triaxial_strain</span></code> function now has everything we need. We’ll apply it to a slightly larger
+system so that we can clearly calculate the local density of states (LDOS). For more information
+about this computation method see the <a class="reference internal" href="kpm.html"><span class="doc">Kernel polynomial method</span></a> section. Right now, it’s enough to know that
+we will calculate the LDOS at the center of the strained system, separately for sublattices
+A and B.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">regular_polygon</span><span class="p">(</span><span class="n">num_sides</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">pi</span><span class="p">),</span>
+    <span class="n">triaxial_strain</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="mf">0.0025</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">kpm</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">kpm</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">sub_name</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">]:</span>
+    <span class="n">ldos</span> <span class="o">=</span> <span class="n">kpm</span><span class="o">.</span><span class="n">calc_ldos</span><span class="p">(</span><span class="n">energy</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">500</span><span class="p">),</span> <span class="n">broadening</span><span class="o">=</span><span class="mf">0.03</span><span class="p">,</span>
+                         <span class="n">position</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">sublattice</span><span class="o">=</span><span class="n">sub_name</span><span class="p">)</span>
+    <span class="n">ldos</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">sub_name</span><span class="p">,</span> <span class="n">ls</span><span class="o">=</span><span class="s2">&quot;--&quot;</span> <span class="k">if</span> <span class="n">sub_name</span> <span class="o">==</span> <span class="s2">&quot;B&quot;</span> <span class="k">else</span> <span class="s2">&quot;-&quot;</span><span class="p">)</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Pseudo-Landau levels in strained graphene" class="plot-directive" src="../_images/strain-10.png" />
+</figure>
+<p>Strain in graphene has an effect similar to a magnetic field. That’s why we see Landau-level-like
+features in the LDOS. Note that the zero-energy peak has double intensity on one sublattice but
+zero on the other: this is a unique feature of the strain-induced pseudo-magnetic field.</p>
+</section>
+<section id="further-reading">
+<h2><span class="section-number">7.4. </span>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this heading">¶</a></h2>
+<p>Take a look at the <a class="reference internal" href="../api.html#modifiers-api"><span class="std std-ref">Modifiers</span></a> API reference for more information.</p>
+</section>
+<section id="example">
+<h2><span class="section-number">7.5. </span>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference download internal" download="" href="../_downloads/4ada9ede0bd0a2460f52a3554fcdf7c1/strain_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">source</span> <span class="pre">code</span></code></a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Strain a triangular system by pulling on its vertices&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pybinding</span> <span class="k">as</span> <span class="nn">pb</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span>
+
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">use_style</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">triaxial_strain</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Strain-induced displacement and hopping energy modification&quot;&quot;&quot;</span>
+    <span class="nd">@pb</span><span class="o">.</span><span class="n">site_position_modifier</span>
+    <span class="k">def</span> <span class="nf">displacement</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="n">ux</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">c</span> <span class="o">*</span> <span class="n">x</span><span class="o">*</span><span class="n">y</span>
+        <span class="n">uy</span> <span class="o">=</span> <span class="n">c</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">ux</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">uy</span><span class="p">,</span> <span class="n">z</span>
+
+    <span class="nd">@pb</span><span class="o">.</span><span class="n">hopping_energy_modifier</span>
+    <span class="k">def</span> <span class="nf">strained_hopping</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">):</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">x1</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y1</span><span class="o">-</span><span class="n">y2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">z1</span><span class="o">-</span><span class="n">z2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">l</span> <span class="o">/</span> <span class="n">graphene</span><span class="o">.</span><span class="n">a_cc</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">energy</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">3.37</span> <span class="o">*</span> <span class="n">w</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">displacement</span><span class="p">,</span> <span class="n">strained_hopping</span>
+
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">regular_polygon</span><span class="p">(</span><span class="n">num_sides</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">pi</span><span class="p">),</span>
+    <span class="n">triaxial_strain</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/strain_example_00_00.png" class="plot-directive" src="../_images/strain_example_00_00.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">))</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">GridSpec</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">block</span><span class="p">,</span> <span class="n">energy</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">grid</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">]):</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="n">block</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;E = </span><span class="si">{}</span><span class="s2"> eV&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">energy</span><span class="p">))</span>
+
+    <span class="n">solver</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">arpack</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="n">energy</span><span class="p">)</span>
+    <span class="n">ldos_map</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">calc_spatial_ldos</span><span class="p">(</span><span class="n">energy</span><span class="o">=</span><span class="n">energy</span><span class="p">,</span> <span class="n">broadening</span><span class="o">=</span><span class="mf">0.03</span><span class="p">)</span>
+    <span class="n">ldos_map</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;LDOS&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/strain_example_01_00.png" class="plot-directive" src="../_images/strain_example_01_00.png" />
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="fields.html" class="btn btn-neutral float-left" title="6. Fields and effects" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="generators.html" class="btn btn-neutral float-right" title="8. Generators" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

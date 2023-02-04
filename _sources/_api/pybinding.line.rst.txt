@@ -1,0 +1,6 @@
+﻿line
+==============
+
+.. currentmodule:: pybinding
+
+.. autofunction:: line

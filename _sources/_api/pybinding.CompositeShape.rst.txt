@@ -1,0 +1,32 @@
+﻿CompositeShape
+========================
+
+.. currentmodule:: pybinding
+
+.. autoclass:: CompositeShape
+    :members:
+    :special-members:
+    :inherited-members:
+
+    
+    
+    .. rubric:: Attributes
+
+    .. autosummary::
+    
+        ~CompositeShape.lattice_offset
+        ~CompositeShape.vertices
+    
+    
+
+    
+    
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~CompositeShape.contains
+        ~CompositeShape.plot
+        ~CompositeShape.with_offset
+    
+    

@@ -1,0 +1,42 @@
+﻿system
+================
+
+.. automodule:: pybinding.system
+    :members: _data_units_to_points, _make_shift_set, decorate_structure_plot, plot_hopping_values, plot_hoppings, plot_periodic_boundaries, plot_site_indices, plot_sites, structure_plot_properties, System, _CppSites
+
+    
+
+    
+    
+    .. rubric:: Classes
+
+    .. autosummary::
+    
+        System
+        _CppSites
+    
+    
+
+    
+    
+    .. rubric:: Functions
+
+    .. autosummary::
+    
+        _data_units_to_points
+        _make_shift_set
+        decorate_structure_plot
+        plot_hopping_values
+        plot_hoppings
+        plot_periodic_boundaries
+        plot_site_indices
+        plot_sites
+        structure_plot_properties
+    
+    
+
+    
+    
+    
+
+    

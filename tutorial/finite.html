@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta content="Constructing tight-binding systems of arbitrary shape" name="description" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>4. Finite size &mdash; pybinding</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="5. Shape and symmetry" href="shape_symmetry.html" />
+    <link rel="prev" title="3. Band structure" href="bands.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pybinding
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">About</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/index.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="import.html">1. Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lattice.html">2. Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bands.html">3. Band structure</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">4. Finite size</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#primitive">4.1. Primitive</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#polygon">4.2. Polygon</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#freeform-shape">4.3. Freeform shape</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#composite-shape">4.4. Composite shape</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#spatial-ldos">4.5. Spatial LDOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#further-reading">4.6. Further reading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example">4.7. Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="shape_symmetry.html">5. Shape and symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fields.html">6. Fields and effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strain.html">7. Defects and strain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generators.html">8. Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">9. Eigenvalue solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kpm.html">10. Kernel polynomial method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scattering.html">11. Scattering model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/index.html">Additional Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting/index.html">Plotting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Random Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference docs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../materials/index.html">Material Repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental/index.html">Experimental</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pybinding</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Tutorial</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">4. </span>Finite size</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorial/finite.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="finite-size">
+<h1><span class="section-number">4. </span>Finite size<a class="headerlink" href="#finite-size" title="Permalink to this heading">¶</a></h1>
+<p>This section introduces the concept of shapes with classes <a class="reference internal" href="../_api/pybinding.Polygon.html#pybinding.Polygon" title="pybinding.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code></a> and
+<a class="reference internal" href="../_api/pybinding.FreeformShape.html#pybinding.FreeformShape" title="pybinding.FreeformShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">FreeformShape</span></code></a> which are used to model systems of finite size. The sparse
+eigensolver <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.arpack" title="pybinding.solver.arpack"><code class="xref py py-func docutils literal notranslate"><span class="pre">arpack()</span></code></a> is also introduced as a good tool for exactly solving
+larger Hamiltonian matrices.</p>
+<p><a class="reference download internal" download="" href="../_downloads/6253a0c51f8427860011fa93d851e0f0/finite.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
+<section id="primitive">
+<h2><span class="section-number">4.1. </span>Primitive<a class="headerlink" href="#primitive" title="Permalink to this heading">¶</a></h2>
+<p>The simplest finite-sized system is just the unit cell of the crystal lattice.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">())</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/finite-1.png" class="plot-directive" src="../_images/finite-1.png" />
+</figure>
+<p>The unit cell can also be replicated a number of times to create a bigger system.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">primitive</span><span class="p">(</span><span class="n">a1</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">a2</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">plot_vectors</span><span class="p">(</span><span class="n">position</span><span class="o">=</span><span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">])</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/finite-2.png" class="plot-directive" src="../_images/finite-2.png" />
+</figure>
+<p>The <a class="reference internal" href="../_api/pybinding.primitive.html#pybinding.primitive" title="pybinding.primitive"><code class="xref py py-func docutils literal notranslate"><span class="pre">primitive()</span></code></a> parameter tells the model to replicate the unit cell 5 times in the
+<span class="math notranslate nohighlight">\(a_1\)</span> vector direction and 3 times in the <span class="math notranslate nohighlight">\(a_2\)</span> direction. However, to model
+realistic systems we need proper shapes.</p>
+</section>
+<section id="polygon">
+<h2><span class="section-number">4.2. </span>Polygon<a class="headerlink" href="#polygon" title="Permalink to this heading">¶</a></h2>
+<p>The easiest way to create a 2D shape is with the <a class="reference internal" href="../_api/pybinding.Polygon.html#pybinding.Polygon" title="pybinding.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code></a> class. For example,
+a simple rectangle:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rectangle</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+    <span class="n">x0</span> <span class="o">=</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="n">y0</span> <span class="o">=</span> <span class="n">height</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">pb</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([[</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">],</span> <span class="p">[</span><span class="n">x0</span><span class="p">,</span> <span class="o">-</span><span class="n">y0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">x0</span><span class="p">,</span> <span class="o">-</span><span class="n">y0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">]])</span>
+
+<span class="n">shape</span> <span class="o">=</span> <span class="n">rectangle</span><span class="p">(</span><span class="mf">1.6</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">)</span>
+<span class="n">shape</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/finite-3.png" class="plot-directive" src="../_images/finite-3.png" />
+</figure>
+<p>A <a class="reference internal" href="../_api/pybinding.Polygon.html#pybinding.Polygon" title="pybinding.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code></a> is initialized with a list of vertices which should be given in clockwise or
+counterclockwise order. When added to a <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> the lattice will expand to fill the shape.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">rectangle</span><span class="p">(</span><span class="n">width</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">1.2</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Rectangular graphene quantum dot" class="plot-directive" src="../_images/finite-4.png" />
+</figure>
+<p>To help visualize the shape and the expanded lattice, the polygon outline can be plotted on top
+of the system by calling both plot methods one after another.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">trapezoid</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">h</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">pb</span><span class="o">.</span><span class="n">Polygon</span><span class="p">([[</span><span class="o">-</span><span class="n">a</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">b</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">h</span><span class="p">],</span> <span class="p">[</span><span class="n">b</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">h</span><span class="p">],</span> <span class="p">[</span><span class="n">a</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">trapezoid</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">3.2</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Graphene quantum dot" class="plot-directive" src="../_images/finite-5.png" />
+</figure>
+<p>In general, a shape does not depend on a specific material, so it can be easily reused. Here, we
+shall switch to a <code class="xref py py-func docutils literal notranslate"><span class="pre">graphene.bilayer()</span></code> lattice, but we’ll keep
+the same <code class="samp docutils literal notranslate"><span class="pre">trapezoid</span></code> shape as defined earlier:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">bilayer</span><span class="p">(),</span>
+    <span class="n">trapezoid</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">3.2</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span> <span class="n">h</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Bilayer graphene quantum dot" class="plot-directive" src="../_images/finite-6.png" />
+</figure>
+</section>
+<section id="freeform-shape">
+<h2><span class="section-number">4.3. </span>Freeform shape<a class="headerlink" href="#freeform-shape" title="Permalink to this heading">¶</a></h2>
+<p>Unlike a <a class="reference internal" href="../_api/pybinding.Polygon.html#pybinding.Polygon" title="pybinding.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code></a> which is defined by a list of vertices, a <a class="reference internal" href="../_api/pybinding.FreeformShape.html#pybinding.FreeformShape" title="pybinding.FreeformShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">FreeformShape</span></code></a> is
+defined by a <code class="samp docutils literal notranslate"><span class="pre">contains</span></code> function which determines if a lattice site is inside the desired shape.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">circle</span><span class="p">(</span><span class="n">radius</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">radius</span>
+    <span class="k">return</span> <span class="n">pb</span><span class="o">.</span><span class="n">FreeformShape</span><span class="p">(</span><span class="n">contains</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">radius</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">radius</span><span class="p">])</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">circle</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Circular graphene quantum dot" class="plot-directive" src="../_images/finite-7.png" />
+</figure>
+<p>The <code class="samp docutils literal notranslate"><span class="pre">width</span></code> parameter of <a class="reference internal" href="../_api/pybinding.FreeformShape.html#pybinding.FreeformShape" title="pybinding.FreeformShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">FreeformShape</span></code></a> specifies the bounding box width. Only sites
+inside the bounding box will be considered for the shape. It’s like carving a sculpture from a
+block of stone. The bounding box can be thought of as the stone block, while the <code class="samp docutils literal notranslate"><span class="pre">contains</span></code>
+function is the carving tool that can give the fine detail of the shape.</p>
+<p>As with <a class="reference internal" href="../_api/pybinding.Polygon.html#pybinding.Polygon" title="pybinding.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code></a>, we can visualize the shape with the <a class="reference internal" href="../_api/pybinding.FreeformShape.html#pybinding.FreeformShape.plot" title="pybinding.FreeformShape.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">FreeformShape.plot()</span></code></a> method.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">ring</span><span class="p">(</span><span class="n">inner_radius</span><span class="p">,</span> <span class="n">outer_radius</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">inner_radius</span> <span class="o">&lt;</span> <span class="n">r</span><span class="p">,</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="n">outer_radius</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pb</span><span class="o">.</span><span class="n">FreeformShape</span><span class="p">(</span><span class="n">contains</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">outer_radius</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">outer_radius</span><span class="p">])</span>
+
+<span class="n">shape</span> <span class="o">=</span> <span class="n">ring</span><span class="p">(</span><span class="n">inner_radius</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span> <span class="n">outer_radius</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">shape</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/finite-8.png" class="plot-directive" src="../_images/finite-8.png" />
+</figure>
+<p>The shaded area indicates the shape as determined by the <code class="samp docutils literal notranslate"><span class="pre">contains</span></code> function. Creating a model
+will cause the lattice to fill in the shape.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">ring</span><span class="p">(</span><span class="n">inner_radius</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span> <span class="n">outer_radius</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Graphene ring" class="plot-directive" src="../_images/finite-9.png" />
+</figure>
+<p>Note that the <code class="samp docutils literal notranslate"><span class="pre">ring</span></code> example uses <code class="samp docutils literal notranslate"><span class="pre">np.logical_and</span></code> instead of the plain <code class="samp docutils literal notranslate"><span class="pre">and</span></code> keyword. This is
+because the <code class="samp docutils literal notranslate"><span class="pre">x,</span> <span class="pre">y,</span> <span class="pre">z</span></code> positions are not given as scalar numbers but as numpy arrays. Array
+comparisons return boolean arrays:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">7</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">&lt;</span> <span class="mi">5</span>
+<span class="go">[False, True, True, False, True]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="mi">2</span> <span class="o">&lt;</span> <span class="n">x</span> <span class="ow">and</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">5</span>
+<span class="go">ValueError: ...</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="mi">2</span> <span class="o">&lt;</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">)</span>
+<span class="go">[False, False, True, False, False]</span>
+</pre></div>
+</div>
+<p>The <code class="samp docutils literal notranslate"><span class="pre">and</span></code> keyword can only operate on scalar values, but <code class="samp docutils literal notranslate"><span class="pre">np.logical_and</span></code> can consider arrays.
+Likewise, <code class="samp docutils literal notranslate"><span class="pre">math.sqrt</span></code> does not work with arrays, but <code class="samp docutils literal notranslate"><span class="pre">np.sqrt</span></code> does.</p>
+</section>
+<section id="composite-shape">
+<h2><span class="section-number">4.4. </span>Composite shape<a class="headerlink" href="#composite-shape" title="Permalink to this heading">¶</a></h2>
+<p>Complicated system geometry can also be produced by composing multiple simple shapes. The
+following example gives a quick taste of how it works. For a full overview of this functionality,
+see the <a class="reference internal" href="../advanced/shapes.html"><span class="doc">Composite shapes</span></a> section.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Simple shapes</span>
+<span class="n">rectangle</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">hexagon</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">regular_polygon</span><span class="p">(</span><span class="n">num_sides</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">1.92</span><span class="p">,</span> <span class="n">angle</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">circle</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+
+<span class="c1"># Compose them naturally</span>
+<span class="n">shape</span> <span class="o">=</span> <span class="n">rectangle</span> <span class="o">+</span> <span class="n">hexagon</span> <span class="o">-</span> <span class="n">circle</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span> <span class="n">shape</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">shape</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/finite-10.png" class="plot-directive" src="../_images/finite-10.png" />
+</figure>
+</section>
+<section id="spatial-ldos">
+<h2><span class="section-number">4.5. </span>Spatial LDOS<a class="headerlink" href="#spatial-ldos" title="Permalink to this heading">¶</a></h2>
+<p>Now that we have a ring structure, we can exactly diagonalize its <code class="samp docutils literal notranslate"><span class="pre">model.hamiltonian</span></code> using a
+<a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.Solver" title="pybinding.solver.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a>. We previously used the <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.lapack" title="pybinding.solver.lapack"><code class="xref py py-func docutils literal notranslate"><span class="pre">lapack()</span></code></a> solver to find all the eigenvalues and
+eigenvectors, but this is not efficient for larger systems. The sparse <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.arpack" title="pybinding.solver.arpack"><code class="xref py py-func docutils literal notranslate"><span class="pre">arpack()</span></code></a> solver can
+calculate a targeted subset of the eigenvalues, which is usually desired and much faster. In this
+case, we are interested only in the 20 lowest energy states.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">ring</span><span class="p">(</span><span class="n">inner_radius</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span> <span class="n">outer_radius</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">arpack</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>  <span class="c1"># only the 20 lowest eigenstates</span>
+
+<span class="n">ldos</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">calc_spatial_ldos</span><span class="p">(</span><span class="n">energy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">broadening</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>  <span class="c1"># eV</span>
+<span class="n">ldos</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">site_radius</span><span class="o">=</span><span class="p">(</span><span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.12</span><span class="p">))</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;LDOS&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Spatial local density of states (LDOS) for a graphene ring" class="plot-directive" src="../_images/finite-11.png" />
+</figure>
+<p>The convenient <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.Solver.calc_spatial_ldos" title="pybinding.solver.Solver.calc_spatial_ldos"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Solver.calc_spatial_ldos()</span></code></a> method calculates the local density of states
+(LDOS) at every site for the given energy with a Gaussian broadening. The returned object is a
+<a class="reference internal" href="../_api/pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a> which holds the LDOS data. The <a class="reference internal" href="../_api/pybinding.StructureMap.html#pybinding.StructureMap.plot" title="pybinding.StructureMap.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">StructureMap.plot()</span></code></a> method will
+produce a figure similar to <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model.plot" title="pybinding.Model.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Model.plot()</span></code></a>, but with a colormap indicating the LDOS value
+at each lattice site. In addition, the <code class="samp docutils literal notranslate"><span class="pre">site_radius</span></code> argument specifies a range of sizes which
+will cause the low intensity sites to appear as small circles while high intensity ones become
+large. The states with a high LDOS are clearly visible on the outer and inner edges of the
+graphene ring structure.</p>
+</section>
+<section id="further-reading">
+<h2><span class="section-number">4.6. </span>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this heading">¶</a></h2>
+<p>For more finite-sized systems check out the <a class="reference internal" href="../examples/finite/index.html"><span class="doc">examples section</span></a>.</p>
+</section>
+<section id="example">
+<h2><span class="section-number">4.7. </span>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference download internal" download="" href="../_downloads/46af63bf2d94f4cca4d40d57b53bd1c2/finite_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Donwload</span> <span class="pre">source</span> <span class="pre">code</span></code></a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Model a graphene ring structure and calculate the local density of states&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pybinding</span> <span class="k">as</span> <span class="nn">pb</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">use_style</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">ring</span><span class="p">(</span><span class="n">inner_radius</span><span class="p">,</span> <span class="n">outer_radius</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple ring shape&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">inner_radius</span> <span class="o">&lt;</span> <span class="n">r</span><span class="p">,</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="n">outer_radius</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">pb</span><span class="o">.</span><span class="n">FreeformShape</span><span class="p">(</span><span class="n">contains</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">outer_radius</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">outer_radius</span><span class="p">])</span>
+
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">ring</span><span class="p">(</span><span class="n">inner_radius</span><span class="o">=</span><span class="mf">1.4</span><span class="p">,</span> <span class="n">outer_radius</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># length in nanometers</span>
+<span class="p">)</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/finite_example_00_00.png" class="plot-directive" src="../_images/finite_example_00_00.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># only solve for the 20 lowest energy eigenvalues</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">arpack</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">ldos</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">calc_spatial_ldos</span><span class="p">(</span><span class="n">energy</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">broadening</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>  <span class="c1"># LDOS around 0 eV</span>
+<span class="n">ldos</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">site_radius</span><span class="o">=</span><span class="p">(</span><span class="mf">0.03</span><span class="p">,</span> <span class="mf">0.12</span><span class="p">))</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;LDOS&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/finite_example_01_00.png" class="plot-directive" src="../_images/finite_example_01_00.png" />
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="bands.html" class="btn btn-neutral float-left" title="3. Band structure" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="shape_symmetry.html" class="btn btn-neutral float-right" title="5. Shape and symmetry" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

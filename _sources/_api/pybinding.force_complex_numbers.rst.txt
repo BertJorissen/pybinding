@@ -1,0 +1,6 @@
+﻿force_complex_numbers
+===============================
+
+.. currentmodule:: pybinding
+
+.. autofunction:: force_complex_numbers

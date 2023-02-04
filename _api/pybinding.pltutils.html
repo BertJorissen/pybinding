@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pltutils &mdash; pybinding</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Experimental" href="../experimental/index.html" />
+    <link rel="prev" title="constants" href="pybinding.constants.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pybinding
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">About</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/index.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/index.html">Additional Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting/index.html">Plotting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Random Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference docs</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../materials/index.html">Material Repository</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pybinding.Lattice.html">Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pybinding.Model.html">Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#shapes">Shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#symmetry">Symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#modifiers">Modifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#generators">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#compute">Compute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#results">Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#components">Components</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#miscellaneous">Miscellaneous</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pybinding.constants.html">constants</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">pltutils</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.pltutils.cm2inch"><code class="docutils literal notranslate"><span class="pre">cm2inch()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.pltutils.colorbar"><code class="docutils literal notranslate"><span class="pre">colorbar()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.pltutils.despine"><code class="docutils literal notranslate"><span class="pre">despine()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.pltutils.despine_all"><code class="docutils literal notranslate"><span class="pre">despine_all()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.pltutils.get_palette"><code class="docutils literal notranslate"><span class="pre">get_palette()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.pltutils.legend"><code class="docutils literal notranslate"><span class="pre">legend()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.pltutils.respine"><code class="docutils literal notranslate"><span class="pre">respine()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.pltutils.set_palette"><code class="docutils literal notranslate"><span class="pre">set_palette()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.pltutils.use_style"><code class="docutils literal notranslate"><span class="pre">use_style()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental/index.html">Experimental</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pybinding</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API Reference</a></li>
+      <li class="breadcrumb-item active">pltutils</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_api/pybinding.pltutils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-pybinding.pltutils">
+<span id="pltutils"></span><h1>pltutils<a class="headerlink" href="#module-pybinding.pltutils" title="Permalink to this heading">¶</a></h1>
+<p>Collection of utility functions for matplotlib</p>
+<p class="rubric">Functions</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_is_jupyter_notebook</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_is_notebook_inline_backend</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_make_style</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_reset_notebook_inline_backend</span></code>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_set_smart_bounds</span></code>(spine, value)</p></td>
+<td><p>Hold on to the deprecated <code class="samp docutils literal notranslate"><span class="pre">set_smart_bounds()</span></code> for a little while longer</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_margin</span></code>([margin, axis, ax])</p></td>
+<td><p>Adjust the axis length to include a margin (after autoscale)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">align</span></code>(x, y)</p></td>
+<td><p>Return text alignment based on (x, y) numbers</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">annotate_box</span></code>(s, xy[, fontcolor, ax])</p></td>
+<td><p>Annotate with a box around the text</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">axes</span></code>(ax)</p></td>
+<td><p>A context manager that sets the active Axes instance to <code class="samp docutils literal notranslate"><span class="pre">ax</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">backend</span></code>(new_backend)</p></td>
+<td><p>Change the backend within this context</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">blend_colors</span></code>(color, bg, factor)</p></td>
+<td><p>Blend color with background</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.pltutils.cm2inch" title="pybinding.pltutils.cm2inch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cm2inch</span></code></a>(*values)</p></td>
+<td><p>Convert from centimeter to inch</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.pltutils.colorbar" title="pybinding.pltutils.colorbar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">colorbar</span></code></a>([mappable, cax, ax, label, powerlimits])</p></td>
+<td><p>Custom colorbar with modified style and optional label</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.pltutils.despine" title="pybinding.pltutils.despine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">despine</span></code></a>([trim, ax])</p></td>
+<td><p>Remove the top and right spines</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.pltutils.despine_all" title="pybinding.pltutils.despine_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">despine_all</span></code></a>([ax])</p></td>
+<td><p>Remove all spines, axes labels and ticks</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">direct_cmap_norm</span></code>(data, colors[, blend])</p></td>
+<td><p>Colormap with direct mapping: data[i] -&gt; colors[i]</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.pltutils.get_palette" title="pybinding.pltutils.get_palette"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_palette</span></code></a>([name, num_colors, start])</p></td>
+<td><p>Get a color palette from matplotlib's colormap database</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.pltutils.legend" title="pybinding.pltutils.legend"><code class="xref py py-obj docutils literal notranslate"><span class="pre">legend</span></code></a>(*args[, reverse, facecolor, lw, ax])</p></td>
+<td><p>Custom legend with modified style and option to reverse label order</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_color</span></code>(x, y, z[, ax, cmap])</p></td>
+<td><p>Function to plot the values as changing colors in a plot.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_vectors</span></code>(vectors[, position, name, ...])</p></td>
+<td><p>Visualize vectors, alternative to plt.quiver()</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.pltutils.respine" title="pybinding.pltutils.respine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">respine</span></code></a>([ax])</p></td>
+<td><p>Redraw all spines, opposite of <a class="reference internal" href="#pybinding.pltutils.despine" title="pybinding.pltutils.despine"><code class="xref py py-func docutils literal notranslate"><span class="pre">despine()</span></code></a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_min_axis_length</span></code>(length[, axis, ax])</p></td>
+<td><p>Set minimum axis length</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_min_axis_ratio</span></code>(ratio[, ax])</p></td>
+<td><p>Set minimum ratio between axes limits</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.pltutils.set_palette" title="pybinding.pltutils.set_palette"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_palette</span></code></a>([name, num_colors, start, ax])</p></td>
+<td><p>Set the active color palette</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.pltutils.use_style" title="pybinding.pltutils.use_style"><code class="xref py py-obj docutils literal notranslate"><span class="pre">use_style</span></code></a>([style])</p></td>
+<td><p>Shortcut for <a class="reference external" href="https://matplotlib.org/stable/api/style_api.html#matplotlib.style.use" title="(in Matplotlib v3.6.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.style.use()</span></code></a> with pybinding style applied by default</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py function">
+<dt class="sig sig-object py" id="pybinding.pltutils.cm2inch">
+<span class="sig-name descname"><span class="pre">cm2inch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">values</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.pltutils.cm2inch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert from centimeter to inch</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>*values</strong></dt><dd></dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>tuple</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cm2inch</span><span class="p">(</span><span class="mf">2.54</span><span class="p">,</span> <span class="mf">5.08</span><span class="p">)</span>
+<span class="go">(1.0, 2.0)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pybinding.pltutils.colorbar">
+<span class="sig-name descname"><span class="pre">colorbar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mappable</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">powerlimits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.pltutils.colorbar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Custom colorbar with modified style and optional label</p>
+<p>Changes default <code class="samp docutils literal notranslate"><span class="pre">pad</span></code> and <code class="samp docutils literal notranslate"><span class="pre">aspect</span></code> argument values and turns on rasterization for a
+nicer looking colorbar with smaller size in vector formats (pdf, svg).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>label</strong><span class="classifier">str</span></dt><dd><p>Color data label.</p>
+</dd>
+<dt><strong>powerlimits</strong><span class="classifier">Tuple[int, int]</span></dt><dd><p>Sets size thresholds for scientific notation.</p>
+</dd>
+<dt><strong>mappable, cax, ax, **kwargs</strong></dt><dd><p>Forwarded to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="(in Matplotlib v3.6.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.colorbar()</span></code></a>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pybinding.pltutils.despine">
+<span class="sig-name descname"><span class="pre">despine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">trim</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.6.3)"><span class="pre">Axes</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#pybinding.pltutils.despine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the top and right spines</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>trim</strong><span class="classifier">bool</span></dt><dd><p>Trim spines so that they don’t extend beyond the last major ticks.</p>
+</dd>
+<dt><strong>ax</strong><span class="classifier">Optional[plt.Axes]</span></dt><dd><p>Axes to despine.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pybinding.pltutils.despine_all">
+<span class="sig-name descname"><span class="pre">despine_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.6.3)"><span class="pre">Axes</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#pybinding.pltutils.despine_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all spines, axes labels and ticks</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">Optional[plt.Axes]</span></dt><dd><p>Axes to despine.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pybinding.pltutils.get_palette">
+<span class="sig-name descname"><span class="pre">get_palette</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.pltutils.get_palette" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a color palette from matplotlib’s colormap database</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>Name of the palette to get. If <code class="samp docutils literal notranslate"><span class="pre">None</span></code>, get the active palette.</p>
+</dd>
+<dt><strong>num_colors</strong><span class="classifier">int</span></dt><dd><p>Number of colors to retrieve.</p>
+</dd>
+<dt><strong>start</strong><span class="classifier">int</span></dt><dd><p>Staring from this color number.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>List[color]</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pybinding.pltutils.legend">
+<span class="sig-name descname"><span class="pre">legend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facecolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'0.98'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.6.3)"><span class="pre">Axes</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.pltutils.legend" title="Permalink to this definition">¶</a></dt>
+<dd><p>Custom legend with modified style and option to reverse label order</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>reverse</strong><span class="classifier">bool</span></dt><dd><p>Reverse the label order.</p>
+</dd>
+<dt><strong>facecolor</strong><span class="classifier">color</span></dt><dd><p>Legend background color.</p>
+</dd>
+<dt><strong>lw</strong><span class="classifier">float</span></dt><dd><p>Frame width.</p>
+</dd>
+<dt><strong>ax</strong><span class="classifier">Optional[plt.Axes]</span></dt><dd><p>Axis to add the legend to.</p>
+</dd>
+<dt><strong>*args, **kwargs</strong></dt><dd><p>Forwarded to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.legend.html#matplotlib.pyplot.legend" title="(in Matplotlib v3.6.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.legend()</span></code></a>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pybinding.pltutils.respine">
+<span class="sig-name descname"><span class="pre">respine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.6.3)"><span class="pre">Axes</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#pybinding.pltutils.respine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Redraw all spines, opposite of <a class="reference internal" href="#pybinding.pltutils.despine" title="pybinding.pltutils.despine"><code class="xref py py-func docutils literal notranslate"><span class="pre">despine()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">Optional[plt.Axes]</span></dt><dd><p>Axes to respine.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pybinding.pltutils.set_palette">
+<span class="sig-name descname"><span class="pre">set_palette</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.11)"><span class="pre">Optional</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.6.3)"><span class="pre">Axes</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.pltutils.set_palette" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the active color palette</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>name</strong><span class="classifier">str, optional</span></dt><dd><p>Name of the palette. If <code class="samp docutils literal notranslate"><span class="pre">None</span></code>, modify the active palette.</p>
+</dd>
+<dt><strong>num_colors</strong><span class="classifier">int</span></dt><dd><p>Number of colors to retrieve.</p>
+</dd>
+<dt><strong>start</strong><span class="classifier">int</span></dt><dd><p>Staring from this color number.</p>
+</dd>
+<dt><strong>ax</strong><span class="classifier">Optional[plt.Axes]</span></dt><dd><p>Axis to set the palette to.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pybinding.pltutils.use_style">
+<span class="sig-name descname"><span class="pre">use_style</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">style</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">pb_style</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.pltutils.use_style" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shortcut for <a class="reference external" href="https://matplotlib.org/stable/api/style_api.html#matplotlib.style.use" title="(in Matplotlib v3.6.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.style.use()</span></code></a> with pybinding style applied by default</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>style</strong><span class="classifier">dict</span></dt><dd><p>A matplotlib style specification.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pybinding.constants.html" class="btn btn-neutral float-left" title="constants" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../experimental/index.html" class="btn btn-neutral float-right" title="Experimental" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

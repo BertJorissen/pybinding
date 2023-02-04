@@ -1,0 +1,56 @@
+﻿Model
+===============
+
+.. currentmodule:: pybinding
+
+.. autoclass:: Model
+    :members:
+    :special-members:
+    :inherited-members:
+
+    
+    
+    .. rubric:: Attributes
+
+    .. autosummary::
+    
+        ~Model.get_wave_vector
+        ~Model.hamiltonian
+        ~Model.hamiltonian_build_seconds
+        ~Model.is_complex
+        ~Model.is_double
+        ~Model.is_multiorbital
+        ~Model.is_phase
+        ~Model.lattice
+        ~Model.leads
+        ~Model.modifiers
+        ~Model.onsite_map
+        ~Model.raw_hamiltonian
+        ~Model.shape
+        ~Model.system
+        ~Model.system_build_seconds
+    
+    
+
+    
+    
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~Model.add
+        ~Model.attach_lead
+        ~Model.eval
+        ~Model.hopping_generators
+        ~Model.hopping_modifiers
+        ~Model.onsite_modifiers
+        ~Model.plot
+        ~Model.position_modifiers
+        ~Model.report
+        ~Model.set_wave_vector
+        ~Model.site_generators
+        ~Model.site_state_modifiers
+        ~Model.structure_map
+        ~Model.tokwant
+    
+    

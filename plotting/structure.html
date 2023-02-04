@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Model structure &mdash; pybinding</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Structure-mapped data" href="structuremap.html" />
+    <link rel="prev" title="Plotting Guide" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pybinding
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">About</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/index.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/index.html">Additional Topics</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Plotting Guide</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Model structure</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#structure-plot-classes">Structure plot classes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#draw-only-certain-hoppings">Draw only certain hoppings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#site-radius-and-color">Site radius and color</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#hopping-width-and-color">Hopping width and color</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#redraw-all-axes-spines">Redraw all axes spines</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#plot-only-sites-or-only-hoppings">Plot only sites or only hoppings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#rotating-the-view">Rotating the view</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#slicing-layers">Slicing layers</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="structuremap.html">Structure-mapped data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Random Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference docs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../materials/index.html">Material Repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental/index.html">Experimental</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pybinding</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Plotting Guide</a></li>
+      <li class="breadcrumb-item active">Model structure</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/plotting/structure.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="model-structure">
+<h1>Model structure<a class="headerlink" href="#model-structure" title="Permalink to this heading">¶</a></h1>
+<p>A structure plot presents the crystal structure of a model by drawing lattice sites as circles and
+hoppings as lines which connect the circles. At first glance, this seems like a combination of the
+standard scatter and line plots found in matplotlib, but the specific requirements of tight-binding
+complicate the implementation. This is why pybinding has its own specialized structure plotting
+functions. While these functions are based on matplotlib, they offer additional options which will
+be explained here.</p>
+<p><a class="reference download internal" download="" href="../_downloads/0d7047db80abcee5fcb8125cb28407b3/structure.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
+<section id="structure-plot-classes">
+<h2>Structure plot classes<a class="headerlink" href="#structure-plot-classes" title="Permalink to this heading">¶</a></h2>
+<p>A few different classes in pybinding use structure plots. These are <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice" title="pybinding.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a>,
+<a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>, <a class="reference internal" href="../_api/pybinding.system.html#pybinding.system.System" title="pybinding.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">System</span></code></a>, <a class="reference internal" href="../_api/pybinding.leads.html#pybinding.leads.Lead" title="pybinding.leads.Lead"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lead</span></code></a> and <a class="reference internal" href="../_api/pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a>. They all represent
+some kind of spatial structure with sites and hoppings. Note that most of these classes are
+components of the main <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>. Calling their plot methods will draw the structure which
+they represent. The following pseudo-code presents a few possibilities:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>  <span class="c1"># specify model</span>
+<span class="n">model</span><span class="o">.</span><span class="n">attach_lead</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>  <span class="c1"># specify leads</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">lattice</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>  <span class="c1"># just the unit cell</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>  <span class="c1"># the main system and leads</span>
+<span class="n">model</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>  <span class="c1"># only the main system</span>
+<span class="n">model</span><span class="o">.</span><span class="n">leads</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>  <span class="c1"># only lead 0</span>
+</pre></div>
+</div>
+<p>In the following sections we’ll present a few features of the structure plotting API. The examples
+will involve mainly <code class="xref py py-meth docutils literal notranslate"><span class="pre">Model.plot()</span></code>, but all of these methods share the same common API.</p>
+</section>
+<section id="draw-only-certain-hoppings">
+<h2>Draw only certain hoppings<a class="headerlink" href="#draw-only-certain-hoppings" title="Permalink to this heading">¶</a></h2>
+<p>The structure plot usually draws lines for all hoppings. We can see an example here with the
+third-nearest-neighbor model of graphene. Note the huge number of hoppings in the figure below.
+The extra information may be useful for calculations, but it is not always desirable for figures
+because of the extra noise. To filter out some of the lines, we can pass the <code class="samp docutils literal notranslate"><span class="pre">draw_only</span></code> argument
+as a list of hopping names. For example, if we only want the first-nearest neighbors:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(</span><span class="n">nearest_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">graphene</span><span class="o">.</span><span class="n">hexagon_ac</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Unfiltered: all 3 hoppings&quot;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Filtered: shows only nearest&quot;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hopping</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;draw_only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]})</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/structure-1.png" class="plot-directive" src="../_images/structure-1.png" />
+</figure>
+<p>We can also select hoppings in any combination:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;$t$ and $t_</span><span class="si">{nn}</span><span class="s2">$&quot;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hopping</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;draw_only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;t_nn&#39;</span><span class="p">]})</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;$t$ and $t_</span><span class="si">{nnn}</span><span class="s2">$&quot;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hopping</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;draw_only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;t_nnn&#39;</span><span class="p">]})</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/structure-2.png" class="plot-directive" src="../_images/structure-2.png" />
+</figure>
+</section>
+<section id="site-radius-and-color">
+<h2>Site radius and color<a class="headerlink" href="#site-radius-and-color" title="Permalink to this heading">¶</a></h2>
+<p>The site radius is given in data units (nanometers in this example). Colors are passed as a list
+of colors or a matplotlib colormap.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span> <span class="n">graphene</span><span class="o">.</span><span class="n">hexagon_ac</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Default&quot;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Customized&quot;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;radius&#39;</span><span class="p">:</span> <span class="mf">0.04</span><span class="p">,</span> <span class="s1">&#39;cmap&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">]})</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/structure-3.png" class="plot-directive" src="../_images/structure-3.png" />
+</figure>
+</section>
+<section id="hopping-width-and-color">
+<h2>Hopping width and color<a class="headerlink" href="#hopping-width-and-color" title="Permalink to this heading">¶</a></h2>
+<p>By default, all hopping kinds (nearest, next-nearest, etc.) are shown using the same line color,
+but they can be colorized using the <code class="samp docutils literal notranslate"><span class="pre">cmap</span></code> parameter.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(</span><span class="n">nearest_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">pb</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mf">0.6</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Default&quot;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Customized&quot;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hopping</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;cmap&#39;</span><span class="p">:</span> <span class="s1">&#39;auto&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/structure-4.png" class="plot-directive" src="../_images/structure-4.png" />
+</figure>
+</section>
+<section id="redraw-all-axes-spines">
+<h2>Redraw all axes spines<a class="headerlink" href="#redraw-all-axes-spines" title="Permalink to this heading">¶</a></h2>
+<p>By default, pybinding plots will remove the right and top axes spines. To recover those lines
+call the <a class="reference internal" href="../_api/pybinding.pltutils.html#pybinding.pltutils.respine" title="pybinding.pltutils.respine"><code class="xref py py-func docutils literal notranslate"><span class="pre">pltutils.respine()</span></code></a> function.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span> <span class="n">graphene</span><span class="o">.</span><span class="n">hexagon_ac</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">respine</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/structure-5.png" class="plot-directive" src="../_images/structure-5.png" />
+</figure>
+</section>
+<section id="plot-only-sites-or-only-hoppings">
+<h2>Plot only sites or only hoppings<a class="headerlink" href="#plot-only-sites-or-only-hoppings" title="Permalink to this heading">¶</a></h2>
+<p>It can sometimes be useful to separate the plotting of sites and hoppings. Notably, for large
+systems drawing a huge number of hopping lines can become quite slow and they may even be too
+small to actually see in the figure. In such cases, removing the hoppings can speed up plotting
+considerably. Another use case is for the composition of multiple plots – see the next page for
+an example.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span> <span class="n">graphene</span><span class="o">.</span><span class="n">hexagon_ac</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Only sites&quot;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hopping</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;width&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Only hoppings&quot;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">site</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;radius&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/structure-6.png" class="plot-directive" src="../_images/structure-6.png" />
+</figure>
+</section>
+<section id="rotating-the-view">
+<h2>Rotating the view<a class="headerlink" href="#rotating-the-view" title="Permalink to this heading">¶</a></h2>
+<p>By default, all structure plots show the xy-plane. The view can be rotated by settings the <code class="samp docutils literal notranslate"><span class="pre">axes</span></code>
+argument to a string consisting of any combination of the letters “x”, “y” and “z”.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">()</span><span class="o">.</span><span class="n">with_offset</span><span class="p">([</span><span class="o">-</span><span class="n">graphene</span><span class="o">.</span><span class="n">a</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span>
+                 <span class="n">pb</span><span class="o">.</span><span class="n">regular_polygon</span><span class="p">(</span><span class="n">num_sides</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">1.8</span><span class="p">),</span>
+                 <span class="n">graphene</span><span class="o">.</span><span class="n">gaussian_bump</span><span class="p">(</span><span class="n">height</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">0.7</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.8</span><span class="p">,</span> <span class="mf">7.5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">221</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;xy&quot;</span><span class="p">,</span> <span class="n">ylim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.8</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">222</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;xz&quot;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">axes</span><span class="o">=</span><span class="s2">&quot;xz&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">223</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;yx&quot;</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="mf">1.8</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">axes</span><span class="o">=</span><span class="s2">&quot;yx&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">224</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;zy&quot;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">axes</span><span class="o">=</span><span class="s2">&quot;zy&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/structure-7.png" class="plot-directive" src="../_images/structure-7.png" />
+</figure>
+</section>
+<section id="slicing-layers">
+<h2>Slicing layers<a class="headerlink" href="#slicing-layers" title="Permalink to this heading">¶</a></h2>
+<p>For multilayer materials, it is sometimes useful to plot each layer individually.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">bilayer</span><span class="p">()</span><span class="o">.</span><span class="n">with_offset</span><span class="p">([</span><span class="n">graphene</span><span class="o">.</span><span class="n">a</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span>
+                 <span class="n">pb</span><span class="o">.</span><span class="n">regular_polygon</span><span class="p">(</span><span class="n">num_sides</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.8</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">131</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;both layers&quot;</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">132</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;bottom layer&quot;</span><span class="p">)</span>
+<span class="n">s</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">system</span>
+<span class="n">s</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">z</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">133</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;top layer&quot;</span><span class="p">)</span>
+<span class="n">s</span><span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">z</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/structure-8.png" class="plot-directive" src="../_images/structure-8.png" />
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Plotting Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="structuremap.html" class="btn btn-neutral float-right" title="Structure-mapped data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

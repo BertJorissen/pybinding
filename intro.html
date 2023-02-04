@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta content="Pybinding is a Python package for numerical tight-binding calculations. It features easy model construction, fast compute and result visualization tools." name="description" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About &mdash; pybinding</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
+    <link rel="stylesheet" href="_static/extra.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Benchmarks" href="benchmarks/index.html" />
+    <link rel="prev" title="Tight-binding package for Python" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> pybinding
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">About</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#background">Background</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#workflow">Workflow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#citing">Citing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#bsd-license">BSD License</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="benchmarks/index.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced/index.html">Additional Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting/index.html">Plotting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Random Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference docs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="materials/index.html">Material Repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="experimental/index.html">Experimental</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pybinding</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">About</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/intro.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="about">
+<h1>About<a class="headerlink" href="#about" title="Permalink to this heading">¶</a></h1>
+<p>Pybinding is a Python package for numerical tight-binding calculations in solid state physics.
+The main features include:</p>
+<ul class="simple">
+<li><p><strong>Declarative model construction</strong> - The user just needs to describe <em>what</em> the model should be,
+but not <em>how</em> to build it. Pybinding will take care of the numerical details of building the
+Hamiltonian matrix so users can concentrate on the physics, i.e. the quantum properties of the
+model.</p></li>
+<li><p><strong>Fast compute</strong> - Pybinding’s implementation of the kernel polynomial method allows for very
+fast calculation of various physical properties of tight-binding systems. Exact diagonalization
+is also available through the use of scipy’s eigenvalue solvers. The framework is very flexible
+and allows the addition of user-defined computation routines.</p></li>
+<li><p><strong>Result analysis and visualization</strong> - The package contains utility functions for post-processing
+the raw result data. The included plotting functions are tailored for tight-binding problems to
+help visualize the model structure and to make sense of the results.</p></li>
+</ul>
+<p>The main interface is written in Python with the aim to be as user-friendly and flexible as
+possible. Under the hood, C++11 is used to accelerate demanding tasks to deliver high performance
+with low memory usage.</p>
+<section id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this heading">¶</a></h2>
+<p>The tight-binding model is an approximate approach of calculating the electronic band structure
+of solids using a basis of localized atomic orbitals. This model is applicable to a wide variety
+of systems and phenomena in quantum physics. The approach does not require computing from first
+principals, but instead simply uses parameterized matrix elements. In contrast to <em>ab initio</em>
+calculations, the tight-binding model can scale to large system sizes on the order of millions
+of atoms.</p>
+<p>Python is a programming language which is easy to learn and a joy to use. It has deep roots in
+the scientific community as evidenced by the rich scientific Python library collection: <a class="reference external" href="http://www.scipy.org/">SciPy</a>. As such, Python is the ideal choice as the main interface for pybinding.
+In the core of the package, C++11 is used to accelerate model construction and the most demanding
+calculations. This is done silently in the background.</p>
+</section>
+<section id="workflow">
+<h2>Workflow<a class="headerlink" href="#workflow" title="Permalink to this heading">¶</a></h2>
+<p>The general workflow starts with model definition. Three main parts are required to describe a
+tight-binding model:</p>
+<ul class="simple">
+<li><p><strong>The crystal lattice</strong> - This step includes the specification of the primitive lattice vectors
+and the configuration of the unit cell (atoms, orbitals and spins). This can be user-defined,
+but the package also contains a repository of the pre-made specifications for several materials.</p></li>
+<li><p><strong>System geometry</strong> - The model system can be infinite through the use of translational symmetry
+or it can be finite by specifying a shape. The two approaches can also be composed to create
+periodic systems with intricate structural patterns. The structure can be controlled up to fine
+details, e.g. to form specific edge types as well as various defects.</p></li>
+<li><p><strong>Fields</strong> - Functions can be applied to the onsite and hopping energies of the model system
+to simulate external fields or various effects. These functions are be defined independently
+of any lattice or specific structure which makes them easily reusable and mutually composable.</p></li>
+</ul>
+<p>Once the model description is complete, pybinding will build the tight-binding Hamiltonian matrix.
+The next step is to apply computations to the matrix to obtain the values of the desired quantum
+properties. To that end, there are the following possibilities:</p>
+<ul class="simple">
+<li><p><strong>Kernel polynomial method</strong> - Pybinding implements a fast Chebyshev polynomial expansion routine
+which can be used to calculate various physical properties. For example, it’s possible to
+quickly compute the local density of states or the transport characteristics of the system.</p></li>
+<li><p><strong>Exact diagonalization</strong> - Eigensolvers may be used to calculate the eigenvalues and
+eigenvectors of the model system. Common dense and sparse matrix eigensolvers are available
+via SciPy.</p></li>
+<li><p><strong>User-defined compute</strong> - Pybinding constructs the Hamiltonian in the standard sparse matrix
+CSR format which can be plugged into custom compute routines.</p></li>
+</ul>
+<p>After the main computation is complete, various utility functions are available for post-processing
+the raw result data. The included plotting functions are tailored for tight-binding problems to
+help visualize the model structure and to make sense of the results.</p>
+</section>
+<section id="citing">
+<h2>Citing<a class="headerlink" href="#citing" title="Permalink to this heading">¶</a></h2>
+<p>Pybinding is free to use under the simple conditions of the BSD open source license (included
+below). If you wish to use results produced with this package in a scientific publication, please
+just mention the package name in the text and cite the Zenodo DOI of this project:</p>
+<a href="https://zenodo.org/badge/latestdoi/20541/dean0x7d/pybinding">
+    <img src="https://zenodo.org/badge/20541/dean0x7d/pybinding.svg" alt="Zenodo DOI">
+</a><p>You’ll find a <em>“Cite as”</em> section in the bottom right of the Zenodo page. You can select a citation
+style from the dropdown menu or export the data in BibTeX and similar formats.</p>
+</section>
+<section id="bsd-license">
+<h2>BSD License<a class="headerlink" href="#bsd-license" title="Permalink to this heading">¶</a></h2>
+<p>Copyright (c) 2015 - 2017, Dean Moldovan</p>
+<p>All rights reserved.</p>
+<p>Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:</p>
+<ul class="simple">
+<li><p>Redistributions of source code must retain the above copyright notice, this
+list of conditions and the following disclaimer.</p></li>
+<li><p>Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.</p></li>
+</ul>
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS”
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Tight-binding package for Python" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="benchmarks/index.html" class="btn btn-neutral float-right" title="Benchmarks" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
