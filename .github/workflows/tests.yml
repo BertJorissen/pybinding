@@ -6,7 +6,6 @@ permissions:
 
 jobs:
   build:
-    concurrency: ci-${{ github.ref }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
