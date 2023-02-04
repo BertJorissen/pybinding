@@ -29,4 +29,4 @@ jobs:
     - name: Test
       run: python -c "import pybinding as pb; exit(pb.tests())"
     - name: Test CPP
-      run: mkdir build && cd build && cmake .. && make tests
+      run: mkdir build_tests && cd build_tests && cmake .. && make tests
