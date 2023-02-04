@@ -39,7 +39,7 @@ jobs:
       if: runner.os == 'Linux'
       uses: JamesIves/github-pages-deploy-action@v4
       with:
-        folder: build_tests/docs/html
+        folder: build_tests/docs
 
 
 
