@@ -37,6 +37,7 @@ jobs:
     - name: Install dependencies Docs
       run: python -m pip install sphinx-rtd-theme recommonmark numpydoc nbconvert
     - name: Test Documentation
+      if: runner.os == 'Linux'
       run: cd build_tests && cmake --build . --target docs && ls && pwd && touch docs/html/.nojekyll
     - name: Publish docs
       if: runner.os == 'Linux'
@@ -46,7 +47,7 @@ jobs:
     - name: Upload build reports
       uses: actions/upload-artifact@v3
       with:
-        name: Build
+        name: Build-${{ matrix.os }}
         path: build_tests
 
 
