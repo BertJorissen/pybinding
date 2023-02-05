@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta content="Adding electric and magnetic fields to a tight-binding model" name="description" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6. Fields and effects &mdash; pybinding</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="7. Defects and strain" href="strain.html" />
+    <link rel="prev" title="5. Shape and symmetry" href="shape_symmetry.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pybinding
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">About</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/index.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="import.html">1. Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lattice.html">2. Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bands.html">3. Band structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="finite.html">4. Finite size</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shape_symmetry.html">5. Shape and symmetry</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">6. Fields and effects</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#electric-potential">6.1. Electric potential</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#about-the-decorator">6.2. About the decorator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#opening-a-band-gap">6.3. Opening a band gap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#pn-junction">6.4. PN junction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#magnetic-field">6.5. Magnetic field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#further-reading">6.6. Further reading</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example">6.7. Example</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="strain.html">7. Defects and strain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generators.html">8. Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">9. Eigenvalue solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kpm.html">10. Kernel polynomial method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scattering.html">11. Scattering model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/index.html">Additional Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting/index.html">Plotting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Random Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference docs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../materials/index.html">Material Repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental/index.html">Experimental</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pybinding</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Tutorial</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">6. </span>Fields and effects</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorial/fields.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="fields-and-effects">
+<h1><span class="section-number">6. </span>Fields and effects<a class="headerlink" href="#fields-and-effects" title="Permalink to this heading">¶</a></h1>
+<p>This section will introduce <a class="reference internal" href="../_api/pybinding.onsite_energy_modifier.html#pybinding.onsite_energy_modifier" title="pybinding.onsite_energy_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;onsite_energy_modifier</span></code></a> and
+<a class="reference internal" href="../_api/pybinding.hopping_energy_modifier.html#pybinding.hopping_energy_modifier" title="pybinding.hopping_energy_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;hopping_energy_modifier</span></code></a> which can be used to add various
+fields to the model. These functions can apply user-defined modifications to the Hamiltonian
+matrix which is why we shall refer to them as <em>modifier</em> functions.</p>
+<p><a class="reference download internal" download="" href="../_downloads/62d7530e7478ce66d9e137bc14f1f4a4/fields.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
+<section id="electric-potential">
+<h2><span class="section-number">6.1. </span>Electric potential<a class="headerlink" href="#electric-potential" title="Permalink to this heading">¶</a></h2>
+<p>We can define a simple potential function like the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span>
+<span class="k">def</span> <span class="nf">potential</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+</pre></div>
+</div>
+<p>Here <code class="samp docutils literal notranslate"><span class="pre">potential</span></code> is just a regular Python function, but we attached a pretty <code class="samp docutils literal notranslate"><span class="pre">&#64;</span></code> decorator to it.
+The <a class="reference internal" href="../_api/pybinding.onsite_energy_modifier.html#pybinding.onsite_energy_modifier" title="pybinding.onsite_energy_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;onsite_energy_modifier</span></code></a> decorator gives an ordinary function
+a few extra properties which we’ll talk about later. For now, just keep in mind that this is
+required to mark a function as a <em>modifier</em> for use with pybinding models. The <code class="samp docutils literal notranslate"><span class="pre">x</span></code> and <code class="samp docutils literal notranslate"><span class="pre">y</span></code>
+arguments are lattice site positions and the return value is the desired potential. Note the use
+of <code class="samp docutils literal notranslate"><span class="pre">np.sin</span></code> instead of <code class="samp docutils literal notranslate"><span class="pre">math.sin</span></code>. The <code class="samp docutils literal notranslate"><span class="pre">x</span></code> and <code class="samp docutils literal notranslate"><span class="pre">y</span></code> coordinates are <code class="samp docutils literal notranslate"><span class="pre">numpy</span></code> arrays, not individual
+numbers. This is true for all modifier arguments in pybinding. When you write modifier functions,
+make sure to always use <code class="samp docutils literal notranslate"><span class="pre">numpy</span></code> operations which work with arrays, unlike regular <code class="samp docutils literal notranslate"><span class="pre">math</span></code>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Modifier arguments are passed as arrays for performance. Working with individual numbers
+would require calling the potential function individually for each lattice site which would
+be extremely slow. Arrays are much faster.</p>
+</div>
+<p>To use the potential function, just place it in a <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> parameter list:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mi">12</span><span class="p">),</span>
+    <span class="n">potential</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>To visualize the potential, there’s the handy <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model.onsite_map" title="pybinding.Model.onsite_map"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Model.onsite_map</span></code></a> property which is a
+<a class="reference internal" href="../_api/pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a> of the onsite energy of the Hamiltonian matrix.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span><span class="o">.</span><span class="n">onsite_map</span><span class="o">.</span><span class="n">plot_contourf</span><span class="p">()</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;U (eV)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The figure shows a 2D colormap representation of our wavy potential in a square system. The
+<a class="reference internal" href="../_api/pybinding.StructureMap.html#pybinding.StructureMap.plot_contourf" title="pybinding.StructureMap.plot_contourf"><code class="xref py py-meth docutils literal notranslate"><span class="pre">StructureMap.plot_contourf()</span></code></a> method we just called is implemented in terms of matplotlib’s
+<code class="samp docutils literal notranslate"><span class="pre">contourf</span></code> function with some slight adjustments for convenience.</p>
+<p>To make the potential more flexible, it’s a good idea to enclose it in an outer function,
+just like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">wavy</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span>
+    <span class="k">def</span> <span class="nf">potential</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="k">return</span> <span class="n">potential</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">regular_polygon</span><span class="p">(</span><span class="n">num_sides</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">8</span><span class="p">),</span>
+    <span class="n">wavy</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">onsite_map</span><span class="o">.</span><span class="n">plot_contourf</span><span class="p">()</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;U (eV)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Note that we are using a system with hexagonal shape this time (via <a class="reference internal" href="../_api/pybinding.regular_polygon.html#pybinding.regular_polygon" title="pybinding.regular_polygon"><code class="xref py py-func docutils literal notranslate"><span class="pre">regular_polygon()</span></code></a>).
+The potential is only plotted inside the area of the actual system.</p>
+<p>We can make one more improvement to our <code class="samp docutils literal notranslate"><span class="pre">wavy</span></code> function. We’ll add an <code class="samp docutils literal notranslate"><span class="pre">energy</span></code> argument:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">wavy2</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span>
+    <span class="k">def</span> <span class="nf">potential</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">a</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+        <span class="k">return</span> <span class="n">energy</span> <span class="o">+</span> <span class="n">v</span>
+    <span class="k">return</span> <span class="n">potential</span>
+</pre></div>
+</div>
+<p>The <code class="samp docutils literal notranslate"><span class="pre">energy</span></code> argument contains the existing onsite energy in the system before the new potential
+function is applied. By adding to the existing energy, instead of just setting it, we can compose
+multiple functions. For example, let’s combine the improved <code class="samp docutils literal notranslate"><span class="pre">wavy2</span></code> with a linear potential.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">linear</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+    <span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span>
+    <span class="k">def</span> <span class="nf">potential</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">energy</span> <span class="o">+</span> <span class="n">k</span><span class="o">*</span><span class="n">x</span>
+    <span class="k">return</span> <span class="n">potential</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">regular_polygon</span><span class="p">(</span><span class="n">num_sides</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">8</span><span class="p">),</span>
+    <span class="n">wavy2</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="mf">0.6</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mf">0.9</span><span class="p">),</span>
+    <span class="n">linear</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">onsite_map</span><span class="o">.</span><span class="n">plot_contourf</span><span class="p">()</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;U (eV)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We see a similar wavy pattern as before, but the magnitude increases linearly along the x-axis
+because of the contribution of the <code class="samp docutils literal notranslate"><span class="pre">linear</span></code> potential.</p>
+</section>
+<section id="about-the-decorator">
+<h2><span class="section-number">6.2. </span>About the decorator<a class="headerlink" href="#about-the-decorator" title="Permalink to this heading">¶</a></h2>
+<p>Now that you have a general idea of how to add and compose electric potentials in a model,
+we should talk about the role of the <a class="reference internal" href="../_api/pybinding.onsite_energy_modifier.html#pybinding.onsite_energy_modifier" title="pybinding.onsite_energy_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;onsite_energy_modifier</span></code></a>.
+The full signature of a potential function looks like this:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span>
+<span class="k">def</span> <span class="nf">potential</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">sub_id</span><span class="p">):</span>
+    <span class="k">return</span> <span class="o">...</span> <span class="c1"># some function of the arguments</span>
+</pre></div>
+</div>
+<p>This function uses all of the possible arguments of an onsite energy modifier: <code class="samp docutils literal notranslate"><span class="pre">energy</span></code>, <code class="samp docutils literal notranslate"><span class="pre">x</span></code>,
+<code class="samp docutils literal notranslate"><span class="pre">y</span></code>, <code class="samp docutils literal notranslate"><span class="pre">z</span></code> and <code class="samp docutils literal notranslate"><span class="pre">sub_id</span></code>. We have already explained the first three. The <code class="samp docutils literal notranslate"><span class="pre">z</span></code> argument is, obviously,
+the z-axis coordinate of the lattice sites. The <code class="samp docutils literal notranslate"><span class="pre">sub_id</span></code> argument tells us which sublattice a site
+belongs to. Its usage will be explained below.</p>
+<p>As we have seen before, we don’t actually need to define a function to take all the arguments.
+They are optional. The <code class="samp docutils literal notranslate"><span class="pre">&#64;</span></code> decorator will recognize a function which takes any of these arguments
+and it will adapt it for use in a pybinding model. Previously, the <code class="samp docutils literal notranslate"><span class="pre">linear</span></code> function accepted only
+the <code class="samp docutils literal notranslate"><span class="pre">energy</span></code> and <code class="samp docutils literal notranslate"><span class="pre">x</span></code> arguments, but <code class="samp docutils literal notranslate"><span class="pre">wavy</span></code> also included the <code class="samp docutils literal notranslate"><span class="pre">y</span></code> argument. The order of arguments
+is not important, only their names are. Therefore, this is also a valid modifier:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span>
+<span class="k">def</span> <span class="nf">potential</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">energy</span><span class="p">,</span> <span class="n">sub_id</span><span class="p">):</span>
+    <span class="k">return</span> <span class="o">...</span> <span class="c1"># some function</span>
+</pre></div>
+</div>
+<p>But the argument names must be exact: a typo or an extra unknown argument will result in an error.
+The decorator checks this at definition time and decides if the given function is a valid modifier
+or not, so any errors will be caught early.</p>
+</section>
+<section id="opening-a-band-gap">
+<span id="graphene-mass-term"></span><h2><span class="section-number">6.3. </span>Opening a band gap<a class="headerlink" href="#opening-a-band-gap" title="Permalink to this heading">¶</a></h2>
+<p>The last thing to explain about <a class="reference internal" href="../_api/pybinding.onsite_energy_modifier.html#pybinding.onsite_energy_modifier" title="pybinding.onsite_energy_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;onsite_energy_modifier</span></code></a> is the
+use of the <code class="samp docutils literal notranslate"><span class="pre">sub_id</span></code> argument. It tells us which sublattice a site belongs to. If you remember
+from early on in the tutorial, <a class="reference internal" href="lattice.html"><span class="doc">in the process of specifying a lattice</span></a>, we gave
+each sublattice a unique name. This name can be used to filter out sites of a specific sublattice.
+For example, let’s add mass to electrons in graphene:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">mass_term</span><span class="p">(</span><span class="n">delta</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Break sublattice symmetry with opposite A and B onsite energy&quot;&quot;&quot;</span>
+    <span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span>
+    <span class="k">def</span> <span class="nf">potential</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">sub_id</span><span class="p">):</span>
+        <span class="n">energy</span><span class="p">[</span><span class="n">sub_id</span> <span class="o">==</span> <span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">delta</span>
+        <span class="n">energy</span><span class="p">[</span><span class="n">sub_id</span> <span class="o">==</span> <span class="s1">&#39;B&#39;</span><span class="p">]</span> <span class="o">-=</span> <span class="n">delta</span>
+        <span class="k">return</span> <span class="n">energy</span>
+    <span class="k">return</span> <span class="n">potential</span>
+</pre></div>
+</div>
+<p>Note that we don’t need <code class="samp docutils literal notranslate"><span class="pre">x</span></code>, <code class="samp docutils literal notranslate"><span class="pre">y</span></code> or <code class="samp docutils literal notranslate"><span class="pre">z</span></code> arguments because this will be applied everywhere evenly.
+The <code class="samp docutils literal notranslate"><span class="pre">mass_term</span></code> function will add an energy <code class="samp docutils literal notranslate"><span class="pre">delta</span></code> to all sites on sublattice <code class="samp docutils literal notranslate"><span class="pre">A</span></code> and subtract
+<code class="samp docutils literal notranslate"><span class="pre">delta</span></code> from all <code class="samp docutils literal notranslate"><span class="pre">B</span></code> sites. Note that we are indexing the <code class="samp docutils literal notranslate"><span class="pre">energy</span></code> array with a condition on the
+<code class="samp docutils literal notranslate"><span class="pre">sub_id</span></code> array of the same length. This is a standard <code class="samp docutils literal notranslate"><span class="pre">numpy</span></code> indexing technique which you should
+be familiar with.</p>
+<p>The simplest way to demonstrate our new <code class="samp docutils literal notranslate"><span class="pre">mass_term</span></code> is with a graphene nanoribbon. First, let’s
+just remind ourselves what a pristine zigzag nanoribbon looks like:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mf">1.2</span><span class="p">),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">translational_symmetry</span><span class="p">(</span><span class="n">a1</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">a2</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Graphene zigzag nanoribbon" class="plot-directive" src="../_images/fields-8.png" />
+</figure>
+<p>And let’s see its band structure:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sqrt</span>
+
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">lapack</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">graphene</span><span class="o">.</span><span class="n">a_cc</span> <span class="o">*</span> <span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">bands</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">calc_bands</span><span class="p">(</span><span class="o">-</span><span class="n">pi</span><span class="o">/</span><span class="n">a</span><span class="p">,</span> <span class="n">pi</span><span class="o">/</span><span class="n">a</span><span class="p">)</span>
+<span class="n">bands</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Graphene zigzag nanoribbon band structure" class="plot-directive" src="../_images/fields-9.png" />
+</figure>
+<p>Note that the bands touch at zero energy: there is not band gap.
+Now, let’s include the mass term and compute the band structure again.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mf">1.2</span><span class="p">),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">translational_symmetry</span><span class="p">(</span><span class="n">a1</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">a2</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+    <span class="n">mass_term</span><span class="p">(</span><span class="n">delta</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>  <span class="c1"># eV</span>
+<span class="p">)</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">lapack</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">bands</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">calc_bands</span><span class="p">(</span><span class="o">-</span><span class="n">pi</span><span class="o">/</span><span class="n">a</span><span class="p">,</span> <span class="n">pi</span><span class="o">/</span><span class="n">a</span><span class="p">)</span>
+<span class="n">bands</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Graphene zigzag nanoribbon band structure with band gap" class="plot-directive" src="../_images/fields-10.png" />
+</figure>
+<p>We set a very high <code class="samp docutils literal notranslate"><span class="pre">delta</span></code> value of 2.5 eV for illustration purposes. Indeed, a band gap of 5 eV
+(<code class="samp docutils literal notranslate"><span class="pre">delta</span> <span class="pre">*</span> <span class="pre">2</span></code>) is quite clearly visible in the band structure.</p>
+</section>
+<section id="pn-junction">
+<h2><span class="section-number">6.4. </span>PN junction<a class="headerlink" href="#pn-junction" title="Permalink to this heading">¶</a></h2>
+<p>While we’re working with a nanoribbon, let’s add a PN junction along its main axis.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pn_junction</span><span class="p">(</span><span class="n">y0</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
+    <span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span>
+    <span class="k">def</span> <span class="nf">potential</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">energy</span><span class="p">[</span><span class="n">y</span> <span class="o">&lt;</span> <span class="n">y0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">v1</span>
+        <span class="n">energy</span><span class="p">[</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="n">y0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">v2</span>
+        <span class="k">return</span> <span class="n">energy</span>
+    <span class="k">return</span> <span class="n">potential</span>
+</pre></div>
+</div>
+<p>The <code class="samp docutils literal notranslate"><span class="pre">y0</span></code> argument is the position of the junction, while <code class="samp docutils literal notranslate"><span class="pre">v1</span></code> and <code class="samp docutils literal notranslate"><span class="pre">v2</span></code> are the values of the
+potential (in eV) before and after the junction. Let’s add it to the nanoribbon:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mf">1.2</span><span class="p">),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">translational_symmetry</span><span class="p">(</span><span class="n">a1</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">a2</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+    <span class="n">pn_junction</span><span class="p">(</span><span class="n">y0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">v1</span><span class="o">=-</span><span class="mi">5</span><span class="p">,</span> <span class="n">v2</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">onsite_map</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;coolwarm&quot;</span><span class="p">,</span> <span class="n">site_radius</span><span class="o">=</span><span class="mf">0.04</span><span class="p">)</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;U (eV)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Graphene zigzag nanoribbon with pn-junction" class="plot-directive" src="../_images/fields-12.png" />
+</figure>
+<p>Remember that the <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model.onsite_map" title="pybinding.Model.onsite_map"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Model.onsite_map</span></code></a> property is a <a class="reference internal" href="../_api/pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a>, which has
+several plotting methods. A contour plot would not look at all good for such a small nanoribbon,
+but the method <a class="reference internal" href="../_api/pybinding.StructureMap.html#pybinding.StructureMap.plot" title="pybinding.StructureMap.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">StructureMap.plot()</span></code></a> is perfect. As before, the ribbon has infinite length
+along the x-axis and the transparent sites represent the periodic boundaries. The PN junction
+splits the ribbon in half along its main axis.</p>
+<p>We can compute and plot the band structure:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">solver</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">lapack</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">bands</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">calc_bands</span><span class="p">(</span><span class="o">-</span><span class="n">pi</span><span class="o">/</span><span class="n">a</span><span class="p">,</span> <span class="n">pi</span><span class="o">/</span><span class="n">a</span><span class="p">)</span>
+<span class="n">bands</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Band structure of a graphene zigzag nanoribbon with a pn-junction" class="plot-directive" src="../_images/fields-13.png" />
+</figure>
+<p>Next, let’s create a square potential well. We could define a new modifier function, as before.
+But lets take a different approach and create the well by composing two PN junctions.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mf">1.2</span><span class="p">),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">translational_symmetry</span><span class="p">(</span><span class="n">a1</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">a2</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+    <span class="n">pn_junction</span><span class="p">(</span><span class="n">y0</span><span class="o">=-</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">v1</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">v2</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>
+    <span class="n">pn_junction</span><span class="p">(</span><span class="n">y0</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">v1</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">v2</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">onsite_map</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;coolwarm&quot;</span><span class="p">,</span> <span class="n">site_radius</span><span class="o">=</span><span class="mf">0.04</span><span class="p">)</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;U (eV)&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Graphene zigzag nanoribbon with a potential well" class="plot-directive" src="../_images/fields-14.png" />
+</figure>
+<p>It works as expected. This can sometimes be a nice and quick way to extend a model.
+The square well affects the band structure by breaking electron-hole symmetry:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">solver</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">lapack</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">bands</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">calc_bands</span><span class="p">(</span><span class="o">-</span><span class="n">pi</span><span class="o">/</span><span class="n">a</span><span class="p">,</span> <span class="n">pi</span><span class="o">/</span><span class="n">a</span><span class="p">)</span>
+<span class="n">bands</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Band structure of a graphene zigzag nanoribbon with a potential well" class="plot-directive" src="../_images/fields-15.png" />
+</figure>
+</section>
+<section id="magnetic-field">
+<span id="magnetic-field-modifier"></span><h2><span class="section-number">6.5. </span>Magnetic field<a class="headerlink" href="#magnetic-field" title="Permalink to this heading">¶</a></h2>
+<p>To model a magnetic field, we need to apply the Peierls substitution:</p>
+<div class="math notranslate nohighlight">
+\[t_{nm} \rightarrow t_{nm} \text{e}^{i\frac{2\pi}{\Phi_0} \int_n^m \vec{A}_{nm} \cdot d\vec{l}}\]</div>
+<p>Here <span class="math notranslate nohighlight">\(t_{nm}\)</span> is the hopping energy between two sites, <span class="math notranslate nohighlight">\(\Phi_0 = h/e\)</span> is the magnetic
+quantum, <span class="math notranslate nohighlight">\(h\)</span> is the Planck constant and <span class="math notranslate nohighlight">\(\vec{A}_{nm}\)</span> is the magnetic vector potential
+along the path between sites <span class="math notranslate nohighlight">\(n\)</span> and <span class="math notranslate nohighlight">\(m\)</span>. We want the magnetic field to be
+perpendicular to the graphene plane, so we can take the gauge <span class="math notranslate nohighlight">\(\vec{A}(x,y,z) = (By, 0, 0)\)</span>.</p>
+<p>This can all be expressed with a <a class="reference internal" href="../_api/pybinding.hopping_energy_modifier.html#pybinding.hopping_energy_modifier" title="pybinding.hopping_energy_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;hopping_energy_modifier</span></code></a>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.constants</span> <span class="kn">import</span> <span class="n">phi0</span>
+
+<span class="k">def</span> <span class="nf">constant_magnetic_field</span><span class="p">(</span><span class="n">B</span><span class="p">):</span>
+    <span class="nd">@pb</span><span class="o">.</span><span class="n">hopping_energy_modifier</span>
+    <span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">):</span>
+        <span class="c1"># the midpoint between two sites</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">y1</span> <span class="o">+</span> <span class="n">y2</span><span class="p">)</span>
+        <span class="c1"># scale from nanometers to meters</span>
+        <span class="n">y</span> <span class="o">*=</span> <span class="mf">1e-9</span>
+
+        <span class="c1"># vector potential along the x-axis</span>
+        <span class="n">A_x</span> <span class="o">=</span> <span class="n">B</span> <span class="o">*</span> <span class="n">y</span>
+
+        <span class="c1"># integral of (A * dl) from position 1 to position 2</span>
+        <span class="n">peierls</span> <span class="o">=</span> <span class="n">A_x</span> <span class="o">*</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x2</span><span class="p">)</span>
+        <span class="c1"># scale from nanometers to meters (because of x1 and x2)</span>
+        <span class="n">peierls</span> <span class="o">*=</span> <span class="mf">1e-9</span>
+
+        <span class="c1"># the Peierls substitution</span>
+        <span class="k">return</span> <span class="n">energy</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span> <span class="o">*</span> <span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">/</span><span class="n">phi0</span> <span class="o">*</span> <span class="n">peierls</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">function</span>
+</pre></div>
+</div>
+<p>The <code class="samp docutils literal notranslate"><span class="pre">energy</span></code> argument is the existing hopping energy between two sites at coordinates (<code class="samp docutils literal notranslate"><span class="pre">x1</span></code>, <code class="samp docutils literal notranslate"><span class="pre">y1</span></code>)
+and (<code class="samp docutils literal notranslate"><span class="pre">x2</span></code>, <code class="samp docutils literal notranslate"><span class="pre">y2</span></code>). The function computes and returns the Peierls substitution as given by the
+equation above.</p>
+<p>The full signature of a <a class="reference internal" href="../_api/pybinding.hopping_energy_modifier.html#pybinding.hopping_energy_modifier" title="pybinding.hopping_energy_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;hopping_energy_modifier</span></code></a> is actually:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@pb</span><span class="o">.</span><span class="n">hopping_energy_modifier</span>
+<span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="n">hop_id</span><span class="p">):</span>
+    <span class="k">return</span> <span class="o">...</span> <span class="c1"># some function of the arguments</span>
+</pre></div>
+</div>
+<p>The <code class="samp docutils literal notranslate"><span class="pre">hop_id</span></code> argument tells us which type of hopping it is. Hopping types can be specifically
+named during the creation of a lattice. This can be used to apply functions only to specific
+hoppings. However, as with all the modifier arguments, it’s optional, so we only take what we
+need.</p>
+<p>To test out our <code class="samp docutils literal notranslate"><span class="pre">constant_magnetic_field</span></code>, we’ll calculate the local density of states (LDOS),
+where we expect to see peaks corresponding to Landau levels. The computation method used here
+is explained in detail in the <a class="reference internal" href="kpm.html"><span class="doc">Kernel polynomial method</span></a> section of the tutorial.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mi">30</span><span class="p">),</span>
+    <span class="n">constant_magnetic_field</span><span class="p">(</span><span class="n">B</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>  <span class="c1"># Tesla</span>
+<span class="p">)</span>
+<span class="n">kpm</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">kpm</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+<span class="n">ldos</span> <span class="o">=</span> <span class="n">kpm</span><span class="o">.</span><span class="n">calc_ldos</span><span class="p">(</span><span class="n">energy</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">500</span><span class="p">),</span> <span class="n">broadening</span><span class="o">=</span><span class="mf">0.015</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="n">ldos</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Landau level peaks in the local density of states (LDOS) of graphene" class="plot-directive" src="../_images/fields-17.png" />
+</figure>
+<p>The values of the magnetic field is exaggerated here (200 Tesla), but that is done to keep the
+computation time low for the tutorial (less than 0.5 seconds for this LDOS calculation).</p>
+</section>
+<section id="further-reading">
+<h2><span class="section-number">6.6. </span>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this heading">¶</a></h2>
+<p>Take a look at the <a class="reference internal" href="../api.html#modifiers-api"><span class="std std-ref">Modifiers</span></a> API reference for more information.</p>
+</section>
+<section id="example">
+<h2><span class="section-number">6.7. </span>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h2>
+<p><a class="reference download internal" download="" href="../_downloads/dd66af75bf1bafa047a2ae07eb14af3d/fields_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">source</span> <span class="pre">code</span></code></a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;PN junction and broken sublattice symmetry in a graphene nanoribbon&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pybinding</span> <span class="k">as</span> <span class="nn">pb</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sqrt</span>
+
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">use_style</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">mass_term</span><span class="p">(</span><span class="n">delta</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Break sublattice symmetry with opposite A and B onsite energy&quot;&quot;&quot;</span>
+    <span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span>
+    <span class="k">def</span> <span class="nf">potential</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">sub_id</span><span class="p">):</span>
+        <span class="n">energy</span><span class="p">[</span><span class="n">sub_id</span> <span class="o">==</span> <span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="n">delta</span>
+        <span class="n">energy</span><span class="p">[</span><span class="n">sub_id</span> <span class="o">==</span> <span class="s1">&#39;B&#39;</span><span class="p">]</span> <span class="o">-=</span> <span class="n">delta</span>
+        <span class="k">return</span> <span class="n">energy</span>
+
+    <span class="k">return</span> <span class="n">potential</span>
+
+
+<span class="k">def</span> <span class="nf">pn_juction</span><span class="p">(</span><span class="n">y0</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;PN junction potential</span>
+
+<span class="sd">    The `y0` argument is the position of the junction, while `v1` and `v2`</span>
+<span class="sd">    are the values of the potential (in eV) before and after the junction.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span>
+    <span class="k">def</span> <span class="nf">potential</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="n">energy</span><span class="p">[</span><span class="n">y</span> <span class="o">&lt;</span> <span class="n">y0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">v1</span>
+        <span class="n">energy</span><span class="p">[</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="n">y0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">v2</span>
+        <span class="k">return</span> <span class="n">energy</span>
+
+    <span class="k">return</span> <span class="n">potential</span>
+
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mf">1.2</span><span class="p">),</span>  <span class="c1"># width in nanometers</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">translational_symmetry</span><span class="p">(</span><span class="n">a1</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">a2</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
+    <span class="n">mass_term</span><span class="p">(</span><span class="n">delta</span><span class="o">=</span><span class="mf">2.5</span><span class="p">),</span>  <span class="c1"># eV</span>
+    <span class="n">pn_juction</span><span class="p">(</span><span class="n">y0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">v1</span><span class="o">=-</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">v2</span><span class="o">=</span><span class="mf">2.5</span><span class="p">)</span>  <span class="c1"># y0 in [nm] and v1, v2 in [eV]</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/fields_example_00_00.png" class="plot-directive" src="../_images/fields_example_00_00.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the potential: note that pn_junction cancels out delta on some sites</span>
+<span class="n">model</span><span class="o">.</span><span class="n">onsite_map</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;coolwarm&quot;</span><span class="p">,</span> <span class="n">site_radius</span><span class="o">=</span><span class="mf">0.04</span><span class="p">)</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;U (eV)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/fields_example_01_00.png" class="plot-directive" src="../_images/fields_example_01_00.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># compute the bands</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">lapack</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">graphene</span><span class="o">.</span><span class="n">a_cc</span> <span class="o">*</span> <span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># nanoribbon unit cell length</span>
+<span class="n">bands</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">calc_bands</span><span class="p">(</span><span class="o">-</span><span class="n">pi</span><span class="o">/</span><span class="n">a</span><span class="p">,</span> <span class="n">pi</span><span class="o">/</span><span class="n">a</span><span class="p">)</span>
+<span class="n">bands</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/fields_example_02_00.png" class="plot-directive" src="../_images/fields_example_02_00.png" />
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="shape_symmetry.html" class="btn btn-neutral float-left" title="5. Shape and symmetry" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="strain.html" class="btn btn-neutral float-right" title="7. Defects and strain" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

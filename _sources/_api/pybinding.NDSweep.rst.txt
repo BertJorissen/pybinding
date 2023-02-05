@@ -1,0 +1,23 @@
+﻿NDSweep
+=================
+
+.. currentmodule:: pybinding
+
+.. autoclass:: NDSweep
+    :members:
+    :special-members:
+    :inherited-members:
+
+    
+    
+    .. rubric:: Attributes
+
+    .. autosummary::
+    
+        ~NDSweep.callsig
+    
+    
+
+    
+    
+    

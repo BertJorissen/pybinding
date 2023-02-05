@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<meta content="Pybinding is a Python code package for tight-binding calculations in solid state physics. It can be used to construct and solver large tight-binding models." name="description" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tight-binding package for Python &mdash; pybinding</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
+    <link rel="stylesheet" href="_static/extra.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="About" href="intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="#" class="icon icon-home"> pybinding
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="intro.html">About</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="benchmarks/index.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="advanced/index.html">Additional Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="plotting/index.html">Plotting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Random Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference docs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="materials/index.html">Material Repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="experimental/index.html">Experimental</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="#">pybinding</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="#" class="icon icon-home"></a></li>
+      <li class="breadcrumb-item active">Tight-binding package for Python</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <div class="pbheader docutils container">
+<img alt="_images/pb.png" class="pblogo" src="_images/pb.png" />
+<p>Pybinding is a scientific Python package for numerical tight-binding calculations in solid
+state physics. If you’re just browsing, the <a class="reference internal" href="tutorial/index.html"><span class="doc">Tutorial</span></a> section is a good place
+to start. It gives a good overview of the most important features with lots of code examples.</p>
+</div>
+<p>As a very quick example, the following code creates a triangular quantum dot of bilayer graphene
+and then applies a custom asymmetric strain function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pybinding</span> <span class="k">as</span> <span class="nn">pb</span>
+<span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+
+<span class="k">def</span> <span class="nf">asymmetric_strain</span><span class="p">(</span><span class="n">c</span><span class="p">):</span>
+    <span class="nd">@pb</span><span class="o">.</span><span class="n">site_position_modifier</span>
+    <span class="k">def</span> <span class="nf">displacement</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="n">ux</span> <span class="o">=</span> <span class="o">-</span><span class="n">c</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">c</span><span class="o">/</span><span class="mi">3</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="mf">0.1</span>
+        <span class="n">uy</span> <span class="o">=</span> <span class="o">-</span><span class="n">c</span><span class="o">*</span><span class="mi">2</span> <span class="o">*</span> <span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">c</span><span class="o">/</span><span class="mi">4</span> <span class="o">*</span> <span class="n">x</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="n">ux</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">uy</span><span class="p">,</span> <span class="n">z</span>
+    <span class="k">return</span> <span class="n">displacement</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+    <span class="n">graphene</span><span class="o">.</span><span class="n">bilayer</span><span class="p">(),</span>
+    <span class="n">pb</span><span class="o">.</span><span class="n">regular_polygon</span><span class="p">(</span><span class="n">num_sides</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">1.1</span><span class="p">),</span>
+    <span class="n">asymmetric_strain</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="mf">0.42</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Asymmetrically strained bilayer graphene quantum dot" class="plot-directive" src="_images/index-1.png" />
+</figure>
+<p>Within the pybinding framework, tight-binding models are assembled from logical parts which
+can be mixed and matched in various ways. The package comes with a few predefined components:
+crystal lattices, shapes, symmetries, defects, fields and more (like the
+<code class="xref py py-func docutils literal notranslate"><span class="pre">graphene.bilayer()</span></code> lattice and the <a class="reference internal" href="_api/pybinding.regular_polygon.html#pybinding.regular_polygon" title="pybinding.regular_polygon"><code class="xref py py-func docutils literal notranslate"><span class="pre">regular_polygon()</span></code></a>
+shape shown above). Users can also define new components (just like the asymmetric strain above).
+This modular approach enables the construction of arbitrary tight-binding models with clear,
+easy-to-use code. Various solvers, computation routines and visualization tools are also part
+of the package. See the <a class="reference internal" href="tutorial/index.html"><span class="doc">Tutorial</span></a> for a walkthrough of the features.</p>
+<p>The source code repository is <a class="reference external" href="https://github.com/dean0x7d/pybinding">located on Github</a>
+where you can also post any questions, comments or issues that you might have.</p>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install/index.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="install/quick.html">Quick Install</a></li>
+<li class="toctree-l2"><a class="reference internal" href="install/advanced.html">Advanced Install</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial/index.html">Tutorial</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/import.html">1. Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/lattice.html">2. Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/bands.html">3. Band structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/finite.html">4. Finite size</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/shape_symmetry.html">5. Shape and symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/fields.html">6. Fields and effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/strain.html">7. Defects and strain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/generators.html">8. Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/solvers.html">9. Eigenvalue solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/kpm.html">10. Kernel polynomial method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tutorial/scattering.html">11. Scattering model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="advanced/index.html">Additional Topics</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="advanced/lattice.html">Lattice specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced/shapes.html">Composite shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced/multiorbital.html">Multi-orbital models</a></li>
+<li class="toctree-l2"><a class="reference internal" href="advanced/kwant.html">Kwant compatibility</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="plotting/index.html">Plotting Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="plotting/structure.html">Model structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plotting/structuremap.html">Structure-mapped data</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples/index.html">Random Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="examples/lattice/index.html">Lattice specification and bands</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/finite/index.html">Finite size</a></li>
+<li class="toctree-l2"><a class="reference internal" href="examples/ribbons/index.html">Nanoribbons</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="toctree-wrapper compound">
+<p class="caption" role="heading"><span class="caption-text">Reference docs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="materials/index.html">Material Repository</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="materials/graphene.html">Graphene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="materials/phosphorene.html">Phosphorene</a></li>
+<li class="toctree-l2"><a class="reference internal" href="materials/group6_tmd.html">Group 6 TMDs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="_api/pybinding.Lattice.html">Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="_api/pybinding.Model.html">Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#shapes">Shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#symmetry">Symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#modifiers">Modifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#generators">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#compute">Compute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#results">Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#components">Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.html#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="experimental/index.html">Experimental</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="experimental/cuda.html">CUDA-based KPM</a></li>
+<li class="toctree-l2"><a class="reference internal" href="experimental/feast.html">FEAST eigensolver</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+</ul>
+<style type="text/css" >
+    @media screen and (min-width: 990px) {
+        .rst-content div.highlight-python {
+            float: left;
+            width: 54%;
+        }
+        .rst-content div.figure {
+            padding-top: 16px;
+            margin-left: 55%;
+        }
+        .rst-content p { clear: both; }
+
+        .pblogo {
+            margin: 0px 10px 8px 0px;
+            float: left;
+        }
+
+        .pbheader p {
+            margin-left: 220px;
+            padding-top: 9%;
+            clear: none;
+        }
+    }
+
+    .pblogo { width: 220px; }
+</style>
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="intro.html" class="btn btn-neutral float-right" title="About" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

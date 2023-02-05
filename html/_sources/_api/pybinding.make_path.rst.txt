@@ -1,6 +1,0 @@
-﻿make_path
-===================
-
-.. currentmodule:: pybinding
-
-.. autofunction:: make_path

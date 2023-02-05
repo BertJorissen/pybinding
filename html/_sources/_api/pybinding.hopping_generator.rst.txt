@@ -1,6 +1,0 @@
-﻿hopping_generator
-===========================
-
-.. currentmodule:: pybinding
-
-.. autofunction:: hopping_generator

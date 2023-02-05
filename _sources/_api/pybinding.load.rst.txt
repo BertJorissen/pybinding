@@ -1,0 +1,6 @@
+﻿load
+==============
+
+.. currentmodule:: pybinding
+
+.. autofunction:: load

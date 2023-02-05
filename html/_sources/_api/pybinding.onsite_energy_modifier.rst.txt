@@ -1,6 +1,0 @@
-﻿onsite_energy_modifier
-================================
-
-.. currentmodule:: pybinding
-
-.. autofunction:: onsite_energy_modifier

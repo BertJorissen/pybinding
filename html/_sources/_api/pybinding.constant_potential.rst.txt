@@ -1,6 +1,0 @@
-﻿constant_potential
-============================
-
-.. currentmodule:: pybinding
-
-.. autofunction:: constant_potential

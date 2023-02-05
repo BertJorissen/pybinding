@@ -1,0 +1,44 @@
+﻿Sweep
+===============
+
+.. currentmodule:: pybinding
+
+.. autoclass:: Sweep
+    :members:
+    :special-members:
+    :inherited-members:
+
+    
+    
+    .. rubric:: Attributes
+
+    .. autosummary::
+    
+        ~Sweep._plain_labels
+        ~Sweep.callsig
+    
+    
+
+    
+    
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~Sweep.__getitem__
+        ~Sweep._convolved
+        ~Sweep._plot_slice
+        ~Sweep._slice_x
+        ~Sweep._slice_y
+        ~Sweep._with_data
+        ~Sweep._xy_grids
+        ~Sweep.colorbar
+        ~Sweep.cropped
+        ~Sweep.interpolated
+        ~Sweep.mirrored
+        ~Sweep.plot
+        ~Sweep.plot_slice_x
+        ~Sweep.plot_slice_y
+        ~Sweep.save_txt
+    
+    

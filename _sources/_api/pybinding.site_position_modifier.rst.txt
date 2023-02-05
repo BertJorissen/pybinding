@@ -1,0 +1,6 @@
+﻿site_position_modifier
+================================
+
+.. currentmodule:: pybinding
+
+.. autofunction:: site_position_modifier

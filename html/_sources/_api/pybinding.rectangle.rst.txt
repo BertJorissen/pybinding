@@ -1,6 +1,0 @@
-﻿rectangle
-===================
-
-.. currentmodule:: pybinding
-
-.. autofunction:: rectangle

@@ -1,0 +1,54 @@
+﻿Lattice
+=================
+
+.. currentmodule:: pybinding
+
+.. autoclass:: Lattice
+    :members:
+    :special-members:
+    :inherited-members:
+
+    
+    
+    .. rubric:: Attributes
+
+    .. autosummary::
+    
+        ~Lattice.hoppings
+        ~Lattice.min_neighbors
+        ~Lattice.ndim
+        ~Lattice.nhop
+        ~Lattice.nsub
+        ~Lattice.offset
+        ~Lattice.sublattices
+        ~Lattice.vectors
+    
+    
+
+    
+    
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~Lattice.__call__
+        ~Lattice.__getitem__
+        ~Lattice._visible_sublattices
+        ~Lattice.add_aliases
+        ~Lattice.add_hoppings
+        ~Lattice.add_one_alias
+        ~Lattice.add_one_hopping
+        ~Lattice.add_one_sublattice
+        ~Lattice.add_sublattices
+        ~Lattice.brillouin_zone
+        ~Lattice.from_impl
+        ~Lattice.plot
+        ~Lattice.plot_brillouin_zone
+        ~Lattice.plot_vectors
+        ~Lattice.reciprocal_vectors
+        ~Lattice.register_hopping_energies
+        ~Lattice.site_radius_for_plot
+        ~Lattice.with_min_neighbors
+        ~Lattice.with_offset
+    
+    

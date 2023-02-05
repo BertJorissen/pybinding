@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Model &mdash; pybinding</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Polygon" href="pybinding.Polygon.html" />
+    <link rel="prev" title="Lattice" href="pybinding.Lattice.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pybinding
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">About</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/index.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/index.html">Additional Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting/index.html">Plotting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Random Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference docs</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../materials/index.html">Material Repository</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pybinding.Lattice.html">Lattice</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Model</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pybinding.Model"><code class="docutils literal notranslate"><span class="pre">Model</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.add"><code class="docutils literal notranslate"><span class="pre">Model.add()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.attach_lead"><code class="docutils literal notranslate"><span class="pre">Model.attach_lead()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.eval"><code class="docutils literal notranslate"><span class="pre">Model.eval()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.hopping_generators"><code class="docutils literal notranslate"><span class="pre">Model.hopping_generators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.hopping_modifiers"><code class="docutils literal notranslate"><span class="pre">Model.hopping_modifiers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.onsite_modifiers"><code class="docutils literal notranslate"><span class="pre">Model.onsite_modifiers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.plot"><code class="docutils literal notranslate"><span class="pre">Model.plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.position_modifiers"><code class="docutils literal notranslate"><span class="pre">Model.position_modifiers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.report"><code class="docutils literal notranslate"><span class="pre">Model.report()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.set_wave_vector"><code class="docutils literal notranslate"><span class="pre">Model.set_wave_vector()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.site_generators"><code class="docutils literal notranslate"><span class="pre">Model.site_generators()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.site_state_modifiers"><code class="docutils literal notranslate"><span class="pre">Model.site_state_modifiers()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.structure_map"><code class="docutils literal notranslate"><span class="pre">Model.structure_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.tokwant"><code class="docutils literal notranslate"><span class="pre">Model.tokwant()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.hamiltonian"><code class="docutils literal notranslate"><span class="pre">Model.hamiltonian</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.lattice"><code class="docutils literal notranslate"><span class="pre">Model.lattice</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.leads"><code class="docutils literal notranslate"><span class="pre">Model.leads</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.modifiers"><code class="docutils literal notranslate"><span class="pre">Model.modifiers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.onsite_map"><code class="docutils literal notranslate"><span class="pre">Model.onsite_map</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.shape"><code class="docutils literal notranslate"><span class="pre">Model.shape</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.system"><code class="docutils literal notranslate"><span class="pre">Model.system</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#shapes">Shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#symmetry">Symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#modifiers">Modifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#generators">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#compute">Compute</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#results">Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#components">Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental/index.html">Experimental</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pybinding</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Model</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_api/pybinding.Model.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="model">
+<h1>Model<a class="headerlink" href="#model" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pybinding.Model">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Model</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lattice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pybinding.Lattice.html#pybinding.Lattice" title="pybinding.lattice.Lattice"><span class="pre">Lattice</span></a></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Builds a Hamiltonian from lattice, shape, symmetry and modifier parameters</p>
+<p>The most important attributes are <a class="reference internal" href="#pybinding.Model.system" title="pybinding.Model.system"><code class="xref py py-attr docutils literal notranslate"><span class="pre">system</span></code></a> and <a class="reference internal" href="#pybinding.Model.hamiltonian" title="pybinding.Model.hamiltonian"><code class="xref py py-attr docutils literal notranslate"><span class="pre">hamiltonian</span></code></a> which are
+constructed based on the input parameters. The <a class="reference internal" href="pybinding.system.html#pybinding.system.System" title="pybinding.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">System</span></code></a> contains structural
+data like site positions. The tight-binding Hamiltonian is a sparse matrix in the
+<a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a> format.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>lattice</strong><span class="classifier"><a class="reference internal" href="pybinding.Lattice.html#pybinding.Lattice" title="pybinding.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a></span></dt><dd><p>The lattice specification.</p>
+</dd>
+<dt><strong>*args</strong></dt><dd><p>Can be any of: shape, symmetry or various modifiers. Note that:</p>
+<ul class="simple">
+<li><p>There can be at most one shape and at most one symmetry. Shape and symmetry
+can be composed as desired, but physically impossible scenarios will result
+in an empty system.</p></li>
+<li><p>Any number of modifiers can be added. Adding the same modifier more than once
+is allowed: this will usually multiply the modifier’s effect.</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_wave_vector</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Model.hamiltonian" title="pybinding.Model.hamiltonian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hamiltonian</span></code></a></p></td>
+<td><p>Hamiltonian sparse matrix in the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a> format</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">hamiltonian_build_seconds</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_complex</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_double</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_multiorbital</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_phase</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Model.lattice" title="pybinding.Model.lattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lattice</span></code></a></p></td>
+<td><p><a class="reference internal" href="pybinding.Lattice.html#pybinding.Lattice" title="pybinding.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> specification</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Model.leads" title="pybinding.Model.leads"><code class="xref py py-obj docutils literal notranslate"><span class="pre">leads</span></code></a></p></td>
+<td><p>List of <a class="reference internal" href="pybinding.leads.html#pybinding.leads.Lead" title="pybinding.leads.Lead"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lead</span></code></a> objects</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Model.modifiers" title="pybinding.Model.modifiers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">modifiers</span></code></a></p></td>
+<td><p>List of all modifiers applied to this model</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Model.onsite_map" title="pybinding.Model.onsite_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">onsite_map</span></code></a></p></td>
+<td><p><a class="reference internal" href="pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a> of the onsite energy</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">raw_hamiltonian</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Model.shape" title="pybinding.Model.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
+<td><p><a class="reference internal" href="pybinding.Polygon.html#pybinding.Polygon" title="pybinding.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code></a> or <a class="reference internal" href="pybinding.FreeformShape.html#pybinding.FreeformShape" title="pybinding.FreeformShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">FreeformShape</span></code></a> object</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Model.system" title="pybinding.Model.system"><code class="xref py py-obj docutils literal notranslate"><span class="pre">system</span></code></a></p></td>
+<td><p>Structural data like site positions and hoppings, see <a class="reference internal" href="pybinding.system.html#pybinding.system.System" title="pybinding.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">System</span></code></a> for details</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">system_build_seconds</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Model.add" title="pybinding.Model.add"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add</span></code></a>(*args)</p></td>
+<td><p>Add parameter(s) to the model</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Model.attach_lead" title="pybinding.Model.attach_lead"><code class="xref py py-obj docutils literal notranslate"><span class="pre">attach_lead</span></code></a>(direction, contact)</p></td>
+<td><p>Attach a lead to the main system</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Model.eval" title="pybinding.Model.eval"><code class="xref py py-obj docutils literal notranslate"><span class="pre">eval</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Model.hopping_generators" title="pybinding.Model.hopping_generators"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hopping_generators</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Model.hopping_modifiers" title="pybinding.Model.hopping_modifiers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hopping_modifiers</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Model.onsite_modifiers" title="pybinding.Model.onsite_modifiers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">onsite_modifiers</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Model.plot" title="pybinding.Model.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>([num_periods, lead_length, axes])</p></td>
+<td><p>Plot the structure of the model: sites, hoppings, boundaries and leads</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Model.position_modifiers" title="pybinding.Model.position_modifiers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">position_modifiers</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Model.report" title="pybinding.Model.report"><code class="xref py py-obj docutils literal notranslate"><span class="pre">report</span></code></a>()</p></td>
+<td><p>Return a string with information about the last build</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Model.set_wave_vector" title="pybinding.Model.set_wave_vector"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_wave_vector</span></code></a>(k)</p></td>
+<td><p>Set the wave vector for periodic models</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Model.site_generators" title="pybinding.Model.site_generators"><code class="xref py py-obj docutils literal notranslate"><span class="pre">site_generators</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Model.site_state_modifiers" title="pybinding.Model.site_state_modifiers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">site_state_modifiers</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Model.structure_map" title="pybinding.Model.structure_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">structure_map</span></code></a>(data)</p></td>
+<td><p>Return a <a class="reference internal" href="pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a> of the model system mapped to the specified <code class="samp docutils literal notranslate"><span class="pre">data</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Model.tokwant" title="pybinding.Model.tokwant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tokwant</span></code></a>()</p></td>
+<td><p>Convert this model into <a class="reference external" href="http://kwant-project.org/">kwant</a> format (finalized)</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.Model.add">
+<span class="sig-name descname"><span class="pre">add</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#pybinding.Model.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add parameter(s) to the model</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>*args</strong></dt><dd><p>Any of: shape, symmetry, modifiers. Tuples and lists of parameters are expanded
+automatically, so <code class="samp docutils literal notranslate"><span class="pre">M.add(p0,</span> <span class="pre">[p1,</span> <span class="pre">p2])</span></code> is equivalent to <code class="samp docutils literal notranslate"><span class="pre">M.add(p0,</span> <span class="pre">p1,</span> <span class="pre">p2)</span></code>.</p>
+</dd>
+<dt><strong>TODO: Add types</strong></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.Model.attach_lead">
+<span class="sig-name descname"><span class="pre">attach_lead</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">contact</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Shape</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#pybinding.Model.attach_lead" title="Permalink to this definition">¶</a></dt>
+<dd><p>Attach a lead to the main system</p>
+<p>Not valid for 1D lattices.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>direction</strong><span class="classifier">int</span></dt><dd><p>Lattice vector direction of the lead. Must be one of: 1, 2, 3, -1, -2, -3.
+For example, <code class="samp docutils literal notranslate"><span class="pre">direction=2</span></code> would create a lead which intersects the main system
+in the <span class="math notranslate nohighlight">\(a_2\)</span> lattice vector direction. Setting <code class="samp docutils literal notranslate"><span class="pre">direction=-2</span></code> would create
+a lead on the opposite side of the system, but along the same lattice vector.</p>
+</dd>
+<dt><strong>contact</strong><span class="classifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">Shape</span></code></span></dt><dd><p>The place where the lead should contact the main system. For a 2D lattice it’s
+just a <a class="reference internal" href="pybinding.line.html#pybinding.line" title="pybinding.line"><code class="xref py py-func docutils literal notranslate"><span class="pre">line()</span></code></a> describing the intersection of the lead and the system.
+For a 3D lattice it’s the area described by a 2D <a class="reference internal" href="pybinding.FreeformShape.html#pybinding.FreeformShape" title="pybinding.FreeformShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">FreeformShape</span></code></a>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.Model.eval">
+<span class="sig-name descname"><span class="pre">eval</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Model.eval" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.Model.hopping_generators">
+<span class="sig-name descname"><span class="pre">hopping_generators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Model.hopping_generators" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.Model.hopping_modifiers">
+<span class="sig-name descname"><span class="pre">hopping_modifiers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Model.hopping_modifiers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.Model.onsite_modifiers">
+<span class="sig-name descname"><span class="pre">onsite_modifiers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Model.onsite_modifiers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.Model.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_periods</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lead_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.11)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'xy'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'xz'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'yx'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'yz'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'zx'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'zy'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'xy'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#pybinding.Model.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the structure of the model: sites, hoppings, boundaries and leads</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>num_periods</strong><span class="classifier">int</span></dt><dd><p>Number of times to repeat the periodic boundaries.</p>
+</dd>
+<dt><strong>lead_length</strong><span class="classifier">int</span></dt><dd><p>Number of times to repeat the lead structure.</p>
+</dd>
+<dt><strong>axes</strong><span class="classifier">str</span></dt><dd><p>The spatial axes to plot. E.g. ‘xy’, ‘yz’, etc.</p>
+</dd>
+<dt><strong>**kwargs</strong></dt><dd><p>Additional plot arguments as specified in <a class="reference internal" href="pybinding.system.html#pybinding.system.structure_plot_properties" title="pybinding.system.structure_plot_properties"><code class="xref py py-func docutils literal notranslate"><span class="pre">structure_plot_properties()</span></code></a>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.Model.position_modifiers">
+<span class="sig-name descname"><span class="pre">position_modifiers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Model.position_modifiers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.Model.report">
+<span class="sig-name descname"><span class="pre">report</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Model.report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a string with information about the last build</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.Model.set_wave_vector">
+<span class="sig-name descname"><span class="pre">set_wave_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">numpy.ndarray</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Model.set_wave_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the wave vector for periodic models</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>k</strong><span class="classifier">array_like</span></dt><dd><p>Wave vector in reciprocal space.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.Model.site_generators">
+<span class="sig-name descname"><span class="pre">site_generators</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Model.site_generators" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.Model.site_state_modifiers">
+<span class="sig-name descname"><span class="pre">site_state_modifiers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Model.site_state_modifiers" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.Model.structure_map">
+<span class="sig-name descname"><span class="pre">structure_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.24)"><span class="pre">dtype</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.24)"><span class="pre">dtype</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.11)"><span class="pre">complex</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><span class="pre">bytes</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Union" title="(in Python v3.11)"><span class="pre">Union</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.11)"><span class="pre">complex</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.results.StructureMap"><span class="pre">StructureMap</span></a></span></span><a class="headerlink" href="#pybinding.Model.structure_map" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a <a class="reference internal" href="pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a> of the model system mapped to the specified <code class="samp docutils literal notranslate"><span class="pre">data</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>data</strong><span class="classifier">Optional[array_like]</span></dt><dd><p>Data array to map to site positions.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference internal" href="pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.results.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.Model.tokwant">
+<span class="sig-name descname"><span class="pre">tokwant</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">KwantFiniteSystem</span></span></span><a class="headerlink" href="#pybinding.Model.tokwant" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert this model into <a class="reference external" href="http://kwant-project.org/">kwant</a> format (finalized)</p>
+<p>This is intended for compatibility with the kwant package: <a class="reference external" href="http://kwant-project.org/">http://kwant-project.org/</a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>kwant.system.System</dt><dd><p>Finalized system which can be used with kwant compute functions.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pybinding.Model.hamiltonian">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hamiltonian</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.10.0)"><span class="pre">csr_matrix</span></a></em><a class="headerlink" href="#pybinding.Model.hamiltonian" title="Permalink to this definition">¶</a></dt>
+<dd><p>Hamiltonian sparse matrix in the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.10.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a> format</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pybinding.Model.lattice">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lattice</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pybinding.Lattice.html#pybinding.Lattice" title="pybinding.lattice.Lattice"><span class="pre">Lattice</span></a></em><a class="headerlink" href="#pybinding.Model.lattice" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="pybinding.Lattice.html#pybinding.Lattice" title="pybinding.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> specification</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pybinding.Model.leads">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">leads</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Leads</span></em><a class="headerlink" href="#pybinding.Model.leads" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of <a class="reference internal" href="pybinding.leads.html#pybinding.leads.Lead" title="pybinding.leads.Lead"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lead</span></code></a> objects</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pybinding.Model.modifiers">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">modifiers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a></em><a class="headerlink" href="#pybinding.Model.modifiers" title="Permalink to this definition">¶</a></dt>
+<dd><p>List of all modifiers applied to this model</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pybinding.Model.onsite_map">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">onsite_map</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.results.StructureMap"><span class="pre">StructureMap</span></a></em><a class="headerlink" href="#pybinding.Model.onsite_map" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a> of the onsite energy</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pybinding.Model.shape">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Shape</span></em><a class="headerlink" href="#pybinding.Model.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference internal" href="pybinding.Polygon.html#pybinding.Polygon" title="pybinding.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code></a> or <a class="reference internal" href="pybinding.FreeformShape.html#pybinding.FreeformShape" title="pybinding.FreeformShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">FreeformShape</span></code></a> object</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pybinding.Model.system">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">system</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pybinding.system.html#pybinding.system.System" title="pybinding.system.System"><span class="pre">System</span></a></em><a class="headerlink" href="#pybinding.Model.system" title="Permalink to this definition">¶</a></dt>
+<dd><p>Structural data like site positions and hoppings, see <a class="reference internal" href="pybinding.system.html#pybinding.system.System" title="pybinding.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">System</span></code></a> for details</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pybinding.Lattice.html" class="btn btn-neutral float-left" title="Lattice" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pybinding.Polygon.html" class="btn btn-neutral float-right" title="Polygon" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

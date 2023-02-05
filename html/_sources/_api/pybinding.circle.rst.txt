@@ -1,6 +1,0 @@
-﻿circle
-================
-
-.. currentmodule:: pybinding
-
-.. autofunction:: circle

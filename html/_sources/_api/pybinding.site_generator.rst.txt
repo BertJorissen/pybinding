@@ -1,6 +1,0 @@
-﻿site_generator
-========================
-
-.. currentmodule:: pybinding
-
-.. autofunction:: site_generator

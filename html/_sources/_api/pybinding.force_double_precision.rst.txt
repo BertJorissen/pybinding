@@ -1,6 +1,0 @@
-﻿force_double_precision
-================================
-
-.. currentmodule:: pybinding
-
-.. autofunction:: force_double_precision

@@ -1,0 +1,32 @@
+﻿FreeformShape
+=======================
+
+.. currentmodule:: pybinding
+
+.. autoclass:: FreeformShape
+    :members:
+    :special-members:
+    :inherited-members:
+
+    
+    
+    .. rubric:: Attributes
+
+    .. autosummary::
+    
+        ~FreeformShape.lattice_offset
+        ~FreeformShape.vertices
+    
+    
+
+    
+    
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~FreeformShape.contains
+        ~FreeformShape.plot
+        ~FreeformShape.with_offset
+    
+    

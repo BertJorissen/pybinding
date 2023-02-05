@@ -1,6 +1,0 @@
-﻿regular_polygon
-=========================
-
-.. currentmodule:: pybinding
-
-.. autofunction:: regular_polygon

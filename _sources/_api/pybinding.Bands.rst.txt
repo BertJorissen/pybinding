@@ -1,0 +1,34 @@
+﻿Bands
+===============
+
+.. currentmodule:: pybinding
+
+.. autoclass:: Bands
+    :members:
+    :special-members:
+    :inherited-members:
+
+    
+    
+    .. rubric:: Attributes
+
+    .. autosummary::
+    
+        ~Bands.callsig
+        ~Bands.num_bands
+    
+    
+
+    
+    
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~Bands._decorate_plot
+        ~Bands._point_names
+        ~Bands.dos
+        ~Bands.plot
+        ~Bands.plot_kpath
+    
+    

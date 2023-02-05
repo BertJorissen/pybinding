@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Structure-mapped data &mdash; pybinding</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Random Examples" href="../examples/index.html" />
+    <link rel="prev" title="Model structure" href="structure.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pybinding
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">About</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/index.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/index.html">Additional Topics</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Plotting Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="structure.html">Model structure</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Structure-mapped data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#draw-only-certain-hoppings">Draw only certain hoppings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#slicing-a-structure">Slicing a structure</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#mapping-custom-data">Mapping custom data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contour-plots-for-large-systems">Contour plots for large systems</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#composing-multiple-plots">Composing multiple plots</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Random Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference docs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../materials/index.html">Material Repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental/index.html">Experimental</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pybinding</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Plotting Guide</a></li>
+      <li class="breadcrumb-item active">Structure-mapped data</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/plotting/structuremap.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="structure-mapped-data">
+<h1>Structure-mapped data<a class="headerlink" href="#structure-mapped-data" title="Permalink to this heading">¶</a></h1>
+<p>As shown in the previous section, many classes in pybinding use structure plots in a similar way.
+One class stands out here: <a class="reference internal" href="../_api/pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a> can be used to map any arbitrary data onto the
+spatial structure of a model. <a class="reference internal" href="../_api/pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a> objects are produced in two cases: as the
+results of various computation functions (e.g. <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.Solver.calc_spatial_ldos" title="pybinding.solver.Solver.calc_spatial_ldos"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Solver.calc_spatial_ldos()</span></code></a>) or returned
+from <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model.structure_map" title="pybinding.Model.structure_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Model.structure_map()</span></code></a> which can map custom user data.</p>
+<p><a class="reference download internal" download="" href="../_downloads/b786ea5a0465e02fa01d544c7d44da7c/structuremap.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
+<section id="draw-only-certain-hoppings">
+<h2>Draw only certain hoppings<a class="headerlink" href="#draw-only-certain-hoppings" title="Permalink to this heading">¶</a></h2>
+<p>Just as before, we can draw only the desired hoppings. Note that <code class="samp docutils literal notranslate"><span class="pre">smap</span></code> is a <a class="reference internal" href="../_api/pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a>
+returned by <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.Solver.calc_probability" title="pybinding.solver.Solver.calc_probability"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Solver.calc_probability()</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;The model&quot;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(</span><span class="n">nearest_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">graphene</span><span class="o">.</span><span class="n">hexagon_ac</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hopping</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;draw_only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]})</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;$|\Psi|^2$&quot;</span><span class="p">)</span>
+<span class="n">solver</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">arpack</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">smap</span> <span class="o">=</span> <span class="n">solver</span><span class="o">.</span><span class="n">calc_probability</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">smap</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hopping</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;draw_only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]})</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/structuremap-1.png" class="plot-directive" src="../_images/structuremap-1.png" />
+</figure>
+</section>
+<section id="slicing-a-structure">
+<h2>Slicing a structure<a class="headerlink" href="#slicing-a-structure" title="Permalink to this heading">¶</a></h2>
+<p>This follows a syntax similar to numpy fancy indexing where we can give a condition as the index.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Original&quot;</span><span class="p">)</span>
+<span class="n">smap</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hopping</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;draw_only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]})</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Sliced: y &gt; 0&quot;</span><span class="p">)</span>
+<span class="n">upper</span> <span class="o">=</span> <span class="n">smap</span><span class="p">[</span><span class="n">smap</span><span class="o">.</span><span class="n">y</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">upper</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hopping</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;draw_only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">]})</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/structuremap-2.png" class="plot-directive" src="../_images/structuremap-2.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Original: A and B&quot;</span><span class="p">)</span>
+<span class="n">smap</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hopping</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;draw_only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;t_nn&#39;</span><span class="p">]})</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Sliced: A only&quot;</span><span class="p">)</span>
+<span class="n">a_only</span> <span class="o">=</span> <span class="n">smap</span><span class="p">[</span><span class="n">smap</span><span class="o">.</span><span class="n">sublattices</span> <span class="o">==</span> <span class="s1">&#39;A&#39;</span><span class="p">]</span>
+<span class="n">a_only</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">hopping</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;draw_only&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;t&#39;</span><span class="p">,</span> <span class="s1">&#39;t_nn&#39;</span><span class="p">]})</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/structuremap-3.png" class="plot-directive" src="../_images/structuremap-3.png" />
+</figure>
+</section>
+<section id="mapping-custom-data">
+<h2>Mapping custom data<a class="headerlink" href="#mapping-custom-data" title="Permalink to this heading">¶</a></h2>
+<p>The method <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model.structure_map" title="pybinding.Model.structure_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Model.structure_map()</span></code></a> returns a <a class="reference internal" href="../_api/pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a> where any user-defined
+<code class="samp docutils literal notranslate"><span class="pre">data</span></code> can be mapped to the spatial positions of the lattice sites. The <code class="samp docutils literal notranslate"><span class="pre">data</span></code> just needs to be
+a 1D array with the same size as the total number of sites in the system.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.8</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;The model&quot;</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span> <span class="n">graphene</span><span class="o">.</span><span class="n">hexagon_ac</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Custom color data: 2x * (y + 1)&quot;</span><span class="p">)</span>
+<span class="n">custom_data</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">smap</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">structure_map</span><span class="p">(</span><span class="n">custom_data</span><span class="p">)</span>
+<span class="n">smap</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/structuremap-4.png" class="plot-directive" src="../_images/structuremap-4.png" />
+</figure>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.8</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;sin(10x)&quot;</span><span class="p">)</span>
+<span class="n">smap</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">structure_map</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">x</span><span class="p">))</span>
+<span class="n">smap</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;cos(5y)&quot;</span><span class="p">)</span>
+<span class="n">smap</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">structure_map</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">5</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+<span class="n">smap</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/structuremap-5.png" class="plot-directive" src="../_images/structuremap-5.png" />
+</figure>
+</section>
+<section id="contour-plots-for-large-systems">
+<h2>Contour plots for large systems<a class="headerlink" href="#contour-plots-for-large-systems" title="Permalink to this heading">¶</a></h2>
+<p>For larger systems, structure plots don’t make much sense because the details of the sites and
+hoppings would be too small to see. Contour plots look much better in this case.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.8</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span> <span class="n">graphene</span><span class="o">.</span><span class="n">hexagon_ac</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;sin(x)&quot;</span><span class="p">)</span>
+<span class="n">smap</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">structure_map</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">x</span><span class="p">))</span>
+<span class="n">smap</span><span class="o">.</span><span class="n">plot_contourf</span><span class="p">()</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;cos(y/2)&quot;</span><span class="p">)</span>
+<span class="n">smap</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">structure_map</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">y</span><span class="p">))</span>
+<span class="n">smap</span><span class="o">.</span><span class="n">plot_contourf</span><span class="p">()</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+</pre></div>
+</div>
+</section>
+<section id="composing-multiple-plots">
+<h2>Composing multiple plots<a class="headerlink" href="#composing-multiple-plots" title="Permalink to this heading">¶</a></h2>
+<p>Various plotting methods or even different invocations of the same method can be composed to
+create nice figures. For example, we may want to use different colormaps to distinguish between
+sublattices A and B when plotting some data on top of the structure of graphene. Below, the first
+pass plots only the hopping lines, the second pass draws the sites of sublattice A and the third
+draws sublattice B. The darkness of the color indicates the intensity of the mapped data, while
+blue/red distinguishes the sublattices.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span> <span class="n">graphene</span><span class="o">.</span><span class="n">hexagon_ac</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">custom_data</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">model</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">system</span><span class="o">.</span><span class="n">y</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">smap</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">structure_map</span><span class="p">(</span><span class="n">custom_data</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.8</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">121</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Regular plot&quot;</span><span class="p">)</span>
+<span class="n">smap</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">(</span><span class="mi">122</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Composite plot&quot;</span><span class="p">)</span>
+<span class="n">smap</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">site_radius</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># only draw hopping lines, no sites</span>
+<span class="n">a_only</span> <span class="o">=</span> <span class="n">smap</span><span class="p">[</span><span class="n">smap</span><span class="o">.</span><span class="n">sublattices</span> <span class="o">==</span> <span class="s2">&quot;A&quot;</span><span class="p">]</span>
+<span class="n">a_only</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Blues&quot;</span><span class="p">,</span> <span class="n">hopping</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>  <span class="c1"># A sites, no hoppings</span>
+<span class="n">b_only</span> <span class="o">=</span> <span class="n">smap</span><span class="p">[</span><span class="n">smap</span><span class="o">.</span><span class="n">sublattices</span> <span class="o">==</span> <span class="s2">&quot;B&quot;</span><span class="p">]</span>
+<span class="n">b_only</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;Reds&quot;</span><span class="p">,</span> <span class="n">hopping</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;width&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">})</span>  <span class="c1"># B sites, no hoppings</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/structuremap-7.png" class="plot-directive" src="../_images/structuremap-7.png" />
+</figure>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="structure.html" class="btn btn-neutral float-left" title="Model structure" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../examples/index.html" class="btn btn-neutral float-right" title="Random Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

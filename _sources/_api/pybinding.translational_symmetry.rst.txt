@@ -1,0 +1,6 @@
+﻿translational_symmetry
+================================
+
+.. currentmodule:: pybinding
+
+.. autofunction:: translational_symmetry

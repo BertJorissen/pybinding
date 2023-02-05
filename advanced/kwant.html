@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kwant compatibility &mdash; pybinding</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Plotting Guide" href="../plotting/index.html" />
+    <link rel="prev" title="Multi-orbital models" href="multiorbital.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> pybinding
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">About</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/index.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Additional Topics</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="lattice.html">Lattice specification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shapes.html">Composite shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiorbital.html">Multi-orbital models</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Kwant compatibility</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exporting-a-model">Exporting a model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#complete-example">Complete example</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#performance-considerations">Performance considerations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#floating-point-precision">Floating-point precision</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting/index.html">Plotting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Random Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference docs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../materials/index.html">Material Repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental/index.html">Experimental</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pybinding</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Additional Topics</a></li>
+      <li class="breadcrumb-item active">Kwant compatibility</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/advanced/kwant.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="kwant-compatibility">
+<h1>Kwant compatibility<a class="headerlink" href="#kwant-compatibility" title="Permalink to this heading">¶</a></h1>
+<p><a class="reference external" href="http://kwant-project.org/">Kwant</a> is a Python package for numerical tight-binding similar to
+pybinding, but it’s specialized for transport calculations. Since the two packages work with the
+same kind of Hamiltonian matrices, it’s possible to build a model in pybinding and use Kwant to
+compute the transport properties. The advantage for pybinding users is access to Kwant’s transport
+solvers in addition to pybinding’s builtin <a class="reference internal" href="../api.html#compute-api"><span class="std std-ref">computational routines</span></a>. The
+advantage for Kwant users is the much faster system build times made possible by pybinding’s model
+builder – see the <a class="reference internal" href="../benchmarks/index.html"><span class="doc">Benchmarks</span></a>.</p>
+<p><a class="reference download internal" download="" href="../_downloads/22e9b23be8a973496cf7d3a241e9cdac/kwant.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
+<section id="exporting-a-model">
+<h2>Exporting a model<a class="headerlink" href="#exporting-a-model" title="Permalink to this heading">¶</a></h2>
+<p>The procedure for constructing and solving transport problems in Kwant can be summarized with
+the following lines of pseudo-code:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. BUILD model system</span>
+<span class="n">builder</span> <span class="o">=</span> <span class="n">kwant</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
+<span class="o">...</span>  <span class="c1"># specify model parameters</span>
+<span class="n">system</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">finalized</span><span class="p">()</span>
+
+<span class="c1"># 2. COMPUTE scattering matrix</span>
+<span class="n">smatrix</span> <span class="o">=</span> <span class="n">kwant</span><span class="o">.</span><span class="n">smatrix</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
+<span class="o">...</span>  <span class="c1"># call smatrix methods</span>
+</pre></div>
+</div>
+<p>If we want to use pybinding to build the model, we can just replace the first part:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. BUILD model system</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>  <span class="c1"># specify model parameters</span>
+<span class="n">kwant_system</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">tokwant</span><span class="p">()</span>  <span class="c1"># export to kwant format</span>
+
+<span class="c1"># 2. COMPUTE scattering matrix</span>
+<span class="n">smatrix</span> <span class="o">=</span> <span class="n">kwant</span><span class="o">.</span><span class="n">smatrix</span><span class="p">(</span><span class="n">kwant_system</span><span class="p">)</span>
+<span class="o">...</span>  <span class="c1"># call smatrix methods</span>
+</pre></div>
+</div>
+<p>A pybinding <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> is defined as usual and then converted to the Kwant-compatible format
+by calling the <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model.tokwant" title="pybinding.Model.tokwant"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Model.tokwant()</span></code></a> method. The resulting <code class="samp docutils literal notranslate"><span class="pre">kwant_system</span></code> can be used as expected.</p>
+</section>
+<section id="complete-example">
+<h2>Complete example<a class="headerlink" href="#complete-example" title="Permalink to this heading">¶</a></h2>
+<p>A detailed overview of scattering model construction in pybinding is available in the
+<a class="reference internal" href="../tutorial/scattering.html"><span class="doc">tutorial</span></a>. Here, we present a simple example of a graphene wire
+with a potential barrier:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+
+<span class="k">def</span> <span class="nf">potential_barrier</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">x0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Barrier height `v0` in eV with spatial position `-x0 &lt;= x &lt;= x0`&quot;&quot;&quot;</span>
+    <span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span><span class="p">(</span><span class="n">is_double</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># enable double-precision floating-point</span>
+    <span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">energy</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="o">-</span><span class="n">x0</span> <span class="o">&lt;=</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">x0</span><span class="p">)]</span> <span class="o">=</span> <span class="n">v0</span>
+        <span class="k">return</span> <span class="n">energy</span>
+    <span class="k">return</span> <span class="n">function</span>
+
+<span class="k">def</span> <span class="nf">make_model</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
+        <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
+        <span class="n">pb</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">),</span>
+        <span class="n">potential_barrier</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">length</span> <span class="o">/</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">attach_lead</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">pb</span><span class="o">.</span><span class="n">line</span><span class="p">([</span><span class="o">-</span><span class="n">length</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="n">length</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">]))</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">attach_lead</span><span class="p">(</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span> <span class="n">pb</span><span class="o">.</span><span class="n">line</span><span class="p">([</span> <span class="n">length</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span> <span class="n">length</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">model</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">make_model</span><span class="p">(</span><span class="n">length</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># nm</span>
+<span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/kwant-1.png" class="plot-directive" src="../_images/kwant-1.png" />
+</figure>
+<p>We can then vary the height of the potential barrier and calculate the transmission using Kwant:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">kwant</span>
+
+<span class="n">length</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">15</span>  <span class="c1"># nm</span>
+<span class="n">electron_energy</span> <span class="o">=</span> <span class="mf">0.25</span>  <span class="c1"># eV</span>
+<span class="n">barrier_heights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>  <span class="c1"># eV</span>
+
+<span class="n">transmission</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">barrier_heights</span><span class="p">:</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">make_model</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>  <span class="c1"># pybinding model</span>
+    <span class="n">kwant_system</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">tokwant</span><span class="p">()</span>  <span class="c1"># export to kwant</span>
+    <span class="n">smatrix</span> <span class="o">=</span> <span class="n">kwant</span><span class="o">.</span><span class="n">smatrix</span><span class="p">(</span><span class="n">kwant_system</span><span class="p">,</span> <span class="n">energy</span><span class="o">=</span><span class="n">electron_energy</span><span class="p">)</span>
+    <span class="n">transmission</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">smatrix</span><span class="o">.</span><span class="n">transmission</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>For more information about <code class="samp docutils literal notranslate"><span class="pre">kwant.smatrix</span></code> and other transport calculations, please refer to the
+<a class="reference external" href="http://kwant-project.org/">Kwant website</a>. That is outside the scope of this guide. The purpose
+of this section is to present the <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model.tokwant" title="pybinding.Model.tokwant"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Model.tokwant()</span></code></a> compatibility method. The exported system
+is then in the domain of Kwant.</p>
+<p>From there, it’s trivial to plot the results:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">barrier_heights</span><span class="p">,</span> <span class="n">transmission</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;transmission&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;barrier height (eV)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">electron_energy</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;gray&quot;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s2">&quot;electron energy</span><span class="se">\n</span><span class="si">{}</span><span class="s2"> eV&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">electron_energy</span><span class="p">),</span> <span class="p">(</span><span class="n">electron_energy</span><span class="p">,</span> <span class="mf">0.54</span><span class="p">),</span>
+             <span class="n">xycoords</span><span class="o">=</span><span class="p">(</span><span class="s2">&quot;data&quot;</span><span class="p">,</span> <span class="s2">&quot;axes fraction&quot;</span><span class="p">),</span> <span class="n">horizontalalignment</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">)</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">despine</span><span class="p">()</span>  <span class="c1"># remove top and right axis lines</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="../_images/kwant-3.png" class="plot-directive" src="../_images/kwant-3.png" />
+</figure>
+<p>Note that the transmission was calculated for an energy value of 0.25 eV. As the height of the
+barrier is increased, two regimes are clearly distinguishable: transmission over and through the
+barrier.</p>
+</section>
+<section id="performance-considerations">
+<h2>Performance considerations<a class="headerlink" href="#performance-considerations" title="Permalink to this heading">¶</a></h2>
+<p>The Kwant documentation recommends separating model parameters into two parts: the structural data
+which remains constant and fields which can be varied. This yields better performance because only
+the field data needs to be repopulated. This is demonstrated with the following pseudo-code which
+loops over some parameter <code class="samp docutils literal notranslate"><span class="pre">x</span></code>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">builder</span> <span class="o">=</span> <span class="n">kwant</span><span class="o">.</span><span class="n">Builder</span><span class="p">()</span>
+<span class="o">...</span>  <span class="c1"># specify structural parameters</span>
+<span class="n">system</span> <span class="o">=</span> <span class="n">builder</span><span class="o">.</span><span class="n">finalized</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">:</span>
+    <span class="n">smatrix</span> <span class="o">=</span> <span class="n">kwant</span><span class="o">.</span><span class="n">smatrix</span><span class="p">(</span><span class="n">system</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>  <span class="c1"># apply fields</span>
+    <span class="o">...</span>  <span class="c1"># call smatrix methods</span>
+</pre></div>
+</div>
+<p>This separation is not required with pybinding. As pointed out in the <a class="reference internal" href="../benchmarks/index.html"><span class="doc">Benchmarks</span></a>,
+the fast builder makes it possible to fully reconstruct the model in every loop iteration at no
+extra performance cost. This simplifies the code since all the parameters can be applied in a
+single place:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_model</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>  <span class="c1"># all parameters in one place</span>
+
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">:</span>
+    <span class="n">smatrix</span> <span class="o">=</span> <span class="n">kwant</span><span class="o">.</span><span class="n">smatrix</span><span class="p">(</span><span class="n">make_model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">tokwant</span><span class="p">())</span>  <span class="c1"># constructed all at once</span>
+    <span class="o">...</span>  <span class="c1"># call smatrix methods</span>
+</pre></div>
+</div>
+<p>You can <a class="reference download internal" download="" href="../_downloads/93f657abd42e1ee14ba931869e891e1b/kwant_example.py"><code class="xref download docutils literal notranslate"><span class="pre">download</span></code></a> a full example file which implements transport
+through a barrier like the one presented above. The script uses both builders so you can compare
+the implementation as well as the performance. Download the example file and try it on your system.
+Our results are presented below (measured using Intel Core i7-4960HQ CPU, 16 GiB RAM, Python 3.5,
+macOS 10.11). The size of the square scattering region is increased and we measure the total time
+required to calculate the transmission:</p>
+<figure class="align-default">
+<img alt="../_images/kwant-4.png" class="plot-directive" src="../_images/kwant-4.png" />
+</figure>
+<p>For each system size, the transmission is calculated as a function of barrier height for 100
+values. Even though pybinding reconstructs the entire model every time the barrier is changed, the
+system build time is so fast that it doesn’t affect the total calculation time. In fact, the
+extremely fast build actually enables pybinding to outperform Kwant in the overall
+calculation. Even though Kwant only repopulates field data at each loop iteration, this still
+takes more time than it does for pybinding to fully reconstruct the system.</p>
+<p>Note that this example presents a relatively simple system with a square barrier. This is done
+to keep the run time to only a few minutes, for convenience. Here, pybinding speeds up the
+overall calculation by about 40%. For more realistic examples with larger scattering regions and
+complicated field functions with multiple parameters, a speedup of 3-4 times can be achieved by
+using pybinding’s model builder.</p>
+</section>
+<section id="floating-point-precision">
+<h2>Floating-point precision<a class="headerlink" href="#floating-point-precision" title="Permalink to this heading">¶</a></h2>
+<p>Pybinding can generate the Hamiltonian matrix with one of four data types: real or complex numbers
+with single or double precision (32-bit or 64-bit floating point). The selection is dynamic. The
+starting case is always real with single precision and from there the data type is automatically
+promoted as needed by the model. For example, adding translationally symmetry or a magnetic field
+will cause the builder to switch to complex numbers – this is detected automatically. On the other
+hand, the switch to double precision needs to be requested by the user. The onsite and hopping
+energy <a class="reference internal" href="../api.html#modifiers-api"><span class="std std-ref">modifiers</span></a> have an optional <code class="samp docutils literal notranslate"><span class="pre">is_double</span></code> parameter which can be set to
+<code class="samp docutils literal notranslate"><span class="pre">True</span></code>. The builder switches to double precision if requested by at least one modifier.
+Alternatively, <a class="reference internal" href="../_api/pybinding.force_double_precision.html#pybinding.force_double_precision" title="pybinding.force_double_precision"><code class="xref py py-func docutils literal notranslate"><span class="pre">force_double_precision()</span></code></a> can be given to a <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> as a direct
+parameter.</p>
+<p>The reason for all of this is performance. Most solvers work faster with smaller data types: they
+consume less memory and bandwidth and SIMD vectorization becomes more efficient. This is assuming
+that single precision and/or real numbers are sufficient to describe the given model. In case of
+Kwant’s solvers, it seems to require double precision in most cases. This is the reason for the
+<code class="samp docutils literal notranslate"><span class="pre">is_double=True</span></code> flag in the above example. Keep this in mind when exporting to Kwant.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="multiorbital.html" class="btn btn-neutral float-left" title="Multi-orbital models" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../plotting/index.html" class="btn btn-neutral float-right" title="Plotting Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

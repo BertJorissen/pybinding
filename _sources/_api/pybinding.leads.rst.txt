@@ -1,0 +1,34 @@
+﻿leads
+===============
+
+.. automodule:: pybinding.leads
+    :members: _center, Lead, Leads
+
+    
+
+    
+    
+    .. rubric:: Classes
+
+    .. autosummary::
+    
+        Lead
+        Leads
+    
+    
+
+    
+    
+    .. rubric:: Functions
+
+    .. autosummary::
+    
+        _center
+    
+    
+
+    
+    
+    
+
+    
