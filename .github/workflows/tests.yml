@@ -48,7 +48,7 @@ jobs:
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1
       - name: Build with CMake and test Python / C++
-        timeout-minutes: 10
+        timeout-minutes: 20
         run: mkdir build_tests && cd build_tests && cmake .. && cmake --build . --target tests && cd ..
 
   pip-build-1:
