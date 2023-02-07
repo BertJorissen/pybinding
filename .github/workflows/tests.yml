@@ -8,6 +8,8 @@ jobs:
   test-build-1:
     name: Test Build on Ubuntu with Python 3.10
     runs-on: ubuntu-latest
+    env:
+      PB_BUILD_TYPE: Release
     steps:
       - uses: actions/checkout@v3
         with:
@@ -28,6 +30,8 @@ jobs:
     name: Test Build on ${{ matrix.os }} with Python ${{ matrix.python-version }}
     needs: test-build-1
     runs-on: ${{ matrix.os }}
+    env:
+      PB_BUILD_TYPE: Release
     strategy:
       matrix:
         os: [ windows-latest, macos-latest ]
