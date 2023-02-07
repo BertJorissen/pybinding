@@ -8,6 +8,8 @@ jobs:
   test-build-1:
     name: Test Build on Ubuntu with Python 3.10
     runs-on: ubuntu-latest
+    env:
+      PB_BUILD_TYPE: Release
     steps:
       - uses: actions/checkout@v3
         with:
@@ -22,12 +24,14 @@ jobs:
         uses: hendrikmuhs/ccache-action@v1
       - name: Build with CMake and test Python / C++
         timeout-minutes: 10
-        run: mkdir build_tests && cd build_tests && cmake .. && cmake --build . --target tests --config Release
+        run: mkdir build_tests && cd build_tests && cmake .. && cmake --build . --target tests
 
   test-build-all:
     name: Test Build on ${{ matrix.os }} with Python ${{ matrix.python-version }}
     needs: test-build-1
     runs-on: ${{ matrix.os }}
+    env:
+      PB_BUILD_TYPE: Release
     strategy:
       matrix:
         os: [ windows-latest, macos-latest ]
@@ -55,6 +59,8 @@ jobs:
     name: Test pip on Ubuntu with Python 3.10
     needs: test-build-1
     runs-on: ubuntu-latest
+    env:
+      PB_BUILD_TYPE: Release
     steps:
       - uses: actions/checkout@v3
         with:
@@ -76,6 +82,8 @@ jobs:
     name: Test pip on ${{ matrix.os }} with Python ${{ matrix.python-version }}
     needs: [test-build-1, test-build-all, pip-build-1]
     runs-on: ${{ matrix.os }}
+    env:
+      PB_BUILD_TYPE: Release
     strategy:
       matrix:
         os: [ windows-latest, macos-latest ]
@@ -104,6 +112,8 @@ jobs:
     name: Make and upload the documentation
     needs: [test-build-1, test-build-all, pip-build-1, pip-build-all]
     runs-on: ubuntu-latest
+    env:
+      PB_BUILD_TYPE: Release
     steps:
     - uses: actions/checkout@v3
       with:
