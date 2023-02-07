@@ -122,8 +122,6 @@ jobs:
       run: python -m pip install wheel scipy matplotlib pytest cmake ninja sphinx-rtd-theme recommonmark numpydoc nbconvert
     - name: ccache
       uses: hendrikmuhs/ccache-action@v1
-    - name: Build with pip
-      run: python -m pip install .
     - name: Test Documentation
       run: mkdir build_tests && cd build_tests && cmake .. && cmake --build . --target docs && ls && pwd && touch docs/html/.nojekyll
     - name: Publish docs
