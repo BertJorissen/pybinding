@@ -234,7 +234,7 @@ class Area(Path):
         return out
 
 
-def make_area(k0: ArrayLike, k1: ArrayLike, k_origin: Optional[ArrayLike] = None, step: float = 0.1,
+def make_area(k0: ArrayLike, k1: ArrayLike, k_origin: Optional[ArrayLike] = None, step: float = 1,
               point_indices: Optional[Union[List[int], List[List[int]]]] = None,
               point_labels: Optional[List[str]] = None,) -> Area:
     """Create an area of k-point between k0 and k1, starting from k_origin.
@@ -1265,24 +1265,24 @@ class BandsArea(Bands):
             k_area.point_indices,
             k_area.point_labels
         )
-        Bands.__init__(self, k_path, self._area_to_list(energy))
+        Bands.__init__(self, k_path, self.area_to_list(energy))
 
     @property
     def energy_area(self) -> np.ndarray:
-        return self.energy.reshape((self.k_dims[0], self.k_dims[1], -1))
+        return self.list_to_area(self.energy)
 
     @energy_area.setter
     def energy_area(self, energy: np.ndarray):
-        self.energy = np.atleast_2d(energy).reshape((np.prod(self.k_dims[:2]), -1))
+        self.energy = self.area_to_list(np.atleast_2d(energy))
 
-    def _area_to_list(self, data: ArrayLike) -> np.ndarray:
+    def area_to_list(self, data: ArrayLike) -> np.ndarray:
         data_size = [self.k_dims[0] * self.k_dims[1]]
         data = np.atleast_2d(data)
         for ds in data.shape[2:]:
             data_size.append(ds)
         return data.reshape(data_size)
 
-    def _list_to_area(self, data: ArrayLike) -> np.ndarray:
+    def list_to_area(self, data: ArrayLike) -> np.ndarray:
         data_size = [self.k_dims[0], self.k_dims[1]]
         data = np.atleast_1d(data)
         for ds in data.shape[1:]:
@@ -1329,7 +1329,7 @@ class FatBandsArea(BandsArea, FatBands):
         Plot labels: 'data', 'title' and 'columns'.
     """
     def __init__(self, bands: BandsArea, data: ArrayLike, labels: Optional[dict] = None):
-        super().__init__(bands.k_area, bands.energy)
+        super().__init__(bands.k_area, bands.energy_area)
         self.data_area = np.atleast_3d(data)
         self.labels = with_defaults(
             labels, variable="E (eV)", data="pDOS", columns="Orbitals", title="",
@@ -1338,11 +1338,11 @@ class FatBandsArea(BandsArea, FatBands):
 
     @property
     def data_area(self) -> np.ndarray:
-        return self._list_to_area(self.data)
+        return self.list_to_area(self.data)
 
     @data_area.setter
     def data_area(self, data: np.ndarray):
-        self.data = self._area_to_list(data)
+        self.data = self.area_to_list(data)
 
 
 @pickleable
@@ -1878,18 +1878,6 @@ class Wavefunction:
         self._system = system
 
     @property
-    def wavefunction(self) -> np.ndarray:
-        return self._wavefunction
-
-    @wavefunction.setter
-    def wavefunction(self, wavefunction: np.ndarray):
-        self._wavefunction = wavefunction
-
-    @property
-    def wavefunction_1d(self) -> np.ndarray:
-        return self._wavefunction
-
-    @property
     def overlap_matrix(self) -> np.ndarray:
         """ Give back the overlap matrix
 
@@ -1907,11 +1895,11 @@ class Wavefunction:
             Returns : np.ndarray()
                 3D array with the relative coverlap between the k-point and the previous k-point
             """
-        assert len(self.wavefunction_1d.shape) == 3, \
-            "The favefunction has the wrong shape, {0} and not 3".format(len(self.wavefunction_1d.shape))
-        n_k = self.wavefunction_1d.shape[0]
+        assert len(self.wavefunction.shape) == 3, \
+            "The favefunction has the wrong shape, {0} and not 3".format(len(self.wavefunction.shape))
+        n_k = self.wavefunction.shape[0]
         assert n_k > 1, "There must be more than one k-point, first dimension is not larger than 1."
-        return np.array([np.abs(self.wavefunction_1d[i_k] @ self.wavefunction_1d[i_k + 1].T.conj())
+        return np.array([np.abs(self.wavefunction[i_k] @ self.wavefunction[i_k + 1].T.conj())
                          for i_k in range(n_k - 1)])
 
     @property
@@ -1931,7 +1919,7 @@ class Wavefunction:
 
         Returns : Bands
             The reordered eigenvalues in a Bands-class."""
-        return Bands(self.bands.k_path, self.disentangle(self.bands.energy_1d))
+        return Bands(self.bands.k_path, self.disentangle(self.bands.energy))
 
     @property
     def fatbands(self) -> FatBands:
@@ -1940,18 +1928,18 @@ class Wavefunction:
         Returns : FatBands
             The (unsorted) bands with the pDOS.
         """
-        probablitiy = np.abs(self.wavefunction_1d ** 2)
+        probablitiy = np.abs(self.wavefunction ** 2)
         labels = {"data": "pDOS", "columns": "orbital"}
         if self._sublattices is not None:
             mapping = self._sublattices.mapping
             keys = mapping.keys()
-            data = np.zeros((self.bands.energy_1d.shape[0], self.bands.energy_1d.shape[1], len(keys)))
+            data = np.zeros((self.bands.energy.shape[0], self.bands.energy.shape[1], len(keys)))
             for i_k, key in enumerate(keys):
                 data[:, :, i_k] = np.sum(probablitiy[:, :, self._sublattices == key], axis=2)
             labels["orbitals"] = [str(key) for key in keys]
         else:
             data = probablitiy
-        return FatBands(Bands(self.bands.k_path, self.bands.energy_1d), data, labels)
+        return FatBands(Bands(self.bands.k_path, self.bands.energy), data, labels)
 
     @property
     def fatbands_disentangled(self) -> FatBands:
@@ -1961,7 +1949,7 @@ class Wavefunction:
             The (sorted) bands with the pDOS.
         """
         fatbands = self.fatbands
-        return FatBands(Bands(self.bands.k_path, self.bands_disentangled.energy_1d),
+        return FatBands(Bands(self.bands.k_path, self.bands_disentangled.energy),
                         self.disentangle(fatbands.data), fatbands.labels)
 
     def spatial_ldos(self, energies: Optional[ArrayLike] = None,
@@ -1988,15 +1976,15 @@ class Wavefunction:
         :class:`~pybinding.StructureMap`
         """
         if energies is None:
-            energies = np.linspace(np.nanmin(self.bands.energy_1d), np.nanmax(self.bands.energy_1d), 1000)
+            energies = np.linspace(np.nanmin(self.bands.energy), np.nanmax(self.bands.energy), 1000)
         if broadening is None:
-            broadening = (np.nanmax(self.bands.energy_1d) - np.nanmin(self.bands.energy_1d)) / 1000
-        scale = 1 / (broadening * np.sqrt(2 * np.pi) * self.bands.energy_1d.shape[0])
-        ldos = np.zeros((self.wavefunction_1d.shape[2], len(energies)))
-        for i_k, eigenvalue in enumerate(self.bands.energy_1d):
+            broadening = (np.nanmax(self.bands.energy) - np.nanmin(self.bands.energy)) / 1000
+        scale = 1 / (broadening * np.sqrt(2 * np.pi) * self.bands.energy.shape[0])
+        ldos = np.zeros((self.wavefunction.shape[2], len(energies)))
+        for i_k, eigenvalue in enumerate(self.bands.energy):
             delta = np.nan_to_num(eigenvalue)[:, np.newaxis] - energies
             gauss = np.exp(-0.5 * delta**2 / broadening**2)
-            psi2 = np.nan_to_num(np.abs(self.wavefunction_1d[i_k].T)**2)
+            psi2 = np.nan_to_num(np.abs(self.wavefunction[i_k].T)**2)
             ldos += scale * np.sum(psi2[:, :, np.newaxis] * gauss[np.newaxis, :, :], axis=1)
         if self._system is not None:
             return SpatialLDOS(ldos.T, energies, self._system)
@@ -2030,37 +2018,25 @@ class WavefunctionArea(Wavefunction):
                 and already rescaled to give a norm of 1. The np.dot-function is used to calculate the overlap
                 with the hermitian conjugate.
         """
-        super().__init__(bands, wavefunction, sublattices, system)
+
+        super().__init__(bands, bands.area_to_list(wavefunction), sublattices, system)
         self.bands: BandsArea = bands
 
     @property
-    def wavefunction(self) -> np.ndarray:
-        wfc_size = [self.bands.k_dims[0], self.bands.k_dims[1]]
-        for ws in self._wavefunction.shape[1:]:
-            wfc_size.append(ws)
-        return self._wavefunction.reshape(wfc_size)
+    def wavefunction_area(self) -> np.ndarray:
+        return self.bands.list_to_area(self.wavefunction)
 
-    @wavefunction.setter
-    def wavefunction(self, wavefunction: np.ndarray):
-        wfc_size = [self.bands.k_dims[0] * self.bands.k_dims[1]]
-        for ws in wavefunction.shape[2:]:
-            wfc_size.append(ws)
-        self._wavefunction = wavefunction.reshape(wfc_size)
+    @wavefunction_area.setter
+    def wavefunction_area(self, wavefunction: np.ndarray):
+        self.wavefunction = self.bands.area_to_list(wavefunction)
 
     @property
     def fatbandsarea(self) -> FatBandsArea:
-        data_size = [self.bands.k_dims[0], self.bands.k_dims[1]]
-        for ds in self.fatbands.data.shape[1:]:
-            data_size.append(ds)
-        return FatBandsArea(self.bands, self.fatbands.data.reshape(data_size), self.fatbands.labels)
+        return FatBandsArea(self.bands, self.bands.list_to_area(self.fatbands.data), self.fatbands.labels)
 
     @property
     def fatbandsarea_disentangled(self) -> FatBandsArea:
-        data_size = [self.bands.k_dims[0], self.bands.k_dims[1]]
-        for ds in self.fatbands.data.shape[1:]:
-            data_size.append(ds)
-        energy_size = [self.bands.k_dims[0], self.bands.k_dims[1]]
-        for es in self.fatbands.energy.shape[1:]:
-            data_size.append(es)
-        return FatBandsArea(BandsArea(self.bands.k_area, self.bands_disentangled.energy.reshape(energy_size)),
-                            self.disentangle(self.fatbands.data).reshape(data_size), self.fatbands.labels)
+        return FatBandsArea(
+            BandsArea(self.bands.k_area, self.bands.list_to_area(self.bands_disentangled.energy)),
+            self.bands.list_to_area(self.disentangle(self.fatbands.data)), self.fatbands.labels
+        )
