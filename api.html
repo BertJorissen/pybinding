@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>API Reference &mdash; pybinding</title>
@@ -14,9 +14,6 @@
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
         <script src="_static/sphinx_highlight.js"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -32,14 +29,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> pybinding
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            pybinding
           </a>
               <div class="version">
                 0.9
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -143,7 +144,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a></li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
       <li class="breadcrumb-item active">API Reference</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
@@ -162,10 +163,6 @@ If you are just looking to get started, read the <a class="reference internal" h
 build up a larger system by translating the unit cell to fill a certain shape or symmetry.
 The model builds the Hamiltonian matrix by applying fields and other modifier parameters.</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.Lattice.html#pybinding.Lattice" title="pybinding.Lattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Lattice</span></code></a>(a1[, a2, a3])</p></td>
 <td><p>Unit cell of a Bravais lattice, the basic building block of a tight-binding model</p></td>
@@ -183,10 +180,6 @@ package and listed below. These predefined shapes are just functions which confi
 a shape class object.</p>
 <p class="rubric">Building blocks</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.Polygon.html#pybinding.Polygon" title="pybinding.Polygon"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Polygon</span></code></a>(vertices)</p></td>
 <td><p>Shape defined by a list of vertices in a 2D plane</p></td>
@@ -201,10 +194,6 @@ a shape class object.</p>
 </table>
 <p class="rubric">Predefined shapes</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.circle.html#pybinding.circle" title="pybinding.circle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">circle</span></code></a>(radius[, center])</p></td>
 <td><p>A circle in the xy plane</p></td>
@@ -227,10 +216,6 @@ a shape class object.</p>
 <section id="symmetry">
 <h2>Symmetry<a class="headerlink" href="#symmetry" title="Permalink to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.translational_symmetry.html#pybinding.translational_symmetry" title="pybinding.translational_symmetry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translational_symmetry</span></code></a>([a1, a2, a3])</p></td>
 <td><p>Simple translational symmetry</p></td>
@@ -244,10 +229,6 @@ a shape class object.</p>
 tight-binding model, such as various fields, defects or geometric deformations.</p>
 <p class="rubric">Decorators</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.site_state_modifier.html#pybinding.site_state_modifier" title="pybinding.site_state_modifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">site_state_modifier</span></code></a>([min_neighbors])</p></td>
 <td><p>Modify the state (valid or invalid) of lattice sites, e.g.</p></td>
@@ -265,10 +246,6 @@ tight-binding model, such as various fields, defects or geometric deformations.<
 </table>
 <p class="rubric">Predefined modifiers</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.constant_potential.html#pybinding.constant_potential" title="pybinding.constant_potential"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constant_potential</span></code></a>(magnitude)</p></td>
 <td><p>Apply a constant onsite energy to every lattice site</p></td>
@@ -288,10 +265,6 @@ tight-binding model, such as various fields, defects or geometric deformations.<
 tight-binding model, such as hoppings and sites.</p>
 <p class="rubric">Decorators</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.hopping_generator.html#pybinding.hopping_generator" title="pybinding.hopping_generator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hopping_generator</span></code></a>(name, energy)</p></td>
 <td><p>Introduce a new hopping family (with a new <code class="samp docutils literal notranslate"><span class="pre">hop_id</span></code>) via a list of index pairs</p></td>
@@ -308,10 +281,6 @@ tight-binding model, such as hoppings and sites.</p>
 physical properties. The following submodules contain functions for exact diagonalization as well
 as some approximative compute methods. Follow the links below for details.</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.solver.html#module-pybinding.solver" title="pybinding.solver"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solver</span></code></a></p></td>
 <td><p>Eigensolvers with a few extra computation methods</p></td>
@@ -323,10 +292,6 @@ as some approximative compute methods. Follow the links below for details.</p>
 </table>
 <p class="rubric">Experimental</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.parallel.html#module-pybinding.parallel" title="pybinding.parallel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parallel</span></code></a></p></td>
 <td><p>Multi-threaded functions for parameter sweeps</p></td>
@@ -344,10 +309,6 @@ efficiently store entire result objects into files. The information about the ki
 property is saved along with the raw data, i.e. executing <code class="samp docutils literal notranslate"><span class="pre">result</span> <span class="pre">=</span> <span class="pre">pb.load(&quot;data_file.pbz&quot;)</span></code>
 followed by <code class="samp docutils literal notranslate"><span class="pre">result.plot()</span></code> will work and present the appropriate figure.</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.save.html#pybinding.save" title="pybinding.save"><code class="xref py py-obj docutils literal notranslate"><span class="pre">save</span></code></a>(obj, file)</p></td>
 <td><p>Save an object to a compressed file</p></td>
@@ -388,10 +349,6 @@ followed by <code class="samp docutils literal notranslate"><span class="pre">re
 but they are components of other classes (e.g. <a class="reference internal" href="_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>) so they are used regularly (even
 if indirectly).</p>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.system.html#module-pybinding.system" title="pybinding.system"><code class="xref py py-obj docutils literal notranslate"><span class="pre">system</span></code></a></p></td>
 <td><p>Structural information and utilities</p></td>
@@ -405,10 +362,6 @@ if indirectly).</p>
 <section id="miscellaneous">
 <h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.constants.html#module-pybinding.constants" title="pybinding.constants"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constants</span></code></a></p></td>
 <td><p>A few useful physical constants</p></td>

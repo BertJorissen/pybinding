@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>constants &mdash; pybinding</title>
@@ -14,9 +14,6 @@
   <![endif]-->
   
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
         <script src="../_static/sphinx_highlight.js"></script>
     <script src="../_static/js/theme.js"></script>
@@ -31,14 +28,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> pybinding
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pybinding
           </a>
               <div class="version">
                 0.9
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -104,7 +105,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../api.html">API Reference</a></li>
       <li class="breadcrumb-item active">constants</li>
       <li class="wy-breadcrumbs-aside">
@@ -222,7 +223,7 @@
 <span class="sig-name descname"><span class="pre">astype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'K'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">casting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'unsafe'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subok</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.constants.Pauli.astype" title="Permalink to this definition">¶</a></dt>
 <dd><p>Copy of the array, cast to a specified type.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>dtype</strong><span class="classifier">str or dtype</span></dt><dd><p>Typecode or data-type to which the array is cast.</p>
 </dd>
@@ -256,7 +257,7 @@ of a copy.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>arr_t</strong><span class="classifier">ndarray</span></dt><dd><p>Unless <code class="samp docutils literal notranslate"><span class="pre">copy</span></code> is False and the other conditions for returning the input
 array are satisfied (see description for <code class="samp docutils literal notranslate"><span class="pre">copy</span></code> input parameter), <code class="samp docutils literal notranslate"><span class="pre">arr_t</span></code>
@@ -265,7 +266,7 @@ given by <code class="samp docutils literal notranslate"><span class="pre">dtype
 </dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>ComplexWarning</dt><dd><p>When casting from complex to float or int. To avoid this,
 one should use <code class="docutils literal notranslate"><span class="pre">a.real.astype(t)</span></code>.</p>
@@ -305,13 +306,13 @@ returning a byteswapped array, optionally swapped in-place.
 Arrays of byte-strings are not swapped. The real and imaginary
 parts of a complex number are swapped individually.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>inplace</strong><span class="classifier">bool, optional</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, swap bytes in-place, default is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>out</strong><span class="classifier">ndarray</span></dt><dd><p>The byteswapped array. If <code class="samp docutils literal notranslate"><span class="pre">inplace</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, this is
 a view to self.</p>
@@ -428,7 +429,7 @@ One of max or min must be given.</p>
 <span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.constants.Pauli.copy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a copy of the array.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>order</strong><span class="classifier">{‘C’, ‘F’, ‘A’, ‘K’}, optional</span></dt><dd><p>Controls the memory layout of the copy. ‘C’ means C-order,
 ‘F’ means F-order, ‘A’ means ‘F’ if <code class="samp docutils literal notranslate"><span class="pre">a</span></code> is Fortran contiguous,
@@ -528,7 +529,7 @@ a future version the read-only restriction will be removed.</p>
 <dd><p>Dump a pickle of the array to the specified file.
 The array can be read back with pickle.load or numpy.load.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>file</strong><span class="classifier">str or Path</span></dt><dd><p>A string naming the dump file.</p>
 <div class="versionchanged">
@@ -546,7 +547,7 @@ The array can be read back with pickle.load or numpy.load.</p>
 <dd><p>Returns the pickle of the array as a string.
 pickle.loads will convert the string back to an array.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>None</strong></dt><dd></dd>
 </dl>
@@ -559,7 +560,7 @@ pickle.loads will convert the string back to an array.</p>
 <span class="sig-name descname"><span class="pre">fill</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.constants.Pauli.fill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Fill the array with a scalar value.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>value</strong><span class="classifier">scalar</span></dt><dd><p>All elements of <code class="samp docutils literal notranslate"><span class="pre">a</span></code> will be assigned this value.</p>
 </dd>
@@ -602,7 +603,7 @@ distinction is important:</p>
 <span class="sig-name descname"><span class="pre">flatten</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.constants.Pauli.flatten" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a copy of the array collapsed into one dimension.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>order</strong><span class="classifier">{‘C’, ‘F’, ‘A’, ‘K’}, optional</span></dt><dd><p>‘C’ means to flatten in row-major (C-style) order.
 ‘F’ means to flatten in column-major (Fortran-
@@ -614,7 +615,7 @@ The default is ‘C’.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>y</strong><span class="classifier">ndarray</span></dt><dd><p>A copy of the input array, flattened to one dimension.</p>
 </dd>
@@ -651,7 +652,7 @@ array dtype; for example an array of dtype complex128 has 16-byte elements.
 If taking a view with a 32-bit integer (4 bytes), the offset needs to be
 between 0 and 12 bytes.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>dtype</strong><span class="classifier">str or dtype</span></dt><dd><p>The data type of the view. The dtype size of the view can not be larger
 than that of the array itself.</p>
@@ -686,7 +687,7 @@ array for our view:</p>
 <span class="sig-name descname"><span class="pre">item</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.constants.Pauli.item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Copy an element of an array to a standard Python scalar and return it.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>*args</strong><span class="classifier">Arguments (variable number and type)</span></dt><dd><ul class="simple">
 <li><p>none: in this case, the method only works for arrays
@@ -701,7 +702,7 @@ array.</p></li>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>z</strong><span class="classifier">Standard Python scalar object</span></dt><dd><p>A copy of the specified element of the array as a suitable
 Python scalar</p>
@@ -746,7 +747,7 @@ as <em>item</em>.  Then, <code class="docutils literal notranslate"><span class=
 than <code class="docutils literal notranslate"><span class="pre">a[args]</span> <span class="pre">=</span> <span class="pre">item</span></code>.  The item should be a scalar value and <code class="samp docutils literal notranslate"><span class="pre">args</span></code>
 must select a single item in the array <code class="samp docutils literal notranslate"><span class="pre">a</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>*args</strong><span class="classifier">Arguments</span></dt><dd><p>If one argument: a scalar, only used in case <code class="samp docutils literal notranslate"><span class="pre">a</span></code> is of size 1.
 If two arguments: the last argument is the value to be set
@@ -834,7 +835,7 @@ look-up at each loop iteration.</p>
 <p>Changes are also made in all fields and sub-arrays of the array data
 type.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>new_order</strong><span class="classifier">string, optional</span></dt><dd><p>Byte order to force; a value from the byte order specifications
 below. <code class="samp docutils literal notranslate"><span class="pre">new_order</span></code> codes can be any of:</p>
@@ -850,7 +851,7 @@ byte order.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>new_arr</strong><span class="classifier">array</span></dt><dd><p>New array object with the dtype reflecting given change to the
 byte order.</p>
@@ -886,7 +887,7 @@ the two partitions is undefined.</p>
 <p><span class="versionmodified added">New in version 1.8.0.</span></p>
 </div>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>kth</strong><span class="classifier">int or sequence of ints</span></dt><dd><p>Element index to partition by. The kth element value will be in its
 final sorted position and all smaller elements will be moved before it
@@ -1035,7 +1036,7 @@ For example, <code class="docutils literal notranslate"><span class="pre">a.resh
 <span class="sig-name descname"><span class="pre">resize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">refcheck</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.constants.Pauli.resize" title="Permalink to this definition">¶</a></dt>
 <dd><p>Change shape and size of array in-place.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>new_shape</strong><span class="classifier">tuple of ints, or <code class="samp docutils literal notranslate"><span class="pre">n</span></code> ints</span></dt><dd><p>Shape of resized array.</p>
 </dd>
@@ -1043,12 +1044,12 @@ For example, <code class="docutils literal notranslate"><span class="pre">a.resh
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>None</dt><dd></dd>
 </dl>
 </dd>
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt>ValueError</dt><dd><p>If <code class="samp docutils literal notranslate"><span class="pre">a</span></code> does not own its own data or references or views to it exist,
 and the data memory must be changed.
@@ -1157,7 +1158,7 @@ stored in memory), resized, and reshaped:</p>
 <p>Place <code class="samp docutils literal notranslate"><span class="pre">val</span></code> into <code class="samp docutils literal notranslate"><span class="pre">a</span></code>’s field defined by <code class="samp docutils literal notranslate"><span class="pre">dtype</span></code> and beginning <code class="samp docutils literal notranslate"><span class="pre">offset</span></code>
 bytes into the field.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>val</strong><span class="classifier">object</span></dt><dd><p>Value to be placed in field.</p>
 </dd>
@@ -1167,7 +1168,7 @@ bytes into the field.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt>None</dt><dd></dd>
 </dl>
@@ -1217,7 +1218,7 @@ own memory, or the ultimate owner of the memory exposes a writeable buffer
 interface, or is a string. (The exception for string is made so that
 unpickling can be done without copying memory.)</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>write</strong><span class="classifier">bool, optional</span></dt><dd><p>Describes whether or not <code class="samp docutils literal notranslate"><span class="pre">a</span></code> can be written to.</p>
 </dd>
@@ -1277,7 +1278,7 @@ as the full name.</p>
 <span class="sig-name descname"><span class="pre">sort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.constants.Pauli.sort" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sort an array in-place. Refer to <code class="samp docutils literal notranslate"><span class="pre">numpy.sort</span></code> for full documentation.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>axis</strong><span class="classifier">int, optional</span></dt><dd><p>Axis along which to sort. Default is -1, which means sort along the
 last axis.</p>
@@ -1420,7 +1421,7 @@ This behavior is controlled by the <code class="docutils literal notranslate"><s
 <p><span class="versionmodified added">New in version 1.9.0.</span></p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>order</strong><span class="classifier">{‘C’, ‘F’, ‘A’}, optional</span></dt><dd><p>Controls the memory layout of the bytes object. ‘C’ means C-order,
 ‘F’ means F-order, ‘A’ (short for <em>Any</em>) means ‘F’ if <code class="samp docutils literal notranslate"><span class="pre">a</span></code> is
@@ -1428,7 +1429,7 @@ Fortran contiguous, ‘C’ otherwise. Default is ‘C’.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>s</strong><span class="classifier">bytes</span></dt><dd><p>Python bytes exhibiting a copy of <code class="samp docutils literal notranslate"><span class="pre">a</span></code>’s raw data.</p>
 </dd>
@@ -1462,7 +1463,7 @@ Fortran contiguous, ‘C’ otherwise. Default is ‘C’.</p>
 The data produced by this method can be recovered using the function
 fromfile().</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>fid</strong><span class="classifier">file or str or Path</span></dt><dd><p>An open file object, or a string containing a filename.</p>
 <div class="versionchanged">
@@ -1503,12 +1504,12 @@ the <code class="samp docutils literal notranslate"><span class="pre">~numpy.nda
 <p>If <code class="docutils literal notranslate"><span class="pre">a.ndim</span></code> is 0, then since the depth of the nested list is 0, it will
 not be a list at all, but a simple Python scalar.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>none</strong></dt><dd></dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>y</strong><span class="classifier">object, or list of object, or list of list of object, or …</span></dt><dd><p>The possibly nested list of array elements.</p>
 </dd>
@@ -1584,7 +1585,7 @@ except that <code class="docutils literal notranslate"><span class="pre">tolist<
 <dd><p>Returns a view of the array with axes transposed.</p>
 <p>Refer to <code class="samp docutils literal notranslate"><span class="pre">numpy.transpose</span></code> for full documentation.</p>
 <dl class="field-list">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
 <dt><strong>axes</strong><span class="classifier">None, tuple of ints, or <code class="samp docutils literal notranslate"><span class="pre">n</span></code> ints</span></dt><dd><ul class="simple">
 <li><p>None or no argument: reverses the order of the axes.</p></li>
@@ -1596,7 +1597,7 @@ intended simply as a “convenience” alternative to the tuple form).</p></li>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>p</strong><span class="classifier">ndarray</span></dt><dd><p>View of the array with its axes suitably permuted.</p>
 </dd>
@@ -1664,7 +1665,7 @@ since the former invokes <code class="docutils literal notranslate"><span class=
 <code class="docutils literal notranslate"><span class="pre">dtype('float_')</span></code>.</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>dtype</strong><span class="classifier">data-type or ndarray sub-class, optional</span></dt><dd><p>Data-type descriptor of the returned view, e.g., float32 or int16.
 Omitting it results in the view having the same data-type as <code class="samp docutils literal notranslate"><span class="pre">a</span></code>.
@@ -1828,12 +1829,12 @@ object has, among others, data, shape, and strides attributes (see
 Notes below) which themselves return ctypes objects that can be used
 as arguments to a shared library.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>None</strong></dt><dd></dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>c</strong><span class="classifier">Python object</span></dt><dd><p>Possessing attributes data, shape, strides, etc.</p>
 </dd>
@@ -1956,12 +1957,12 @@ future.  Setting will replace the <code class="docutils literal notranslate"><sp
 memory (see also <code class="samp docutils literal notranslate"><span class="pre">ndarray.view</span></code> and <code class="samp docutils literal notranslate"><span class="pre">ndarray.astype</span></code>).</p>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>None</strong></dt><dd></dd>
 </dl>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
 <dt><strong>d</strong><span class="classifier">numpy dtype object</span></dt><dd></dd>
 </dl>
@@ -2024,7 +2025,7 @@ It does <em>not</em> generally hold that <code class="docutils literal notransla
 for C-style contiguous arrays or <code class="docutils literal notranslate"><span class="pre">self.strides[0]</span> <span class="pre">==</span> <span class="pre">self.itemsize</span></code> for
 Fortran-style contiguous arrays is true.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Attributes</dt>
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>C_CONTIGUOUS (C)</strong></dt><dd><p>The data is in a single, C-style contiguous segment.</p>
 </dd>
