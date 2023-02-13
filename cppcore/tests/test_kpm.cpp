@@ -4,6 +4,8 @@
 #include "KPM.hpp"
 using namespace cpb;
 
+// TODO: test block-diagonal models, zero-row models, spatial sldos multi orbital; cpgf kernel
+
 Model make_test_model(bool is_double = false, bool is_complex = false) {
     auto model = Model(graphene::monolayer(), shape::rectangle(0.6f, 0.8f),
                        field::constant_potential(1));

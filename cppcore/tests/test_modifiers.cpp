@@ -3,6 +3,8 @@
 #include "fixtures.hpp"
 using namespace cpb;
 
+// TODO: test phase
+
 TEST_CASE("SiteStateModifier") {
     auto model = Model(lattice::square_2atom(), Primitive(2));
     REQUIRE(model.system()->num_sites() == 4);

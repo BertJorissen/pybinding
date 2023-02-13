@@ -9,6 +9,8 @@ one, zero = np.ones(1), np.zeros(1)
 complex_one = np.ones(1, dtype=np.complex64)
 
 
+# TODO: add test that function from model returns same as initial function, test phase
+
 def build_model(*params):
     model = pb.Model(graphene.monolayer(), *params)
     model.report()

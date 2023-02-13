@@ -7,6 +7,7 @@ import pybinding as pb
 from pybinding.repository import graphene
 
 
+#TODO: tests for bands, bands.dos, dos (add/subtract), plotting func, wavefunction, fat-bands, disentangle
 @pytest.fixture(scope='module')
 def model():
     return pb.Model(graphene.monolayer(), pb.rectangle(1))
