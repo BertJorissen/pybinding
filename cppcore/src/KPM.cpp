@@ -1,5 +1,5 @@
 #include "KPM.hpp"
-
+#include <iostream>
 using namespace fmt::literals;
 
 namespace cpb {
@@ -66,28 +66,10 @@ ArrayXXdCM KPM::calc_ldos(ArrayXd const& energy, double broadening, Cartesian po
 
 ArrayXXdCM KPM::calc_spatial_ldos(ArrayXd const& energy, double broadening, Shape const& shape,
                                   string_view sublattice) const {
-    if (model.is_multiorbital()) {
-        throw std::runtime_error("This function doesn't currently support multi-orbital models");
-    }
-
-    auto const& system = *model.system();
-
-    calculation_timer.tic();
-    auto const indices = [&]{
-        auto const contains = shape.contains(system.positions);
-        auto const range = system.sublattice_range(sublattice);
-
-        auto v = std::vector<idx_t>();
-        v.reserve(std::count(contains.data() + range.start, contains.data() + range.end, true));
-
-        for (auto i = range.start; i < range.end; ++i) {
-            if (contains[i]) { v.push_back(i); }
-        }
-
-        return v;
-    }();
+    auto const indices = model.system()->select_idx_hamiltonian_shape(shape, sublattice);
 
     auto results = core.ldos(indices, energy, broadening);
+
     calculation_timer.toc();
 
     return results;

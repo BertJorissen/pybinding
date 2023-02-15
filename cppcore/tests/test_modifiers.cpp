@@ -3,6 +3,8 @@
 #include "fixtures.hpp"
 using namespace cpb;
 
+// TODO: test phase
+
 TEST_CASE("SiteStateModifier") {
     auto model = Model(lattice::square_2atom(), Primitive(2));
     REQUIRE(model.system()->num_sites() == 4);
@@ -205,9 +207,9 @@ TEST_CASE("SiteGenerator") {
         auto const energy = MatrixXcd::Constant(1, 1, 2.0);
         model.add(SiteGenerator("C", energy, [](System const&) {
             auto const size = 5;
-            auto x = ArrayXf::Constant(size, 1);
-            auto y = ArrayXf::LinSpaced(size, 1, 5);
-            auto z = ArrayXf::Constant(size, 0);
+            auto x = ArrayXd::Constant(size, 1);
+            auto y = ArrayXd::LinSpaced(size, 1, 5);
+            auto z = ArrayXd::Constant(size, 0);
             return CartesianArray(x, y, z);
         }));
 

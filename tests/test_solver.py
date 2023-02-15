@@ -8,6 +8,8 @@ solvers = ['arpack']
 if hasattr(pb._cpp, 'FEAST'):
     solvers.append('feast')
 
+# TODO: tests from bands_path, wavefunction, bands_Area, wfc_area
+
 models = {
     'graphene-magnetic_field': {'model': [graphene.monolayer(), pb.rectangle(6),
                                           graphene.constant_magnetic_field(10)],

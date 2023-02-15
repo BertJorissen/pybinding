@@ -4,6 +4,8 @@ import numpy as np
 import pybinding as pb
 from pybinding.repository import graphene, group6_tmd
 
+# test multi-orbital models, test block-diagonal models, test zero-row models, test mutli-orbital sldos
+
 models = {
     'graphene-pristine': [graphene.monolayer(), pb.rectangle(15)],
     'graphene-pristine-oversized': [graphene.monolayer(), pb.rectangle(20)],

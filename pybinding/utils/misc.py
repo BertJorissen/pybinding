@@ -43,7 +43,7 @@ def with_defaults(options: dict, defaults_dict: Optional[dict] = None, **default
 
 
 def x_pi(value: float) -> str:
-    """Return str of value in 'multiples of pi' latex representation
+    r"""Return str of value in 'multiples of pi' latex representation
 
     >>> x_pi(6.28) == r"2$\pi$"
     True

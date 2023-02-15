@@ -9,6 +9,8 @@ one, zero = np.ones(1), np.zeros(1)
 complex_one = np.ones(1, dtype=np.complex64)
 
 
+# TODO: add test that function from model returns same as initial function, test phase
+
 def build_model(*params):
     model = pb.Model(graphene.monolayer(), *params)
     model.report()
@@ -78,7 +80,7 @@ def test_type_errors():
 
     with pytest.raises(TypeError) as excinfo:
         build_model(pb.site_position_modifier(lambda x: (np.ones_like(x, dtype=np.complex128),)*3))
-    assert "'complex128', but expected same kind as 'float32'" in str(excinfo.value)
+    assert "'complex128', but expected same kind as 'float64'" in str(excinfo.value)
 
 
 def test_cast():

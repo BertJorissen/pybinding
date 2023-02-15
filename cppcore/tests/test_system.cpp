@@ -88,22 +88,24 @@ TEST_CASE("complex_valued_hoppings") {
         using constant::i1;
         auto const lattice = lattice::hexagonal_complex();
         // distance from A to three neighbor sites
-        auto const d1 = Cartesian{0.0f, -1.0f / 3 * sqrt(3.0f), 0.0f};
-        auto const d2 = Cartesian{d1 + Cartesian{ 0.5f, 0.5f * sqrt(3.0f), 0.0f}};
-        auto const d3 = Cartesian{d1 + Cartesian{-0.5f, 0.5f * sqrt(3.0f), 0.0f}};
+        auto const d1 = Cartesian{0.0, -1.0 / 3 * sqrt(3.0), 0.0};
+        auto const d2 = Cartesian{d1 + Cartesian{ 0.5, 0.5 * sqrt(3.0), 0.0}};
+        auto const d3 = Cartesian{d1 + Cartesian{-0.5, 0.5 * sqrt(3.0), 0.0}};
         // hoppings
         auto const t1 = -i1;
-        auto const t2 = 2.0f * i1;
-        auto const t3 = 3.0f * i1;
+        auto const t2 = 2.0 * i1;
+        auto const t3 = 3.0 * i1;
 
-        auto model = Model(lattice, TranslationalSymmetry(1, 1));
+        auto model = Model(lattice, TranslationalSymmetry(1, 1), OnsiteModifier(
+                [](const ComplexArrayRef&, const CartesianArrayConstRef&, string_view){},
+                true, true, false));
         using constant::pi;
         // set the wavevector to K point
         auto const k_vector = Cartesian{2 * pi, 0, 0};
         model.set_wave_vector(k_vector);
 
         auto const& system = *model.system();
-        auto const& matrix = ham::get_reference<std::complex<float>>(model.hamiltonian());
+        auto const& matrix = ham::get_reference<std::complex<double>>(model.hamiltonian());
 
         auto const expected_hopping = t1 * exp(i1 * k_vector.dot(d1)) +
                                       t2 * exp(i1 * k_vector.dot(d2)) +

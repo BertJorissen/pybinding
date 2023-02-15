@@ -78,6 +78,11 @@ class System(Structure):
         return self.impl.expanded_positions
 
     @property
+    def expanded_sublattices(self) -> AliasArray:
+        """`sublattices` expanded to `hamiltonian_size` by replicating for each orbital"""
+        return AliasArray(self.impl.expanded_sublattices(), self.impl.site_registry.name_map)
+
+    @property
     def hamiltonian_size(self) -> int:
         """The size of the Hamiltonian matrix constructed from this system
 
@@ -149,7 +154,9 @@ class System(Structure):
         if data.size == self.num_sites:
             return data
         if data.ndim != 1 or data.size != self.hamiltonian_size:
-            raise RuntimeError("The given data does not match the Hamiltonian size")
+            raise RuntimeError("The given data does not match the Hamiltonian size, {0} != {1}".format(
+                data.size, self.hamiltonian_size
+            ))
 
         start = 0
         reduced_data = []
@@ -161,6 +168,37 @@ class System(Structure):
             start = end
 
         return np.concatenate(reduced_data)
+
+    def reduce_sliced_data(self, idx: ArrayLike, data: ArrayLike):
+        """Sum up the contributions of individual orbitals in the given data
+
+        Takes a 1D array of `hamiltonian_size` and returns a 1D array of `num_sites` size
+        where the multiple orbital data has been reduced per site.
+
+        Parameters
+        ----------
+        data : array_like
+            Must be 1D and the equal to the size of the Hamiltonian matrix
+        idx : int
+            List of booleans that are included.
+
+        Returns
+        -------
+        array_like
+        """
+        reduced_data = []
+        cs = self.impl.compressed_sublattices
+
+        start_ham = 0
+        site_index = 0
+        for nsites, norb in zip(cs.site_counts, cs.orbital_counts):
+            for _ in range(nsites):
+                if idx[site_index]:
+                    end_ham = start_ham + norb
+                    reduced_data.append(data[start_ham:end_ham].sum())
+                    start_ham = end_ham
+                site_index += 1
+        return np.array(reduced_data)
 
 
 def structure_plot_properties(axes: Literal['xyz', 'xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 'xyz',
@@ -402,7 +440,7 @@ def plot_hoppings(positions: tuple[ArrayLike, ArrayLike, ArrayLike], hoppings: s
 
     # leave only the desired hoppings
     if draw_only:
-        keep = np.zeros_like(hoppings.data, dtype=np.bool)
+        keep = np.zeros_like(hoppings.data, dtype=bool)
         for hop_id in draw_only:
             keep = np.logical_or(keep, hoppings.data == hop_id)
         hoppings.data = hoppings.data[keep]

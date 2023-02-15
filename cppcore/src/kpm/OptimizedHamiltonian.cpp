@@ -1,5 +1,5 @@
 #include "kpm/OptimizedHamiltonian.hpp"
-
+#include <iostream>
 namespace cpb { namespace kpm {
 
 SliceMap::SliceMap(std::vector<storage_idx_t> indices, Indices const& optimized_idx)
@@ -89,6 +89,12 @@ void OptimizedHamiltonian::create_reordered(Indices const& idx, Scale<> s) {
     //       performance (this is not an assumption, it has been tested).
 
     // The index queue will contain the indices that need to be checked next
+    bool verbose = false;
+    if (verbose) {
+        std::cout << "h1: nnz " << h.nonZeros() << " out of " << h.size() << std::endl;
+        std::cout << h.toDense() << std::endl;
+    }
+
     auto index_queue = std::vector<storage_idx_t>();
     index_queue.reserve(system_size);
     index_queue.push_back(idx.src[0]); // starting from the given index
@@ -102,15 +108,79 @@ void OptimizedHamiltonian::create_reordered(Indices const& idx, Scale<> s) {
     auto slice_border_indices = std::vector<storage_idx_t>();
     slice_border_indices.push_back(1);
 
+    block_diagonal_idx = std::vector<storage_idx_t>(1, 0);
+    zero_row_idx = std::vector<storage_idx_t>();
+
     // Fill the reordered matrix row by row
     auto const h_view = sparse::make_loop(h);
     for (auto h2_row = 0; h2_row < system_size; ++h2_row) {
         auto diagonal_inserted = false;
 
+
         // Loop over elements in the row of the original matrix
         // corresponding to the h2_row of the reordered matrix
-        auto const row = index_queue[h2_row];
+
+        // if the matrix is block diagonal, the energy h2_row might not be there
+        // resolve this by taking the first hamiltonian element that is not yet in index_queue
+        storage_idx_t row;
+
+        bool block_diagonal = h2_row == static_cast<int>(index_queue.size());
+        if (block_diagonal) {
+            // sorting is OK, these elements won't be needed anymore
+            std::sort(index_queue.begin(), index_queue.end());
+            storage_idx_t new_index = 1;
+
+            // find the new index, the first positive integer not in index_queue
+            for (auto looping_index : index_queue)
+                if (looping_index == new_index) new_index++;
+            row = new_index;
+
+            slice_border_indices.pop_back(); // the last element is a duplicate of the second to last
+            slice_border_indices.shrink_to_fit();
+            slice_border_indices.push_back(static_cast<storage_idx_t>(index_queue.size()) + 1);
+            block_diagonal_idx.push_back(static_cast<storage_idx_t>(index_queue.size()));
+
+            // block-diagonal, but the first element is zero --> loop won't find element --> insert by hand
+            bool zero_element = true;
+            h_view.for_each_in_row(row, [&](storage_idx_t col, scalar_t) {
+                if (col == row) zero_element = false;
+            });
+            if (zero_element) {
+                // the element is zero; the loop won't add the element as it should
+                if (reorder_map[row] < 0) {
+                    auto const h2_col =  static_cast<storage_idx_t>(index_queue.size());
+                    reorder_map[row] = h2_col;
+                    index_queue.push_back(row);
+                    h2.insert(h2_col, h2_col) = -scale.b * inverted_a;
+                    if (verbose) {
+                        std::cout << "mmm   --  " << row << " -- " << h2_col << " diag  --  " << h2_row << " -- "
+                                  << h2_col << std::endl;
+                    }
+                    diagonal_inserted = true;
+                } else {
+                    throw std::runtime_error("This shouldn't happen (first el block diag is zero).");
+                }
+            }
+        } else {
+            row = index_queue[h2_row];
+        }
+
+        if (verbose) {
+            std::cout << "h2_row: " << h2_row << ", row: " << row << ", reorder_map: ";
+            for (auto i: reorder_map) std::cout << i << " ";
+            std::cout << ", index_queue: ";
+            for (auto i: index_queue) std::cout << i << " ";
+            std::cout << ", block_diagonal: ";
+            for (auto i: block_diagonal_idx) std::cout << i << " ";
+            std::cout << ", zero_row: ";
+            for (auto i: zero_row_idx) std::cout << i << " ";
+            std::cout << std::endl;
+        }
+
         h_view.for_each_in_row(row, [&](storage_idx_t col, scalar_t value) {
+            if (verbose) {
+                std::cout << "   --  " << row << " -- " << col << std::endl;
+            }
             // This may be a new index, map it
             if (reorder_map[col] < 0) {
                 reorder_map[col] = static_cast<storage_idx_t>(index_queue.size());
@@ -125,14 +195,52 @@ void OptimizedHamiltonian::create_reordered(Indices const& idx, Scale<> s) {
             if (row == col) { // diagonal elements
                 h2_value -= scale.b * inverted_a;
                 diagonal_inserted = true;
+                if (verbose) {
+                    std::cout <<  "   --  " << row << " -- " << col << " diag  --  " << h2_row << " -- " << h2_col << std::endl;
+                }
             }
 
             h2.insert(h2_row, h2_col) = h2_value;
         });
 
+        if (block_diagonal) {
+            // check is element is inserted, then index_queue will change
+            if (verbose) {
+                std::cout << "bd   --  " << row << " -- " << row ;
+                std::cout << ", reorder_map: ";
+                for (auto i: reorder_map) std::cout << i << " ";
+                std::cout << ", index_queue: ";
+                for (auto i: index_queue) std::cout << i << " ";
+                std::cout << ", block_diagonal: ";
+                for (auto i: block_diagonal_idx) std::cout << i << " ";
+                std::cout << ", zero_row: ";
+                for (auto i: zero_row_idx) std::cout << i << " ";
+                std::cout << " -- " << h2_row << std::endl;
+            }
+
+            // hard insert by hand
+            if (reorder_map[row] < 0) {
+                if (h2_row == static_cast<int>(index_queue.size())) {
+                    zero_row_idx.push_back(row);
+                }
+                reorder_map[row] = static_cast<storage_idx_t>(index_queue.size());
+                index_queue.push_back(row);
+                if (verbose) {
+                    std::cout << "h2: nnz " << h2.nonZeros() << " out of " << h2.size() << std::endl;
+                    std::cout << h2.toDense() << std::endl;
+                    std::cout << "bd   --  " << h2_row << " -- " << h2_row << std::endl;
+                }
+                h2.insert(h2_row, h2_row) = scale.b * inverted_a;
+                diagonal_inserted = true;
+            }
+        }
+
         // A diagonal element may need to be inserted into the reordered matrix
         // even if the original matrix doesn't have an element on the main diagonal
         if (scale.b != 0 && !diagonal_inserted) {
+            if (verbose) {
+                std::cout <<  "   --  " << row << " -- " << row << " diag-scale  --  " << h2_row << " -- " << h2_row << " - " << block_diagonal << std::endl;
+            }
             h2.insert(h2_row, h2_row) = -scale.b * inverted_a;
         }
 
@@ -140,12 +248,38 @@ void OptimizedHamiltonian::create_reordered(Indices const& idx, Scale<> s) {
         if (h2_row == slice_border_indices.back() - 1) {
             slice_border_indices.push_back(static_cast<storage_idx_t>(index_queue.size()));
         }
+
+        // Block-diagonal, but all zeros so that no element triggers reorder
+
+
+    }
+
+    if (std::find(reorder_map.begin(), reorder_map.end(), -1) != reorder_map.end()) {
+        throw std::runtime_error("OptimizedHamiltonian: this should never happen. (-1 in reorder_map)");
+    }
+
+    if (verbose) {
+        std::cout << "h2_row: (end), row: (end), reorder_map: ";
+        for (auto i: reorder_map) std::cout << i;
+        std::cout << ", index_queue: ";
+        for (auto i: index_queue) std::cout << i << " ";
+        std::cout << ", block_diagonal: ";
+        for (auto i: block_diagonal_idx) std::cout << i;
+        std::cout << ", zero_row: ";
+        for (auto i: zero_row_idx) std::cout << i << " ";
+        std::cout << std::endl;
+    }
+
+    if (verbose) {
+        std::cout << "h2: nnz " << h2.nonZeros() << " out of " << h2.size() << std::endl;
+        std::cout << h2.toDense() << std::endl;
     }
     h2.makeCompressed();
     optimized_matrix = h2.markAsRValue();
 
     slice_border_indices.pop_back(); // the last element is a duplicate of the second to last
     slice_border_indices.shrink_to_fit();
+
 
     optimized_idx = reorder_indices(idx, reorder_map);
     slice_map = {std::move(slice_border_indices), optimized_idx};

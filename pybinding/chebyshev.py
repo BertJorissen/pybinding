@@ -8,61 +8,20 @@ import warnings
 import numpy as np
 from numpy.typing import ArrayLike
 from scipy.sparse import csr_matrix, eye
-from typing import Literal, Optional, Union
+from typing import Literal, Optional, Union, List
 
 from . import _cpp
 from . import results
 from .model import Model
+from .results import SpatialLDOS
 from .system import System
 from .utils.time import timed
 from .support.deprecated import LoudDeprecationWarning
 
-__all__ = ['KPM', 'kpm', 'kpm_cuda', 'SpatialLDOS',
+__all__ = ['KPM', 'kpm', 'kpm_cuda',
            'jackson_kernel', 'lorentz_kernel', 'dirichlet_kernel']
 
 KernelType = Union[_cpp.KPMKernel, Literal["default"]]
-
-class SpatialLDOS:
-    """Holds the results of :meth:`KPM.calc_spatial_ldos`
-
-    It behaves like a product of a :class:`.Series` and a :class:`.StructureMap`.
-    """
-
-    def __init__(self, data: np.ndarray, energy: np.ndarray, structure: results.Structure):
-        self.data = data
-        self.energy = energy
-        self.structure = structure
-
-    def structure_map(self, energy: float) -> results.StructureMap:
-        """Return a :class:`.StructureMap` of the spatial LDOS at the given energy
-
-        Parameters
-        ----------
-        energy : float
-            Produce a structure map for LDOS data closest to this energy value.
-
-        Returns
-        -------
-        :class:`.StructureMap`
-        """
-        idx = np.argmin(abs(self.energy - energy))
-        return self.structure.with_data(self.data[idx])
-
-    def ldos(self, position: ArrayLike, sublattice: str = "") -> results.Series:
-        """Return the LDOS as a function of energy at a specific position
-
-        Parameters
-        ----------
-        position : array_like
-        sublattice : Optional[str]
-
-        Returns
-        -------
-        :class:`.Series`
-        """
-        idx = self.structure.find_nearest(position, sublattice)
-        return results.Series(self.energy, self.data[:, idx],
-                              labels=dict(variable="E (eV)", data="LDOS", columns="orbitals"))
 
 
 class KPM:
@@ -102,6 +61,16 @@ class KPM:
     def kernel(self) -> _cpp.KPMKernel:
         """The damping kernel"""
         return self.impl.kernel
+
+    @property
+    def block_diagonal(self) -> List[int]:
+        """The first index of the reordered matrix where a block of a block-diagonal matrix ends."""
+        return self.impl.optimized_hamiltonian.block_diagonal
+
+    @property
+    def zero_row(self) -> List[int]:
+        """The index of a row of zeros in the reordered matrix."""
+        return self.impl.optimized_hamiltonian.zero_row
 
     def report(self, shortform: bool = False) -> str:
         """Return a report of the last computation
@@ -157,8 +126,10 @@ class KPM:
 
         Parameters
         ----------
-        i, j : int
-            Hamiltonian indices.
+        i : int or list
+            Hamiltonian index.
+        j : int
+            Hamiltonian index.
         energy : ndarray
             Energy value array.
         broadening : float
@@ -205,7 +176,7 @@ class KPM:
         return results.Series(energy, ldos.squeeze(), labels=dict(variable="E (eV)", data="LDOS",
                                                                   columns="orbitals"))
 
-    def calc_spatial_ldos(self, energy: np.ndarray, broadening: float, shape: tuple,
+    def calc_spatial_ldos(self, energy: np.ndarray, broadening: float, shape: _cpp.Shape,
                           sublattice: str = "") -> SpatialLDOS:
         """Calculate the LDOS as a function of energy and space (in the area of the given shape)
 
@@ -227,9 +198,18 @@ class KPM:
         :class:`SpatialLDOS`
         """
         ldos = self.impl.calc_spatial_ldos(energy, broadening, shape, sublattice)
-        smap = self.system[shape.contains(*self.system.positions)]
+
+        pos_cut = shape.contains(*self.system.positions)
+        smap = self.system[pos_cut]
         if sublattice:
-            smap = smap[smap.sub == sublattice]
+            sub = smap.sub == sublattice
+            smap = smap[sub]
+            pos_cut[pos_cut] = sub
+        if self.model.is_multiorbital:
+            ldos_reduced = np.zeros((ldos.shape[0], smap.num_sites))
+            for e_i in range(ldos.shape[0]):
+                ldos_reduced[e_i] = self.system.reduce_sliced_data(pos_cut, ldos[e_i])
+            ldos = ldos_reduced
         return SpatialLDOS(ldos, energy, smap)
 
     def calc_dos(self, energy: np.ndarray, broadening: float, num_random: int = 1) -> results.Series:

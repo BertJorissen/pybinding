@@ -23,17 +23,17 @@ cpb::Lattice monolayer();
 
 namespace shape {
 
-cpb::Shape rectangle(float x, float y);
+cpb::Shape rectangle(double x, double y);
 
 } // namespace shape
 
 namespace field {
 
-cpb::OnsiteModifier constant_potential(float value);
-cpb::HoppingModifier constant_magnetic_field(float value);
+cpb::OnsiteModifier constant_potential(double value);
+cpb::HoppingModifier constant_magnetic_field(double value);
 
-cpb::OnsiteModifier linear_onsite(float k = 1.f);
-cpb::HoppingModifier linear_hopping(float k = 1.f);
+cpb::OnsiteModifier linear_onsite(double k = 1.);
+cpb::HoppingModifier linear_hopping(double k = 1.);
 
 cpb::HoppingModifier force_double_precision();
 cpb::HoppingModifier force_complex_numbers();

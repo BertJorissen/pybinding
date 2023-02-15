@@ -26,7 +26,14 @@ class Sliced {
         Iterator(InnerIt last) : it(last) {}
 
         InnerIt begin() const { return it; }
-        InnerIt end() const { return std::min(it + step, last); }
+        InnerIt end() const {
+            if (std::distance(begin(), last) < std::distance(begin(), it) + step) {
+                return last;
+            } else {
+                return it + step;
+            }
+        }
+
 
         reference operator*() { return *this; }
         pointer operator->() { return this; }

@@ -9,8 +9,8 @@ TEST_CASE("Primitive") {
 }
 
 TEST_CASE("FreeformShape", "[shape]") {
-    auto const contains = [](CartesianArrayConstRef p) -> ArrayX<bool> { return p.x() > 0.5f; };
-    auto const shape = FreeformShape(contains, {1, 1, 1}, {0.5f, 0.5f, 0.5f});
+    auto const contains = [](CartesianArrayConstRef p) -> ArrayX<bool> { return p.x() > 0.5; };
+    auto const shape = FreeformShape(contains, {1, 1, 1}, {0.5, 0.5, 0.5});
 
     SECTION("Bounding box") {
         auto expected_vertices = Shape::Vertices{
@@ -28,7 +28,7 @@ TEST_CASE("FreeformShape", "[shape]") {
 
     SECTION("Contains") {
         auto const size = 4;
-        auto const v = ArrayXf::LinSpaced(size, 0, 1).eval();
+        auto const v = ArrayXd::LinSpaced(size, 0, 1).eval();
         auto const p = CartesianArray(v, v, v);
         auto expected = ArrayX<bool>(size);
         expected << false, false, true, true;
@@ -37,12 +37,12 @@ TEST_CASE("FreeformShape", "[shape]") {
 }
 
 TEST_CASE("Shape-imposed lattice offset") {
-    auto shape = shape::rectangle(2.4f, 2.4f);
+    auto shape = shape::rectangle(2.4, 2.4);
     
     auto const model = Model(lattice::square(), shape);
     auto const& system = *model.system();
 
-    shape.lattice_offset = {-0.1f, 0.5f, .0f};
+    shape.lattice_offset = {-0.1, 0.5, .0};
     auto const offset_model = Model(lattice::square(), shape);
     auto const& offset_system = *offset_model.system();
     

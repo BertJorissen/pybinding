@@ -65,6 +65,24 @@ Range System::sublattice_range(string_view sublattice) const {
     }
 }
 
+Range System::sublattice_expanded_range(string_view sublattice) const {
+    if (sublattice.empty()) {
+        return {0, hamiltonian_size()};
+    } else {
+        // Only check sites belonging to the target sublattice
+        auto const target_id = site_registry.id(sublattice);
+        auto const it = std::find_if(
+                compressed_sublattices.begin(), compressed_sublattices.end(),
+                [&](CompressedSublattices::It const& sub) { return sub.id() == target_id; }
+        );
+        if (it == compressed_sublattices.end()) {
+            throw std::runtime_error("System::sublattice_range() This should never happen");
+        }
+
+        return {it->ham_start(), it->ham_end()}; //this probably isn't rigth
+    }
+}
+
 idx_t System::find_nearest(Cartesian target_position, string_view sublattice_name) const {
     auto const range = sublattice_range(sublattice_name);
     auto nearest_index = range.start;
@@ -94,6 +112,39 @@ CartesianArray System::expanded_positions() const {
         }
     }
     return ep;
+}
+
+ArrayX<storage_idx_t> System::expanded_sublattices() const {
+    auto es = ArrayX<storage_idx_t>(hamiltonian_size());
+    for (auto const& sub : compressed_sublattices) {
+        auto const norb = sub.num_orbitals();
+        auto n = sub.ham_start();
+        for (auto i = sub.sys_start(); i < sub.sys_end(); ++i) {
+            es.segment(n, norb).setConstant(sub.id().value());
+            n += norb;
+        }
+    }
+    return es;
+}
+
+std::vector<idx_t> System::select_idx_hamiltonian_shape(Shape const& shape, string_view sublattice) const {
+    auto const& p = expanded_positions();
+    auto indices = [&]{
+        // this gives now all the positions, so the incices are right
+        auto const contains = shape.contains(p);
+
+        // the range should be given in the same 'basis' of the expanded positions; proibably where the error comes from
+        auto const range = sublattice_expanded_range(sublattice);
+        auto v = std::vector<idx_t>();
+        v.reserve(std::count(contains.data() + range.start, contains.data() + range.end, true));
+
+        for (auto i = range.start; i < range.end; ++i) {
+            if (contains[i]) { v.push_back(i); }
+        }
+
+        return v;
+    }();
+    return indices;
 }
 
 namespace detail {
