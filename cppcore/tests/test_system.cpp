@@ -97,7 +97,7 @@ TEST_CASE("complex_valued_hoppings") {
         auto const t3 = 3.0 * i1;
 
         auto model = Model(lattice, TranslationalSymmetry(1, 1), OnsiteModifier(
-                [](ComplexArrayRef, const CartesianArrayConstRef&, string_view){},
+                [](const ComplexArrayRef&, const CartesianArrayConstRef&, string_view){},
                 true, true, false));
         using constant::pi;
         // set the wavevector to K point
