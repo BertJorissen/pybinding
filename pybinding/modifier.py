@@ -369,6 +369,8 @@ def hopping_energy_modifier(is_double: bool = False, is_complex: bool = False, p
         Hopping identifier: can be checked for equality with hopping names specified
         in :class:`.Lattice`. For example, `energy[hop_id == 't_nn'] *= 1.1` will only
         modify the energy of the hopping family named `t_nn`.
+    shift : array
+        Shift of x, y, z
 
     The function must return:
 
@@ -398,7 +400,7 @@ def hopping_energy_modifier(is_double: bool = False, is_complex: bool = False, p
     return functools.partial(_make_modifier, kind=_cpp.HoppingModifier,
                              init=dict(is_double=is_double, is_complex=is_complex, phase=phase),
                              can_be_complex=True, has_sites=False,
-                             keywords="energy, x1, y1, z1, x2, y2, z2, hop_id")
+                             keywords="energy, x1, y1, z1, x2, y2, z2, hop_id, shift")
 
 
 def constant_potential(magnitude: float) -> Callable:

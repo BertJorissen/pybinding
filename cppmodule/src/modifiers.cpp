@@ -228,11 +228,12 @@ void wrap_modifiers(py::module& m) {
         .def(py::init([](py::object apply, bool is_complex, bool is_double, bool phase) {
             return new HoppingModifier(
                 [apply](ComplexArrayRef energy, CartesianArrayConstRef p1,
-                        CartesianArrayConstRef p2, string_view hopping_family) {
+                        CartesianArrayConstRef p2, string_view hopping_family,
+                        Cartesian shift) {
                     py::gil_scoped_acquire guard{};
                     auto result = apply(
                         energy, arrayref(p1.x()), arrayref(p1.y()), arrayref(p1.z()),
-                        arrayref(p2.x()), arrayref(p2.y()), arrayref(p2.z()), hopping_family
+                        arrayref(p2.x()), arrayref(p2.y()), arrayref(p2.z()), hopping_family, shift
                     );
                     num::match<ArrayX>(energy, ExtractModifierResult{result});
                 },
@@ -242,29 +243,31 @@ void wrap_modifiers(py::module& m) {
         .def_readwrite("is_complex", &HoppingModifier::is_complex)
         .def_readwrite("is_double", &HoppingModifier::is_double)
         .def_readwrite("phase", &HoppingModifier::phase)
-            .def("apply", [](HoppingModifier const& h, VectorXcd energy, RefX x1, RefX y1, RefX z1,
-                             RefX x2, RefX y2, RefX z2, string_view hop_id) {
-                py::gil_scoped_acquire guard{};
-                ComplexArrayRef energy_ref = arrayref(energy);
-                h.apply(energy_ref, {x1, y1, z1}, {x2, y2, z2}, hop_id);
-                return energy_ref;
-            }, "energy"_a, "x1"_a, "y1"_a, "z1"_a, "x2"_a, "y2"_a, "z2"_a, "hop_id"_a, R"(
-            Return the values for the onsite modifier.
+        .def("apply", [](HoppingModifier const& h, VectorXcd energy, RefX x1, RefX y1, RefX z1,
+                         RefX x2, RefX y2, RefX z2, string_view hop_id, Cartesian shift) {
+            py::gil_scoped_acquire guard{};
+            ComplexArrayRef energy_ref = arrayref(energy);
+            h.apply(energy_ref, {x1, y1, z1}, {x2, y2, z2}, hop_id, shift);
+            return energy_ref;
+        }, "energy"_a, "x1"_a, "y1"_a, "z1"_a, "x2"_a, "y2"_a, "z2"_a, "hop_id"_a, "shift"_a, R"(
+        Return the values for the onsite modifier.
 
-            Parameters
-            ----------
-            energy : array_like
-                Previous onsite energies, the value in this matrix will be changed.
-            x1, y1, z1 : array_like
-                Start ositions for the hopping modifier.
-            x2, y2, z2 : array_like
-                End ositions for the hopping modifier.
-            hop_id : string
-                The sublattice for the onsite modifier.
+        Parameters
+        ----------
+        energy : array_like
+            Previous onsite energies, the value in this matrix will be changed.
+        x1, y1, z1 : array_like
+            Start ositions for the hopping modifier.
+        x2, y2, z2 : array_like
+            End ositions for the hopping modifier.
+        hop_id : string
+            The sublattice for the onsite modifier.
+        shift : array_like
+            The shift of the boundary (if any)
 
-            Returns
-            -------
-            energy : array_like
-                The pointer to the same energy vector given to this function.
-        )");
+        Returns
+        -------
+        energy : array_like
+            The pointer to the same energy vector given to this function.
+    )");
 }

@@ -49,7 +49,8 @@ public:
 class HoppingModifier {
 public:
     using Function = std::function<void(ComplexArrayRef energy, CartesianArrayConstRef pos1,
-                                        CartesianArrayConstRef pos2, string_view hopping_family)>;
+                                        CartesianArrayConstRef pos2, string_view hopping_family,
+                                        Cartesian shift)>;
     Function apply; ///< to be user-implemented
     bool is_complex = false; ///< the modeled effect requires complex values
     bool is_double = false; ///< the modeled effect requires double precision
@@ -104,8 +105,8 @@ private:
 };
 
 namespace detail {
-    inline Cartesian shifted(Cartesian pos, System const&) { return pos; }
-    inline Cartesian shifted(Cartesian pos, System::Boundary const& b) { return pos - b.shift; }
+    inline Cartesian shift(System const&) { return {0, 0, 0}; }
+    inline Cartesian shift(System::Boundary const& b) { return b.shift; }
 }
 
 template<class scalar_t, class Fn>
@@ -276,16 +277,17 @@ void HamiltonianModifiers::apply_to_hoppings_impl(System const& system,
         auto buffer = HoppingBuffer<scalar_t>(hopping_energy, block.size());
         for (auto const& coo_slice : sliced(block.coordinates(), buffer.size)) {
             auto size = idx_t{0};
+            auto shift = detail::shift( system_or_boundary);
             for (auto const& coo : coo_slice) {
                 buffer.pos1[size] = system.positions[coo.row];
-                buffer.pos2[size] = detail::shifted(system.positions[coo.col], system_or_boundary);
+                buffer.pos2[size] = system.positions[coo.col] + shift;
                 ++size;
             }
 
             buffer.reset_hoppings(size);
             for (auto const& modifier : hopping) {
                 modifier.apply(buffer.hoppings_ref(size), buffer.pos1.head(size),
-                               buffer.pos2.head(size), hopping_name);
+                               buffer.pos2.head(size), hopping_name, shift);
             }
 
             index_translator.for_each(coo_slice, buffer.hoppings, lambda);
