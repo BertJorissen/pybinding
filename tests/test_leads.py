@@ -96,6 +96,7 @@ def test_attach():
     # With the linear hopping modifier, the h1 hoppings should be equal to the
     # x position between the lead and main system
     x_mid_0 = (model.system.x.min() + model.leads[0].system.x.max()) / 2
+    print(model.leads[0].h1.data, x_mid_0)
     assert np.allclose(model.leads[0].h1.data, x_mid_0)
     x_mid_1 = (model.system.x.max() + model.leads[1].system.x.min()) / 2
     assert np.allclose(model.leads[1].h1.data, x_mid_1)

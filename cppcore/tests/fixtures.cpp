@@ -177,7 +177,7 @@ namespace {
 
 cpb::HoppingModifier constant_magnetic_field(CartesianX value) {
     return {[value](ComplexArrayRef energy, CartesianArrayConstRef pos1,
-                    CartesianArrayConstRef pos2, string_view) {
+                    CartesianArrayConstRef pos2, string_view, const Cartesian&) {
         num::match<ArrayX>(energy, MagneticFieldOp{value, pos1, pos2});
     }, /*is_complex*/true, /*is_double*/false, /*phase*/false};
 }
@@ -216,18 +216,18 @@ namespace {
 
 cpb::HoppingModifier linear_hopping(CartesianX k) {
     return {[k](ComplexArrayRef energy, CartesianArrayConstRef pos1,
-                CartesianArrayConstRef pos2, string_view) {
+                CartesianArrayConstRef pos2, string_view, const Cartesian&) {
         num::match<ArrayX>(energy, LinearHopping{k, 0.5f * (pos1.x() + pos2.x())});
     }, /*is_complex*/false, /*is_double*/false, /*phase*/false};
 }
 
 cpb::HoppingModifier force_double_precision() {
-    auto nop = [](ComplexArrayRef, CartesianArrayConstRef, CartesianArrayConstRef, string_view) {};
+    auto nop = [](ComplexArrayRef, CartesianArrayConstRef, CartesianArrayConstRef, string_view, const Cartesian&) {};
     return cpb::HoppingModifier(nop, /*is_complex*/false, /*is_double*/true, /*phase*/false);
 }
 
 cpb::HoppingModifier force_complex_numbers() {
-    auto nop = [](ComplexArrayRef, CartesianArrayConstRef, CartesianArrayConstRef, string_view) {};
+    auto nop = [](ComplexArrayRef, CartesianArrayConstRef, CartesianArrayConstRef, string_view, const Cartesian&) {};
     return cpb::HoppingModifier(nop, /*is_complex*/true, /*is_double*/false, /*phase*/false);
 }
 

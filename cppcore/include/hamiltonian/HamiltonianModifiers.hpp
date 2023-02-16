@@ -107,6 +107,8 @@ private:
 namespace detail {
     inline Cartesian shift(System const&) { return {0, 0, 0}; }
     inline Cartesian shift(System::Boundary const& b) { return b.shift; }
+    inline Cartesian shifted(Cartesian pos, System const&) { return pos; }
+    inline Cartesian shifted(Cartesian pos, System::Boundary const& b) { return pos - b.shift; }
 }
 
 template<class scalar_t, class Fn>
@@ -280,7 +282,7 @@ void HamiltonianModifiers::apply_to_hoppings_impl(System const& system,
             auto shift = detail::shift( system_or_boundary);
             for (auto const& coo : coo_slice) {
                 buffer.pos1[size] = system.positions[coo.row];
-                buffer.pos2[size] = system.positions[coo.col] + shift;
+                buffer.pos2[size] = detail::shifted(system.positions[coo.col], system_or_boundary);;
                 ++size;
             }
 
