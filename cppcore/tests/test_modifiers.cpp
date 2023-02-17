@@ -3,6 +3,8 @@
 #include "fixtures.hpp"
 using namespace cpb;
 
+// TODO: test phase
+
 TEST_CASE("SiteStateModifier") {
     auto model = Model(lattice::square_2atom(), Primitive(2));
     REQUIRE(model.system()->num_sites() == 4);
@@ -169,7 +171,7 @@ TEST_CASE("HoppingEnergyModifier") {
     REQUIRE(h_init.non_zeros() == 2);
 
     model.add(HoppingModifier([](ComplexArrayRef energy, CartesianArrayConstRef,
-                                 CartesianArrayConstRef, string_view) {
+                                 CartesianArrayConstRef, string_view, const Cartesian&) {
         num::match<ArrayX>(energy, HoppingEnergyOp{});
     }));
     auto const& h = model.hamiltonian();

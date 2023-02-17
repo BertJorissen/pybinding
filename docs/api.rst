@@ -83,6 +83,7 @@ tight-binding model, such as various fields, defects or geometric deformations.
     constant_potential
     force_double_precision
     force_complex_numbers
+    force_phase
 
 
 .. _generators_api:
@@ -144,13 +145,24 @@ followed by `result.plot()` will work and present the appropriate figure.
     save
     load
     make_path
+    Path
     Bands
+    Wavefunction
+    FatBands
     Eigenvalues
     Series
     SpatialMap
     StructureMap
     Sweep
     NDSweep
+    SpatialLDOS
+    Positions
+    make_area
+    BandsArea
+    WavefunctionArea
+    FatBandsArea
+    Disentangle
+
 
 
 Components
@@ -175,3 +187,4 @@ Miscellaneous
 
     constants
     pltutils
+    support.alias

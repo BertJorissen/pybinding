@@ -20,9 +20,9 @@ from .support.structure import Positions, AbstractSites, Sites, Hoppings
 from .support.alias import AliasArray
 from matplotlib.collections import LineCollection, PathCollection
 
-__all__ = ['Bands', 'Path', 'Eigenvalues', 'NDSweep', 'Series', 'SpatialMap', 'StructureMap',
-           'Sweep', 'make_path', 'save', 'load', 'Wavefunction', 'Disentangle', 'FatBands',
-           'SpatialLDOS', 'Positions', 'BandsArea', 'FatBandsArea', 'WavefunctionArea', 'make_area']
+__all__ = ['save', 'load', 'make_path', 'Path', 'Bands', 'Wavefunction', 'FatBands', 'Eigenvalues', 'Series',
+           'SpatialMap', 'StructureMap', 'Sweep', 'NDSweep', 'SpatialLDOS', 'Positions', 'make_area',
+           'BandsArea', 'WavefunctionArea', 'FatBandsArea', 'Disentangle']
 
 
 def _make_crop_indices(obj, limits):
