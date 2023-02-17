@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WavefunctionArea &mdash; pybinding</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="FatBandsArea" href="pybinding.FatBandsArea.html" />
+    <link rel="prev" title="BandsArea" href="pybinding.BandsArea.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pybinding
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">About</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/index.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/index.html">Additional Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting/index.html">Plotting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Random Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference docs</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../materials/index.html">Material Repository</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pybinding.Lattice.html">Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pybinding.Model.html">Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#shapes">Shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#symmetry">Symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#modifiers">Modifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#generators">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#compute">Compute</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#results">Results</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pybinding.save.html">save</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.load.html">load</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.make_path.html">make_path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Path.html">Path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Bands.html">Bands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Wavefunction.html">Wavefunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.FatBands.html">FatBands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Eigenvalues.html">Eigenvalues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Series.html">Series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.SpatialMap.html">SpatialMap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.StructureMap.html">StructureMap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Sweep.html">Sweep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.NDSweep.html">NDSweep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.SpatialLDOS.html">SpatialLDOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Positions.html">Positions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.make_area.html">make_area</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.BandsArea.html">BandsArea</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">WavefunctionArea</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.WavefunctionArea"><code class="docutils literal notranslate"><span class="pre">WavefunctionArea</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.FatBandsArea.html">FatBandsArea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Disentangle.html">Disentangle</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#components">Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental/index.html">Experimental</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pybinding</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API Reference</a></li>
+      <li class="breadcrumb-item active">WavefunctionArea</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_api/pybinding.WavefunctionArea.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="wavefunctionarea">
+<h1>WavefunctionArea<a class="headerlink" href="#wavefunctionarea" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pybinding.WavefunctionArea">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">WavefunctionArea</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bands</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pybinding.BandsArea.html#pybinding.BandsArea" title="pybinding.results.BandsArea"><span class="pre">BandsArea</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">wavefunction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">ndarray</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">sublattices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pybinding.support.alias.html#pybinding.support.alias.AliasArray" title="pybinding.support.alias.AliasArray"><span class="pre">AliasArray</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.WavefunctionArea" title="Permalink to this definition">¶</a></dt>
+<dd><p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.WavefunctionArea.bands_disentangled" title="pybinding.WavefunctionArea.bands_disentangled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">bands_disentangled</span></code></a></p></td>
+<td><p>Disentangle the bands from the wavefunction.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.WavefunctionArea.disentangle" title="pybinding.WavefunctionArea.disentangle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">disentangle</span></code></a></p></td>
+<td><p>Give back a Disentanlement-class, and save the class for further usage.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.WavefunctionArea.fatbands" title="pybinding.WavefunctionArea.fatbands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fatbands</span></code></a></p></td>
+<td><p>Return FatBands with the pDOS for each sublattice.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.WavefunctionArea.fatbands_disentangled" title="pybinding.WavefunctionArea.fatbands_disentangled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fatbands_disentangled</span></code></a></p></td>
+<td><p>Return FatBands with the pDOS for each sublattice.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fatbandsarea</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fatbandsarea_disentangled</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.WavefunctionArea.overlap_matrix" title="pybinding.WavefunctionArea.overlap_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overlap_matrix</span></code></a></p></td>
+<td><p>Give back the overlap matrix</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">wavefunction_area</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_calc_overlap_matrix</span></code>()</p></td>
+<td><p>Calculate the overlap of all the wavefunctions with each other</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.WavefunctionArea.spatial_ldos" title="pybinding.WavefunctionArea.spatial_ldos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spatial_ldos</span></code></a>([energies, broadening])</p></td>
+<td><p>Calculate the spatial local density of states at the given energy</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.WavefunctionArea.spatial_ldos">
+<span class="sig-name descname"><span class="pre">spatial_ldos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.24)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.24)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.11)"><span class="pre">complex</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><span class="pre">bytes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.11)"><span class="pre">complex</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">broadening</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pybinding.Series.html#pybinding.Series" title="pybinding.results.Series"><span class="pre">Series</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference internal" href="pybinding.SpatialLDOS.html#pybinding.SpatialLDOS" title="pybinding.results.SpatialLDOS"><span class="pre">SpatialLDOS</span></a></span></span><a class="headerlink" href="#pybinding.WavefunctionArea.spatial_ldos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the spatial local density of states at the given energy</p>
+<div class="math notranslate nohighlight">
+\[\text{LDOS}(r) = \frac{1}{c \sqrt{2\pi}}
+                 \sum_n{|\Psi_n(r)|^2 e^{-\frac{(E_n - E)^2}{2 c^2}}}\]</div>
+<p>for each position <span class="math notranslate nohighlight">\(r\)</span> in <code class="samp docutils literal notranslate"><span class="pre">system.positions</span></code>, where <span class="math notranslate nohighlight">\(E\)</span> is <code class="samp docutils literal notranslate"><span class="pre">energy</span></code>,
+<span class="math notranslate nohighlight">\(c\)</span> is <code class="samp docutils literal notranslate"><span class="pre">broadening</span></code>, <span class="math notranslate nohighlight">\(E_n\)</span> is <code class="samp docutils literal notranslate"><span class="pre">eigenvalues[n]</span></code> and <span class="math notranslate nohighlight">\(\Psi_n(r)\)</span>
+is <code class="samp docutils literal notranslate"><span class="pre">eigenvectors[:,</span> <span class="pre">n]</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>energies</strong><span class="classifier">Arraylike</span></dt><dd><p>The energy value for which the spatial LDOS is calculated.</p>
+</dd>
+<dt><strong>broadening</strong><span class="classifier">float</span></dt><dd><p>Controls the width of the Gaussian broadening applied to the DOS.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference internal" href="pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pybinding.WavefunctionArea.bands_disentangled">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bands_disentangled</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pybinding.Bands.html#pybinding.Bands" title="pybinding.results.Bands"><span class="pre">Bands</span></a></em><a class="headerlink" href="#pybinding.WavefunctionArea.bands_disentangled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Disentangle the bands from the wavefunction.</p>
+<dl class="simple">
+<dt>Returns<span class="classifier">Bands</span></dt><dd><p>The reordered eigenvalues in a Bands-class.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pybinding.WavefunctionArea.disentangle">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">disentangle</span></span><a class="headerlink" href="#pybinding.WavefunctionArea.disentangle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Give back a Disentanlement-class, and save the class for further usage.</p>
+<dl class="simple">
+<dt>Returns<span class="classifier">Disentangle</span></dt><dd><p>Class to perform disentanglement</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pybinding.WavefunctionArea.fatbands">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fatbands</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pybinding.FatBands.html#pybinding.FatBands" title="pybinding.results.FatBands"><span class="pre">FatBands</span></a></em><a class="headerlink" href="#pybinding.WavefunctionArea.fatbands" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return FatBands with the pDOS for each sublattice.</p>
+<dl class="simple">
+<dt>Returns<span class="classifier">FatBands</span></dt><dd><p>The (unsorted) bands with the pDOS.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pybinding.WavefunctionArea.fatbands_disentangled">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fatbands_disentangled</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pybinding.FatBands.html#pybinding.FatBands" title="pybinding.results.FatBands"><span class="pre">FatBands</span></a></em><a class="headerlink" href="#pybinding.WavefunctionArea.fatbands_disentangled" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return FatBands with the pDOS for each sublattice.</p>
+<dl class="simple">
+<dt>Returns<span class="classifier">FatBands</span></dt><dd><p>The (sorted) bands with the pDOS.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pybinding.WavefunctionArea.overlap_matrix">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">overlap_matrix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">ndarray</span></a></em><a class="headerlink" href="#pybinding.WavefunctionArea.overlap_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Give back the overlap matrix</p>
+<dl class="simple">
+<dt>Returns<span class="classifier">np.ndarray</span></dt><dd><p>The overlap matrix between the different k-points.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pybinding.BandsArea.html" class="btn btn-neutral float-left" title="BandsArea" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pybinding.FatBandsArea.html" class="btn btn-neutral float-right" title="FatBandsArea" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,44 @@
+﻿FatBandsArea
+======================
+
+.. currentmodule:: pybinding
+
+.. autoclass:: FatBandsArea
+    :members:
+    :special-members:
+    :inherited-members:
+
+    
+    
+    .. rubric:: Attributes
+
+    .. autosummary::
+    
+        ~FatBandsArea.callsig
+        ~FatBandsArea.data_area
+        ~FatBandsArea.energy_area
+        ~FatBandsArea.k_area
+        ~FatBandsArea.num_bands
+    
+    
+
+    
+    
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~FatBandsArea._decorate_plot
+        ~FatBandsArea._point_names
+        ~FatBandsArea.area_to_list
+        ~FatBandsArea.dos
+        ~FatBandsArea.line_plot
+        ~FatBandsArea.list_to_area
+        ~FatBandsArea.plot
+        ~FatBandsArea.plot_bands
+        ~FatBandsArea.plot_karea
+        ~FatBandsArea.plot_kpath
+        ~FatBandsArea.reduced
+        ~FatBandsArea.with_data
+    
+    

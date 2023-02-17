@@ -1,0 +1,30 @@
+﻿alias
+=======================
+
+.. automodule:: pybinding.support.alias
+    :members: AliasArray, AliasCSRMatrix, AliasIndex, SplitName
+
+    
+
+    
+    
+    .. rubric:: Classes
+
+    .. autosummary::
+    
+        AliasArray
+        AliasCSRMatrix
+        AliasIndex
+        SplitName
+    
+    
+
+    
+    
+    
+
+    
+    
+    
+
+    

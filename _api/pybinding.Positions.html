@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Positions &mdash; pybinding</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="make_area" href="pybinding.make_area.html" />
+    <link rel="prev" title="SpatialLDOS" href="pybinding.SpatialLDOS.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pybinding
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">About</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/index.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/index.html">Additional Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting/index.html">Plotting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Random Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference docs</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../materials/index.html">Material Repository</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pybinding.Lattice.html">Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pybinding.Model.html">Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#shapes">Shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#symmetry">Symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#modifiers">Modifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#generators">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#compute">Compute</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#results">Results</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pybinding.save.html">save</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.load.html">load</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.make_path.html">make_path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Path.html">Path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Bands.html">Bands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Wavefunction.html">Wavefunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.FatBands.html">FatBands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Eigenvalues.html">Eigenvalues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Series.html">Series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.SpatialMap.html">SpatialMap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.StructureMap.html">StructureMap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Sweep.html">Sweep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.NDSweep.html">NDSweep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.SpatialLDOS.html">SpatialLDOS</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Positions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Positions"><code class="docutils literal notranslate"><span class="pre">Positions</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.make_area.html">make_area</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.BandsArea.html">BandsArea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.WavefunctionArea.html">WavefunctionArea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.FatBandsArea.html">FatBandsArea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Disentangle.html">Disentangle</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#components">Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental/index.html">Experimental</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pybinding</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API Reference</a></li>
+      <li class="breadcrumb-item active">Positions</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_api/pybinding.Positions.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="positions">
+<h1>Positions<a class="headerlink" href="#positions" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pybinding.Positions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Positions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Positions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Named tuple of arrays</p>
+<dl class="field-list simple">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>x, y, z</strong><span class="classifier">array_like</span></dt><dd><p>1D arrays of Cartesian coordinates</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_field_defaults</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_fields</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Positions.x" title="pybinding.Positions.x"><code class="xref py py-obj docutils literal notranslate"><span class="pre">x</span></code></a></p></td>
+<td><p>Alias for field number 0</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Positions.y" title="pybinding.Positions.y"><code class="xref py py-obj docutils literal notranslate"><span class="pre">y</span></code></a></p></td>
+<td><p>Alias for field number 1</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Positions.z" title="pybinding.Positions.z"><code class="xref py py-obj docutils literal notranslate"><span class="pre">z</span></code></a></p></td>
+<td><p>Alias for field number 2</p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Positions.__getitem__" title="pybinding.Positions.__getitem__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__getitem__</span></code></a>(key, /)</p></td>
+<td><p>Return self[key].</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_asdict</span></code>()</p></td>
+<td><p>Return a new dict which maps field names to their values.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_make</span></code>(iterable)</p></td>
+<td><p>Make a new Positions object from a sequence or iterable</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_replace</span></code>(**kwds)</p></td>
+<td><p>Return a new Positions object replacing specified fields with new values</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Positions.count" title="pybinding.Positions.count"><code class="xref py py-obj docutils literal notranslate"><span class="pre">count</span></code></a>(value, /)</p></td>
+<td><p>Return number of occurrences of value.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Positions.index" title="pybinding.Positions.index"><code class="xref py py-obj docutils literal notranslate"><span class="pre">index</span></code></a>(value[, start, stop])</p></td>
+<td><p>Return first index of value.</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.Positions.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Positions.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return self[key].</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.Positions.count">
+<span class="sig-name descname"><span class="pre">count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Positions.count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return number of occurrences of value.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.Positions.index">
+<span class="sig-name descname"><span class="pre">index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">sys.maxsize</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Positions.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return first index of value.</p>
+<p>Raises ValueError if the value is not present.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pybinding.Positions.x">
+<span class="sig-name descname"><span class="pre">x</span></span><a class="headerlink" href="#pybinding.Positions.x" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pybinding.Positions.y">
+<span class="sig-name descname"><span class="pre">y</span></span><a class="headerlink" href="#pybinding.Positions.y" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pybinding.Positions.z">
+<span class="sig-name descname"><span class="pre">z</span></span><a class="headerlink" href="#pybinding.Positions.z" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 2</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pybinding.SpatialLDOS.html" class="btn btn-neutral float-left" title="SpatialLDOS" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pybinding.make_area.html" class="btn btn-neutral float-right" title="make_area" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

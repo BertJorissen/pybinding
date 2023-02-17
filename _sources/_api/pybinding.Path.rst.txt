@@ -1,0 +1,104 @@
+﻿Path
+==============
+
+.. currentmodule:: pybinding
+
+.. autoclass:: Path
+    :members:
+    :special-members:
+    :inherited-members:
+
+    
+    
+    .. rubric:: Attributes
+
+    .. autosummary::
+    
+        ~Path.T
+        ~Path.base
+        ~Path.ctypes
+        ~Path.data
+        ~Path.dtype
+        ~Path.flags
+        ~Path.flat
+        ~Path.imag
+        ~Path.is_simple
+        ~Path.itemsize
+        ~Path.nbytes
+        ~Path.ndim
+        ~Path.points
+        ~Path.real
+        ~Path.shape
+        ~Path.size
+        ~Path.strides
+    
+    
+
+    
+    
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~Path.__getitem__
+        ~Path._default_points
+        ~Path.all
+        ~Path.any
+        ~Path.argmax
+        ~Path.argmin
+        ~Path.argpartition
+        ~Path.argsort
+        ~Path.as_1d
+        ~Path.astype
+        ~Path.byteswap
+        ~Path.choose
+        ~Path.clip
+        ~Path.compress
+        ~Path.conj
+        ~Path.conjugate
+        ~Path.copy
+        ~Path.cumprod
+        ~Path.cumsum
+        ~Path.diagonal
+        ~Path.dot
+        ~Path.dump
+        ~Path.dumps
+        ~Path.fill
+        ~Path.flatten
+        ~Path.getfield
+        ~Path.item
+        ~Path.itemset
+        ~Path.max
+        ~Path.mean
+        ~Path.min
+        ~Path.newbyteorder
+        ~Path.nonzero
+        ~Path.partition
+        ~Path.plot
+        ~Path.prod
+        ~Path.ptp
+        ~Path.put
+        ~Path.ravel
+        ~Path.repeat
+        ~Path.reshape
+        ~Path.resize
+        ~Path.round
+        ~Path.searchsorted
+        ~Path.setfield
+        ~Path.setflags
+        ~Path.sort
+        ~Path.squeeze
+        ~Path.std
+        ~Path.sum
+        ~Path.swapaxes
+        ~Path.take
+        ~Path.tobytes
+        ~Path.tofile
+        ~Path.tolist
+        ~Path.tostring
+        ~Path.trace
+        ~Path.transpose
+        ~Path.var
+        ~Path.view
+    
+    

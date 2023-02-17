@@ -75,7 +75,10 @@
 <li class="toctree-l3"><a class="reference internal" href="pybinding.save.html">save</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pybinding.load.html">load</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pybinding.make_path.html">make_path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Path.html">Path</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pybinding.Bands.html">Bands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Wavefunction.html">Wavefunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.FatBands.html">FatBands</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pybinding.Eigenvalues.html">Eigenvalues</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pybinding.Series.html">Series</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">SpatialMap</a><ul>
@@ -85,6 +88,13 @@
 <li class="toctree-l3"><a class="reference internal" href="pybinding.StructureMap.html">StructureMap</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pybinding.Sweep.html">Sweep</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pybinding.NDSweep.html">NDSweep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.SpatialLDOS.html">SpatialLDOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Positions.html">Positions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.make_area.html">make_area</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.BandsArea.html">BandsArea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.WavefunctionArea.html">WavefunctionArea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.FatBandsArea.html">FatBandsArea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Disentangle.html">Disentangle</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#components">Components</a></li>
@@ -228,14 +238,14 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pybinding.SpatialMap.plot_contour">
-<span class="sig-name descname"><span class="pre">plot_contour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.6.3)"><span class="pre">Axes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.SpatialMap.plot_contour" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plot_contour</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.7.0)"><span class="pre">Axes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.SpatialMap.plot_contour" title="Permalink to this definition">¶</a></dt>
 <dd><p>Contour plot of the xy plane</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>ax</strong><span class="classifier">Optional[plt.Axes]</span></dt><dd><p>The axis to plot on.</p>
 </dd>
-<dt><strong>**kwargs</strong></dt><dd><p>Forwarded to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.tricontour.html#matplotlib.pyplot.tricontour" title="(in Matplotlib v3.6.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">tricontour()</span></code></a>.</p>
+<dt><strong>**kwargs</strong></dt><dd><p>Forwarded to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.tricontour.html#matplotlib.pyplot.tricontour" title="(in Matplotlib v3.7.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">tricontour()</span></code></a>.</p>
 </dd>
 </dl>
 </dd>
@@ -244,7 +254,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pybinding.SpatialMap.plot_contourf">
-<span class="sig-name descname"><span class="pre">plot_contourf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_levels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.6.3)"><span class="pre">Axes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.SpatialMap.plot_contourf" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plot_contourf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_levels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.7.0)"><span class="pre">Axes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.SpatialMap.plot_contourf" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filled contour plot of the xy plane</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -253,7 +263,7 @@
 </dd>
 <dt><strong>ax</strong><span class="classifier">Optional[plt.Axes]</span></dt><dd><p>The axis to plot on.</p>
 </dd>
-<dt><strong>**kwargs</strong></dt><dd><p>Forwarded to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.tricontourf.html#matplotlib.pyplot.tricontourf" title="(in Matplotlib v3.6.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">tricontourf()</span></code></a>.</p>
+<dt><strong>**kwargs</strong></dt><dd><p>Forwarded to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.tricontourf.html#matplotlib.pyplot.tricontourf" title="(in Matplotlib v3.7.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">tricontourf()</span></code></a>.</p>
 </dd>
 </dl>
 </dd>
@@ -262,14 +272,14 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pybinding.SpatialMap.plot_pcolor">
-<span class="sig-name descname"><span class="pre">plot_pcolor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.6.3)"><span class="pre">Axes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.SpatialMap.plot_pcolor" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plot_pcolor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.7.0)"><span class="pre">Axes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.SpatialMap.plot_pcolor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Color plot of the xy plane</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>ax</strong><span class="classifier">Optional[plt.Axes]</span></dt><dd><p>The axis to plot on.</p>
 </dd>
-<dt><strong>**kwargs</strong></dt><dd><p>Forwarded to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.tripcolor.html#matplotlib.pyplot.tripcolor" title="(in Matplotlib v3.6.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">tripcolor()</span></code></a>.</p>
+<dt><strong>**kwargs</strong></dt><dd><p>Forwarded to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.tripcolor.html#matplotlib.pyplot.tripcolor" title="(in Matplotlib v3.7.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">tripcolor()</span></code></a>.</p>
 </dd>
 </dl>
 </dd>
@@ -296,7 +306,7 @@
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pybinding.SpatialMap.positions">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">positions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Positions</span></em><a class="headerlink" href="#pybinding.SpatialMap.positions" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">positions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pybinding.Positions.html#pybinding.Positions" title="pybinding.support.structure.Positions"><span class="pre">Positions</span></a></em><a class="headerlink" href="#pybinding.SpatialMap.positions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lattice site positions. Named tuple with x, y, z fields, each a 1D array.</p>
 </dd></dl>
 

@@ -1,0 +1,38 @@
+﻿FatBands
+==================
+
+.. currentmodule:: pybinding
+
+.. autoclass:: FatBands
+    :members:
+    :special-members:
+    :inherited-members:
+
+    
+    
+    .. rubric:: Attributes
+
+    .. autosummary::
+    
+        ~FatBands.callsig
+        ~FatBands.num_bands
+    
+    
+
+    
+    
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~FatBands._decorate_plot
+        ~FatBands._point_names
+        ~FatBands.dos
+        ~FatBands.line_plot
+        ~FatBands.plot
+        ~FatBands.plot_bands
+        ~FatBands.plot_kpath
+        ~FatBands.reduced
+        ~FatBands.with_data
+    
+    

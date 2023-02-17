@@ -1,0 +1,6 @@
+﻿make_area
+===================
+
+.. currentmodule:: pybinding
+
+.. autofunction:: make_area

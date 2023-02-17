@@ -75,7 +75,10 @@
 <li class="toctree-l3"><a class="reference internal" href="pybinding.save.html">save</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pybinding.load.html">load</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pybinding.make_path.html">make_path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Path.html">Path</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pybinding.Bands.html">Bands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Wavefunction.html">Wavefunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.FatBands.html">FatBands</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pybinding.Eigenvalues.html">Eigenvalues</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pybinding.Series.html">Series</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pybinding.SpatialMap.html">SpatialMap</a></li>
@@ -85,6 +88,13 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pybinding.NDSweep.html">NDSweep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.SpatialLDOS.html">SpatialLDOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Positions.html">Positions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.make_area.html">make_area</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.BandsArea.html">BandsArea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.WavefunctionArea.html">WavefunctionArea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.FatBandsArea.html">FatBandsArea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Disentangle.html">Disentangle</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#components">Components</a></li>
@@ -282,14 +292,14 @@ To interpolate in both axes pass a tuple, e.g. <code class="samp docutils litera
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pybinding.Sweep.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://matplotlib.org/stable/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.6.3)"><span class="pre">Axes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/collections_api.html#matplotlib.collections.QuadMesh" title="(in Matplotlib v3.6.3)"><span class="pre">QuadMesh</span></a></span></span><a class="headerlink" href="#pybinding.Sweep.plot" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.7.0)"><span class="pre">Axes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/collections_api.html#matplotlib.collections.QuadMesh" title="(in Matplotlib v3.7.0)"><span class="pre">QuadMesh</span></a></span></span><a class="headerlink" href="#pybinding.Sweep.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot a 2D colormap of <code class="xref py py-attr docutils literal notranslate"><span class="pre">Sweep.data</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>ax</strong><span class="classifier">Optional[plt.Axes]</span></dt><dd><p>The axis to plot on.</p>
 </dd>
-<dt><strong>**kwargs</strong></dt><dd><p>Forwarded to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.pcolormesh.html#matplotlib.pyplot.pcolormesh" title="(in Matplotlib v3.6.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.pcolormesh()</span></code></a>.</p>
+<dt><strong>**kwargs</strong></dt><dd><p>Forwarded to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.pcolormesh.html#matplotlib.pyplot.pcolormesh" title="(in Matplotlib v3.7.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.pcolormesh()</span></code></a>.</p>
 </dd>
 </dl>
 </dd>

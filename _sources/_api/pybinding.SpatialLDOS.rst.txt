@@ -1,0 +1,24 @@
+﻿SpatialLDOS
+=====================
+
+.. currentmodule:: pybinding
+
+.. autoclass:: SpatialLDOS
+    :members:
+    :special-members:
+    :inherited-members:
+
+    
+    
+    
+
+    
+    
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~SpatialLDOS.ldos
+        ~SpatialLDOS.structure_map
+    
+    

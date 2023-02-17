@@ -1,0 +1,38 @@
+﻿Positions
+===================
+
+.. currentmodule:: pybinding
+
+.. autoclass:: Positions
+    :members:
+    :special-members:
+    :inherited-members:
+
+    
+    
+    .. rubric:: Attributes
+
+    .. autosummary::
+    
+        ~Positions._field_defaults
+        ~Positions._fields
+        ~Positions.x
+        ~Positions.y
+        ~Positions.z
+    
+    
+
+    
+    
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~Positions.__getitem__
+        ~Positions._asdict
+        ~Positions._make
+        ~Positions._replace
+        ~Positions.count
+        ~Positions.index
+    
+    

@@ -1,0 +1,39 @@
+﻿BandsArea
+===================
+
+.. currentmodule:: pybinding
+
+.. autoclass:: BandsArea
+    :members:
+    :special-members:
+    :inherited-members:
+
+    
+    
+    .. rubric:: Attributes
+
+    .. autosummary::
+    
+        ~BandsArea.callsig
+        ~BandsArea.energy_area
+        ~BandsArea.k_area
+        ~BandsArea.num_bands
+    
+    
+
+    
+    
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~BandsArea._decorate_plot
+        ~BandsArea._point_names
+        ~BandsArea.area_to_list
+        ~BandsArea.dos
+        ~BandsArea.list_to_area
+        ~BandsArea.plot
+        ~BandsArea.plot_karea
+        ~BandsArea.plot_kpath
+    
+    

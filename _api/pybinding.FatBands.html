@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FatBands &mdash; pybinding</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Eigenvalues" href="pybinding.Eigenvalues.html" />
+    <link rel="prev" title="Wavefunction" href="pybinding.Wavefunction.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pybinding
+          </a>
+              <div class="version">
+                0.9
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">About</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/index.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorial/index.html">Tutorial</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/index.html">Additional Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting/index.html">Plotting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Random Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference docs</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../materials/index.html">Material Repository</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../api.html">API Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pybinding.Lattice.html">Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pybinding.Model.html">Model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#shapes">Shapes</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#symmetry">Symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#modifiers">Modifiers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#generators">Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#compute">Compute</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../api.html#results">Results</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="pybinding.save.html">save</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.load.html">load</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.make_path.html">make_path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Path.html">Path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Bands.html">Bands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Wavefunction.html">Wavefunction</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">FatBands</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.FatBands"><code class="docutils literal notranslate"><span class="pre">FatBands</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Eigenvalues.html">Eigenvalues</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Series.html">Series</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.SpatialMap.html">SpatialMap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.StructureMap.html">StructureMap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Sweep.html">Sweep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.NDSweep.html">NDSweep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.SpatialLDOS.html">SpatialLDOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Positions.html">Positions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.make_area.html">make_area</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.BandsArea.html">BandsArea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.WavefunctionArea.html">WavefunctionArea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.FatBandsArea.html">FatBandsArea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.Disentangle.html">Disentangle</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#components">Components</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../api.html#miscellaneous">Miscellaneous</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental/index.html">Experimental</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pybinding</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../api.html">API Reference</a></li>
+      <li class="breadcrumb-item active">FatBands</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/_api/pybinding.FatBands.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="fatbands">
+<h1>FatBands<a class="headerlink" href="#fatbands" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pybinding.FatBands">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">FatBands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bands</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="pybinding.Bands.html#pybinding.Bands" title="pybinding.results.Bands"><span class="pre">Bands</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.24)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.24)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.11)"><span class="pre">complex</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><span class="pre">bytes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.11)"><span class="pre">complex</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)"><span class="pre">dict</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.FatBands" title="Permalink to this definition">¶</a></dt>
+<dd><p>Band structure with data per k-point, like SOC or pDOS</p>
+<dl class="field-list">
+<dt class="field-odd">Attributes<span class="colon">:</span></dt>
+<dd class="field-odd"><dl>
+<dt><strong>bands</strong><span class="classifier"><a class="reference internal" href="pybinding.Bands.html#pybinding.Bands" title="pybinding.Bands"><code class="xref py py-class docutils literal notranslate"><span class="pre">Bands</span></code></a></span></dt><dd><p>The bands on wich the data is written</p>
+</dd>
+<dt><strong>data</strong><span class="classifier">array_like</span></dt><dd><p>An array of values wich were computed as a function of the bands.k_path.
+It can be 2D or 3D. In the latter case each column represents the result
+of a different function applied to the same <code class="samp docutils literal notranslate"><span class="pre">variable</span></code> input.</p>
+</dd>
+<dt><strong>labels</strong><span class="classifier">dict</span></dt><dd><p>Plot labels: ‘data’, ‘title’ and ‘columns’.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Attributes</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">callsig</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">num_bands</span></code></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods</p>
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_decorate_plot</span></code>([point_labels, ax])</p></td>
+<td><p>Decorate the band structure</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_point_names</span></code>(k_points)</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.FatBands.dos" title="pybinding.FatBands.dos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dos</span></code></a>([energies, broadening])</p></td>
+<td><p>Calculate the density of states as a function of energy</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.FatBands.line_plot" title="pybinding.FatBands.line_plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">line_plot</span></code></a>([point_labels, ax, idx, plot_colorbar])</p></td>
+<td><p>Line plot of the band structure with the color of the lines the data of the FatBands.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.FatBands.plot" title="pybinding.FatBands.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>([point_labels, ax, legend])</p></td>
+<td><p>Line plot of the band structure with the given data</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.FatBands.plot_bands" title="pybinding.FatBands.plot_bands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_bands</span></code></a>(**kwargs)</p></td>
+<td><p>Line plot of the band structure like in Bands.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.FatBands.plot_kpath" title="pybinding.FatBands.plot_kpath"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_kpath</span></code></a>([point_labels])</p></td>
+<td><p>Quiver plot of the k-path along which the bands were computed</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.FatBands.reduced" title="pybinding.FatBands.reduced"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reduced</span></code></a>([columns, orbitals, fill_other])</p></td>
+<td><p>Return a copy where the data is summed over the columns</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.FatBands.with_data" title="pybinding.FatBands.with_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">with_data</span></code></a>(data)</p></td>
+<td><p>Return a copy of this result object with different data</p></td>
+</tr>
+</tbody>
+</table>
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.FatBands.dos">
+<span class="sig-name descname"><span class="pre">dos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">energies</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.24)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.24)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.11)"><span class="pre">complex</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><span class="pre">bytes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.11)"><span class="pre">complex</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">broadening</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pybinding.Series.html#pybinding.Series" title="pybinding.results.Series"><span class="pre">Series</span></a></span></span><a class="headerlink" href="#pybinding.FatBands.dos" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the density of states as a function of energy</p>
+<div class="math notranslate nohighlight">
+\[\text{DOS}(E) = \frac{1}{c \sqrt{2\pi}}
+                \sum_n{e^{-\frac{(E_n - E)^2}{2 c^2}}}\]</div>
+<p>for each <span class="math notranslate nohighlight">\(E\)</span> in <code class="samp docutils literal notranslate"><span class="pre">energies</span></code>, where <span class="math notranslate nohighlight">\(c\)</span> is <code class="samp docutils literal notranslate"><span class="pre">broadening</span></code> and
+<span class="math notranslate nohighlight">\(E_n\)</span> is <code class="samp docutils literal notranslate"><span class="pre">eigenvalues[n]</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>energies</strong><span class="classifier">array_like</span></dt><dd><p>Values for which the DOS is calculated. Default: min/max from Bands().energy, subdivided in 100 parts [ev].</p>
+</dd>
+<dt><strong>broadening</strong><span class="classifier">float</span></dt><dd><p>Controls the width of the Gaussian broadening applied to the DOS. Default: 0.05 [ev].</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><a class="reference internal" href="pybinding.Series.html#pybinding.Series" title="pybinding.Series"><code class="xref py py-class docutils literal notranslate"><span class="pre">Series</span></code></a></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.FatBands.line_plot">
+<span class="sig-name descname"><span class="pre">line_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.7.0)"><span class="pre">Axes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">idx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_colorbar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v3.7.0)"><span class="pre">LineCollection</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#pybinding.FatBands.line_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Line plot of the band structure with the color of the lines the data of the FatBands.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>point_labels</strong><span class="classifier">Optional[List[str]]</span></dt><dd><p>Labels for the <code class="samp docutils literal notranslate"><span class="pre">k_points</span></code>.</p>
+</dd>
+<dt><strong>ax</strong><span class="classifier">Optional[plt.Axes]</span></dt><dd><p>The Axis to plot the bands on.</p>
+</dd>
+<dt><strong>idx</strong><span class="classifier">int</span></dt><dd><p>The i-th column to plot. Default: 0.</p>
+</dd>
+<dt><strong>plot_colorbar</strong><span class="classifier">bool</span></dt><dd><p>Show also the colorbar.</p>
+</dd>
+<dt><strong>**kwargs</strong></dt><dd><p>Forwarded to <code class="samp docutils literal notranslate"><span class="pre">matplotlib.collection.LineCollection()</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.FatBands.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.7.0)"><span class="pre">Axes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://matplotlib.org/stable/api/collections_api.html#matplotlib.collections.PathCollection" title="(in Matplotlib v3.7.0)"><span class="pre">PathCollection</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#pybinding.FatBands.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Line plot of the band structure with the given data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>point_labels</strong><span class="classifier">Optional[List[str]]</span></dt><dd><p>Labels for the <code class="samp docutils literal notranslate"><span class="pre">k_points</span></code>.</p>
+</dd>
+<dt><strong>ax</strong><span class="classifier">Optional[plt.Axes]</span></dt><dd><p>The Axis to plot the bands on.</p>
+</dd>
+<dt><strong>legend</strong><span class="classifier">bool</span></dt><dd><p>Plot the legend of the bands on the axes.</p>
+</dd>
+<dt><strong>**kwargs</strong></dt><dd><p>Forwarded to <code class="samp docutils literal notranslate"><span class="pre">plt.plot()</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.FatBands.plot_bands">
+<span class="sig-name descname"><span class="pre">plot_bands</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.lines.Line2D.html#matplotlib.lines.Line2D" title="(in Matplotlib v3.7.0)"><span class="pre">Line2D</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pybinding.FatBands.plot_bands" title="Permalink to this definition">¶</a></dt>
+<dd><p>Line plot of the band structure like in Bands.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.FatBands.plot_kpath">
+<span class="sig-name descname"><span class="pre">plot_kpath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#pybinding.FatBands.plot_kpath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quiver plot of the k-path along which the bands were computed</p>
+<p>Combine with <a class="reference internal" href="pybinding.Lattice.html#pybinding.Lattice.plot_brillouin_zone" title="pybinding.Lattice.plot_brillouin_zone"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Lattice.plot_brillouin_zone()</span></code></a> to see the path in context.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>point_labels</strong><span class="classifier">Optional[List[str]]</span></dt><dd><p>Labels for the k-points.</p>
+</dd>
+<dt><strong>**kwargs</strong></dt><dd><p>Forwarded to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.quiver.html#matplotlib.pyplot.quiver" title="(in Matplotlib v3.7.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">quiver()</span></code></a>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.FatBands.reduced">
+<span class="sig-name descname"><span class="pre">reduced</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orbitals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fill_other</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pybinding.FatBands" title="pybinding.results.FatBands"><span class="pre">FatBands</span></a></span></span><a class="headerlink" href="#pybinding.FatBands.reduced" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy where the data is summed over the columns</p>
+<p>Only applies to results which may have multiple columns of data, e.g.
+results for multiple orbitals for LDOS calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>columns</strong><span class="classifier">Optional[List[int]]</span></dt><dd><p>The colummns to contract to the new array.
+The length of <code class="samp docutils literal notranslate"><span class="pre">columns</span></code> agrees with the dimensions of data.shape[2].
+The value at each position corresponds to the new column of the new Series object</p>
+</dd>
+<dt><strong>orbitals: Optional[List[str]]</strong></dt><dd><p>Optional new list of entries for the <code class="samp docutils literal notranslate"><span class="pre">orbitals</span></code> label in <code class="samp docutils literal notranslate"><span class="pre">labels</span></code></p>
+</dd>
+<dt><strong>fill_other</strong><span class="classifier">float</span></dt><dd><p>In case an array is made with a new column, fill it with this value. Default: 0.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.FatBands.with_data">
+<span class="sig-name descname"><span class="pre">with_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><span class="pre">ndarray</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pybinding.FatBands" title="pybinding.results.FatBands"><span class="pre">FatBands</span></a></span></span><a class="headerlink" href="#pybinding.FatBands.with_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a copy of this result object with different data</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="pybinding.Wavefunction.html" class="btn btn-neutral float-left" title="Wavefunction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pybinding.Eigenvalues.html" class="btn btn-neutral float-right" title="Eigenvalues" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

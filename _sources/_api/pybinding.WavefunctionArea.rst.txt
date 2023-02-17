@@ -1,0 +1,37 @@
+﻿WavefunctionArea
+==========================
+
+.. currentmodule:: pybinding
+
+.. autoclass:: WavefunctionArea
+    :members:
+    :special-members:
+    :inherited-members:
+
+    
+    
+    .. rubric:: Attributes
+
+    .. autosummary::
+    
+        ~WavefunctionArea.bands_disentangled
+        ~WavefunctionArea.disentangle
+        ~WavefunctionArea.fatbands
+        ~WavefunctionArea.fatbands_disentangled
+        ~WavefunctionArea.fatbandsarea
+        ~WavefunctionArea.fatbandsarea_disentangled
+        ~WavefunctionArea.overlap_matrix
+        ~WavefunctionArea.wavefunction_area
+    
+    
+
+    
+    
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~WavefunctionArea._calc_overlap_matrix
+        ~WavefunctionArea.spatial_ldos
+    
+    

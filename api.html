@@ -90,6 +90,7 @@
 <li class="toctree-l3"><a class="reference internal" href="_api/pybinding.constant_potential.html">constant_potential</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_api/pybinding.force_double_precision.html">force_double_precision</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_api/pybinding.force_complex_numbers.html">force_complex_numbers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_api/pybinding.force_phase.html">force_phase</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#generators">Generators</a><ul>
@@ -107,13 +108,23 @@
 <li class="toctree-l3"><a class="reference internal" href="_api/pybinding.save.html">save</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_api/pybinding.load.html">load</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_api/pybinding.make_path.html">make_path</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_api/pybinding.Path.html">Path</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_api/pybinding.Bands.html">Bands</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_api/pybinding.Wavefunction.html">Wavefunction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_api/pybinding.FatBands.html">FatBands</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_api/pybinding.Eigenvalues.html">Eigenvalues</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_api/pybinding.Series.html">Series</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_api/pybinding.SpatialMap.html">SpatialMap</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_api/pybinding.StructureMap.html">StructureMap</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_api/pybinding.Sweep.html">Sweep</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_api/pybinding.NDSweep.html">NDSweep</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_api/pybinding.SpatialLDOS.html">SpatialLDOS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_api/pybinding.Positions.html">Positions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_api/pybinding.make_area.html">make_area</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_api/pybinding.BandsArea.html">BandsArea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_api/pybinding.WavefunctionArea.html">WavefunctionArea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_api/pybinding.FatBandsArea.html">FatBandsArea</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_api/pybinding.Disentangle.html">Disentangle</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#components">Components</a><ul>
@@ -124,6 +135,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#miscellaneous">Miscellaneous</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="_api/pybinding.constants.html">constants</a></li>
 <li class="toctree-l3"><a class="reference internal" href="_api/pybinding.pltutils.html">pltutils</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_api/pybinding.support.alias.html">alias</a></li>
 </ul>
 </li>
 </ul>
@@ -256,6 +268,9 @@ tight-binding model, such as various fields, defects or geometric deformations.<
 <tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.force_complex_numbers.html#pybinding.force_complex_numbers" title="pybinding.force_complex_numbers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">force_complex_numbers</span></code></a>()</p></td>
 <td><p>Forces the model to use complex numbers even if that's not require by any modifier</p></td>
 </tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_api/pybinding.force_phase.html#pybinding.force_phase" title="pybinding.force_phase"><code class="xref py py-obj docutils literal notranslate"><span class="pre">force_phase</span></code></a>()</p></td>
+<td><p>Forces the model to add the phase so that eigenvectors have the right phase</p></td>
+</tr>
 </tbody>
 </table>
 </section>
@@ -319,26 +334,56 @@ followed by <code class="samp docutils literal notranslate"><span class="pre">re
 <tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.make_path.html#pybinding.make_path" title="pybinding.make_path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_path</span></code></a>(k0, k1, *ks[, step, point_labels])</p></td>
 <td><p>Create a path which connects the given k points</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="_api/pybinding.Bands.html#pybinding.Bands" title="pybinding.Bands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bands</span></code></a>(k_path, energy)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="_api/pybinding.Path.html#pybinding.Path" title="pybinding.Path"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Path</span></code></a>(array, point_indices[, point_labels])</p></td>
+<td><p>A ndarray which represents a path connecting certain points</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.Bands.html#pybinding.Bands" title="pybinding.Bands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Bands</span></code></a>(k_path, energy)</p></td>
 <td><p>Band structure along a path in k-space</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.Eigenvalues.html#pybinding.Eigenvalues" title="pybinding.Eigenvalues"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Eigenvalues</span></code></a>(eigenvalues[, probability])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="_api/pybinding.Wavefunction.html#pybinding.Wavefunction" title="pybinding.Wavefunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Wavefunction</span></code></a>(bands, wavefunction[, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.FatBands.html#pybinding.FatBands" title="pybinding.FatBands"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FatBands</span></code></a>(bands, data[, labels])</p></td>
+<td><p>Band structure with data per k-point, like SOC or pDOS</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_api/pybinding.Eigenvalues.html#pybinding.Eigenvalues" title="pybinding.Eigenvalues"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Eigenvalues</span></code></a>(eigenvalues[, probability])</p></td>
 <td><p>Hamiltonian eigenvalues with optional probability map</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="_api/pybinding.Series.html#pybinding.Series" title="pybinding.Series"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Series</span></code></a>(variable, data[, labels])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.Series.html#pybinding.Series" title="pybinding.Series"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Series</span></code></a>(variable, data[, labels])</p></td>
 <td><p>A series of data points determined by a common relation, i.e. <span class="math notranslate nohighlight">\(y = f(x)\)</span>.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.SpatialMap.html#pybinding.SpatialMap" title="pybinding.SpatialMap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpatialMap</span></code></a>(data, positions[, sublattices])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="_api/pybinding.SpatialMap.html#pybinding.SpatialMap" title="pybinding.SpatialMap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpatialMap</span></code></a>(data, positions[, sublattices])</p></td>
 <td><p>Represents some spatially dependent property: data mapped to site positions</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="_api/pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StructureMap</span></code></a>(data, sites, hoppings[, boundaries])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StructureMap</span></code></a>(data, sites, hoppings[, boundaries])</p></td>
 <td><p>A subclass of <a class="reference internal" href="_api/pybinding.SpatialMap.html#pybinding.SpatialMap" title="pybinding.SpatialMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">SpatialMap</span></code></a> that also includes hoppings between sites</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.Sweep.html#pybinding.Sweep" title="pybinding.Sweep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sweep</span></code></a>(x, y, data[, labels, tags])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="_api/pybinding.Sweep.html#pybinding.Sweep" title="pybinding.Sweep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Sweep</span></code></a>(x, y, data[, labels, tags])</p></td>
 <td><p>2D parameter sweep with <code class="samp docutils literal notranslate"><span class="pre">x</span></code> and <code class="samp docutils literal notranslate"><span class="pre">y</span></code> 1D array parameters and <code class="samp docutils literal notranslate"><span class="pre">data</span></code> 2D array result</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="_api/pybinding.NDSweep.html#pybinding.NDSweep" title="pybinding.NDSweep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDSweep</span></code></a>(variables, data[, labels, tags])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.NDSweep.html#pybinding.NDSweep" title="pybinding.NDSweep"><code class="xref py py-obj docutils literal notranslate"><span class="pre">NDSweep</span></code></a>(variables, data[, labels, tags])</p></td>
 <td><p>ND parameter sweep</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_api/pybinding.SpatialLDOS.html#pybinding.SpatialLDOS" title="pybinding.SpatialLDOS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SpatialLDOS</span></code></a>(data, energy, structure)</p></td>
+<td><p>Holds the results of <code class="xref py py-meth docutils literal notranslate"><span class="pre">KPM.calc_spatial_ldos()</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.Positions.html#pybinding.Positions" title="pybinding.Positions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Positions</span></code></a>(x, y, z)</p></td>
+<td><p>Named tuple of arrays</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_api/pybinding.make_area.html#pybinding.make_area" title="pybinding.make_area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">make_area</span></code></a>(k0, k1[, k_origin, step, ...])</p></td>
+<td><p>Create an area of k-point between k0 and k1, starting from k_origin.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.BandsArea.html#pybinding.BandsArea" title="pybinding.BandsArea"><code class="xref py py-obj docutils literal notranslate"><span class="pre">BandsArea</span></code></a>(k_area, energy)</p></td>
+<td><p>Band structure alond an area in k-space</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_api/pybinding.WavefunctionArea.html#pybinding.WavefunctionArea" title="pybinding.WavefunctionArea"><code class="xref py py-obj docutils literal notranslate"><span class="pre">WavefunctionArea</span></code></a>(bands, wavefunction[, ...])</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.FatBandsArea.html#pybinding.FatBandsArea" title="pybinding.FatBandsArea"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FatBandsArea</span></code></a>(bands, data[, labels])</p></td>
+<td><p>Band structure with data per k-point, like SOC or pDOS</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="_api/pybinding.Disentangle.html#pybinding.Disentangle" title="pybinding.Disentangle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Disentangle</span></code></a>(overlap_matrix)</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
@@ -368,6 +413,9 @@ if indirectly).</p>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="_api/pybinding.pltutils.html#module-pybinding.pltutils" title="pybinding.pltutils"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pltutils</span></code></a></p></td>
 <td><p>Collection of utility functions for matplotlib</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.support.alias.html#module-pybinding.support.alias" title="pybinding.support.alias"><code class="xref py py-obj docutils literal notranslate"><span class="pre">support.alias</span></code></a></p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>

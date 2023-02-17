@@ -79,6 +79,7 @@
 <li class="toctree-l3"><a class="reference internal" href="pybinding.constant_potential.html">constant_potential</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pybinding.force_double_precision.html">force_double_precision</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pybinding.force_complex_numbers.html">force_complex_numbers</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pybinding.force_phase.html">force_phase</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../api.html#generators">Generators</a></li>
@@ -127,7 +128,7 @@
 <dl>
 <dt>x, y, z<span class="classifier">ndarray</span></dt><dd><p>Lattice site position.</p>
 </dd>
-<dt>sub_id<span class="classifier">ndarray of int</span></dt><dd><p>Sublattice identifier: can be checked for equality with sublattice names
+<dt>sub_id<span class="classifier"><a class="reference internal" href="pybinding.support.alias.html#pybinding.support.alias.AliasIndex" title="pybinding.support.alias.AliasIndex"><code class="xref py py-class docutils literal notranslate"><span class="pre">support.alias.AliasIndex</span></code></a></span></dt><dd><p>Sublattice identifier: can be checked for equality with sublattice names
 specified in <a class="reference internal" href="pybinding.Lattice.html#pybinding.Lattice" title="pybinding.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a>. For example, <code class="samp docutils literal notranslate"><span class="pre">x[sub_id</span> <span class="pre">==</span> <span class="pre">'A']</span> <span class="pre">+=</span> <span class="pre">0.1</span></code> will
 only displace sites on sublattice A.</p>
 </dd>

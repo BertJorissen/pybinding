@@ -1,0 +1,35 @@
+﻿Disentangle
+=====================
+
+.. currentmodule:: pybinding
+
+.. autoclass:: Disentangle
+    :members:
+    :special-members:
+    :inherited-members:
+
+    
+    
+    .. rubric:: Attributes
+
+    .. autosummary::
+    
+        ~Disentangle.callsig
+        ~Disentangle.disentangle_matrix
+        ~Disentangle.routine
+    
+    
+
+    
+    
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~Disentangle.__call__
+        ~Disentangle._apply_disentanglement
+        ~Disentangle._calc_disentangle_matrix
+        ~Disentangle._linear_sum_approx
+        ~Disentangle._linear_sum_scipy
+    
+    

@@ -1,0 +1,34 @@
+﻿Wavefunction
+======================
+
+.. currentmodule:: pybinding
+
+.. autoclass:: Wavefunction
+    :members:
+    :special-members:
+    :inherited-members:
+
+    
+    
+    .. rubric:: Attributes
+
+    .. autosummary::
+    
+        ~Wavefunction.bands_disentangled
+        ~Wavefunction.disentangle
+        ~Wavefunction.fatbands
+        ~Wavefunction.fatbands_disentangled
+        ~Wavefunction.overlap_matrix
+    
+    
+
+    
+    
+    .. rubric:: Methods
+
+    .. autosummary::
+    
+        ~Wavefunction._calc_overlap_matrix
+        ~Wavefunction.spatial_ldos
+    
+    
