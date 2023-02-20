@@ -2,9 +2,157 @@
 import numpy as np
 import warnings
 
+from typing import List, Union, Optional, Tuple
 
 bohr = 1.8897259886
 
+
+class Units:
+    def __init__(self, scale=1.):
+        self.scale = scale
+
+IntList = Optional[List[int]]
+IntVector = Optional[Tuple[int, int, int]]
+IntVector5 = Optional[Tuple[int, int, int, int, int]]
+Vectors = Optional[List[Tuple[float, float, float]]]
+NamedVectors = Optional[List[Tuple[str, float, float, float]]]
+
+UnitsLnVectors = Optional[Union[Units, Vectors]]
+NamedUnitsLnVectors = Optional[Union[Units, NamedVectors]]
+
+UnitsRsVectors = Optional[Union[Units, Vectors]]
+UnitsEnVectors = Optional[Union[Units, Vectors]]
+Int = Optional[int]
+Bool = Optional[bool]
+Real = Optional[float]
+String = Optional[str]
+
+# name_of_var: (type, default value [-1 if required, None if optional, str oif other param], can't be defined at the same time)
+input_types_win = {
+    "num_wann": (Int, -1, None),
+    "num_bands": (Int, "num_wann", None),
+    "unit_cell_cart": (UnitsLnVectors, -1, None),
+    "atoms_cart": (NamedUnitsLnVectors, -1, ["atoms_frac"]),
+    "atoms_frac": (NamedVectors, -1, ["atoms_cart"]),
+    "mp_grid": (IntVector, -1, None),
+    "kpoints": (Vectors, -1, None),
+    "gamma_only": (Bool, False, None),
+    "spinors": (Bool, False, None),
+    "shell_list": (IntList, None, None),
+    "search_shells": (Int, 36, None),
+    "skip_b1_tests": (Bool, False, None),
+    "nnkpts": (IntVector5, None, None),
+    "kmesh_tol": (Real, None, None),
+    "postproc_setup": Bool,
+    "exclude_bands": Int,
+    "select_projections": Int,
+    "auto_projections": Bool,
+    "restart": String,
+    "iprint": Int,
+    "length_unit": String,
+    "wvfn_formatted": Bool,
+    "spin": String,
+    "devel_flag": String,
+    "timing_level": Int,
+    "optimisation": Int,
+    "translate_home_cell": Bool,
+    "write_xyz": Bool,
+    "write_vdw_data": Bool,
+    "write_hr_diag": Bool,
+    "wannier_plot": Bool,
+    "wannier_plot_list": Int,
+    "wannier_plot_supercell": Int,
+    "wannier_plot_format": String,
+    "wannier_plot_mode": String,
+    "wannier_plot_radius": Units,
+    "wannier_plot_scale": Units,
+    "wannier_plot_spinor_mode": String,
+    "wannier_plot_spinor_phase": Bool,
+    "bands_plot": Bool,
+    "kpoint_path": look_into_this,
+    "bands_num_points": Int,
+    "bands_plot_format": String,
+    "bands_plot_project": Int,
+    "bands_plot_mode": String,
+    "bands_plot_dim": Int,
+    "fermi_surface_plot": Bool,
+    "fermi_surface_num_points": Int,
+    "fermi_energy": Units_energy,
+    "fermi_energy_min": Units_energy,
+    "fermi_energy_max": Units_energy,
+    "fermi_energy_step": Real,
+    "fermi_surface_plot_format": String,
+    "hr_plot": Bool,
+    "write_hr": Bool,
+    "write_rmn": Bool,
+    "write_bvec": Bool,
+    "write_tb": Bool,
+    "hr_cutoff": units_energy,
+    "dist_cutoff": units_length,
+    "dist_cutoff_mode": String,
+    "translation_centre_frac": Real,
+    "use_ws_distance": Bool,
+    "ws_distance_tol": Real,
+    "ws_search_size": Int,
+    "write_u_matrices": Bool,
+    "dis_win_min": units_len,
+    "dis_win_max": units_len,
+    "dis_froz_min": units_len,
+    "dis_froz_max": units_len,
+    "dis_num_iter": Int,
+    "dis_mix_ratio": Real,
+    "dis_conv_tol": Real,
+    "dis_conv_window": Int,
+    "dis_spheres_num": Int,
+    "dis_spheres_first_wann": Int,
+    "dis_spheres": Real,
+    "num_iter": Int,
+    "num_cg_steps": Int,
+    "conv_window": Int,
+    "conv_tol": units_energy,
+    "precond": Bool,
+    "conv_noise_amp": Real,
+    "conv_noise_num": Int,
+    "num_dump_cycles": Int,
+    "num_print_cycles": Int,
+    "write_r2mn": Bool,
+    "guiding_centres": Bool,
+    "num_guide_cycles": Int,
+    "num_no_guide_iter": Int,
+    "trial_step": Real,
+    "fixed_step": Real,
+    "use_bloch_phases": Bool,
+    "site_symmetry": Bool,
+    "symmetrize_eps": Real,
+    "slwf_num": Int,
+    "slwf_constrain": Bool,
+    "slwf_lambda": Real,
+    "slwf_centres": units_lenth,
+    "transport": Bool,
+    "transport_mode": String,
+    "tran_win_min": units_energy,
+    "tran_win_max": units_energy,
+    "tran_energy_step": Real,
+    "fermi_energy": Real,
+    "tran_num_bb": Int,
+    "tran_num_ll": Int,
+    "tran_num_rr": Int,
+    "tran_num_cc": Int,
+    "tran_num_lc": Int,
+    "tran_num_cr": Int,
+    "tran_num_cell_ll": Int,
+    "tran_num_cell_rr": Int,
+    "tran_num_bandc": Int,
+    "tran_write_ht": Bool,
+    "tran_read_ht": Bool,
+    "tran_use_same_lead": Bool,
+    "tran_group_threshold": Real,
+    "hr_cutoff": units_energy,
+    "dist_cutoff": units_lkength,
+    "dist_cutoff_mode": String,
+    "one_dim_axis": String,
+    "translation_centre_frac": Real
+}
 
 def to_int(int_str):
     try:
