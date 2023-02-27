@@ -41,7 +41,7 @@ from .results import *
 from .chebyshev import *
 from .parallel import parallel_for, parallelize
 
-from . import (constants, greens, parallel, pltutils, results, solver, system, utils)
+from . import (constants, greens, parallel, pltutils, results, solver, system, utils, wannier)
 
 
 def tests(options=None, plugins=None):
