@@ -4,6 +4,7 @@ import warnings
 from .constants import bohr
 from .lattice import Lattice
 
+from scipy.spatial import KDTree
 from typing import List, Union, Optional, Tuple
 
 
@@ -167,6 +168,10 @@ class Wannier:
         self._atoms_names_unique: List[str]
         self._hamiltonian_parts: Tuple[np.ndarray, np.ndarray]
         self._atoms_n_orb: np.ndarray
+        self._orbs_names_xyz_from_atoms: List[str]
+        self._orbs_names_xyz_from_atoms_unique: List[str]
+
+        self.single_orbital = False
 
         self.win_file = win_file
         self.hr_dat_file = hr_dat_file
@@ -188,16 +193,26 @@ class Wannier:
             return self.win_file["atoms_frac"]["names"]
 
     def _calc_names_unique(self):
+        return self._calc_names_unique_list(self.atoms_names)
+
+    @staticmethod
+    def _calc_names_unique_list(names_list: List[str]):
         names_out = []
-        for name_i, name in enumerate(self.atoms_names):
-            an_indices = np.array([an_i for an_i, an in enumerate(self.atoms_names) if an == name])
+        for name_i, name in enumerate(names_list):
+            an_indices = np.array([an_i for an_i, an in enumerate(names_list) if an == name])
             if an_indices.shape[0] == 1:
                 names_out.append(name)
             elif an_indices.shape[0] > 1:
-                names_out.append(name + str(np.argmin(np.abs(an_indices - name_i))))
+                names_out.append(name + "_" + str(np.argmin(np.abs(an_indices - name_i))))
             else:
                 assert False, "This shouldn't happen."
         return names_out
+
+    def _calc_orbs_names_xyz_from_atoms(self):
+        return [self.atoms_names_unique[atom_i] for atom_i in KDTree(self.atoms_pos).query(self.orbs_pos_xyz)[1]]
+
+    def _calc_orbs_names_xyz_from_atoms_unique(self):
+        return self._calc_names_unique_list(self.orbs_names_xyz_from_atoms)
 
     def _calc_hamiltonian_parts(self):
         r_mat = np.array(self.hr_dat_file["hr_columns"][:, :3], dtype=int)
@@ -256,7 +271,24 @@ class Wannier:
         return self._atoms_n_orb
 
     @property
+    def orbs_pos_xyz(self):
+        return self.centres_xyz_file["xyz"][:self.num_wann]
+
+    @property
+    def orbs_names_xyz(self):
+        return self.centres_xyz_file["atoms"][:self.num_wann]
+
+    @property
+    def orbs_names_xyz_from_atoms(self):
+        return self._orbs_names_xyz_from_atoms
+
+    @property
+    def orbs_names_xyz_from_atoms_unique(self):
+        return self._orbs_names_xyz_from_atoms_unique
+
+    @property
     def atoms_i_orb(self):
+        # TODO: add more projections, parse them, and test if they give the right result
         return [np.arange(ani) + ano for ani, ano in
                 zip(self._atoms_n_orb, np.hstack((0, np.cumsum(self._atoms_n_orb)[:-1])))]
 
@@ -275,32 +307,35 @@ class Wannier:
 
         # Define the onsite terms and the onsite-names
         i_onsite = np.where(np.all(self.hamiltonian_parts[1] == [0, 0, 0], axis=1))[0][0]
-        if self.centres_xyz_file is None:
-            # onsite terms
-            onsite_energy = self.hamiltonian_parts[0][i_onsite]
-            lat.add_sublattices(
-                *[(sub_name, sub_pos[:2] if only_2d else sub_pos, onsite_energy[i_orb, :][:, i_orb])
-                  for sub_name, sub_pos, i_orb
-                  in zip(self.atoms_names_unique, self.atoms_pos, self.atoms_i_orb)]
-            )
+        # onsite terms
+
+        onsite_energy = self.hamiltonian_parts[0][i_onsite]
+        onsite_energy_diag = np.real(onsite_energy) if self.single_orbital else onsite_energy
+        atoms_i_orb = np.arange(self.num_wann).reshape((-1, 1)) if self.single_orbital else self.atoms_i_orb
+        atoms_n_unq = self.orbs_names_xyz_from_atoms_unique if self.single_orbital else self.atoms_names_unique
+        pos = self.orbs_pos_xyz if self.single_orbital else self.atoms_pos
+
+        lat.add_sublattices(
+            *[(sub_name, sub_pos[:2] if only_2d else sub_pos, onsite_energy_diag[:, i_orb][i_orb])
+              for sub_name, sub_pos, i_orb in zip(atoms_n_unq, pos, atoms_i_orb)]
+        )
+
+        lat.add_hoppings(*[([0, 0], s_f, s_t, onsite_energy[:, atoms_i_orb[s_i + s_j + 1]][atoms_i_orb[s_i]])
+                           for s_i, s_f in enumerate(atoms_n_unq[:-1]) for s_j, s_t in enumerate(atoms_n_unq[(s_i+1):])]
+        )
+
+        for r_k_i in range(len(self.hamiltonian_parts[0])):
+            if r_k_i == i_onsite:
+                continue
+            r_k = self.hamiltonian_parts[1][r_k_i]
+            if np.sum(np.all(-r_k == self.hamiltonian_parts[1][:r_k_i], axis=1)) > 0:
+                continue
+            ham = self.hamiltonian_parts[0][r_k_i]
             lat.add_hoppings(
-                *[([0, 0], s_f, s_t, onsite_energy[self.atoms_i_orb[s_i], :][:, self.atoms_i_orb[s_i + s_j + 1]])
-                  for s_i, s_f in enumerate(self.atoms_names_unique[:-1])
-                  for s_j, s_t in enumerate(self.atoms_names_unique[(s_i+1):])]
+                *[(r_k, s_f, s_t, ham[:, atoms_i_orb[s_j]][atoms_i_orb[s_i]])
+                  for s_i, s_f in enumerate(atoms_n_unq) for s_j, s_t in enumerate(atoms_n_unq)]
             )
-            for r_k_i in range(len(self.hamiltonian_parts[0])):
-                if r_k_i == i_onsite:
-                    continue
-                r_k = self.hamiltonian_parts[1][r_k_i]
-                if np.sum(np.all(-r_k == self.hamiltonian_parts[1][:r_k_i], axis=1)) > 0:
-                    continue
-                ham = self.hamiltonian_parts[0][r_k_i]
-                lat.add_hoppings(
-                    *[(r_k, s_f, s_t, ham[self.atoms_i_orb[s_i], :][:, self.atoms_i_orb[s_j]])
-                      for s_i, s_f in enumerate(self.atoms_names_unique)
-                      for s_j, s_t in enumerate(self.atoms_names_unique)]
-                )
-            return lat
+        return lat
 
     @win_file.setter
     def win_file(self, filename: str):
@@ -316,8 +351,11 @@ class Wannier:
         self._hamiltonian_parts = self._calc_hamiltonian_parts()
 
     @centres_xyz_file.setter
-    def centres_xyz_file(self, filename: str):
+    def centres_xyz_file(self, filename: Optional[str]):
         self._centres_xyz_file = self._parse_centres_xyz_file(filename) if filename is not None else None
+        self._orbs_names_xyz_from_atoms = self._calc_orbs_names_xyz_from_atoms() if filename is not None else self.atoms_names
+        self._orbs_names_xyz_from_atoms_unique = self._calc_orbs_names_xyz_from_atoms_unique() if filename is not None else self.atoms_names_unique
+        self.single_orbital = True if filename is not None else False
 
     @staticmethod
     def to_int(int_str):
