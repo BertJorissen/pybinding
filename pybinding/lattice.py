@@ -144,7 +144,7 @@ class Lattice:
         else:
             self.impl.add_sublattice(name, position, np.asarray(onsite_energy))
 
-    def add_sublattices(self, *sublattices: Iterable[str, ArrayLike, Union[float, np.ndarray], str]) -> None:
+    def add_sublattices(self, *sublattices: Iterable[str, ArrayLike, Union[float, np.ndarray]]) -> None:
         """Add multiple new sublattices
 
         Parameters

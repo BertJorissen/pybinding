@@ -10,6 +10,7 @@ e = 1.602 * 10**-19  #: [C] electron charge
 epsilon0 = 8.854 * 10**-12  #: [F/m] vacuum permittivity
 hbar = 6.58211899 * 10**-16  #: [eV*s] reduced Plank constant
 phi0 = 2 * pi * hbar  #: [V*s] magnetic quantum
+bohr = 1.8897259886  #: [1 Angstrom = 1.8897259886 Bohr]
 
 
 class Pauli(np.ndarray):
