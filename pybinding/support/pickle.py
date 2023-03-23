@@ -8,10 +8,10 @@ from pathlib import Path
 from ..utils import decorator_decorator
 from typing import Union
 
-__all__ = ['pickleable', 'save', 'load']
+__all__ = ['pickleable', 'save', 'load', 'normalize']
 
 
-def _normalize(file: Union[str, Path]) -> str:
+def normalize(file: Union[str, Path]) -> str:
     """Convenience function to support path objects."""
     if 'Path' in type(file).__name__:
         return str(file)
@@ -53,7 +53,7 @@ def save(obj, file: Union[str, Path]) -> None:
     file : Union[str, pathlib.Path]
         May be a `str`, a `pathlib` object or a file object created with `open()`.
     """
-    file = _add_extension(_normalize(file))
+    file = _add_extension(normalize(file))
     with gzip.open(file, 'wb') as f:
         pickle.dump(obj, f, protocol=4)
 
@@ -68,7 +68,7 @@ def load(file: Union[str, Path]):
     file : Union[str, pathlib.Path]
         May be a `str`, a `pathlib` object or a file object created with `open()`.
     """
-    file = _normalize(file)
+    file = normalize(file)
     file_ext = _add_extension(file)
     if isinstance(file, str) and not os.path.exists(file) and os.path.exists(file_ext):
         file = file_ext
