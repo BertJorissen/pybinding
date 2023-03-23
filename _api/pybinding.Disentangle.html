@@ -143,7 +143,10 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Disentangle.disentangle_matrix" title="pybinding.Disentangle.disentangle_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">disentangle_matrix</span></code></a></p></td>
 <td><p>Give back the reordering for the band structure.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Disentangle.routine" title="pybinding.Disentangle.routine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">routine</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Disentangle.no_reorder_idx" title="pybinding.Disentangle.no_reorder_idx"><code class="xref py py-obj docutils literal notranslate"><span class="pre">no_reorder_idx</span></code></a></p></td>
+<td><p>Give back the list of indices that aren't going to be disentangled.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Disentangle.routine" title="pybinding.Disentangle.routine"><code class="xref py py-obj docutils literal notranslate"><span class="pre">routine</span></code></a></p></td>
 <td><p>Give back the routine for the reordering.</p></td>
 </tr>
 </tbody>
@@ -190,6 +193,14 @@
 <dt>Returns<span class="classifier">Tuple[np.ndarray(), np.ndarray()]</span></dt><dd><p>2D array with the [to-index, relative changes index] of the band for each step</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pybinding.Disentangle.no_reorder_idx">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">no_reorder_idx</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pybinding.Disentangle.no_reorder_idx" title="Permalink to this definition">¶</a></dt>
+<dd><p>Give back the list of indices that aren’t going to be disentangled.</p>
+<p>This function can be useful for high-symmetry points, where it isn’t clear
+what is the best band for a overlap.</p>
 </dd></dl>
 
 <dl class="py property">

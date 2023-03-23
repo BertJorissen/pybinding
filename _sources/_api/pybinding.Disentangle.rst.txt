@@ -16,6 +16,7 @@
     
         ~Disentangle.callsig
         ~Disentangle.disentangle_matrix
+        ~Disentangle.no_reorder_idx
         ~Disentangle.routine
     
     
