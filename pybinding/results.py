@@ -1080,7 +1080,7 @@ class FatBands(Bands):
     def with_data(self, data: np.ndarray) -> 'FatBands':
         """Return a copy of this result object with different data"""
         result = copy(self)
-        result._data = data
+        result.data = data
         return result
 
     def __add__(self, other: 'FatBands') -> 'FatBands':
