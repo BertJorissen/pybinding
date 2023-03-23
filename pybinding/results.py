@@ -1655,6 +1655,7 @@ class Disentangle:
         self.threshold: float = np.abs(2 * np.shape(overlap_matrix)[1]) ** -0.25
         self._disentangle_matrix: Optional[np.ndarray] = None
         self._routine: int = 1
+        self._no_reorder_indx: List[int] = []
 
     @property
     def disentangle_matrix(self) -> Tuple[np.ndarray, np.ndarray]:
@@ -1703,6 +1704,25 @@ class Disentangle:
         self._routine = use
         self._disentangle_matrix = None
 
+    @property
+    def no_reorder_idx(self) -> List[int]:
+        """ Give back the list of indices that aren't going to be disentangled.
+
+        This function can be useful for high-symmetry points, where it isn't clear
+        what is the best band for a overlap.
+        """
+        return self._no_reorder_indx
+
+    @no_reorder_idx.setter
+    def no_reorder_idx(self, idx: List[int]):
+        """ Give the list of indices that aren't going to be disentangled.
+
+        This function can be useful for high-symmetry points, where it isn't cloer
+        what is the best band for a overlap.
+        """
+        self._no_reorder_indx = idx
+        self._disentangle_matrix = None
+
     def _calc_disentangle_matrix(self) -> Tuple[np.ndarray, np.ndarray]:
         """ Calculate the changes in index for the band structure of which the overlap matrix is given
 
@@ -1736,7 +1756,10 @@ class Disentangle:
             if i_k == 0:
                 ind[i_k], keep[i_k] = np.arange(n_b, dtype=int), np.full(n_b, True, dtype=bool)
             else:
-                ind[i_k], keep[i_k] = func(self.overlap_matrix[i_k - 1, ind[i_k - 1], :])
+                if i_k in self._no_reorder_indx:
+                    ind[i_k], keep[i_k] = ind[i_k - 1], np.full(n_b, True, dtype=bool)
+                else:
+                    ind[i_k], keep[i_k] = func(self.overlap_matrix[i_k - 1, ind[i_k - 1], :])
 
         working_indices = np.zeros((n_k, n_b), dtype=int)
         tmp_w_i = np.arange(n_b, dtype=int)
