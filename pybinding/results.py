@@ -335,7 +335,9 @@ class Series:
         fill_other : float
             In case an array is made with a new column, fill it with this value. Default: 0.
         """
-        col_idx = np.array(columns or np.zeros(self.data.shape[1]), dtype=int)
+        if columns is None:
+            columns = np.zeros(self.data.shape[1])
+        col_idx = np.array(columns, dtype=int)
         if np.all(col_idx == 0):
             # case where all the axis are summed over, no 'orbital' label is needed
             return self.with_data(self.data.sum(axis=1))
@@ -1121,10 +1123,12 @@ class FatBands(Bands):
         fill_other : float
             In case an array is made with a new column, fill it with this value. Default: 0.
         """
+        if columns is None:
+            columns = np.zeros(self.data.shape[2])
         data = self.data
         if data.ndim == 2:
             data = self.data[:, np.newaxis]
-        col_idx = np.array(columns or np.zeros(data.shape[2]), dtype=int)
+        col_idx = np.array(columns, dtype=int)
         if np.all(col_idx == 0):
             # case where all the axis are summed over, no 'orbital' label is needed
             return self.with_data(data.sum(axis=2))
@@ -2026,6 +2030,47 @@ class Wavefunction:
                 ldos = ldos.T
             return Series(energies, ldos, labels=labels)
 
+    def operator(self, operator: np.ndarray, disentangle: bool = False,
+                 names: Union[Optional[List[str]], str] = None) -> FatBands:
+        """Apply the operator on the wavefunction. Only from-to same band, no correlations between bands.
+
+        Parameters
+        ----------
+        operator : np.ndarray
+            The operators to apply on the system. This should be in the shape of (ham_idx, ham_idx).
+            Optionally, this can be 3D, (op_idx, ham_idx, ham_idx), with op_idx different operators.
+        disentangle : bool
+            If the bands and the results should be disentangled. Defualt: False.
+        names : Union[Optional[List[str]], str]
+            The names for the labels of the operators.
+
+        Returns
+        -------
+        :class: ~pybinding.FatBands
+        """
+        if operator.ndim == 2:
+            operator = operator[np.newaxis, :, :]
+        assert operator.shape[1] == self.wavefunction.shape[2],\
+            "The first dimension of the operator doesn't match the one from the wavefunction, {0} != {1}".format(
+                operator.shape[1], self.wavefunction.shape[2]
+            )
+
+        assert operator.shape[2] == self.wavefunction.shape[2], \
+            "The first dimension of the operator doesn't match the one from the wavefunction, {0} != {1}".format(
+                operator.shape[2], self.wavefunction.shape[2]
+            )
+        if names is None:
+            names = [str(name_i) for name_i in range(operator.shape[0])]
+        elif isinstance(names, str):
+            names = [names]
+        data_mat = np.zeros((self.wavefunction.shape[0], self.wavefunction.shape[1], operator.shape[0]))
+        for wfc_i, wfc in enumerate(self.wavefunction):
+            for opera_i, opera in enumerate(operator):
+                data_mat[wfc_i, :, opera_i] = np.diagonal(wfc.conj() @ opera @ wfc.T).real
+        fatbands_out = self.fatbands_disentangled if disentangle else self.fatbands
+        fatbands_out.data = self.disentangle(data_mat) if disentangle else data_mat
+        fatbands_out.labels["orbitals"] = names
+        return fatbands_out
 
 class WavefunctionArea(Wavefunction):
     def __init__(self, bands: BandsArea, wavefunction: np.ndarray, sublattices: Optional[AliasArray] = None,
