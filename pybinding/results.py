@@ -2066,11 +2066,13 @@ class Wavefunction:
         data_mat = np.zeros((self.wavefunction.shape[0], self.wavefunction.shape[1], operator.shape[0]))
         for wfc_i, wfc in enumerate(self.wavefunction):
             for opera_i, opera in enumerate(operator):
-                data_mat[wfc_i, :, opera_i] = np.diagonal(wfc.conj() @ opera @ wfc.T).real
+                for i_b in range(self.wavefunction.shape[1]):
+                    data_mat[wfc_i, i_b, opera_i] = (wfc.conj()[i_b, :] @ opera @ wfc.T[:, i_b]).real
         fatbands_out = self.fatbands_disentangled if disentangle else self.fatbands
         fatbands_out.data = self.disentangle(data_mat) if disentangle else data_mat
         fatbands_out.labels["orbitals"] = names
         return fatbands_out
+
 
 class WavefunctionArea(Wavefunction):
     def __init__(self, bands: BandsArea, wavefunction: np.ndarray, sublattices: Optional[AliasArray] = None,
