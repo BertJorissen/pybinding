@@ -7,6 +7,7 @@ from numpy.typing import ArrayLike
 from collections.abc import Iterable
 from matplotlib.pyplot import Axes as plt_axes
 from typing import Optional, Union
+from pathlib import Path
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -15,6 +16,7 @@ from . import _cpp
 from . import pltutils
 from .utils import x_pi, with_defaults, rotate_axes
 from .support.deprecated import LoudDeprecationWarning
+from .support.parse import xyz
 
 __all__ = ['Lattice']
 
@@ -558,3 +560,14 @@ class Lattice:
             ax.set_ylabel(r"$k_y (nm^{-1})$")
 
         pltutils.despine(trim=True)
+
+
+def from_xyz(file: Union[str, Path]) -> Lattice:
+    xyz_file = xyz(file)
+    assert "extended" in xyz_file.keys(), "The read .xyz-file doesn't contain the right extended formatting."
+    assert "Lattice" in xyz_file["extended"].keys(), "The 'Lattice' information wasn't found in the .xyz-file."
+    vecs = xyz_file["extended"]["Lattice"]
+    assert isinstance(vecs, np.ndarray), "The specified couldn't be interpreted, {0}".format(vecs)
+    lat = Lattice(*vecs)
+    lat.add_sublattices(*(("{0}_{1}".format(atom, atom_i), pos, 0.) for atom_i, (atom, pos) in enumerate(zip(xyz_file["atoms"], xyz_file["xyz"]))))
+    return lat
