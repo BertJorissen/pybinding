@@ -51,6 +51,7 @@
         ~Model.site_generators
         ~Model.site_state_modifiers
         ~Model.structure_map
+        ~Model.to_lattice
         ~Model.tokwant
     
     

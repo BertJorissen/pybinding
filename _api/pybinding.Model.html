@@ -81,6 +81,7 @@
 <li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.site_generators"><code class="docutils literal notranslate"><span class="pre">Model.site_generators()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.site_state_modifiers"><code class="docutils literal notranslate"><span class="pre">Model.site_state_modifiers()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.structure_map"><code class="docutils literal notranslate"><span class="pre">Model.structure_map()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.to_lattice"><code class="docutils literal notranslate"><span class="pre">Model.to_lattice()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.tokwant"><code class="docutils literal notranslate"><span class="pre">Model.tokwant()</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.hamiltonian"><code class="docutils literal notranslate"><span class="pre">Model.hamiltonian</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="#pybinding.Model.lattice"><code class="docutils literal notranslate"><span class="pre">Model.lattice</span></code></a></li>
@@ -250,7 +251,10 @@ is allowed: this will usually multiply the modifier’s effect.</p></li>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Model.structure_map" title="pybinding.Model.structure_map"><code class="xref py py-obj docutils literal notranslate"><span class="pre">structure_map</span></code></a>(data)</p></td>
 <td><p>Return a <a class="reference internal" href="pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a> of the model system mapped to the specified <code class="samp docutils literal notranslate"><span class="pre">data</span></code></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Model.tokwant" title="pybinding.Model.tokwant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tokwant</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Model.to_lattice" title="pybinding.Model.to_lattice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_lattice</span></code></a>()</p></td>
+<td><p>The site and position modifier is already done by the model, the energy modifiers still need to be added to the model.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Model.tokwant" title="pybinding.Model.tokwant"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tokwant</span></code></a>()</p></td>
 <td><p>Convert this model into <a class="reference external" href="http://kwant-project.org/">kwant</a> format (finalized)</p></td>
 </tr>
 </tbody>
@@ -385,6 +389,20 @@ For a 3D lattice it’s the area described by a 2D <a class="reference internal"
 </dl>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pybinding.Model.to_lattice">
+<span class="sig-name descname"><span class="pre">to_lattice</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="pybinding.Lattice.html#pybinding.Lattice" title="pybinding.lattice.Lattice"><span class="pre">Lattice</span></a></span></span><a class="headerlink" href="#pybinding.Model.to_lattice" title="Permalink to this definition">¶</a></dt>
+<dd><p>The site and position modifier is already done by the model, the energy modifiers still need to be added to the model.</p>
+<ol class="arabic simple">
+<li><p>Get the vectors [DONE]</p></li>
+<li><p>Get the positions [DONE]</p></li>
+<li><p>Get the onsite energies [DONE]</p></li>
+<li><p>Get the hoppings within the ‘unit-cell’-&gt;(0,0)</p></li>
+<li><p>Get the hoppings accross the boundaries</p></li>
+<li><p>Test if equivalent results are produced using model_to_lattice and the model itself</p></li>
+</ol>
 </dd></dl>
 
 <dl class="py method">

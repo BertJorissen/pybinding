@@ -32,6 +32,7 @@
     .. autosummary::
     
         ~WavefunctionArea._calc_overlap_matrix
+        ~WavefunctionArea.operator
         ~WavefunctionArea.spatial_ldos
     
     
