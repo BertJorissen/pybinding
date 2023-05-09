@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from numpy.typing import ArrayLike
 from collections.abc import Iterable
-from typing import Literal, Optional, Union, Tuple, List
+from typing import Literal, Optional, Union, Tuple, List, Callable
 import matplotlib
 from matplotlib.patches import FancyArrow
 
@@ -2030,15 +2030,17 @@ class Wavefunction:
                 ldos = ldos.T
             return Series(energies, ldos, labels=labels)
 
-    def operator(self, operator: np.ndarray, disentangle: bool = False,
+    def operator(self, operator: Union[np.ndarray, Callable[[np.ndarray], np.ndarray]], disentangle: bool = False,
                  names: Union[Optional[List[str]], str] = None) -> FatBands:
         """Apply the operator on the wavefunction. Only from-to same band, no correlations between bands.
 
         Parameters
         ----------
-        operator : np.ndarray
+        operator : np.ndarray or Callable
             The operators to apply on the system. This should be in the shape of (ham_idx, ham_idx).
             Optionally, this can be 3D, (op_idx, ham_idx, ham_idx), with op_idx different operators.
+            If this is a function (Callable), the function should accept the k-vector to build the operator
+            for that k-vector, and return a np.ndarray as would be provided if it were not a Callable mentioned above.
         disentangle : bool
             If the bands and the results should be disentangled. Defualt: False.
         names : Union[Optional[List[str]], str]
@@ -2048,24 +2050,31 @@ class Wavefunction:
         -------
         :class: ~pybinding.FatBands
         """
-        if operator.ndim == 2:
-            operator = operator[np.newaxis, :, :]
-        assert operator.shape[1] == self.wavefunction.shape[2],\
+        if callable(operator):
+            test_operator = operator(np.array([0., 0., 0.]))
+        else:
+            test_operator = operator * 1
+        if test_operator.ndim == 2:
+            test_operator = test_operator[np.newaxis, :, :]
+        assert test_operator.shape[1] == self.wavefunction.shape[2],\
             "The first dimension of the operator doesn't match the one from the wavefunction, {0} != {1}".format(
-                operator.shape[1], self.wavefunction.shape[2]
+                test_operator.shape[1], self.wavefunction.shape[2]
             )
 
-        assert operator.shape[2] == self.wavefunction.shape[2], \
+        assert test_operator.shape[2] == self.wavefunction.shape[2], \
             "The first dimension of the operator doesn't match the one from the wavefunction, {0} != {1}".format(
-                operator.shape[2], self.wavefunction.shape[2]
+                test_operator.shape[2], self.wavefunction.shape[2]
             )
         if names is None:
-            names = [str(name_i) for name_i in range(operator.shape[0])]
+            names = [str(name_i) for name_i in range(test_operator.shape[0])]
         elif isinstance(names, str):
             names = [names]
-        data_mat = np.zeros((self.wavefunction.shape[0], self.wavefunction.shape[1], operator.shape[0]))
+        data_mat = np.zeros((self.wavefunction.shape[0], self.wavefunction.shape[1], test_operator.shape[0]))
         for wfc_i, wfc in enumerate(self.wavefunction):
-            for opera_i, opera in enumerate(operator):
+            operator_loc = operator(self.bands.k_path[wfc_i]) if callable(operator) else operator
+            if operator_loc.ndim == 2:
+                operator_loc = operator_loc[np.newaxis, :, :]
+            for opera_i, opera in enumerate(operator_loc):
                 for i_b in range(self.wavefunction.shape[1]):
                     data_mat[wfc_i, i_b, opera_i] = (wfc.conj()[i_b, :] @ opera @ wfc.T[:, i_b]).real
         fatbands_out = self.fatbands_disentangled if disentangle else self.fatbands
