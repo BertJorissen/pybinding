@@ -346,7 +346,7 @@ class Series:
         return series_out
 
     def plot(self, ax: Optional[plt.Axes] = None, axes: Literal['xy', 'yx'] = 'xy', legend: bool = True,
-             **kwargs) -> None:
+             **kwargs) -> Optional[List[plt.Line2D]]:
         """Labeled line plot
 
         Parameters
@@ -362,13 +362,14 @@ class Series:
         """
         if ax is None:
             ax = plt.gca()
+        lines = []
         if axes == "xy":
-            ax.plot(self.variable, self.data, **kwargs)
+            lines.append(ax.plot(self.variable, self.data, **kwargs))
             ax.set_xlim(self.variable.min(), self.variable.max())
             ax.set_xlabel(self.labels["variable"])
             ax.set_ylabel(self.labels["data"])
         elif axes == "yx":
-            ax.plot(self.data, self.variable, **kwargs)
+            lines.append(ax.plot(self.data, self.variable, **kwargs))
             ax.set_ylim(self.variable.min(), self.variable.max())
             ax.set_xlabel(self.labels["data"])
             ax.set_ylabel(self.labels["variable"])
@@ -382,7 +383,7 @@ class Series:
             if "orbitals" in self.labels:
                 labels = self.labels["orbitals"]
             pltutils.legend(labels=labels, title=self.labels["columns"], ax=ax)
-
+        return lines
 
 @pickleable
 class AbstractStructure:
@@ -460,7 +461,6 @@ class AbstractStructure:
 @pickleable
 class SpatialMap(AbstractStructure):
     """Represents some spatially dependent property: data mapped to site positions"""
-    # TODO: check typing
     def __init__(self, data: ArrayLike, positions: Union[ArrayLike, AbstractSites], sublattices: Optional[ArrayLike] = None):
         self.data = np.atleast_1d(data)
         if sublattices is None and isinstance(positions, AbstractSites):
@@ -605,7 +605,6 @@ class StructureMap(SpatialMap):
     """A subclass of :class:`.SpatialMap` that also includes hoppings between sites"""
 
     def __init__(self, data: ArrayLike, sites: Sites, hoppings: Hoppings, boundaries=()):
-        # TODO: add typing
         super().__init__(data, sites)
         self._hoppings = hoppings
         self._boundaries = boundaries
@@ -640,7 +639,6 @@ class StructureMap(SpatialMap):
 
     def plot(self, cmap: str = 'YlGnBu', site_radius: tuple[float, float] = (0.03, 0.05), num_periods: int = 1,
              ax: Optional[plt.Axes] = None, **kwargs) -> Optional[matplotlib.collections.CircleCollection]:
-        # TODO: add typing
         """Plot the spatial structure with a colormap of :attr:`data` at the lattice sites
 
         Both the site size and color are used to display the data.

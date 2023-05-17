@@ -8,7 +8,7 @@ import warnings
 import numpy as np
 from numpy.typing import ArrayLike
 from scipy.sparse import csr_matrix, eye
-from typing import Literal, Optional, Union, List
+from typing import Literal, Optional, Union, List, Tuple
 
 from . import _cpp
 from . import results
@@ -16,6 +16,7 @@ from .model import Model
 from .results import SpatialLDOS
 from .system import System
 from .utils.time import timed
+from .utils.misc import AttrDict
 from .support.deprecated import LoudDeprecationWarning
 
 __all__ = ['KPM', 'kpm', 'kpm_cuda',
@@ -53,7 +54,7 @@ class KPM:
         return System(self.impl.system, self.model.lattice)
 
     @property
-    def scaling_factors(self) -> tuple[float, float]:
+    def scaling_factors(self) -> Tuple[float, float]:
         """A tuple of KPM scaling factors `a` and `b`"""
         return self.impl.scaling_factors
 
@@ -305,12 +306,11 @@ class KPM:
 
 
 class _ComputeProgressReporter:
-    # TODO: add typing
     def __init__(self):
         from .utils.progressbar import ProgressBar
         self.pbar = ProgressBar(0)
 
-    def __call__(self, delta, total):
+    def __call__(self, delta: float, total: float) -> None:
         if total == 1:
             return  # Skip reporting for short jobs
 
@@ -434,14 +434,6 @@ def dirichlet_kernel() -> _cpp.KPMKernel:
     no actual broadening associated with the Dirichlet kernel.
     """
     return _cpp.dirichlet_kernel()
-
-
-class AttrDict(dict):
-    """Allows dict items to be retrieved as attributes: d["item"] == d.item"""
-    # TODO: move to utils
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.__dict__ = self
 
 
 class _PythonImpl:

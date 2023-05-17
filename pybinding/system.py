@@ -48,8 +48,7 @@ class _CppSites(AbstractSites):
     def ids(self) -> AliasArray:
         return AliasArray(self._cs.decompressed(), self._registry.name_map)
 
-    def __getitem__(self, item) -> Sites:
-        # TODO: set typing
+    def __getitem__(self, item: int) -> Sites:
         return Sites([v[item] for v in self.positions], self.ids[item])
 
 

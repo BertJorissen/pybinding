@@ -58,20 +58,19 @@ def _plot_freeform_shape(vertices: list[ArrayLike], contains: Callable, resoluti
 
 class _CompositionMixin:
     """Provides logical and arithmetic operators to form composite shapes"""
-    # TODO: add typing
-    def __and__(self, other):
+    def __and__(self, other: '_CompositionMixin') -> '_CompositionMixin':
         return CompositeShape(self, other, np.logical_and)
 
-    def __or__(self, other):
+    def __or__(self, other: '_CompositionMixin') -> '_CompositionMixin':
         return CompositeShape(self, other, np.logical_or)
 
-    def __xor__(self, other):
+    def __xor__(self, other: '_CompositionMixin') -> '_CompositionMixin':
         return CompositeShape(self, other, np.logical_xor)
 
-    def __add__(self, other):
+    def __add__(self, other: '_CompositionMixin') -> '_CompositionMixin':
         return self.__or__(other)
 
-    def __sub__(self, other):
+    def __sub__(self, other: '_CompositionMixin') -> '_CompositionMixin':
         return CompositeShape(self, other, lambda a, b: np.logical_and(a, np.logical_not(b)))
 
 

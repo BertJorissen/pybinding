@@ -6,7 +6,6 @@ from ..leads import Lead
 from scipy.sparse import csr_matrix, coo_matrix
 from typing import Union
 
-# TODO: Add typing
 try:
     from kwant.system import FiniteSystem, InfiniteSystem
     kwant_installed = True

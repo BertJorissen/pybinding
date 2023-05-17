@@ -10,7 +10,7 @@ import warnings
 import numpy as np
 from collections.abc import Callable
 from numpy.typing import ArrayLike
-from typing import Tuple, Union
+from typing import Tuple, Union, Iterable
 
 from . import _cpp
 from .system import Sites
@@ -28,7 +28,6 @@ def _process_modifier_args(args, keywords: list[str], requested_argnames: Union[
     """Return only the requested modifier arguments
 
     Also process any special args like 'sub_id', 'hop_id' and 'sites'.
-    TODO: add typing for any
     """
     prime_arg = args[0]
     if isinstance(prime_arg, np.ndarray):
@@ -44,7 +43,6 @@ def _process_modifier_args(args, keywords: list[str], requested_argnames: Union[
             orbs = 1, 1
 
     def process(obj: Union[str, np.ndarray, ArrayLike]) -> Union[AliasIndex, np.ndarray, ArrayLike]:
-        # TODO: check ArrayLike
         if isinstance(obj, str):
             return AliasIndex(SplitName(obj), shape, orbs)
         elif isinstance(obj, np.ndarray) and obj.size == shape[0]:
@@ -89,8 +87,8 @@ def _check_modifier_spec(func: Callable, keywords: list[str], has_sites: bool = 
                            "Arguments must be any of: {expected}".format(**locals()))
 
 
-def _sanitize_modifier_result(result, args, expected_num_return, can_be_complex) -> np.ndarray:
-    # TODO: add typing
+def _sanitize_modifier_result(result: Union[np.ndarray, Tuple[np.ndarray]], args: Iterable[np.ndarray],
+                              expected_num_return: int, can_be_complex: bool) -> np.ndarray:
     """Make sure the modifier returns ndarrays with type and shape matching the input `args`"""
     result = result if isinstance(result, tuple) else (result,)
     prime_arg = args[0]
@@ -152,7 +150,6 @@ def _make_modifier(func: Callable, kind, init: dict, keywords: str, has_sites: b
     Returns
     -------
     Modifier
-    TODO: check types
     """
     keywords = [word.strip() for word in keywords.split(",")]
     _check_modifier_spec(func, keywords, has_sites)
@@ -455,7 +452,6 @@ def _make_generator(func: Callable, kind, name: str, energy: Union[float, comple
         String of comma separated names: the expected arguments of a modifier function.
     process_result : Callable
         Apply additional processing on the generator result
-    TODO: add typing
     """
     keywords = [word.strip() for word in keywords.split(",")]
     _check_modifier_spec(func, keywords)
@@ -548,7 +544,6 @@ def hopping_generator(name: str, energy: Union[float, complex, np.ndarray]) -> f
 
     Tuple[np.ndarray, np.ndarray]
         A pair of arrays of indices which form the new hoppings.
-    TODO: Add typing
     """
     def process_result(result, system):
         def process(v):

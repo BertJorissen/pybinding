@@ -10,6 +10,13 @@ import numpy as np
 from ..support.inspect import get_call_signature
 
 
+class AttrDict(dict):
+    """Allows dict items to be retrieved as attributes: d["item"] == d.item"""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__dict__ = self
+
+
 def to_tuple(o):
     try:
         return tuple(o)

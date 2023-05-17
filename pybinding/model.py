@@ -2,7 +2,7 @@
 import numpy as np
 from scipy.sparse import csr_matrix
 from numpy.typing import ArrayLike
-from typing import Literal
+from typing import Literal, Iterable, Union
 
 from . import _cpp
 from . import results
@@ -11,6 +11,13 @@ from .lattice import Lattice
 from .leads import Leads
 
 __all__ = ['Model']
+
+model_args = Union[
+    _cpp.Primitive, _cpp.Shape, _cpp.TranslationalSymmetry,
+    _cpp.SiteStateModifier, _cpp.PositionModifier, _cpp.OnsiteModifier, _cpp.HoppingModifier,
+    _cpp.SiteGenerator, _cpp.HoppingGenerator
+]
+model_arg = Union[model_args, Iterable[model_args]]
 
 
 class Model(_cpp.Model):
@@ -34,14 +41,14 @@ class Model(_cpp.Model):
         * Any number of modifiers can be added. Adding the same modifier more than once
           is allowed: this will usually multiply the modifier's effect.
     """
-    def __init__(self, lattice: Lattice, *args):
+    def __init__(self, lattice: Lattice, *args: Iterable[model_arg]):
         super().__init__(lattice.impl)
 
         self._lattice = lattice
         self._shape = None
         self.add(*args)
 
-    def add(self, *args) -> None:
+    def add(self, *args: Iterable[model_arg]) -> None:
         """Add parameter(s) to the model
 
         Parameters
@@ -49,7 +56,6 @@ class Model(_cpp.Model):
         *args
             Any of: shape, symmetry, modifiers. Tuples and lists of parameters are expanded
             automatically, so `M.add(p0, [p1, p2])` is equivalent to `M.add(p0, p1, p2)`.
-        TODO: Add types
         """
         for arg in args:
             if arg is None:
