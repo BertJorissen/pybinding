@@ -9,7 +9,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from numpy.typing import ArrayLike
 from collections.abc import Iterable
-from typing import Literal, Optional, Union, Tuple, List, Callable
+from typing import Literal, Optional, Union, Tuple, List, Callable, Dict
 import matplotlib
 from matplotlib.patches import FancyArrow
 
@@ -18,22 +18,12 @@ from .utils import with_defaults, x_pi
 from .support.pickle import pickleable, save, load
 from .support.structure import Positions, AbstractSites, Sites, Hoppings
 from .support.alias import AliasArray
-from matplotlib.collections import LineCollection, PathCollection
+from matplotlib.collections import LineCollection, PathCollection, TriMesh, PolyCollection
+from matplotlib.tri import TriContourSet
 
 __all__ = ['save', 'load', 'make_path', 'Path', 'Bands', 'Wavefunction', 'FatBands', 'Eigenvalues', 'Series',
            'SpatialMap', 'StructureMap', 'Sweep', 'NDSweep', 'SpatialLDOS', 'Positions', 'make_area',
            'BandsArea', 'WavefunctionArea', 'FatBandsArea', 'Disentangle']
-
-
-def _make_crop_indices(obj, limits):
-    # TODO add typing--> can't add Structure or SpatialMap due to picklable
-    """Return the indices into `obj` which retain only the data within the given limits"""
-    idx = np.ones(obj.num_sites, dtype=bool)
-    for name, limit in limits.items():
-        v = getattr(obj, name)
-        idx = np.logical_and(idx, v >= limit[0])
-        idx = np.logical_and(idx, v < limit[1])
-    return idx
 
 
 class Path(np.ndarray):
@@ -395,32 +385,19 @@ class Series:
 
 
 @pickleable
-class SpatialMap:
-    """Represents some spatially dependent property: data mapped to site positions"""
-    # TODO: check typing
-    def __init__(self, data: ArrayLike, positions: Union[ArrayLike, AbstractSites], sublattices=None):
-        self.data = np.atleast_1d(data)
-        if sublattices is None and isinstance(positions, AbstractSites):
-            self._sites = positions
+class AbstractStructure:
+    """Abstract class to be used for SpatialMap and Structure"""
+    def __init__(self, positions_sites: Union[ArrayLike, AbstractSites, Sites, '_CppSites'],
+                 sublattices: Optional[ArrayLike] = None):
+        if sublattices is None and isinstance(positions_sites, AbstractSites):
+            self._sites = positions_sites
         else:
-            self._sites = Sites(positions, sublattices)
-
-        if self.num_sites != data.size:
-            raise RuntimeError("Data size doesn't match number of sites")
+            self._sites = Sites(positions_sites, sublattices)
 
     @property
     def num_sites(self) -> int:
         """Total number of lattice sites"""
         return self._sites.size
-
-    @property
-    def data(self) -> np.ndarray:
-        """1D array of values for each site, i.e. maps directly to x, y, z site coordinates"""
-        return self._data
-
-    @data.setter
-    def data(self, value: ArrayLike):
-        self._data = value
 
     @property
     def positions(self) -> Positions:
@@ -457,26 +434,13 @@ class SpatialMap:
         """1D array of sublattices IDs, short for :attr:`.sublattices <.SpatialMap.sublattices>`"""
         return self._sites.ids
 
-    def with_data(self, data) -> "SpatialMap":
-        """Return a copy of this object with different data mapped to the sites"""
-        result = copy(self)
-        result._data = data
-        return result
-
-    def save_txt(self, filename: str):
-        with open(filename + '.dat', 'w') as file:
-            file.write('# {:12}{:13}{:13}\n'.format('x(nm)', 'y(nm)', 'data'))
-            for x, y, d in zip(self.x, self.y, self.data):
-                file.write(("{:13.5e}" * 3 + '\n').format(x, y, d))
-
-    def __getitem__(self, idx: Union[int, ArrayLike]):
+    def __getitem__(self, idx: Union[int, list[int]]) -> 'AbstractStructure':
         """Same rules as numpy indexing"""
         if hasattr(idx, "contains"):
             idx = idx.contains(*self.positions)  # got a Shape object -> evaluate it
-        return self.__class__(self._data[idx], self._sites[idx])
+        return self.__class__(self._sites[idx])
 
-    def cropped(self, **limits):
-        # TODO: add typing
+    def cropped(self, **limits) -> 'AbstractStructure':
         """Return a copy which retains only the sites within the given limits
 
         Parameters
@@ -492,8 +456,65 @@ class SpatialMap:
         """
         return self[_make_crop_indices(self, limits)]
 
-    def clipped(self, v_min, v_max):
-        # TODO: add typing
+
+@pickleable
+class SpatialMap(AbstractStructure):
+    """Represents some spatially dependent property: data mapped to site positions"""
+    # TODO: check typing
+    def __init__(self, data: ArrayLike, positions: Union[ArrayLike, AbstractSites], sublattices: Optional[ArrayLike] = None):
+        self.data = np.atleast_1d(data)
+        if sublattices is None and isinstance(positions, AbstractSites):
+            super().__init__(positions)
+        else:
+            super().__init__(Sites(positions, sublattices))
+
+        if self.num_sites != data.size:
+            raise RuntimeError("Data size doesn't match number of sites")
+
+    @property
+    def data(self) -> np.ndarray:
+        """1D array of values for each site, i.e. maps directly to x, y, z site coordinates"""
+        return self._data
+
+    @data.setter
+    def data(self, value: ArrayLike):
+        self._data = value
+
+    def with_data(self, data) -> 'SpatialMap':
+        """Return a copy of this object with different data mapped to the sites"""
+        result = copy(self)
+        result._data = data
+        return result
+
+    def save_txt(self, filename: str):
+        with open(filename + '.dat', 'w') as file:
+            file.write('# {:12}{:13}{:13}\n'.format('x(nm)', 'y(nm)', 'data'))
+            for x, y, d in zip(self.x, self.y, self.data):
+                file.write(("{:13.5e}" * 3 + '\n').format(x, y, d))
+
+    def __getitem__(self, idx: Union[int, ArrayLike]) -> 'SpatialMap':
+        """Same rules as numpy indexing"""
+        if hasattr(idx, "contains"):
+            idx = idx.contains(*self.positions)  # got a Shape object -> evaluate it
+        return self.__class__(self._data[idx], self._sites[idx])
+
+    def cropped(self, **limits) -> 'SpatialMap':
+        """Return a copy which retains only the sites within the given limits
+
+        Parameters
+        ----------
+        **limits
+            Attribute names and corresponding limits. See example.
+
+        Examples
+        --------
+        Leave only the data where -10 <= x < 10 and 2 <= y < 4::
+
+            new = original.cropped(x=[-10, 10], y=[2, 4])
+        """
+        return self[_make_crop_indices(self, limits)]
+
+    def clipped(self, v_min: int, v_max: int) -> 'SpatialMap':
         """Clip (limit) the values in the `data` array, see :func:`~numpy.clip`"""
         return self.with_data(np.clip(self.data, v_min, v_max))
 
@@ -519,8 +540,7 @@ class SpatialMap:
         ax.set_ylabel('y (nm)')
         pltutils.despine(trim=True, ax=ax)
 
-    def plot_pcolor(self, ax: Optional[plt.Axes] = None, **kwargs):
-        # TODO: add typing
+    def plot_pcolor(self, ax: Optional[plt.Axes] = None, **kwargs) -> Union[TriMesh, PolyCollection]:
         """Color plot of the xy plane
 
         Parameters
@@ -538,8 +558,7 @@ class SpatialMap:
         self._decorate_plot(ax=ax)
         return pcolor
 
-    def plot_contourf(self, num_levels: int = 50, ax: Optional[plt.Axes] = None, **kwargs):
-        # TODO: add typing
+    def plot_contourf(self, num_levels: int = 50, ax: Optional[plt.Axes] = None, **kwargs) -> TriContourSet:
         """Filled contour plot of the xy plane
 
         Parameters
@@ -563,8 +582,7 @@ class SpatialMap:
         self._decorate_plot(ax=ax)
         return contourf
 
-    def plot_contour(self, ax: Optional[plt.Axes] = None, **kwargs):
-        # TODO: add typing
+    def plot_contour(self, ax: Optional[plt.Axes] = None, **kwargs) -> TriContourSet:
         """Contour plot of the xy plane
 
         Parameters
@@ -679,57 +697,16 @@ class StructureMap(SpatialMap):
 
 
 @pickleable
-class Structure:
+class Structure(AbstractStructure):
     """Holds and plots the structure of a tight-binding system
     
     Similar to :class:`StructureMap`, but only holds the structure without 
     mapping to any actual data.
     """
     def __init__(self, sites: Union[Sites, '_CppSites'], hoppings: Hoppings, boundaries=()):
-        # TODO: add typing
-        self._sites = sites
+        super().__init__(sites)
         self._hoppings = hoppings
         self._boundaries = boundaries
-
-    @property
-    def num_sites(self) -> int:
-        """Total number of lattice sites"""
-        return self._sites.size
-
-    @property
-    def positions(self) -> Positions:
-        """Lattice site positions. Named tuple with x, y, z fields, each a 1D array."""
-        return self._sites.positions
-
-    @property
-    def xyz(self) -> np.ndarray:
-        """Return a new array with shape=(N, 3). Convenient, but slow for big systems."""
-        return np.array(self.positions).T
-
-    @property
-    def x(self) -> np.ndarray:
-        """1D array of coordinates, short for :attr:`.positions.x <.SpatialMap.positions.x>`"""
-        return self._sites.x
-
-    @property
-    def y(self) -> np.ndarray:
-        """1D array of coordinates, short for :attr:`.positions.y <.SpatialMap.positions.y>`"""
-        return self._sites.y
-
-    @property
-    def z(self) -> np.ndarray:
-        """1D array of coordinates, short for :attr:`.positions.z <.SpatialMap.positions.z>`"""
-        return self._sites.z
-
-    @property
-    def sublattices(self) -> np.ndarray:
-        """1D array of sublattices IDs"""
-        return self._sites.ids
-
-    @property
-    def sub(self) -> np.ndarray:
-        """1D array of sublattices IDs, short for :attr:`.sublattices <.SpatialMap.sublattices>`"""
-        return self._sites.ids
 
     @property
     def hoppings(self) -> Hoppings:
@@ -2119,3 +2096,13 @@ class WavefunctionArea(Wavefunction):
             BandsArea(self.bands.k_area, self.bands.list_to_area(self.bands_disentangled.energy)),
             self.bands.list_to_area(self.disentangle(self.fatbands.data)), self.fatbands.labels
         )
+
+
+def _make_crop_indices(obj: Union[SpatialMap, Structure], limits: Dict[str, List[int]]) -> np.ndarray:
+    """Return the indices into `obj` which retain only the data within the given limits"""
+    idx = np.ones(obj.num_sites, dtype=bool)
+    for name, limit in limits.items():
+        v = getattr(obj, name)
+        idx = np.logical_and(idx, v >= limit[0])
+        idx = np.logical_and(idx, v < limit[1])
+    return idx
