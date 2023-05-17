@@ -2032,25 +2032,27 @@ class Wavefunction:
         else:
             test_operator = operator * 1
         if test_operator.ndim == 2:
-            test_operator = test_operator[np.newaxis, :, :]
-        assert test_operator.shape[1] == self.wavefunction.shape[2],\
+            operator_dims = (0, test_operator.shape[0], test_operator.shape[1])
+        else:
+            operator_dims = test_operator.shape
+        assert operator_dims[1] == self.wavefunction.shape[2],\
             "The first dimension of the operator doesn't match the one from the wavefunction, {0} != {1}".format(
-                test_operator.shape[1], self.wavefunction.shape[2]
+                operator_dims[1], self.wavefunction.shape[2]
             )
 
-        assert test_operator.shape[2] == self.wavefunction.shape[2], \
+        assert operator_dims[2] == self.wavefunction.shape[2], \
             "The first dimension of the operator doesn't match the one from the wavefunction, {0} != {1}".format(
-                test_operator.shape[2], self.wavefunction.shape[2]
+                operator_dims[2], self.wavefunction.shape[2]
             )
         if names is None:
-            names = [str(name_i) for name_i in range(test_operator.shape[0])]
-        elif isinstance(names, str):
+            names = [str(name_i) for name_i in range(test_operator.shape[0])] if test_operator.ndim == 2 else "0"
+        if isinstance(names, str):
             names = [names]
         data_mat = np.zeros((self.wavefunction.shape[0], self.wavefunction.shape[1], test_operator.shape[0]))
         for wfc_i, wfc in enumerate(self.wavefunction):
             operator_loc = operator(self.bands.k_path[wfc_i]) if callable(operator) else operator
             if operator_loc.ndim == 2:
-                operator_loc = operator_loc[np.newaxis, :, :]
+                operator_loc = [operator_loc]
             for opera_i, opera in enumerate(operator_loc):
                 for i_b in range(self.wavefunction.shape[1]):
                     data_mat[wfc_i, i_b, opera_i] = (wfc.conj()[i_b, :] @ opera @ wfc.T[:, i_b]).real
