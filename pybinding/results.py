@@ -2027,38 +2027,35 @@ class Wavefunction:
         -------
         :class: ~pybinding.FatBands
         """
-        if callable(operator):
-            test_operator = operator(np.array([0., 0., 0.]))
-        else:
-            test_operator = operator * 1
-        if test_operator.ndim == 2:
-            operator_dims = (0, test_operator.shape[0], test_operator.shape[1])
-        else:
-            operator_dims = test_operator.shape
-        assert operator_dims[1] == self.wavefunction.shape[2],\
-            "The first dimension of the operator doesn't match the one from the wavefunction, {0} != {1}".format(
-                operator_dims[1], self.wavefunction.shape[2]
-            )
-
-        assert operator_dims[2] == self.wavefunction.shape[2], \
-            "The first dimension of the operator doesn't match the one from the wavefunction, {0} != {1}".format(
-                operator_dims[2], self.wavefunction.shape[2]
-            )
-        if names is None:
-            names = [str(name_i) for name_i in range(test_operator.shape[0])] if test_operator.ndim == 2 else "0"
-        if isinstance(names, str):
-            names = [names]
-        data_mat = np.zeros((self.wavefunction.shape[0], self.wavefunction.shape[1], test_operator.shape[0]))
-        for wfc_i, wfc in enumerate(self.wavefunction):
-            operator_loc = operator(self.bands.k_path[wfc_i]) if callable(operator) else operator
-            if operator_loc.ndim == 2:
-                operator_loc = [operator_loc]
-            for opera_i, opera in enumerate(operator_loc):
-                for i_b in range(self.wavefunction.shape[1]):
-                    data_mat[wfc_i, i_b, opera_i] = (wfc.conj()[i_b, :] @ opera @ wfc.T[:, i_b]).real
-        fatbands_out = self.fatbands_disentangled if disentangle else self.fatbands
-        fatbands_out.data = self.disentangle(data_mat) if disentangle else data_mat
-        fatbands_out.labels["orbitals"] = names
+        data_mat = None  # only determine size after the first call
+        operator_dims = None  # only determine size after the first call
+        for wfc_i, wfc in enumerate(self.wavefunction):  # loop over every k-point
+            operator_loc = operator(self.bands.k_path[wfc_i]) if callable(operator) else operator  # get the operator
+            if operator_loc.ndim == 2:  # see if we are working with a single operator
+                operator_loc = [operator_loc]  # add another ghost dimension
+            if data_mat is None:  # construct the data matrix with the first call
+                operator_dims = (len(operator_loc), *operator_loc[0].shape)  # get the size of the operator
+                assert operator_dims[1] == self.wavefunction.shape[2], \
+                    "The first dimension of the operator doesn't match the the wavefunction, {0} != {1}".format(
+                        operator_dims[1], self.wavefunction.shape[2]
+                    )  # check the size of the operator
+                assert operator_dims[2] == self.wavefunction.shape[2], \
+                    "The second dimension of the operator doesn't match the the wavefunction, {0} != {1}".format(
+                        operator_dims[2], self.wavefunction.shape[2]
+                    )  # check the size of the operator
+                data_mat = np.zeros((self.wavefunction.shape[0], self.wavefunction.shape[1], operator_dims[0]))
+                # reserve the memory
+            for opera_i, opera in enumerate(operator_loc):  # loop over the operators
+                for i_b in range(self.wavefunction.shape[1]):  # loop over the bands
+                    data_mat[wfc_i, i_b, opera_i] = (wfc.conj()[i_b, :] @ opera @ wfc.T[:, i_b]).real  # calculate value
+        fatbands_out = self.fatbands_disentangled if disentangle else self.fatbands  # generate the fatbands object
+        fatbands_out.data = self.disentangle(data_mat) if disentangle else data_mat  # append the data
+        if names is None:  # determine the right name
+            fatbands_out.labels["orbitals"] = [str(name_i) for name_i in range(operator_dims[0])]
+        elif isinstance(names, str):  # if only a string is given, wrap it with a list
+            fatbands_out.labels["orbitals"] = [names]
+        else:  # the correct shape should be given, List[str] with length the amount of operators
+            fatbands_out.labels["orbitals"] = names
         return fatbands_out
 
 
