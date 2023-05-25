@@ -653,4 +653,5 @@ def plot_color(x: ArrayLike, y: ArrayLike, z: ArrayLike, ax: Optional[plt.Axes] 
         lc = LineCollection(segments, cmap=cmap, norm=norm, **kwargs)
         lc.set_array(z_i)
         line = ax.add_collection(lc)
+    ax._sci(line)  # push to the private attribute axes._base._AxesBase._current_image to automatically scale the cbar
     return line

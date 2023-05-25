@@ -405,11 +405,15 @@ class FatBands(Bands):
         ax.set_xlim(np.nanmin(k_space), np.nanmax(k_space))
         ax.set_ylim(np.nanmin(self.energy), np.nanmax(self.energy))
         ax.set_title(self.labels["title"])
-        line = pltutils.plot_color(k_space, self.energy, data[:-1, :], ax, **kwargs)
+        line = pltutils.plot_color(k_space, self.energy, data[:-1, :], ax, **with_defaults(kwargs, cmap='RdYlBu_r'))
         self._decorate_plot(point_labels, ax)
         if plot_colorbar:
-            plt.colorbar(line, ax=ax, label=self.labels["orbitals"][idx])
+            self.colorbar(ax=ax, label=self.labels["orbitals"][idx])
         return line
+
+    def colorbar(self, **kwargs):
+        """Draw a colorbar with the label of :attr:`Sweep.data`"""
+        return pltutils.colorbar(**with_defaults(kwargs, label=self.labels["data"]))
 
     def dos(self, energies: Optional[ArrayLike] = None, broadening: Optional[float] = None) -> Series:
         r"""Calculate the density of states as a function of energy

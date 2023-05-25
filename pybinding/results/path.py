@@ -113,6 +113,12 @@ class Path(np.ndarray):
 
         out = pltutils.plot_vectors(np.diff(self.points, axis=0), self.points[0:], ax=ax, **kwargs)
 
+        self.decorate_plot(point_labels, ax)
+        return out
+
+    def decorate_plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None) -> None:
+        if ax is None:
+            ax = plt.gca()
         ax.autoscale_view()
         pltutils.add_margin(0.5, ax=ax)
         pltutils.despine(trim=True, ax=ax)
@@ -125,7 +131,6 @@ class Path(np.ndarray):
                 ha, va = pltutils.align(*(-k_point))
                 pltutils.annotate_box(label, k_point * 1.05, fontsize='large',
                                       ha=ha, va=va, bbox=dict(lw=0), ax=ax)
-        return out
 
 
 def make_path(k0: ArrayLike, k1: ArrayLike, *ks: Iterable[ArrayLike], step: float = 0.1,
@@ -241,4 +246,6 @@ def make_area(k0: ArrayLike, k1: ArrayLike, k_origin: Optional[ArrayLike] = None
     k_points = k_x[:, :, np.newaxis] * k0[np.newaxis, np.newaxis, :]
     k_points += k_y[:, :, np.newaxis] * k1[np.newaxis, np.newaxis, :]
     k_points += k_origin[np.newaxis, np.newaxis, :]
+    point_indices = [0, k_points.shape[0] - 1, k_points.shape[0] * (k_points.shape[0] - 1),
+                     k_points.shape[0] * k_points.shape[0] - 1]
     return Area(k_points, point_indices, point_labels)

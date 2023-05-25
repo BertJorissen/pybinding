@@ -34,6 +34,8 @@ from .modifier import *
 from .results import *
 
 from .chebyshev import *
+from .berry import *
+from .disentangle import *
 from .parallel import parallel_for, parallelize
 
 from . import (constants, greens, parallel, results, solver, system, utils, wannier)

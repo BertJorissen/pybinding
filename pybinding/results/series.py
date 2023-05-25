@@ -8,8 +8,10 @@ from typing import Literal, Optional, List
 
 from ..utils import with_defaults, pltutils
 from ..support.pickle import pickleable
+from matplotlib.collections import LineCollection, QuadMesh
 
-__all__ = ['Series']
+from .path import Path, Area
+__all__ = ['Series', 'SeriesPath', 'SeriesArea']
 
 
 @pickleable
@@ -137,3 +139,136 @@ class Series:
                 labels = self.labels["orbitals"]
             pltutils.legend(labels=labels, title=self.labels["columns"], ax=ax)
         return lines
+
+
+@pickleable
+class SeriesPath(Series):
+    """A series of data points determined by a common relation, i.e. :math:`y = f(x)`, with x in the reciprocal space
+
+    Attributes
+    ----------
+    k_path : Path
+        Independent variable for which the data was computed.
+    data : array_like
+        An array of values which were computed as a function of `variable`.
+        It can be 1D or 2D. In the latter case each column represents the result
+        of a different function applied to the same `variable` input.
+    labels : dict
+        Plot labels: 'variable', 'data', 'orbitals', 'title' and 'columns'.
+    """
+
+    def __init__(self, k_path: Path, data: ArrayLike, labels: Optional[dict] = None):
+        self.k_path: Path = k_path
+        super().__init__(self.k_path.as_1d(), data, labels)
+
+    def line_plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None, idx: int = 0,
+                  plot_colorbar: bool = True, **kwargs) -> Optional[LineCollection]:
+        """Line plot of the band structure with the color of the lines the data of the FatBands.
+
+        Parameters
+        ----------
+        point_labels : Optional[List[str]]
+            Labels for the `k_points`.
+        ax : Optional[plt.Axes]
+            The Axis to plot the bands on.
+        idx : int
+            The i-th column to plot. Default: 0.
+        plot_colorbar : bool
+            Show also the colorbar.
+        **kwargs
+            Forwarded to `matplotlib.collection.LineCollection()`.
+        """
+        if ax is None:
+            ax = plt.gca()
+        ax.set_aspect('equal')
+
+        ax.set_title(self.labels["title"])
+        line = pltutils.plot_color(self.k_path[:, 0], self.k_path[:, 1], self.data[:-1, idx], ax,
+                                   **with_defaults(kwargs, cmap='RdYlBu_r'))
+        if plot_colorbar:
+            self.colorbar(ax=ax, label=self.labels["orbitals"][idx])
+        self.k_path.decorate_plot(point_labels, ax)
+        return line
+
+    def colorbar(self, **kwargs):
+        """Draw a colorbar with the label of :attr:`Sweep.data`"""
+        return pltutils.colorbar(**with_defaults(kwargs, label=self.labels["data"]))
+
+
+class SeriesArea(SeriesPath):
+    """A series of data points determined by a common relation, i.e. :math:`y = f(x)`, with x in the reciprocal area
+
+    Attributes
+    ----------
+    k_area : Area
+        Independent variable for which the data was computed.
+    data : array_like
+        An array of values which were computed as a function of `variable`.
+        It can be 1D or 2D. In the latter case each column represents the result
+        of a different function applied to the same `variable` input.
+    labels : dict
+        Plot labels: 'variable', 'data', 'orbitals', 'title' and 'columns'.
+    """
+
+    def __init__(self, k_area: Area, data: ArrayLike, labels: Optional[dict] = None):
+        self.k_dims = np.shape(k_area)
+        k_path = Path(
+            np.atleast_1d(k_area.reshape(np.prod(self.k_dims[:2]), -1)),
+            k_area.point_indices,
+            k_area.point_labels
+        )
+        super().__init__(k_path, self.area_to_list(np.atleast_3d(data)), labels)
+
+    def area_plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None, idx: int = 0,
+                  plot_colorbar: bool = True, **kwargs) -> QuadMesh:
+        """Line plot of the band structure with the color of the lines the data of the FatBands.
+
+        Parameters
+        ----------
+        point_labels : Optional[List[str]]
+            Labels for the `k_points`.
+        ax : Optional[plt.Axes]
+            The Axis to plot the bands on.
+        idx : int
+            The i-th column to plot. Default: 0.
+        plot_colorbar : bool
+            Show also the colorbar.
+        **kwargs
+            Forwarded to :func:`matplotlib.pyplot.pcolormesh`.
+        """
+        if ax is None:
+            ax = plt.gca()
+        ax.set_aspect('equal')
+
+        ax.set_title(self.labels["title"])
+        mesh = ax.pcolormesh(self.list_to_area(self.k_path[:, 0]), self.list_to_area(self.k_path[:, 1]),
+                             self.data_area[:-1, :-1, idx].T,
+                             **with_defaults(kwargs, cmap='RdYlBu_r', rasterized=True))
+        ax._sci(mesh)
+
+        if plot_colorbar:
+            self.colorbar(ax=ax, label=self.labels["orbitals"][idx])
+        self.k_path.decorate_plot(point_labels, ax)
+        return mesh
+
+    @property
+    def data_area(self) -> np.ndarray:
+        return self.list_to_area(self.data)
+
+    @data_area.setter
+    def data_area(self, data: np.ndarray):
+        self.data = self.area_to_list(data)
+
+    def area_to_list(self, data: ArrayLike) -> np.ndarray:
+        data_size = [self.k_dims[0] * self.k_dims[1]]
+        data = np.atleast_2d(data)
+        for ds in data.shape[2:]:
+            data_size.append(ds)
+        return data.reshape(data_size)
+
+    def list_to_area(self, data: ArrayLike) -> np.ndarray:
+        data_size = [self.k_dims[0], self.k_dims[1]]
+        data = np.atleast_1d(data)
+        for ds in data.shape[1:]:
+            data_size.append(ds)
+        return data.reshape(data_size)
