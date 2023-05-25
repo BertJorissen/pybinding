@@ -3,7 +3,7 @@ import pybinding as pb
 import matplotlib.pyplot as plt
 from math import pi
 
-pb.pltutils.use_style()
+pb.utils.pltutils.use_style()
 
 
 def checkerboard(d=0.2, delta=1.1, t=0.6):

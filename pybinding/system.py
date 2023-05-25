@@ -13,9 +13,8 @@ from matplotlib.pyplot import Axes as plt_axes
 from collections.abc import Iterable
 
 from . import _cpp
-from . import pltutils
 from .lattice import Lattice
-from .utils import with_defaults, rotate_axes
+from .utils import with_defaults, rotate_axes, pltutils
 from .support.alias import AliasArray
 from .support.fuzzy_set import FuzzySet
 from .support.structure import AbstractSites, Sites

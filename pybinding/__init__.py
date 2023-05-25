@@ -1,6 +1,3 @@
-from .__about__ import (__author__, __copyright__, __doc__, __email__, __license__, __summary__,
-                        __title__, __url__, __version__)
-
 import os
 import sys
 if sys.platform.startswith("linux"):
@@ -12,8 +9,6 @@ if sys.platform.startswith("linux"):
     # to set RTLD_GLOBAL, import _pybinding and then reset to default flags. This is
     # fundamentally an MKL issue which makes it difficult to resolve. This workaround
     # is the best solution at the moment.
-    import scipy.sparse.linalg
-    import scipy.spatial
     sys.setdlopenflags(sys.getdlopenflags() | os.RTLD_GLOBAL)
 
 try:
@@ -41,7 +36,8 @@ from .results import *
 from .chebyshev import *
 from .parallel import parallel_for, parallelize
 
-from . import (constants, greens, parallel, pltutils, results, solver, system, utils, wannier)
+from . import (constants, greens, parallel, results, solver, system, utils, wannier)
+from .utils import pltutils
 
 
 def tests(options=None, plugins=None):
@@ -56,7 +52,6 @@ def tests(options=None, plugins=None):
     """
     import pytest
     import pathlib
-    import matplotlib as mpl
     from .utils.misc import cd
 
     args = options or []

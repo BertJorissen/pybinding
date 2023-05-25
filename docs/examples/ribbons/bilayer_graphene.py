@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from pybinding.repository import graphene
 from math import pi, sqrt
 
-pb.pltutils.use_style()
+pb.utils.pltutils.use_style()
 
 
 def bilayer_graphene():

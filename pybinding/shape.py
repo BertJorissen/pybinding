@@ -7,8 +7,7 @@ import matplotlib
 from typing import Optional, Union
 
 from . import _cpp
-from . import pltutils
-from .utils import with_defaults
+from .utils import with_defaults, pltutils
 
 __all__ = ['FreeformShape', 'Polygon', 'CompositeShape',
            'circle', 'line', 'primitive', 'rectangle', 'regular_polygon',

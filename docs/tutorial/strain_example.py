@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from pybinding.repository import graphene
 from math import pi
 
-pb.pltutils.use_style()
+pb.utils.pltutils.use_style()
 
 
 def triaxial_strain(c):
@@ -43,6 +43,6 @@ for block, energy in zip(grid, [0, 0.25]):
     solver = pb.solver.arpack(model, k=30, sigma=energy)
     ldos_map = solver.calc_spatial_ldos(energy=energy, broadening=0.03)
     ldos_map.plot()
-    pb.pltutils.colorbar(label="LDOS")
+    pb.utils.pltutils.colorbar(label="LDOS")
 
 plt.show()

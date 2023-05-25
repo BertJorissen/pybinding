@@ -1,3 +1,3 @@
-from . import cpuinfo, progressbar
+from . import cpuinfo, progressbar, pltutils
 from .misc import *
 from .time import *

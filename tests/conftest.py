@@ -82,7 +82,7 @@ def plot_if_fails(request):
                 getattr(d[what], d['method'])(*d['args'], **d['kwargs'])
 
             plt.title(what)
-            pb.pltutils.legend()
+            pb.utils.pltutils.legend()
 
     gather = Gather()
     yield gather

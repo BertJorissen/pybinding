@@ -59,7 +59,7 @@ def _parallel_for(sequence, produce, retire, num_threads=num_cores, queue_size=n
 
         def produce(var):
             model = pb.Model(...)  # something that depends on var
-            greens = pb.greens.kpm(model)
+            greens = pb.greens.kpm(model)  # TODO: change this
             return greens.deferred_ldos(...)  # may also depend on var
 
         def retire(deferred, idx):
@@ -302,7 +302,7 @@ def parallel_for(factory, make_result=None):
         @parallelize(x=np.linspace(0, 1, 10))
         def factory(x):
             pb.Model(...)  # depends on `x`
-            greens = pb.greens.kpm(model)
+            greens = pb.greens.kpm(model)  # TODO: change this
             return greens.deferred_ldos(...)  # may also depend on `x`
 
         results = parallel_for(factory)
@@ -338,7 +338,7 @@ def parallelize(num_threads=num_cores, queue_size=num_cores, **kwargs):
         @parallelize(a=np.linspace(0, 1, 10), b=np.linspace(-2, 2, 10))
         def factory(a, b):
             pb.Model(...)  # depends on `a` and `b`
-            greens = pb.greens.kpm(model)
+            greens = pb.greens.kpm(model)  # TODO: change this
             return greens.deferred_ldos(...)  # may also depend on `a` and `b`
 
         results = parallel_for(factory)

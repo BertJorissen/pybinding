@@ -2,7 +2,7 @@
 import pybinding as pb
 import matplotlib.pyplot as plt
 
-pb.pltutils.use_style()
+pb.utils.pltutils.use_style()
 
 
 def trestle(d=0.2, t1=0.8 + 0.6j, t2=2):

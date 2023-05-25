@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from pybinding.repository import graphene
 from math import pi
 
-pb.pltutils.use_style()
+pb.utils.pltutils.use_style()
 
 
 def ring(inner_radius, outer_radius):
@@ -23,7 +23,7 @@ model = pb.Model(
     pb.translational_symmetry(a1=3.8, a2=False)  # period in nanometers
 )
 
-plt.figure(figsize=pb.pltutils.cm2inch(20, 7))
+plt.figure(figsize=pb.utils.pltutils.cm2inch(20, 7))
 model.plot()
 plt.show()
 
@@ -39,16 +39,16 @@ plt.show()
 solver.set_wave_vector(k=0)
 ldos = solver.calc_spatial_ldos(energy=0, broadening=0.01)  # LDOS around 0 eV
 
-plt.figure(figsize=pb.pltutils.cm2inch(20, 7))
+plt.figure(figsize=pb.utils.pltutils.cm2inch(20, 7))
 ldos.plot(site_radius=(0.03, 0.12))
-pb.pltutils.colorbar(label="LDOS")
+pb.utils.pltutils.colorbar(label="LDOS")
 plt.show()
 
 
 solver.set_wave_vector(k=pi/a)
 ldos = solver.calc_spatial_ldos(energy=0, broadening=0.01)  # LDOS around 0 eV
 
-plt.figure(figsize=pb.pltutils.cm2inch(20, 7))
+plt.figure(figsize=pb.utils.pltutils.cm2inch(20, 7))
 ldos.plot(site_radius=(0.03, 0.12))
-pb.pltutils.colorbar(label="LDOS")
+pb.utils.pltutils.colorbar(label="LDOS")
 plt.show()

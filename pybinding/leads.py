@@ -12,7 +12,8 @@ from numpy.typing import ArrayLike
 from typing import Optional
 
 from . import _cpp
-from . import pltutils, results
+from . import results
+from .utils import pltutils
 from .lattice import Lattice
 from .system import (System, plot_sites, plot_hoppings, structure_plot_properties,
                      decorate_structure_plot)

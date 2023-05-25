@@ -28,8 +28,8 @@ import kwant
 import pybinding as pb
 from pybinding.repository import graphene
 
-pb.pltutils.use_style()
-pb.pltutils.set_palette("Set1", start=3)
+pb.utils.pltutils.use_style()
+pb.utils.pltutils.set_palette("Set1", start=3)
 
 
 def calc_radius(num_sites, lattice=graphene.monolayer()):
@@ -115,8 +115,8 @@ def plot_time(sizes, times, label):
     plt.xlabel("system size (number of atoms)")
     plt.ylabel("build time (seconds)")
     plt.xlim(0.7 * min(sizes), 1.2 * max(sizes))
-    pb.pltutils.despine()
-    pb.pltutils.legend(loc='upper left', reverse=True)
+    pb.utils.pltutils.despine()
+    pb.utils.pltutils.legend(loc='upper left', reverse=True)
 
 
 def plot_memory(memory_profile, label):
@@ -130,8 +130,8 @@ def plot_memory(memory_profile, label):
     plt.title("RAM usage over time")
     plt.xlabel("build progress (%)")
     plt.ylabel("memory ({})".format(units))
-    pb.pltutils.despine()
-    pb.pltutils.legend(loc='upper left', reverse=True)
+    pb.utils.pltutils.despine()
+    pb.utils.pltutils.legend(loc='upper left', reverse=True)
 
 
 def measure_and_plot(sizes, interval=0.02):

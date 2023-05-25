@@ -574,11 +574,11 @@ def arpack(model: Model, k: int, sigma: float = 0, **kwargs) -> Solver:
 
 
 def dacp(model: Model, window: Tuple[float, float] = (-2, 2), random_vectors: int = 100,
-         filter_order: int = 30, tol: float = 1e-3, **kwargs) -> Solver:
+         filter_order: int = 30, tol: float = 1e-3, **kwargs) -> Optional[Solver]:
     """pyDACP :class:`.Solver` implementation for DACP method matrices
 
     Some more text about DACP blablabla...
-    ALso look at https://gitlab.kwant-project.org/qt/pyDACP and install it with
+    Also look at https://gitlab.kwant-project.org/qt/pyDACP and install it with
     >>pip install git+https://gitlab.kwant-project.org/qt/pyDACP
 
     Parameters
@@ -593,8 +593,13 @@ def dacp(model: Model, window: Tuple[float, float] = (-2, 2), random_vectors: in
     :class:`~pybinding.solver.Solver`
     """
 
+    try:
+        from dacp.datp import eigvalsh
+    except ImportError:
+        ImportError("pyDACP not found, install using 'pip install git+https://gitlab.kwant-project.org/qt/pyDACP'.")
+        return None
+
     def solver_func(hamiltonian: csr_matrix, **kw) -> tuple[np.ndarray, np.ndarray]:
-        from dacp.dacp import eigvalsh
         eigenvalues = eigvalsh(
             hamiltonian.toarray(),
             window=window,

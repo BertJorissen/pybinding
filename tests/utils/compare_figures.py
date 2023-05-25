@@ -10,7 +10,7 @@ import matplotlib.units
 import matplotlib.pyplot as plt
 from matplotlib.testing.compare import compare_images
 
-import pybinding.pltutils as pltutils
+import pybinding.utils.pltutils as pltutils
 
 from .path import path_from_fixture
 

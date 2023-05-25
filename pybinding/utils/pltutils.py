@@ -14,7 +14,7 @@ from numpy.typing import ArrayLike
 from matplotlib.collections import LineCollection
 from matplotlib.colors import ListedColormap
 
-from .utils import with_defaults
+from .misc import with_defaults
 
 __all__ = ['cm2inch', 'colorbar', 'despine', 'despine_all', 'get_palette', 'legend', 'respine',
            'set_palette', 'use_style']
