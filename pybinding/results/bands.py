@@ -9,7 +9,7 @@ import matplotlib
 
 from ..utils import with_defaults, x_pi, pltutils
 from ..support.pickle import pickleable
-from .path import Path, Area
+from .path import Path, Area, AbstractArea
 from .series import Series
 from matplotlib.collections import LineCollection, PathCollection
 
@@ -452,7 +452,7 @@ class FatBands(Bands):
 
 
 @pickleable
-class BandsArea(Bands):
+class BandsArea(AbstractArea, Bands):
     """Band structure alond an area in k-space
 
     Parameters
@@ -464,13 +464,8 @@ class BandsArea(Bands):
         Energy values for the bands along the path in k-space.
     """
     def __init__(self, k_area: Area, energy: ArrayLike):
-        self.k_dims = np.shape(k_area)
-        k_path: Path = Path(
-            np.atleast_1d(k_area.reshape(np.prod(self.k_dims[:2]), -1)),
-            k_area.point_indices,
-            k_area.point_labels
-        )
-        super().__init__(k_path, self.area_to_list(energy))
+        super().__init__(k_area)
+        super(AbstractArea, self).__init__(self.karea_to_kpath(k_area), self.area_to_list(energy))
 
     @property
     def energy_area(self) -> np.ndarray:
@@ -479,28 +474,6 @@ class BandsArea(Bands):
     @energy_area.setter
     def energy_area(self, energy: np.ndarray):
         self.energy = self.area_to_list(np.atleast_2d(energy))
-
-    def area_to_list(self, data: ArrayLike) -> np.ndarray:
-        data_size = [self.k_dims[0] * self.k_dims[1]]
-        data = np.atleast_2d(data)
-        for ds in data.shape[2:]:
-            data_size.append(ds)
-        return data.reshape(data_size)
-
-    def list_to_area(self, data: ArrayLike) -> np.ndarray:
-        data_size = [self.k_dims[0], self.k_dims[1]]
-        data = np.atleast_1d(data)
-        for ds in data.shape[1:]:
-            data_size.append(ds)
-        return data.reshape(data_size)
-
-    @property
-    def k_area(self) -> Area:
-        return Area(
-            self.k_path.reshape(self.k_dims[0], self.k_dims[1], -1),
-            self.k_path.point_indices,
-            self.k_path.point_labels
-        )
 
     def plot_karea(self, point_labels: Optional[List[str]] = None, **kwargs) -> None:
         """Scatter plot of the k-area along which the bands were computed

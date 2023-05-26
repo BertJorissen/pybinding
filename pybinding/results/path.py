@@ -8,7 +8,7 @@ from matplotlib.patches import FancyArrow
 
 from ..utils import with_defaults, pltutils
 
-__all__ = ['make_path', 'Path', 'make_area', 'Area']
+__all__ = ['make_path', 'Path', 'make_area', 'Area', 'AbstractArea']
 
 
 class Path(np.ndarray):
@@ -88,7 +88,10 @@ class Path(np.ndarray):
             else:  # return the first axis with non-zero length
                 return self[:, np.flatnonzero(np.diff(self.points, axis=0))[0]]
         else:
-            return np.append([0], np.sqrt((np.diff(self, axis=0) ** 2).dot(np.ones((self.shape[1], 1)))).cumsum())
+            if len(self.shape) == 1:
+                return np.append([0], np.sqrt((np.diff(self, axis=0) ** 2)).cumsum())
+            else:
+                return np.append([0], np.sqrt((np.diff(self, axis=0) ** 2).dot(np.ones((self.shape[1], 1)))).cumsum())
 
     def plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None,
              **kwargs) -> FancyArrow:
@@ -214,8 +217,45 @@ class Area(Path):
         return out
 
 
+class AbstractArea:
+    """Abstract class to implement features to interact with the Area"""
+
+    def __init__(self, k_area: Area):
+        self.k_dims = np.shape(k_area)
+        self.k_path: Optional[Path] = None  # to be overloaded
+        self.data: Optional[np.ndarray] = None  # to be overloaded
+
+    def karea_to_kpath(self, k_area: Area) -> Path:
+        return Path(
+            np.atleast_1d(k_area.reshape(np.prod(self.k_dims[:2]), -1)),
+            k_area.point_indices,
+            k_area.point_labels
+        )
+
+    def area_to_list(self, data: ArrayLike) -> np.ndarray:
+        data_size = [self.k_dims[0] * self.k_dims[1]]
+        data = np.atleast_2d(data)
+        for ds in data.shape[2:]:
+            data_size.append(ds)
+        return data.reshape(data_size)
+
+    def list_to_area(self, data: ArrayLike) -> np.ndarray:
+        data_size = [self.k_dims[0], self.k_dims[1]]
+        data = np.atleast_1d(data)
+        for ds in data.shape[1:]:
+            data_size.append(ds)
+        return np.swapaxes(data.reshape(data_size), 0, 1)
+
+    @property
+    def k_area(self) -> Area:
+        return Area(
+            self.list_to_area(self.k_path),
+            self.k_path.point_indices,
+            self.k_path.point_labels
+        )
+
+
 def make_area(k0: ArrayLike, k1: ArrayLike, k_origin: Optional[ArrayLike] = None, step: float = 1,
-              point_indices: Optional[Union[List[int], List[List[int]]]] = None,
               point_labels: Optional[List[str]] = None,) -> Area:
     """Create an area of k-point between k0 and k1, starting from k_origin.
 
@@ -246,6 +286,6 @@ def make_area(k0: ArrayLike, k1: ArrayLike, k_origin: Optional[ArrayLike] = None
     k_points = k_x[:, :, np.newaxis] * k0[np.newaxis, np.newaxis, :]
     k_points += k_y[:, :, np.newaxis] * k1[np.newaxis, np.newaxis, :]
     k_points += k_origin[np.newaxis, np.newaxis, :]
-    point_indices = [0, k_points.shape[0] - 1, k_points.shape[0] * (k_points.shape[0] - 1),
-                     k_points.shape[0] * k_points.shape[0] - 1]
+    point_indices = [0, k_points.shape[1] - 1, (k_points.shape[0] - 1) * k_points.shape[1],
+                     k_points.shape[0] * k_points.shape[1] - 1]
     return Area(k_points, point_indices, point_labels)

@@ -10,7 +10,7 @@ from ..utils import with_defaults, pltutils
 from ..support.pickle import pickleable
 from matplotlib.collections import LineCollection, QuadMesh
 
-from .path import Path, Area
+from .path import Path, Area, AbstractArea
 __all__ = ['Series', 'SeriesPath', 'SeriesArea']
 
 
@@ -195,7 +195,7 @@ class SeriesPath(Series):
         return pltutils.colorbar(**with_defaults(kwargs, label=self.labels["data"]))
 
 
-class SeriesArea(SeriesPath):
+class SeriesArea(AbstractArea, SeriesPath):
     """A series of data points determined by a common relation, i.e. :math:`y = f(x)`, with x in the reciprocal area
 
     Attributes
@@ -211,13 +211,8 @@ class SeriesArea(SeriesPath):
     """
 
     def __init__(self, k_area: Area, data: ArrayLike, labels: Optional[dict] = None):
-        self.k_dims = np.shape(k_area)
-        k_path = Path(
-            np.atleast_1d(k_area.reshape(np.prod(self.k_dims[:2]), -1)),
-            k_area.point_indices,
-            k_area.point_labels
-        )
-        super().__init__(k_path, self.area_to_list(np.atleast_3d(data)), labels)
+        super().__init__(k_area)
+        super(AbstractArea, self).__init__(self.karea_to_kpath(k_area), self.area_to_list(np.atleast_3d(data)), labels)
 
     def area_plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None, idx: int = 0,
                   colorbar: bool = True, **kwargs) -> QuadMesh:
@@ -258,17 +253,3 @@ class SeriesArea(SeriesPath):
     @data_area.setter
     def data_area(self, data: np.ndarray):
         self.data = self.area_to_list(data)
-
-    def area_to_list(self, data: ArrayLike) -> np.ndarray:
-        data_size = [self.k_dims[0] * self.k_dims[1]]
-        data = np.atleast_2d(data)
-        for ds in data.shape[2:]:
-            data_size.append(ds)
-        return data.reshape(data_size)
-
-    def list_to_area(self, data: ArrayLike) -> np.ndarray:
-        data_size = [self.k_dims[0], self.k_dims[1]]
-        data = np.atleast_1d(data)
-        for ds in data.shape[1:]:
-            data_size.append(ds)
-        return data.reshape(data_size)

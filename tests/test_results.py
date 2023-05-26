@@ -13,6 +13,120 @@ def model():
     return pb.Model(graphene.monolayer(), pb.rectangle(1))
 
 
+def test_eigenvalues():
+    eigh = np.arange(-1, 3)
+    prob = np.linspace(0, .5, 4)
+    prob /= np.sum(prob)
+    eigenvalues = pb.results.Eigenvalues(eigh, prob)
+    assert np.all(eigenvalues.indices == np.arange(4))
+
+
+def test_path():
+    k_begin, k_end = [-1], [2]
+    point_labels = [r"$\nu$", r"$\theta$"]
+    k_path_path = pb.results.Path(np.linspace(k_begin, k_end, 15), [0, 14], point_labels=point_labels)
+    assert np.all(k_path_path == np.linspace(k_begin, k_end, 15))
+    assert k_path_path.point_labels == point_labels
+    assert np.all(k_path_path.as_1d() == np.linspace(k_begin[0], k_end[0], 15))
+    assert k_path_path.is_simple
+    assert np.all(k_path_path.point_indices == [0, 14])
+    assert np.all(k_path_path.points == np.array([k_begin, k_end]))
+    assert np.all(k_path_path.shape == (15, 1))
+
+    k_path_make = pb.results.make_path(k_begin, k_end, step=0.2, point_labels=point_labels)
+    assert np.all(k_path_path == k_path_make)
+    assert k_path_path.point_labels == k_path_make.point_labels
+    assert np.all(k_path_path.as_1d() == k_path_make.as_1d())
+    assert k_path_path.is_simple == k_path_make.is_simple
+    assert np.all(k_path_path.point_indices == k_path_path.point_indices)
+    assert np.all(k_path_path.points == k_path_make.points)
+    assert np.all(k_path_path.shape == k_path_make.shape)
+
+    k_begin, k_end = [-1, 0, 1], [-1, 3, 4]
+    k_path_path = pb.results.Path(np.vstack((np.linspace(-1, -1, 16), np.linspace(0, 3, 16), np.linspace(1, 4, 16))).T,
+                                  [0, 15])
+    assert np.all(k_path_path == np.vstack((np.linspace(-1, -1, 16), np.linspace(0, 3, 16), np.linspace(1, 4, 16))).T)
+    assert k_path_path.point_labels is None
+    assert np.all(k_path_path.as_1d() == np.linspace(0, 3, 16))
+    assert k_path_path.is_simple
+    assert np.all(k_path_path.point_indices == [0, 15])
+    assert np.all(k_path_path.points == np.array([k_begin, k_end]))
+    assert np.all(k_path_path.shape == (16, 3))
+
+    k_path_make = pb.results.make_path(k_begin, k_end, step=0.27)
+    assert np.all(k_path_path == k_path_make)
+    assert k_path_path.point_labels == k_path_make.point_labels
+    assert np.all(k_path_path.as_1d() == k_path_make.as_1d())
+    assert k_path_path.is_simple == k_path_make.is_simple
+    assert np.all(k_path_path.point_indices == k_path_path.point_indices)
+    assert np.all(k_path_path.points == k_path_make.points)
+    assert np.all(k_path_path.shape == k_path_make.shape)
+
+    k_begin, k_mid, k_end = -1, 10, 2
+    k_path_path = pb.results.Path(np.hstack((np.linspace(k_begin, k_mid, 11, endpoint=False),
+                                             np.linspace(k_mid, k_end, 9))),
+                                  [0, 11, 19])
+    assert np.all(k_path_path == np.hstack((np.linspace(k_begin, k_mid, 11, endpoint=False),
+                                            np.linspace(k_mid, k_end, 9))))
+    assert k_path_path.point_labels is None
+    assert np.all(k_path_path.as_1d() == np.hstack((np.linspace(0, 11, 11, endpoint=False), np.linspace(11, 19, 9))))
+    assert not k_path_path.is_simple
+    assert np.all(k_path_path.point_indices == [0, 11, 19])
+    assert np.all(k_path_path.points == np.array([k_begin, k_mid, k_end]))
+    assert np.all(k_path_path.shape == (20,))
+
+    k_path_make = pb.results.make_path(k_begin, k_mid, k_end, step=0.95)[:, 0]
+    assert np.all(k_path_path == k_path_make)
+    assert k_path_path.point_labels == k_path_make.point_labels
+    assert np.all(k_path_path.as_1d() == k_path_make.as_1d())
+    assert k_path_path.is_simple == k_path_make.is_simple
+    assert np.all(k_path_path.point_indices == k_path_path.point_indices)
+    assert np.all(k_path_path.points == k_path_make.points)
+    assert np.all(k_path_path.shape == k_path_make.shape)
+
+    k_begin, k_mid, k_end = [-1, 0, 1], [-1, 0, 2], [1, 1, 4]
+    k_path_path = pb.results.Path(np.vstack((
+        np.vstack((np.linspace(-1, -1, 1, endpoint=False), np.linspace(0, 0, 1, endpoint=False),
+                   np.linspace(1, 2, 1, endpoint=False))).T,
+        np.vstack((np.linspace(-1, 1, 6), np.linspace(0, 1, 6), np.linspace(2, 4, 6))).T)),
+        [0, 1, 6])
+    assert np.all(k_path_path == np.vstack((
+        np.vstack((np.linspace(-1, -1, 1, endpoint=False), np.linspace(0, 0, 1, endpoint=False),
+                   np.linspace(1, 2, 1, endpoint=False))).T,
+        np.vstack((np.linspace(-1, 1, 6), np.linspace(0, 1, 6), np.linspace(2, 4, 6))).T)))
+    assert k_path_path.point_labels is None
+    assert np.all(np.abs(k_path_path.as_1d() - np.hstack((np.linspace(0, 1, 1, endpoint=False),
+                                                          np.linspace(1, 4, 6)))) < 1e-6)
+    assert not k_path_path.is_simple
+    assert np.all(k_path_path.point_indices == [0, 1, 6])
+    assert np.all(k_path_path.points == np.array([k_begin, k_mid, k_end]))
+    assert np.all(k_path_path.shape == (7, 3))
+    k_path_make = pb.results.make_path(k_begin, k_mid, k_end, step=0.6)
+    assert np.all(k_path_path == k_path_make)
+    assert k_path_path.point_labels == k_path_make.point_labels
+    assert np.all(k_path_path.as_1d() == k_path_make.as_1d())
+    assert k_path_path.is_simple == k_path_make.is_simple
+    assert np.all(k_path_path.point_indices == k_path_path.point_indices)
+    assert np.all(k_path_path.points == k_path_make.points)
+    assert np.all(k_path_path.shape == k_path_make.shape)
+
+
+def test_area():
+    k_origin, k_left, k_right = np.array([-1, 2, 3]), np.array([-1, 0, 1]), np.array([1, 1, -1])
+    k_array = np.array(
+        [[[-1.        ,  2.        ,  3.        ],
+          [-2.        ,  2.        ,  4.        ]],
+         [[-0.66666667,  2.33333333,  2.66666667],
+          [-1.66666667,  2.33333333,  3.66666667]],
+         [[-0.33333333,  2.66666667,  2.33333333],
+          [-1.33333333,  2.66666667,  3.33333333]],
+         [[ 0.        ,  3.        ,  2.        ],
+          [-1.        ,  3.        ,  3.        ]]]
+    )
+    k_area_area = pb.results.Area(k_array)
+    k_area_make = pb.results.make_area(k_left, k_right, k_origin)
+    assert np.all(np.abs(k_area_area - k_area_make) < 1e-6)
+
 def test_sweep():
     x0 = np.arange(3)
     y0 = np.arange(-1, 2)
