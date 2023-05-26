@@ -220,7 +220,7 @@ class SeriesArea(SeriesPath):
         super().__init__(k_path, self.area_to_list(np.atleast_3d(data)), labels)
 
     def area_plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None, idx: int = 0,
-                  plot_colorbar: bool = True, **kwargs) -> QuadMesh:
+                  colorbar: bool = True, **kwargs) -> QuadMesh:
         """Line plot of the band structure with the color of the lines the data of the FatBands.
 
         Parameters
@@ -242,11 +242,11 @@ class SeriesArea(SeriesPath):
 
         ax.set_title(self.labels["title"])
         mesh = ax.pcolormesh(self.list_to_area(self.k_path[:, 0]), self.list_to_area(self.k_path[:, 1]),
-                             self.data_area[:-1, :-1, idx].T,
+                             self.data_area[:-1, :-1, idx],
                              **with_defaults(kwargs, cmap='RdYlBu_r', rasterized=True))
         ax._sci(mesh)
 
-        if plot_colorbar:
+        if colorbar:
             self.colorbar(ax=ax, label=self.labels["orbitals"][idx])
         self.k_path.decorate_plot(point_labels, ax)
         return mesh
