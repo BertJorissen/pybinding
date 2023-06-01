@@ -266,7 +266,7 @@ class StructureMap(SpatialMap):
         """Boundary hoppings between different translation units (only for infinite systems)"""
         return self._boundaries
 
-    def __getitem__(self, idx: int or list[int]) -> 'StructureMap':
+    def __getitem__(self, idx: Union[int, List[int]]) -> 'StructureMap':
         """Same rules as numpy indexing"""
         if hasattr(idx, "contains"):
             idx = idx.contains(*self.positions)  # got a Shape object -> evaluate it

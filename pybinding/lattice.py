@@ -288,7 +288,7 @@ class Lattice:
         cp.min_neighbors = number
         return cp
 
-    def reciprocal_vectors(self) -> list[np.ndarray]:
+    def reciprocal_vectors(self) -> List[np.ndarray]:
         """Calculate the reciprocal space lattice vectors
 
         Returns
@@ -307,7 +307,7 @@ class Lattice:
         mat = np.vstack([mat, np.zeros(shape=(3 - n, n))])
         return [v.squeeze() for v in np.hsplit(mat, n)]
 
-    def brillouin_zone(self) -> list[np.ndarray]:
+    def brillouin_zone(self) -> List[np.ndarray]:
         """Return a list of vertices which form the Brillouin zone (1D and 2D only)
 
         Returns

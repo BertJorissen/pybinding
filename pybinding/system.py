@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 import scipy.sparse
 from matplotlib.collections import LineCollection
 from numpy.typing import ArrayLike
-from typing import Literal, Optional, Union, Iterable, Tuple
+from typing import Literal, Optional, Union, Iterable, Tuple, List
 from matplotlib.pyplot import Axes as plt_axes
 
 from . import _cpp
@@ -266,7 +266,7 @@ def _data_units_to_points(ax: plt_axes, value: Union[float, np.ndarray]) -> Unio
 def plot_sites(positions: Tuple[ArrayLike, ArrayLike, ArrayLike], data: ArrayLike,
                radius: Union[float, ArrayLike] = 0.025,
                offset: Tuple[float, float, float] = (0, 0, 0), blend: float = 1.0,
-               cmap: Union[str, list[str]] = 'auto', axes: Literal['xyz', 'xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 'xyz',
+               cmap: Union[str, List[str]] = 'auto', axes: Literal['xyz', 'xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 'xyz',
                ax: Optional[plt.Axes] = None, **kwargs) -> Optional[matplotlib.collections.CircleCollection]:
     """Plot circles at lattice site `positions` with colors based on `data`
 
@@ -489,7 +489,7 @@ def plot_hoppings(positions: Tuple[ArrayLike, ArrayLike, ArrayLike], hoppings: s
     return col
 
 
-def _make_shift_set(boundaries: list[_cpp.Boundary], level: Union[int, list[int]]) -> FuzzySet:
+def _make_shift_set(boundaries: List[_cpp.Boundary], level: Union[int, List[int]]) -> FuzzySet:
     """Return a set of boundary shift combinations for the given repetition level"""
     if level == 0:
         return FuzzySet([np.zeros(3)])
