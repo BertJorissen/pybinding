@@ -1,3 +1,4 @@
+"""Package for numerical tight-binding calculations in solid state physics"""
 import os
 import sys
 if sys.platform.startswith("linux"):
