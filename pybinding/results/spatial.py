@@ -358,7 +358,7 @@ class Structure(AbstractStructure):
         """Boundary hoppings between different translation units (only for infinite systems)"""
         return self._boundaries
 
-    def __getitem__(self, idx: Union[int, list[int]]) -> 'Structure':
+    def __getitem__(self, idx: Union[int, List[int]]) -> 'Structure':
         """Same rules as numpy indexing"""
         if hasattr(idx, "contains"):
             idx = idx.contains(*self.positions)  # got a Shape object -> evaluate it

@@ -4,9 +4,8 @@ import warnings
 from copy import deepcopy
 from math import pi, atan2, sqrt
 from numpy.typing import ArrayLike
-from collections.abc import Iterable
 from matplotlib.pyplot import Axes as plt_axes
-from typing import Optional, Union
+from typing import Optional, Union, Iterable
 from pathlib import Path
 
 import numpy as np
