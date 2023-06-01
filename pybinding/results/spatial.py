@@ -67,7 +67,7 @@ class AbstractStructure:
         """1D array of sublattices IDs, short for :attr:`.sublattices <.SpatialMap.sublattices>`"""
         return self._sites.ids
 
-    def __getitem__(self, idx: Union[int, list[int]]) -> 'AbstractStructure':
+    def __getitem__(self, idx: Union[int, List[int]]) -> 'AbstractStructure':
         """Same rules as numpy indexing"""
         if hasattr(idx, "contains"):
             idx = idx.contains(*self.positions)  # got a Shape object -> evaluate it
