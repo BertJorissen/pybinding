@@ -279,7 +279,7 @@ class StructureMap(SpatialMap):
         result._data = data
         return result
 
-    def plot(self, cmap: str = 'YlGnBu', site_radius: tuple[float, float] = (0.03, 0.05), num_periods: int = 1,
+    def plot(self, cmap: str = 'YlGnBu', site_radius: Tuple[float, float] = (0.03, 0.05), num_periods: int = 1,
              ax: Optional[plt.Axes] = None, **kwargs) -> Optional[matplotlib.collections.CircleCollection]:
         """Plot the spatial structure with a colormap of :attr:`data` at the lattice sites
 

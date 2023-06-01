@@ -232,7 +232,7 @@ class CompositeShape(_cpp.Shape, _CompositionMixin):
         super(CompositeShape, shape).__init__(vertices, contains)
         return shape
 
-    def plot(self, resolution: tuple[int, int] = (1000, 1000), **kwargs) -> matplotlib.image.AxesImage:
+    def plot(self, resolution: Tuple[int, int] = (1000, 1000), **kwargs) -> matplotlib.image.AxesImage:
         """Plot a lightly shaded silhouette of the composite shape
 
         Parameters
