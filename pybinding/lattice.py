@@ -5,7 +5,7 @@ from copy import deepcopy
 from math import pi, atan2, sqrt
 from numpy.typing import ArrayLike
 from matplotlib.pyplot import Axes as plt_axes
-from typing import Optional, Union, Iterable
+from typing import Optional, Union, Iterable, Tuple
 from pathlib import Path
 
 import numpy as np
@@ -144,7 +144,7 @@ class Lattice:
         else:
             self.impl.add_sublattice(name, position, np.asarray(onsite_energy))
 
-    def add_sublattices(self, *sublattices: Iterable[str, ArrayLike, Union[float, np.ndarray]]) -> None:
+    def add_sublattices(self, *sublattices: Iterable[Tuple[str, ArrayLike, Union[float, np.ndarray]]]) -> None:
         """Add multiple new sublattices
 
         Parameters
@@ -192,7 +192,7 @@ class Lattice:
         """
         self.impl.add_alias(name, original, position)
 
-    def add_aliases(self, *aliases: Iterable[str, str, ArrayLike]) -> None:
+    def add_aliases(self, *aliases: Iterable[Tuple[str, str, ArrayLike]]) -> None:
         """Add multiple new aliases
 
         Parameters
@@ -226,7 +226,7 @@ class Lattice:
         """
         self.impl.add_hopping(relative_index, from_sub, to_sub, hop_name_or_energy)
 
-    def add_hoppings(self, *hoppings: Iterable[Union[ArrayLike, int], str, str, Union[str, float, np.ndarray]]) -> None:
+    def add_hoppings(self, *hoppings: Iterable[Tuple[Union[ArrayLike, int], str, str, Union[str, float, np.ndarray]]]) -> None:
         """Add multiple new hoppings
 
         Parameters
