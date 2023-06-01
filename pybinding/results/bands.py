@@ -80,7 +80,7 @@ class Eigenvalues:
         self._decorate_plot(mark_degenerate, show_indices, ax=ax)
         return collection
 
-    def plot_heatmap(self, size: tuple[int, int] = (7, 77), mark_degenerate: bool = True, show_indices: bool = False,
+    def plot_heatmap(self, size: Tuple[int, int] = (7, 77), mark_degenerate: bool = True, show_indices: bool = False,
                      ax: Optional[plt.Axes] = None, **kwargs) -> Optional[float]:
         """Eigenvalues scatter plot with a heatmap indicating probability density
 
@@ -133,7 +133,7 @@ class Bands:
         self.k_path: Path = np.atleast_1d(k_path).view(Path)
         self.energy: np.ndarray = np.atleast_2d(energy).T if np.ndim(energy) == 1 else np.atleast_2d(energy)
 
-    def _point_names(self, k_points: list[float]) -> list[str]:
+    def _point_names(self, k_points: List[float]) -> List[str]:
         names = []
         if self.k_path.point_labels:
             return self.k_path.point_labels

@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from math import pi
 from scipy.sparse import csr_matrix
 from numpy.typing import ArrayLike
-from typing import Optional
+from typing import Optional, Tuple
 
 from . import _cpp
 from . import results
@@ -21,7 +21,7 @@ from .system import (System, plot_sites, plot_hoppings, structure_plot_propertie
 __all__ = ['Lead']
 
 
-def _center(pos: ArrayLike, shift: ArrayLike) -> tuple[float, float]:
+def _center(pos: ArrayLike, shift: ArrayLike) -> Tuple[float, float]:
     """Return the 2D center position of `pos + shift`"""
     x = np.concatenate((pos[0], pos[0] + shift[0]))
     y = np.concatenate((pos[1], pos[1] + shift[1]))

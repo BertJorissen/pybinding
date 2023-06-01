@@ -8,9 +8,8 @@ import matplotlib.pyplot as plt
 import scipy.sparse
 from matplotlib.collections import LineCollection
 from numpy.typing import ArrayLike
-from typing import Literal, Optional, Union
+from typing import Literal, Optional, Union, Iterable, Tuple
 from matplotlib.pyplot import Axes as plt_axes
-from collections.abc import Iterable
 
 from . import _cpp
 from .lattice import Lattice
@@ -264,9 +263,9 @@ def _data_units_to_points(ax: plt_axes, value: Union[float, np.ndarray]) -> Unio
     return value * (length / data_range)
 
 
-def plot_sites(positions: tuple[ArrayLike, ArrayLike, ArrayLike], data: ArrayLike,
+def plot_sites(positions: Tuple[ArrayLike, ArrayLike, ArrayLike], data: ArrayLike,
                radius: Union[float, ArrayLike] = 0.025,
-               offset: tuple[float, float, float] = (0, 0, 0), blend: float = 1.0,
+               offset: Tuple[float, float, float] = (0, 0, 0), blend: float = 1.0,
                cmap: Union[str, list[str]] = 'auto', axes: Literal['xyz', 'xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 'xyz',
                ax: Optional[plt.Axes] = None, **kwargs) -> Optional[matplotlib.collections.CircleCollection]:
     """Plot circles at lattice site `positions` with colors based on `data`

@@ -56,7 +56,7 @@ class Sweep:
         trans = str.maketrans('', '', '$\\')
         return {k: v.translate(trans) for k, v in self.labels.items()}
 
-    def _xy_grids(self) -> tuple[np.ndarray, np.ndarray]:
+    def _xy_grids(self) -> Tuple[np.ndarray, np.ndarray]:
         """Expand x and y into 2D arrays matching data."""
         xgrid = np.column_stack([self.x] * self.y.size)
         ygrid = np.row_stack([self.y] * self.x.size)

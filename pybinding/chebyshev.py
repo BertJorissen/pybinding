@@ -324,7 +324,7 @@ class _ComputeProgressReporter:
             self.pbar += delta
 
 
-def kpm(model: Model, energy_range: Optional[tuple[float, float]] = None,
+def kpm(model: Model, energy_range: Optional[Tuple[float, float]] = None,
         kernel: KernelType = "default",
         num_threads: Union[int, Literal["auto"]] = "auto", silent: bool = False, **kwargs) -> KPM:
     """The default CPU implementation of the Kernel Polynomial Method
@@ -368,7 +368,7 @@ def kpm(model: Model, energy_range: Optional[tuple[float, float]] = None,
     return KPM(_cpp.kpm(model, energy_range or (0, 0), **kwargs))
 
 
-def kpm_cuda(model: Model, energy_range: Optional[tuple[float, float]] = None,
+def kpm_cuda(model: Model, energy_range: Optional[Tuple[float, float]] = None,
              kernel: KernelType = "default", **kwargs) -> KPM:
     """Same as :func:`kpm` except that it's executed on the GPU using CUDA (if supported)
 
@@ -439,7 +439,7 @@ def dirichlet_kernel() -> _cpp.KPMKernel:
 class _PythonImpl:
     """Basic Python/SciPy implementation of KPM"""
 
-    def __init__(self, model: Model, energy_range: tuple[float, float], kernel: _cpp.KPMKernel, **_):
+    def __init__(self, model: Model, energy_range: Tuple[float, float], kernel: _cpp.KPMKernel, **_):
         self.model = model
         self.energy_range = energy_range
         self.kernel = kernel
@@ -453,7 +453,7 @@ class _PythonImpl:
         s["eps"] = s["nnz"] / s["moments_time"]
         return s
 
-    def _scaling_factors(self) -> tuple[float, float]:
+    def _scaling_factors(self) -> Tuple[float, float]:
         """Compute the energy bounds of the model and return the appropriate KPM scaling factors"""
         def find_bounds():
             if self.energy_range[0] != self.energy_range[1]:

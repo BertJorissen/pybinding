@@ -2,9 +2,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy.typing import ArrayLike
-from collections.abc import Callable
 import matplotlib
-from typing import Optional, Union
+from typing import Optional, Union, Callable, Tuple
 
 from . import _cpp
 from .utils import with_defaults, pltutils
@@ -14,7 +13,7 @@ __all__ = ['FreeformShape', 'Polygon', 'CompositeShape',
            'translational_symmetry']
 
 
-def _plot_freeform_shape(vertices: list[ArrayLike], contains: Callable, resolution: tuple[int, int] = (1000, 1000),
+def _plot_freeform_shape(vertices: list[ArrayLike], contains: Callable, resolution: Tuple[int, int] = (1000, 1000),
                          ax: Optional[plt.Axes] = None, **kwargs) -> matplotlib.image.AxesImage:
     """Plot the area where `contains(x, y, z)` is True within the polygon given by `vertices`
 
@@ -178,7 +177,7 @@ class FreeformShape(_cpp.FreeformShape, _CompositionMixin):
             return self.contains(*r)
         return FreeformShape(contains, self.width, self.center[:len(vector)] + vector)
 
-    def plot(self, resolution: tuple[int, int] = (1000, 1000), **kwargs) -> matplotlib.image.AxesImage:
+    def plot(self, resolution: Tuple[int, int] = (1000, 1000), **kwargs) -> matplotlib.image.AxesImage:
         """Plot a lightly shaded silhouette of the freeform shape
 
         This method only works for 2D shapes.

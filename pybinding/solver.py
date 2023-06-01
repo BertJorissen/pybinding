@@ -14,13 +14,11 @@ eigenvalues and eigenvectors. See :class:`._SolverPythonImpl` for example.
 """
 import time
 import math
-import warnings
 
 import numpy as np
 from scipy.sparse import csr_matrix
 from numpy.typing import ArrayLike
-from collections.abc import Iterable, Callable
-from typing import Optional, Union, Tuple, List
+from typing import Optional, Union, Tuple, List, Iterable, Callable
 
 from . import _cpp
 from . import results
@@ -300,7 +298,7 @@ class Solver:
         step : float, optional
             Calculation step length in reciprocal space units. Lower `step` values
             will return more detailed results.
-        point_labels : list[str], optional
+        point_labels : List[str], optional
             The point_labels for plots
 
         Returns
@@ -363,7 +361,7 @@ class Solver:
         step : float, optional
             Calculation step length in reciprocal space units. Lower `step` values
             will return more detailed results.
-        point_labels : list[str], optional
+        point_labels : List[str], optional
             The point_labels for plots
 
         Returns
@@ -426,7 +424,7 @@ class Solver:
             self.system.expanded_sublattices, self.system)
 
     @staticmethod
-    def find_degenerate_states(energies: ArrayLike, abs_tolerance: float = 1e-5) -> list[list[float]]:
+    def find_degenerate_states(energies: ArrayLike, abs_tolerance: float = 1e-5) -> List[List[float]]:
         """Return groups of indices which belong to degenerate states
 
         Parameters
@@ -534,7 +532,7 @@ def lapack(model: Model, **kwargs) -> Solver:
     -------
     :class:`~pybinding.solver.Solver`
     """
-    def solver_func(hamiltonian: csr_matrix, **kw) -> tuple[np.ndarray, np.ndarray]:
+    def solver_func(hamiltonian: csr_matrix, **kw) -> Tuple[np.ndarray, np.ndarray]:
         from scipy.linalg import eigh
         return eigh(hamiltonian.toarray(), **kw)
 
@@ -599,7 +597,7 @@ def dacp(model: Model, window: Tuple[float, float] = (-2, 2), random_vectors: in
         ImportError("pyDACP not found, install using 'pip install git+https://gitlab.kwant-project.org/qt/pyDACP'.")
         return None
 
-    def solver_func(hamiltonian: csr_matrix, **kw) -> tuple[np.ndarray, np.ndarray]:
+    def solver_func(hamiltonian: csr_matrix, **kw) -> Tuple[np.ndarray, np.ndarray]:
         eigenvalues = eigvalsh(
             hamiltonian.toarray(),
             window=window,
@@ -613,7 +611,7 @@ def dacp(model: Model, window: Tuple[float, float] = (-2, 2), random_vectors: in
     return Solver(_SolverPythonImpl(solver_func, model, **kwargs))
 
 
-def feast(model: Model, energy_range: tuple[float, float], initial_size_guess: int, recycle_subspace: bool = False,
+def feast(model: Model, energy_range: Tuple[float, float], initial_size_guess: int, recycle_subspace: bool = False,
           is_verbose: bool = False) -> Solver:
     """FEAST :class:`.Solver` implementation for sparse matrices
 
