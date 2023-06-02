@@ -7,9 +7,13 @@ permissions:
 jobs:
   test-build-1:
     name: Test Build on Ubuntu with Python 3.10
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     env:
       PB_BUILD_TYPE: Release
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+        python-version: [ "3.8", "3.9", "3.10", "3.11" ]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -17,7 +21,7 @@ jobs:
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: [ "3.6", "3.7", "3.8", "3.9", "3.10", "3.11" ]
+          python-version: ${{ matrix.python-version }}
       - name: Install dependencies for Pybinding
         run: python -m pip install wheel scipy matplotlib pytest cmake ninja
       - name: ccache
