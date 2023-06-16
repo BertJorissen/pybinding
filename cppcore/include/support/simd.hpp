@@ -342,24 +342,24 @@ Vec<N, void> addsub(Vec<N, E1> const& a, Vec<N, E2> const& b) {
 #if SIMDPP_USE_SSE3
 template<class E1, class E2> CPB_ALWAYS_INLINE
 float32x4 addsub(float32<4, E1> const& a, float32<4, E2> const& b) {
-    return _mm_addsub_ps(a.eval(), b.eval());
+    return _mm_addsub_ps(a.eval().native(), b.eval().native());
 }
 
 template<class E1, class E2> CPB_ALWAYS_INLINE
 float64x2 addsub(float64<2, E1> const& a, float64<2, E2> const& b) {
-    return _mm_addsub_pd(a.eval(), b.eval());
+    return _mm_addsub_pd(a.eval().native(), b.eval().native());
 }
 #endif // SIMDPP_USE_SSE3
 
 #if SIMDPP_USE_AVX
 template<class E1, class E2> CPB_ALWAYS_INLINE
 float32x8 addsub(float32<8, E1> const& a, float32<8, E2> const& b) {
-    return _mm256_addsub_ps(a.eval(), b.eval());
+    return _mm256_addsub_ps(a.eval().native(), b.eval().native());
 }
 
 template<class E1, class E2> CPB_ALWAYS_INLINE
 float64x4 addsub(float64<4, E1> const& a, float64<4, E2> const& b) {
-    return _mm256_addsub_pd(a.eval(), b.eval());
+    return _mm256_addsub_pd(a.eval().native(), b.eval().native());
 }
 #endif // SIMDPP_USE_AVX
 

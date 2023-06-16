@@ -1,4 +1,6 @@
 #include "fixtures.hpp"
+
+#include <utility>
 using namespace cpb;
 
 namespace lattice {
@@ -137,7 +139,7 @@ namespace field {
 
 namespace {
     struct OnsiteEnergyOp {
-        CartesianX value;
+        float value;
 
         template<class Array>
         void operator()(Array energy) const {
@@ -147,15 +149,15 @@ namespace {
     };
 }
 
-cpb::OnsiteModifier constant_potential(CartesianX value) {
-    return {[value](ComplexArrayRef energy, CartesianArrayConstRef, string_view) {
-        num::match<ArrayX>(energy, OnsiteEnergyOp{value});
+cpb::OnsiteModifier constant_potential(float value) {
+    return {[value](ComplexArrayRef energy, const CartesianArrayConstRef&, string_view) {
+        num::match<ArrayX>(std::move(energy), OnsiteEnergyOp{value});
     }};
 }
 
 namespace {
     struct MagneticFieldOp {
-        CartesianX magnitude;
+        float magnitude;
         CartesianArrayConstRef pos1;
         CartesianArrayConstRef pos2;
 
@@ -167,7 +169,7 @@ namespace {
         template<class real_t>
         void operator()(Map<ArrayX<std::complex<real_t>>> energy) const {
             using scalar_t = std::complex<real_t>;
-            auto const k = static_cast<scalar_t>(scale * 2 * constant::pi / constant::phi0);
+            auto const k = static_cast<scalar_t>(static_cast<float>(scale * 2 * constant::pi / constant::phi0));
             auto const vp_x = 0.5f * magnitude * (pos1.y() + pos2.y());
             auto const peierls = vp_x * (pos1.x() - pos2.x());
             energy *= exp(scalar_t{constant::i1} * k * peierls.template cast<scalar_t>());
@@ -178,7 +180,7 @@ namespace {
 cpb::HoppingModifier constant_magnetic_field(CartesianX value) {
     return {[value](ComplexArrayRef energy, CartesianArrayConstRef pos1,
                     CartesianArrayConstRef pos2, string_view, const Cartesian&) {
-        num::match<ArrayX>(energy, MagneticFieldOp{value, pos1, pos2});
+        num::match<ArrayX>(std::move(energy), MagneticFieldOp{static_cast<float>(value), std::move(pos1), std::move(pos2)});
     }, /*is_complex*/true, /*is_double*/false, /*phase*/false};
 }
 

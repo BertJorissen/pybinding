@@ -29,7 +29,7 @@ cpb::Shape rectangle(double x, double y);
 
 namespace field {
 
-cpb::OnsiteModifier constant_potential(double value);
+cpb::OnsiteModifier constant_potential(float value);
 cpb::HoppingModifier constant_magnetic_field(double value);
 
 cpb::OnsiteModifier linear_onsite(double k = 1.);
