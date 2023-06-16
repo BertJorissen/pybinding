@@ -4,9 +4,8 @@ import warnings
 from copy import deepcopy
 from math import pi, atan2, sqrt
 from numpy.typing import ArrayLike
-from collections.abc import Iterable
 from matplotlib.pyplot import Axes as plt_axes
-from typing import Optional, Union
+from typing import Optional, Union, Iterable, Tuple, List
 from pathlib import Path
 
 import numpy as np
@@ -145,7 +144,7 @@ class Lattice:
         else:
             self.impl.add_sublattice(name, position, np.asarray(onsite_energy))
 
-    def add_sublattices(self, *sublattices: Iterable[str, ArrayLike, Union[float, np.ndarray]]) -> None:
+    def add_sublattices(self, *sublattices: Iterable[Tuple[str, ArrayLike, Union[float, np.ndarray]]]) -> None:
         """Add multiple new sublattices
 
         Parameters
@@ -193,7 +192,7 @@ class Lattice:
         """
         self.impl.add_alias(name, original, position)
 
-    def add_aliases(self, *aliases: Iterable[str, str, ArrayLike]) -> None:
+    def add_aliases(self, *aliases: Iterable[Tuple[str, str, ArrayLike]]) -> None:
         """Add multiple new aliases
 
         Parameters
@@ -227,7 +226,7 @@ class Lattice:
         """
         self.impl.add_hopping(relative_index, from_sub, to_sub, hop_name_or_energy)
 
-    def add_hoppings(self, *hoppings: Iterable[Union[ArrayLike, int], str, str, Union[str, float, np.ndarray]]) -> None:
+    def add_hoppings(self, *hoppings: Iterable[Tuple[Union[ArrayLike, int], str, str, Union[str, float, np.ndarray]]]) -> None:
         """Add multiple new hoppings
 
         Parameters
@@ -289,7 +288,7 @@ class Lattice:
         cp.min_neighbors = number
         return cp
 
-    def reciprocal_vectors(self) -> list[np.ndarray]:
+    def reciprocal_vectors(self) -> List[np.ndarray]:
         """Calculate the reciprocal space lattice vectors
 
         Returns
@@ -308,7 +307,7 @@ class Lattice:
         mat = np.vstack([mat, np.zeros(shape=(3 - n, n))])
         return [v.squeeze() for v in np.hsplit(mat, n)]
 
-    def brillouin_zone(self) -> list[np.ndarray]:
+    def brillouin_zone(self) -> List[np.ndarray]:
         """Return a list of vertices which form the Brillouin zone (1D and 2D only)
 
         Returns

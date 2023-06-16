@@ -67,7 +67,7 @@ class AbstractStructure:
         """1D array of sublattices IDs, short for :attr:`.sublattices <.SpatialMap.sublattices>`"""
         return self._sites.ids
 
-    def __getitem__(self, idx: Union[int, list[int]]) -> 'AbstractStructure':
+    def __getitem__(self, idx: Union[int, List[int]]) -> 'AbstractStructure':
         """Same rules as numpy indexing"""
         if hasattr(idx, "contains"):
             idx = idx.contains(*self.positions)  # got a Shape object -> evaluate it
@@ -266,7 +266,7 @@ class StructureMap(SpatialMap):
         """Boundary hoppings between different translation units (only for infinite systems)"""
         return self._boundaries
 
-    def __getitem__(self, idx: int or list[int]) -> 'StructureMap':
+    def __getitem__(self, idx: Union[int, List[int]]) -> 'StructureMap':
         """Same rules as numpy indexing"""
         if hasattr(idx, "contains"):
             idx = idx.contains(*self.positions)  # got a Shape object -> evaluate it
@@ -279,7 +279,7 @@ class StructureMap(SpatialMap):
         result._data = data
         return result
 
-    def plot(self, cmap: str = 'YlGnBu', site_radius: tuple[float, float] = (0.03, 0.05), num_periods: int = 1,
+    def plot(self, cmap: str = 'YlGnBu', site_radius: Tuple[float, float] = (0.03, 0.05), num_periods: int = 1,
              ax: Optional[plt.Axes] = None, **kwargs) -> Optional[matplotlib.collections.CircleCollection]:
         """Plot the spatial structure with a colormap of :attr:`data` at the lattice sites
 
@@ -358,7 +358,7 @@ class Structure(AbstractStructure):
         """Boundary hoppings between different translation units (only for infinite systems)"""
         return self._boundaries
 
-    def __getitem__(self, idx: Union[int, list[int]]) -> 'Structure':
+    def __getitem__(self, idx: Union[int, List[int]]) -> 'Structure':
         """Same rules as numpy indexing"""
         if hasattr(idx, "contains"):
             idx = idx.contains(*self.positions)  # got a Shape object -> evaluate it

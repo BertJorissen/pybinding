@@ -56,7 +56,7 @@ class Sweep:
         trans = str.maketrans('', '', '$\\')
         return {k: v.translate(trans) for k, v in self.labels.items()}
 
-    def _xy_grids(self) -> tuple[np.ndarray, np.ndarray]:
+    def _xy_grids(self) -> Tuple[np.ndarray, np.ndarray]:
         """Expand x and y into 2D arrays matching data."""
         xgrid = np.column_stack([self.x] * self.y.size)
         ygrid = np.row_stack([self.y] * self.x.size)
@@ -77,7 +77,7 @@ class Sweep:
                 values = ("{:12.5e}".format(v) for v in row)
                 file.write(" ".join(values) + "\n")
 
-    def cropped(self, x: Optional[tuple[float, float]] = None, y: Optional[tuple[float, float]] = None) -> 'Sweep':
+    def cropped(self, x: Optional[Tuple[float, float]] = None, y: Optional[Tuple[float, float]] = None) -> 'Sweep':
         """Return a copy with data cropped to the limits in the x and/or y axes
 
         A call with x=[-1, 2] will leave data only where -1 <= x <= 2.
@@ -119,8 +119,8 @@ class Sweep:
         else:
             RuntimeError("Invalid axis")
 
-    def interpolated(self, mul: Optional[Union[int, tuple[int, int]]] = None,
-                     size: Optional[Union[int, tuple[int, int]]] = None,
+    def interpolated(self, mul: Optional[Union[int, Tuple[int, int]]] = None,
+                     size: Optional[Union[int, Tuple[int, int]]] = None,
                      kind: Literal['linear', 'nearest', 'nearest-up', 'zero', 'slinear', 'quadratic', 'cubic',
                      'previous', 'next', 'zero', 'slinear', 'quadratic', 'cubic'] = 'linear') -> 'Sweep':
         """Return a copy with interpolate data using :class:`scipy.interpolate.interp1d`

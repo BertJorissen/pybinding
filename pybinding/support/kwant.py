@@ -53,7 +53,7 @@ class KwantFiniteSystem(FiniteSystem):
         return self.pb_model.hamiltonian[i, j]
 
     def hamiltonian_submatrix(self, args=(), to_sites: None = None, from_sites: None = None, sparse: bool = False,
-                              return_norb: bool = False, *, params=None) -> tuple[Union[coo_matrix, np.ndarray], int, int]:
+                              return_norb: bool = False, *, params=None) -> Tuple[Union[coo_matrix, np.ndarray], int, int]:
         if to_sites is not None or from_sites is not None:
             raise RuntimeError("The `to_sites` and `from_sites` arguments are not supported")
         _warn_if_not_empty(args, params)

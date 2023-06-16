@@ -8,9 +8,8 @@ import functools
 import warnings
 
 import numpy as np
-from collections.abc import Callable
 from numpy.typing import ArrayLike
-from typing import Tuple, Union, Iterable
+from typing import Tuple, Union, Iterable, Callable, List
 
 from . import _cpp
 from .system import Sites
@@ -24,7 +23,7 @@ __all__ = ['constant_potential', 'force_double_precision', 'force_complex_number
            'site_generator', 'site_position_modifier', 'site_state_modifier']
 
 
-def _process_modifier_args(args, keywords: list[str], requested_argnames: Union[list[str], Tuple[str, ...]]) -> dict:
+def _process_modifier_args(args, keywords: List[str], requested_argnames: Union[List[str], Tuple[str, ...]]) -> dict:
     """Return only the requested modifier arguments
 
     Also process any special args like 'sub_id', 'hop_id' and 'sites'.
@@ -65,7 +64,7 @@ def _process_modifier_args(args, keywords: list[str], requested_argnames: Union[
     return requested_kwargs
 
 
-def _check_modifier_spec(func: Callable, keywords: list[str], has_sites: bool = False) -> None:
+def _check_modifier_spec(func: Callable, keywords: List[str], has_sites: bool = False) -> None:
     """Make sure the arguments are specified correctly
 
     Parameters

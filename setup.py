@@ -1,20 +1,13 @@
-import re
 import os
 import sys
 import shutil
 import platform
 
-from subprocess import check_call, check_output, CalledProcessError
-from distutils.version import LooseVersion
+from subprocess import check_call, CalledProcessError
 
 from setuptools import setup, find_packages, Extension
 from setuptools.command.build_ext import build_ext
 from setuptools.command.egg_info import manifest_maker
-
-
-if sys.version_info[:2] < (3, 6):
-    print("Python >= 3.6 is required.")
-    sys.exit(-1)
 
 
 class CMakeExtension(Extension):
@@ -25,15 +18,6 @@ class CMakeExtension(Extension):
 
 class CMakeBuild(build_ext):
     def run(self):
-        try:
-            out = check_output(["cmake", "--version"])
-        except OSError:
-            raise RuntimeError("CMake not found. Version 3.1 or newer is required")
-
-        cmake_version = LooseVersion(re.search(r'version\s*([\d.]+)', out.decode()).group(1))
-        if cmake_version < "3.1.0":
-            raise RuntimeError("CMake 3.1 or newer is required")
-
         for ext in self.extensions:
             self.build_extension(ext)
 
@@ -77,58 +61,11 @@ class CMakeBuild(build_ext):
             build()
 
 
-def about(package):
-    ret = {}
-    filename = os.path.join(os.path.dirname(__file__), package, "__about__.py")
-    with open(filename, 'rb') as file:
-        exec(compile(file.read(), filename, 'exec'), ret)
-    return ret
-
-
-def changelog():
-    """Return the changes for the latest version only"""
-    if not os.path.exists("changelog.md"):
-        return ""
-
-    with open("changelog.md", encoding="utf-8") as file:
-        log = file.read()
-    match = re.search(r"## ([\s\S]*?)\n##\s", log)
-    return match.group(1) if match else ""
-
-
-info = about("pybinding")
 manifest_maker.template = "setup.manifest"
 setup(
-    name=info['__title__'],
-    version=info['__version__'],
-    description=info['__summary__'],
-    long_description="Documentation: http://pybinding.site/\n\n" + changelog(),
-    url=info['__url__'],
-    license=info['__license__'],
-    keywords="pybinding tight-binding solid-state physics cmt",
-
-    author=info['__author__'],
-    author_email=info['__email__'],
-
-    platforms=['Unix', 'Windows'],
-    classifiers=[
-        'Development Status :: 4 - Beta',
-        'Intended Audience :: Science/Research',
-        'Topic :: Scientific/Engineering :: Physics',
-        'License :: OSI Approved :: BSD License',
-        'Programming Language :: C++',
-        'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: 3.7',
-        'Programming Language :: Python :: 3.8',
-        'Programming Language :: Python :: Implementation :: CPython',
-    ],
-
     packages=find_packages(exclude=['cppcore', 'cppwrapper', 'test*']) + ['pybinding.tests'],
     package_dir={'pybinding.tests': 'tests'},
     include_package_data=True,
     ext_modules=[CMakeExtension('_pybinding')],
-    install_requires=['numpy>=1.12', 'scipy>=0.19', 'matplotlib>=2.0', 'pytest>=5.0'],
-    zip_safe=False,
     cmdclass=dict(build_ext=CMakeBuild)
 )

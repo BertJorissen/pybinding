@@ -2,8 +2,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy.typing import ArrayLike
-from collections.abc import Iterable
-from typing import Optional, Union, List
+from typing import Optional, Union, List, Iterable
 from matplotlib.patches import FancyArrow
 
 from ..utils import with_defaults, pltutils

@@ -2,9 +2,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy.typing import ArrayLike
-from collections.abc import Callable
 import matplotlib
-from typing import Optional, Union
+from typing import Optional, Union, Callable, Tuple, List
 
 from . import _cpp
 from .utils import with_defaults, pltutils
@@ -14,7 +13,7 @@ __all__ = ['FreeformShape', 'Polygon', 'CompositeShape',
            'translational_symmetry']
 
 
-def _plot_freeform_shape(vertices: list[ArrayLike], contains: Callable, resolution: tuple[int, int] = (1000, 1000),
+def _plot_freeform_shape(vertices: List[ArrayLike], contains: Callable, resolution: Tuple[int, int] = (1000, 1000),
                          ax: Optional[plt.Axes] = None, **kwargs) -> matplotlib.image.AxesImage:
     """Plot the area where `contains(x, y, z)` is True within the polygon given by `vertices`
 
@@ -118,7 +117,7 @@ class Polygon(_cpp.Polygon, _CompositionMixin):
     vertices : List[array_like]
         Must be defined in clockwise or counterclockwise order.
     """
-    def __init__(self, vertices: list[ArrayLike]):
+    def __init__(self, vertices: List[ArrayLike]):
         if len(vertices) < 3:
             raise RuntimeError("A polygon must have at least 3 sides")
         super().__init__(vertices)
@@ -178,7 +177,7 @@ class FreeformShape(_cpp.FreeformShape, _CompositionMixin):
             return self.contains(*r)
         return FreeformShape(contains, self.width, self.center[:len(vector)] + vector)
 
-    def plot(self, resolution: tuple[int, int] = (1000, 1000), **kwargs) -> matplotlib.image.AxesImage:
+    def plot(self, resolution: Tuple[int, int] = (1000, 1000), **kwargs) -> matplotlib.image.AxesImage:
         """Plot a lightly shaded silhouette of the freeform shape
 
         This method only works for 2D shapes.
@@ -233,7 +232,7 @@ class CompositeShape(_cpp.Shape, _CompositionMixin):
         super(CompositeShape, shape).__init__(vertices, contains)
         return shape
 
-    def plot(self, resolution: tuple[int, int] = (1000, 1000), **kwargs) -> matplotlib.image.AxesImage:
+    def plot(self, resolution: Tuple[int, int] = (1000, 1000), **kwargs) -> matplotlib.image.AxesImage:
         """Plot a lightly shaded silhouette of the composite shape
 
         Parameters
