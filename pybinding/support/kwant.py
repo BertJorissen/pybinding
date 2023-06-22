@@ -4,7 +4,7 @@ import numpy as np
 from ..model import Model
 from ..leads import Lead
 from scipy.sparse import csr_matrix, coo_matrix
-from typing import Union
+from typing import Union, Tuple
 
 try:
     from kwant.system import FiniteSystem, InfiniteSystem
