@@ -110,7 +110,7 @@ enable_warnings(cppcore)
 
 include(download)
 #TODO: change versions for Eigen, Variant, Simdpp and Catch
-download_dependency(eigen3 3.3.3
+download_dependency(eigen3 3.3.0
                     https://gitlab.com/libeigen/eigen/-/archive/\${VERSION}
                     eigen-\${VERSION}.tar.gz */Eigen)
 target_include_directories(cppcore SYSTEM PUBLIC ${EIGEN3_INCLUDE_DIR})

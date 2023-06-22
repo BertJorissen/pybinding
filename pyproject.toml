@@ -2,10 +2,10 @@
 name = "pybinding"
 version = "0.9.7"
 authors = [
-    { name="Dean Moldovan", email="dean0x7d@gmail.com" },
+    {name="Dean Moldovan", email="dean0x7d@gmail.com"},
 ]
 maintainers = [
-    { name="Bert Jorissen", email="info@bertjorissen.be"}
+    {name="Bert Jorissen", email="info@bertjorissen.be"}
 ]
 description = "Package for tight-binding calculations, Documentation: http://pybinding.site/ (c) 2015-2023"
 readme = "readme.md"

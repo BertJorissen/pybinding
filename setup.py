@@ -42,7 +42,7 @@ class CMakeBuild(build_ext):
         else:
             cmake_args += ["-DCMAKE_BUILD_TYPE=" + cfg]
             if "-j" not in os.environ.get("MAKEFLAGS", ""):
-                parallel_jobs = 2 if not os.environ.get("READTHEDOCS") else 1
+                parallel_jobs = int(os.cpu_count()) if not os.environ.get("READTHEDOCS") else 1
                 build_args += ["--", "-j{}".format(parallel_jobs)]
 
         env = os.environ.copy()
@@ -63,7 +63,7 @@ class CMakeBuild(build_ext):
 
 manifest_maker.template = "setup.manifest"
 setup(
-    packages=find_packages(exclude=['cppcore', 'cppwrapper', 'test*']) + ['pybinding.tests'],
+    packages=find_packages(exclude=['cppcore', 'cppmodule', 'test*']) + ['pybinding.tests'],
     package_dir={'pybinding.tests': 'tests'},
     include_package_data=True,
     ext_modules=[CMakeExtension('_pybinding')],

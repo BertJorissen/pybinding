@@ -248,6 +248,7 @@ def colorbar(mappable=None, cax=None, ax=None, label="", powerlimits=(0, 0), **k
     mappable, cax, ax, **kwargs
         Forwarded to :func:`matplotlib.pyplot.colorbar`.
     """
+    # TODO: add mappable
     cbar = plt.colorbar(mappable, cax, ax, **with_defaults(kwargs, pad=0.02, aspect=28))
 
     cbar.solids.set_edgecolor("face")  # remove white gaps between segments

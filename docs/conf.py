@@ -82,7 +82,7 @@ templates_path = ['_templates']
 master_doc = 'index'
 
 # General information about the project.
-project = pb.__title__
+project = pb.__name__
 copyright = pb.__copyright__
 author = pb.__author__
 
@@ -100,7 +100,7 @@ release = pb.__version__
 #
 # This is also used if you do content translation via gettext catalogs.
 # Usually you set "language" from the command line for these cases.
-language = None
+language = "en"
 
 # There are two options for replacing |today|: either, you set today to some
 # non-false value, then it is used:
@@ -301,7 +301,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     (master_doc, project, project.capitalize() + ' Documentation',
-     author, project, pb.__summary__, 'Miscellaneous'),
+     author, project, pb.__doc__, 'Miscellaneous'),
 ]
 
 # Documents to append as an appendix to all manuals.
