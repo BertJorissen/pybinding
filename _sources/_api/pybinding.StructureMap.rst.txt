@@ -38,6 +38,7 @@
     
         ~StructureMap.__getitem__
         ~StructureMap._decorate_plot
+        ~StructureMap._make_crop_indices
         ~StructureMap.clipped
         ~StructureMap.convolve
         ~StructureMap.cropped

@@ -456,7 +456,7 @@ computation time low for the tutorial (less than 0.5 seconds for this LDOS calcu
 <span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span><span class="p">,</span> <span class="n">sqrt</span>
 
-<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">use_style</span><span class="p">()</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">use_style</span><span class="p">()</span>
 
 
 <span class="k">def</span> <span class="nf">mass_term</span><span class="p">(</span><span class="n">delta</span><span class="p">):</span>
@@ -501,7 +501,7 @@ computation time low for the tutorial (less than 0.5 seconds for this LDOS calcu
 </figure>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the potential: note that pn_junction cancels out delta on some sites</span>
 <span class="n">model</span><span class="o">.</span><span class="n">onsite_map</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;coolwarm&quot;</span><span class="p">,</span> <span class="n">site_radius</span><span class="o">=</span><span class="mf">0.04</span><span class="p">)</span>
-<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;U (eV)&quot;</span><span class="p">)</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;U (eV)&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -533,7 +533,7 @@ computation time low for the tutorial (less than 0.5 seconds for this LDOS calcu
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2015-2023, Dean Moldovan.</p>
+    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

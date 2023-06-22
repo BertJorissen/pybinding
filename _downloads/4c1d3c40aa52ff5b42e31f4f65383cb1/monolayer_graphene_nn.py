@@ -3,7 +3,7 @@ import pybinding as pb
 import matplotlib.pyplot as plt
 from math import sqrt, pi
 
-pb.pltutils.use_style()
+pb.utils.pltutils.use_style()
 
 
 def monolayer_graphene_nn():

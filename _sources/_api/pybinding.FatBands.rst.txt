@@ -27,6 +27,7 @@
     
         ~FatBands._decorate_plot
         ~FatBands._point_names
+        ~FatBands.colorbar
         ~FatBands.dos
         ~FatBands.line_plot
         ~FatBands.plot

@@ -35,6 +35,7 @@
     
         ~SpatialMap.__getitem__
         ~SpatialMap._decorate_plot
+        ~SpatialMap._make_crop_indices
         ~SpatialMap.clipped
         ~SpatialMap.convolve
         ~SpatialMap.cropped

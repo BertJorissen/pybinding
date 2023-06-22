@@ -59,6 +59,7 @@
         ~Path.copy
         ~Path.cumprod
         ~Path.cumsum
+        ~Path.decorate_plot
         ~Path.diagonal
         ~Path.dot
         ~Path.dump

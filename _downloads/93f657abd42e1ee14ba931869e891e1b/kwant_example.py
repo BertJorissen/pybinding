@@ -17,8 +17,8 @@ import kwant
 import pybinding as pb
 from pybinding.repository import graphene
 
-pb.pltutils.use_style()
-pb.pltutils.set_palette("Set1", start=3)
+pb.utils.pltutils.use_style()
+pb.utils.pltutils.set_palette("Set1", start=3)
 
 
 def measure_pybinding(width, length, electron_energy, barrier_heights, plot=False):
@@ -112,8 +112,8 @@ def main():
     plt.axvline(electron_energy, 0, 0.5, color="gray", ls=":")
     plt.annotate("electron energy\n{} eV".format(electron_energy), (electron_energy, 0.52),
                  xycoords=("data", "axes fraction"), ha="center")
-    pb.pltutils.despine()
-    pb.pltutils.legend()
+    pb.utils.pltutils.despine()
+    pb.utils.pltutils.legend()
     plt.show()
 
 
@@ -124,8 +124,8 @@ def plot_time(sizes, times, label):
     plt.xlabel("system size (nm)")
     plt.ylabel("compute time (seconds)")
     plt.xlim(0.8 * min(sizes), 1.05 * max(sizes))
-    pb.pltutils.despine()
-    pb.pltutils.legend(loc='upper left', reverse=True)
+    pb.utils.pltutils.despine()
+    pb.utils.pltutils.legend(loc='upper left', reverse=True)
 
 
 def measure_and_plot(sizes):

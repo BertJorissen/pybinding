@@ -4,7 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pybinding.repository import graphene
 
-pb.pltutils.use_style()
+pb.utils.pltutils.use_style()
 
 
 def ring(inner_radius, outer_radius):
@@ -29,5 +29,5 @@ plt.show()
 solver = pb.solver.arpack(model, k=20)
 ldos = solver.calc_spatial_ldos(energy=0, broadening=0.05)  # LDOS around 0 eV
 ldos.plot(site_radius=(0.03, 0.12))
-pb.pltutils.colorbar(label="LDOS")
+pb.utils.pltutils.colorbar(label="LDOS")
 plt.show()

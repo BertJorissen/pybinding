@@ -31,6 +31,7 @@
         ~BandsArea._point_names
         ~BandsArea.area_to_list
         ~BandsArea.dos
+        ~BandsArea.karea_to_kpath
         ~BandsArea.list_to_area
         ~BandsArea.plot
         ~BandsArea.plot_karea

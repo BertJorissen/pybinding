@@ -31,7 +31,9 @@
         ~FatBandsArea._decorate_plot
         ~FatBandsArea._point_names
         ~FatBandsArea.area_to_list
+        ~FatBandsArea.colorbar
         ~FatBandsArea.dos
+        ~FatBandsArea.karea_to_kpath
         ~FatBandsArea.line_plot
         ~FatBandsArea.list_to_area
         ~FatBandsArea.plot

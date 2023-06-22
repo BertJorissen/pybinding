@@ -2,7 +2,7 @@
 ===================
 
 .. automodule:: pybinding.chebyshev
-    :members: _kpm_python, dirichlet_kernel, jackson_kernel, kpm, kpm_cuda, lorentz_kernel, AttrDict, KPM, _ComputeProgressReporter, _PythonImpl
+    :members: _kpm_python, dirichlet_kernel, jackson_kernel, kpm, kpm_cuda, lorentz_kernel, KPM, _ComputeProgressReporter, _PythonImpl
 
     
 
@@ -12,7 +12,6 @@
 
     .. autosummary::
     
-        AttrDict
         KPM
         _ComputeProgressReporter
         _PythonImpl
