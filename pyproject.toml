@@ -12,10 +12,10 @@ readme = "readme.md"
 dependencies = [
     "numpy>=1.12",
     "scipy>=0.19",
-    "matplotlib>=2.0",
+    "matplotlib>=3.5",
     "pytest>=5.0"
 ]
-requires-python = ">=3.6"
+requires-python = ">=3.7"
 license = {file = "license.md"}
 classifiers = [
     'Development Status :: 5 - Stable',
@@ -24,7 +24,6 @@ classifiers = [
     'License :: OSI Approved :: BSD License',
     'Programming Language :: C++',
     'Programming Language :: Python :: 3 :: Only',
-    'Programming Language :: Python :: 3.6',
     'Programming Language :: Python :: 3.7',
     'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
