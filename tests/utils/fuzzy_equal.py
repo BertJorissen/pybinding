@@ -20,9 +20,18 @@ def _assertdispatch(func):
     def wrapper(self, actual, expected, context=None):
         if context is not None:
             self.stack.append(context)
+        kind = None
+        if actual is None:
+            kind = actual.__class__
+        else:
+            for actual_type in [csr_matrix, coo_matrix, tuple, list, np.ndarray, dict, str, float, int, bool]:
+                if isinstance(actual, actual_type):
+                    kind = actual_type
+                    break
+            if kind is None:
+                is_pb_savable = any(hasattr(actual, s) for s in ['__getstate__', '__getinitargs__'])
+                kind = type(pb.save) if is_pb_savable else actual.__class__
 
-        is_pb_savable = any(hasattr(actual, s) for s in ['__getstate__', '__getinitargs__'])
-        kind = type(pb.save) if is_pb_savable else actual.__class__
         dispatcher.dispatch(kind)(self, actual, expected)
 
         if context is not None and self.stack:
