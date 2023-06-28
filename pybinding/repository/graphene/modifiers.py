@@ -73,13 +73,15 @@ def constant_magnetic_field(magnitude):
     return func
 
 
-@pb.hopping_energy_modifier
-def strained_hopping(energy, x1, y1, z1, x2, y2, z2):
-    from .constants import a_cc, beta
+def strained_hopping():
+    @pb.hopping_energy_modifier
+    def strained_hopping_loc(energy, x1, y1, z1, x2, y2, z2):
+        from .constants import a_cc, beta
 
-    l = np.sqrt((x1 - x2)**2 + (y1 - y2)**2 + (z1 - z2)**2)
-    w = l / a_cc - 1
-    return energy * np.exp(-beta * w)
+        l = np.sqrt((x1 - x2)**2 + (y1 - y2)**2 + (z1 - z2)**2)
+        w = l / a_cc - 1
+        return energy * np.exp(-beta * w)
+    return strained_hopping_loc
 
 
 def triaxial_strain(magnetic_field):
