@@ -1,4 +1,4 @@
-include changelog.md CMakeLists.txt license.md readme.md
+include changelog.md CMakeLists.txt license.md README.md
 
 graft cppcore
 prune cppcore/deps/catch

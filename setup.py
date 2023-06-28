@@ -63,7 +63,7 @@ class CMakeBuild(build_ext):
 
 manifest_maker.template = "setup.manifest"
 setup(
-    packages=find_packages(exclude=['cppcore', 'cppmodule', 'test*']) + ['pybinding.tests'],
+    packages=find_packages(exclude=['cppcore', 'cppmodule', 'tests'], include=['pybinding.tests']),
     package_dir={'pybinding.tests': 'tests'},
     include_package_data=True,
     ext_modules=[CMakeExtension('_pybinding')],

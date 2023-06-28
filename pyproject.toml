@@ -8,14 +8,14 @@ maintainers = [
     {name="Bert Jorissen", email="info@bertjorissen.be"}
 ]
 description = "Package for tight-binding calculations, Documentation: http://pybinding.site/ (c) 2015-2023"
-readme = "readme.md"
+readme = "README.md"
 dependencies = [
     "numpy>=1.12",
     "scipy>=0.19",
     "matplotlib>=3.5",
     "pytest>=5.0"
 ]
-requires-python = ">=3.7"
+requires-python = ">=3.8"
 license = {file = "license.md"}
 classifiers = [
     'Development Status :: 5 - Stable',
@@ -24,7 +24,6 @@ classifiers = [
     'License :: OSI Approved :: BSD License',
     'Programming Language :: C++',
     'Programming Language :: Python :: 3 :: Only',
-    'Programming Language :: Python :: 3.7',
     'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
