@@ -177,7 +177,7 @@ jobs:
           name: ${{ matrix.python-version }}-${{ matrix.os }}-artefacts
           path: dist
       - name: Install Pybinding
-        run: python -m pip install dist/*.whl
+        run: cd dist && python -m pip install *.whl
       - name: Test Python
         run: python -c "import pybinding as pb; exit(pb.tests())"
 
