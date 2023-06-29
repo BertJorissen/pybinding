@@ -135,7 +135,7 @@ class AliasIndex:
 
     The `==` and `!=` operators are overloaded to return a lazy array which is either
     all `True` or all `False`. See the examples below. This is useful for modifiers
-    where the each call gets arrays with the same sub_id/hop_id for all elements.
+    where each call gets arrays with the same sub_id/hop_id for all elements.
     Instead of passing an `AliasArray` with `.size` identical element, `AliasIndex`
     does the same all-or-nothing indexing.
 
@@ -163,7 +163,7 @@ class AliasIndex:
     'A'
     >>> hash(ai) == hash("A")
     True
-    >>> int(ai.eye)
+    >>> int(ai.eye.item())
     1
     >>> np.allclose(AliasIndex("A", 1, (2, 2)).eye, np.eye(2))
     True
