@@ -32,6 +32,8 @@ jobs:
 
   test-ubuntu-all:
     name: Test Build on ${{ matrix.os }} with Python ${{ matrix.python-version }}
+    environment: actions
+    if: github.ref == 'refs/heads/master'
     needs: [ test-ubuntu-310 ]
     runs-on: ${{ matrix.os }}
     env:
@@ -87,6 +89,8 @@ jobs:
 
   test-all-all:
     name: Test Build on ${{ matrix.os }} with Python ${{ matrix.python-version }}
+    environment: actions
+    if: github.ref == 'refs/heads/master'
     needs: [ test-ubuntu-310, test-ubuntu-all, test-all-310 ]
     runs-on: ${{ matrix.os }}
     env:
@@ -116,10 +120,13 @@ jobs:
 
   build-all-all:
     name: Build on ${{ matrix.os }} with Python ${{ matrix.python-version }}
+    environment: actions
+    if: github.ref == 'refs/heads/master'
     needs: [ test-all-all ]
     runs-on: ${{ matrix.os }}
     env:
       PB_BUILD_TYPE: Release
+      PB_NATIVE_SIMD: OFF
     strategy:
       matrix:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
@@ -147,6 +154,8 @@ jobs:
 
   wheel-all-all:
     name: Test wheel on ${{ matrix.os }} with Python ${{ matrix.python-version }}
+    environment: actions
+    if: github.ref == 'refs/heads/master'
     needs: [ build-all-all ]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -165,15 +174,60 @@ jobs:
           path: dist
       - name: Install Pybinding Windows
         if: runner.os == 'Windows'
-        run: cd dist && for %F in (*.whl) do pip install "%F"
+        run: cd dist && pip install (Get-ChildItem -Filter *.whl).Name
       - name: Install Pybinding Linux & MacOs
         if: runner.os != 'Windows'
         run: cd dist && python -m pip install *.whl
       - name: Test Python
         run: python -c "import pybinding as pb; exit(pb.tests())"
 
+  testpypi-all-all:
+    name: Test PyPi on ${{ matrix.os }} with Python ${{ matrix.python-version }}
+    environment: actions
+    if: github.ref == 'refs/heads/master'
+    permissions:
+      id-token: write
+    needs: [ wheel-all-all ]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        python-version: [ "3.8", "3.9", "3.10", "3.11" ]
+    steps:
+      - name: Download wheel for ${{ matrix.python-version }} on ${{ matrix.os }}
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ matrix.python-version }}-${{ matrix.os }}-artefacts
+          path: dist
+      - name: Publish distribution 📦 to Test PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+
+  pypi-all-all:
+    name: Test PyPi on ${{ matrix.os }} with Python ${{ matrix.python-version }}
+    environment: actions
+    if: (github.ref == 'refs/heads/master') && (github.repository_owner == 'dean0x7d')
+    permissions:
+      id-token: write
+    needs: [ testpypi-all-all ]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+        python-version: [ "3.8", "3.9", "3.10", "3.11" ]
+    steps:
+      - name: Download wheel for ${{ matrix.python-version }} on ${{ matrix.os }}
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{ matrix.python-version }}-${{ matrix.os }}-artefacts
+          path: dist
+      - name: Publish distribution 📦 to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+
   documentation:
     name: Make and upload the documentation
+    environment: actions
     needs: [ test-ubuntu-310 ]
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
