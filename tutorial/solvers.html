@@ -129,7 +129,7 @@ only its implementations such as <a class="reference internal" href="../_api/pyb
 systems. However, a great advantage of this solver is that it always solves for all eigenvalues
 and eigenvectors of a Hamiltonian matrix. This makes it perfect for calculating the entire band
 structure of the bulk or nanoribbons, as has been shown several times in this tutorial.</p>
-<p>Internally, this solver uses the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.eigh.html#scipy.linalg.eigh" title="(in SciPy v1.11.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.linalg.eigh()</span></code></a> function for dense Hermitian matrices.
+<p>Internally, this solver uses the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.eigh.html#scipy.linalg.eigh" title="(in SciPy v1.11.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.linalg.eigh()</span></code></a> function for dense Hermitian matrices.
 See the <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.lapack" title="pybinding.solver.lapack"><code class="xref py py-func docutils literal notranslate"><span class="pre">solver.lapack()</span></code></a> API reference for more details.</p>
 </section>
 <section id="arpack">
@@ -138,11 +138,11 @@ See the <a class="reference internal" href="../_api/pybinding.solver.html#pybind
 large systems. However, only a small subset of the total eigenvalues and eigenvectors can be
 calculated. This tutorial already contains a few examples where the ARPACK solver was used, and
 one more is presented below.</p>
-<p>Internally, the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.11.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.sparse.linalg.eigsh()</span></code></a> function is used to solve large sparse Hermitian
+<p>Internally, the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.11.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.sparse.linalg.eigsh()</span></code></a> function is used to solve large sparse Hermitian
 matrices. The first argument to <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.arpack" title="pybinding.solver.arpack"><code class="xref py py-func docutils literal notranslate"><span class="pre">solver.arpack()</span></code></a> must be the pybinding <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>, but
-the following arguments are the same as <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.11.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">eigsh()</span></code></a>, so the solver routine
+the following arguments are the same as <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.11.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">eigsh()</span></code></a>, so the solver routine
 can be tweaked as desired. Rather than reproduce the full list of options here, we refer you to
-the scipy <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.11.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">eigsh()</span></code></a> reference documentation. Here, we will focus on the
+the scipy <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.11.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">eigsh()</span></code></a> reference documentation. Here, we will focus on the
 specific features of solvers within pybinding.</p>
 </section>
 <section id="solver-interface">

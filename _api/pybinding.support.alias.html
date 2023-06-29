@@ -3274,7 +3274,7 @@ the bsr_array.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pybinding.support.alias.AliasCSRMatrix.tocoo">
-<span class="sig-name descname"><span class="pre">tocoo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.coo_matrix.html#scipy.sparse.coo_matrix" title="(in SciPy v1.11.0)"><span class="pre">coo_matrix</span></a></span></span><a class="headerlink" href="#pybinding.support.alias.AliasCSRMatrix.tocoo" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">tocoo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.coo_matrix.html#scipy.sparse.coo_matrix" title="(in SciPy v1.11.1)"><span class="pre">coo_matrix</span></a></span></span><a class="headerlink" href="#pybinding.support.alias.AliasCSRMatrix.tocoo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert this array to COOrdinate format.</p>
 <p>With copy=False, the data/indices may be shared between this array and
 the resultant coo_array.</p>
@@ -3466,7 +3466,7 @@ latter flag is also set.</p>
 <dd><p>An all-or-nothing array index based on equality with a specific value</p>
 <p>The <code class="samp docutils literal notranslate"><span class="pre">==</span></code> and <code class="samp docutils literal notranslate"><span class="pre">!=</span></code> operators are overloaded to return a lazy array which is either
 all <code class="samp docutils literal notranslate"><span class="pre">True</span></code> or all <code class="samp docutils literal notranslate"><span class="pre">False</span></code>. See the examples below. This is useful for modifiers
-where the each call gets arrays with the same sub_id/hop_id for all elements.
+where each call gets arrays with the same sub_id/hop_id for all elements.
 Instead of passing an <code class="samp docutils literal notranslate"><span class="pre">AliasArray</span></code> with <code class="samp docutils literal notranslate"><span class="pre">.size</span></code> identical element, <code class="samp docutils literal notranslate"><span class="pre">AliasIndex</span></code>
 does the same all-or-nothing indexing.</p>
 <p class="rubric">Examples</p>
@@ -3492,7 +3492,7 @@ does the same all-or-nothing indexing.</p>
 <span class="go">&#39;A&#39;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">hash</span><span class="p">(</span><span class="n">ai</span><span class="p">)</span> <span class="o">==</span> <span class="nb">hash</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">)</span>
 <span class="go">True</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">ai</span><span class="o">.</span><span class="n">eye</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">int</span><span class="p">(</span><span class="n">ai</span><span class="o">.</span><span class="n">eye</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
 <span class="go">1</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">AliasIndex</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span><span class="o">.</span><span class="n">eye</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 <span class="go">True</span>
