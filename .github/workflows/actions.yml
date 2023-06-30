@@ -127,7 +127,6 @@ jobs:
     needs: [ test-all-all ]
     runs-on: ${{ matrix.os }}
     strategy:
-      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
@@ -194,7 +193,7 @@ jobs:
       - name: Download artefacts
         uses: actions/download-artifact@v3
         with:
-          name: artefacts
+          name: artifact
           path: dist
       - name: Publish distribution 📦 to Test PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
@@ -202,7 +201,7 @@ jobs:
           repository-url: https://test.pypi.org/legacy/
 
   pypi:
-    name: Publish to PuPi
+    name: Publish to PyPi
     environment: actions
     if: (github.ref == 'refs/heads/master') && (github.repository_owner == 'dean0x7d')
     permissions:
@@ -213,7 +212,7 @@ jobs:
       - name: Download artefacts
         uses: actions/download-artifact@v3
         with:
-          name: artefacts
+          name: artifact
           path: dist
       - name: Publish distribution 📦 to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
