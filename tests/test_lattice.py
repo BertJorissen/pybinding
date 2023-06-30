@@ -292,16 +292,14 @@ def test_builder():
 
 
 def test_brillouin_zone():
-    from math import pi, sqrt
-
     lat = pb.Lattice(a1=1)
-    assert pytest.fuzzy_equal(lat.brillouin_zone(), [-pi, pi])
+    assert pytest.fuzzy_equal(lat.brillouin_zone(), [-np.pi, np.pi])
 
     lat = pb.Lattice(a1=[0, 1], a2=[0.5, 0.5])
     assert pytest.fuzzy_equal(lat.brillouin_zone(),
-                              [[0, -2 * pi], [2 * pi, 0], [0, 2 * pi], [-2 * pi, 0]])
+                              [[0, -2 * np.pi], [2 * np.pi, 0], [0, 2 * np.pi], [-2 * np.pi, 0]])
 
     # Identical lattices represented using acute and obtuse angles between primitive vectors
-    acute = pb.Lattice(a1=[1, 0], a2=[1/2, 1/2 * sqrt(3)])
-    obtuse = pb.Lattice(a1=[1/2, 1/2 * sqrt(3)], a2=[1/2, -1/2 * sqrt(3)])
+    acute = pb.Lattice(a1=[1, 0], a2=[1/2, 1/2 * np.sqrt(3)])
+    obtuse = pb.Lattice(a1=[1/2, 1/2 * np.sqrt(3)], a2=[1/2, -1/2 * np.sqrt(3)])
     assert pytest.fuzzy_equal(acute.brillouin_zone(), obtuse.brillouin_zone())
