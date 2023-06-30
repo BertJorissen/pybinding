@@ -26,7 +26,8 @@ jobs:
           CIBW_BEFORE_BUILD: pip install scipy --prefer-binary
           PB_BUILD_TYPE: Release
           PB_NATIVE_SIMD: OFF
-          CIBW_TEST_REQUIRES: pytest scipy==1.9.1
+          CIBW_BEFORE_TEST: pip install scipy --prefer-binary
+          CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: "python -c 'import pybinding as pb; exit(pb.tests())'"
           CIBW_SKIP: cp36-* cp37-* pp*
       - uses: actions/upload-artifact@v3
