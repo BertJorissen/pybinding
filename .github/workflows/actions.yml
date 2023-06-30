@@ -28,7 +28,7 @@ jobs:
           PB_NATIVE_SIMD: OFF
           CIBW_BEFORE_TEST: pip install scipy contourpy --prefer-binary
           CIBW_TEST_REQUIRES: pytest
-          CIBW_TEST_COMMAND: "python -c 'import pybinding as pb; exit(pb.tests())'"
+          CIBW_TEST_COMMAND: python -c "import pybinding as pb; exit(pb.tests())"
           CIBW_SKIP: cp36-* cp37-* pp*
       - uses: actions/upload-artifact@v3
         with:
