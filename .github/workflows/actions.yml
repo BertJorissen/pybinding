@@ -140,8 +140,7 @@ jobs:
         run: python -m cibuildwheel --output-dir wheelhouse
         env:
           CIBW_BEFORE_BUILD: pip install scipy contourpy --prefer-binary
-          PB_BUILD_TYPE: Release
-          PB_NATIVE_SIMD: OFF
+          CIBW_ENVIRONMENT: PB_BUILD_TYPE=Release PB_NATIVE_SIMD=OFF
           CIBW_BEFORE_TEST: pip install scipy contourpy --prefer-binary
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: python -c "import pybinding as pb; exit(pb.tests())"
