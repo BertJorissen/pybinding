@@ -6,7 +6,8 @@ import matplotlib.pyplot as plt
 from numpy.typing import ArrayLike
 from typing import Literal, Optional, List
 
-from ..utils import with_defaults, pltutils
+from ..utils.misc import with_defaults
+from ..utils import pltutils
 from ..support.pickle import pickleable
 from matplotlib.collections import LineCollection, QuadMesh
 

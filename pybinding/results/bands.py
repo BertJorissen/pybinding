@@ -7,7 +7,8 @@ from numpy.typing import ArrayLike
 from typing import Optional, Tuple, List
 import matplotlib
 
-from ..utils import with_defaults, x_pi, pltutils
+from ..utils.misc import with_defaults, x_pi
+from ..utils import pltutils
 from ..support.pickle import pickleable
 from .path import Path, Area, AbstractArea
 from .series import Series

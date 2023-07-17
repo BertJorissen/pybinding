@@ -10,7 +10,8 @@ import matplotlib.pyplot as plt
 
 from pybinding.support.inspect import get_call_signature
 from . import _cpp
-from .utils import cpuinfo, progressbar, decorator_decorator
+from .utils import cpuinfo, progressbar
+from .utils.misc import decorator_decorator
 from .results import Sweep, NDSweep
 
 __all__ = ['num_cores', 'parallel_for', 'parallelize', 'sweep', 'ndsweep']

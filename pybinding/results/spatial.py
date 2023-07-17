@@ -7,7 +7,8 @@ from numpy.typing import ArrayLike
 from typing import Optional, Union, Tuple, Dict, List
 import matplotlib
 
-from ..utils import with_defaults, pltutils
+from ..utils.misc import with_defaults
+from ..utils import pltutils
 from ..support.pickle import pickleable
 from ..support.structure import Positions, AbstractSites, Sites, Hoppings
 from matplotlib.collections import LineCollection, TriMesh, PolyCollection

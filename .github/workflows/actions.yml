@@ -181,6 +181,38 @@ jobs:
         with:
           path: dist/*.tar.gz
 
+  test-sdist:
+    name: Test sources on ${{ matrix.os }} with Python ${{ matrix.python-version }}
+    environment: actions
+    if: github.ref == 'refs/heads/master'
+    needs: [ build-sdist ]
+    runs-on: ${{ matrix.os }}
+    env:
+      PB_BUILD_TYPE: Release
+      PB_NATIVE_SIMD: OFF
+    strategy:
+      matrix:
+        os: [ ubuntu-latest]
+        python-version: [ "3.10" ]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Download artefacts
+        uses: actions/download-artifact@v3
+        with:
+          name: artifact
+          path: dist
+      - name: Install Pybinding
+        run: |
+          python -m pip install wheel scipy matplotlib pytest cmake ninja build numpy setuptools
+          python -m pip install dist/*.tar.gz
+      - name: Run tests
+        run: python -c "import pybinding as pb; pb.tests();"
 
   testpypi:
     name: Test upload on PyPi
@@ -188,7 +220,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
     permissions:
       id-token: write
-    needs: [ build-wheels, build-sdist ]
+    needs: [ build-wheels, test-sdist ]
     runs-on: ubuntu-latest
     steps:
       - name: Download artefacts

@@ -12,7 +12,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 from . import _cpp
-from .utils import x_pi, with_defaults, rotate_axes, pltutils
+from .utils.misc import x_pi, with_defaults, rotate_axes
+from .utils import pltutils
 from .support.deprecated import LoudDeprecationWarning
 from .support.parse import xyz
 

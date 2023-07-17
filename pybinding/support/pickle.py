@@ -5,7 +5,7 @@ import pathlib
 import pickle
 
 from pathlib import Path
-from ..utils import decorator_decorator
+from ..utils.misc import decorator_decorator
 from typing import Union
 
 __all__ = ['pickleable', 'save', 'load', 'normalize']

@@ -63,7 +63,7 @@ class CMakeBuild(build_ext):
 
 manifest_maker.template = "setup.manifest"
 setup(
-    packages=find_packages(exclude=['cppcore', 'cppmodule', 'test*']) +
+    packages=find_packages(exclude=['cppcore', 'cppmodule', 'tests']) +
              ['pybinding.tests',
               'pybinding.tests.baseline_data.kpm',
               'pybinding.tests.baseline_data.lattice',
