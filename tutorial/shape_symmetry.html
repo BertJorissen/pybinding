@@ -14,9 +14,9 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/documentation_options.js?v=61b282d3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -114,12 +114,12 @@
            <div itemprop="articleBody">
              
   <section id="shape-and-symmetry">
-<h1><span class="section-number">5. </span>Shape and symmetry<a class="headerlink" href="#shape-and-symmetry" title="Permalink to this heading">¶</a></h1>
+<h1><span class="section-number">5. </span>Shape and symmetry<a class="headerlink" href="#shape-and-symmetry" title="Link to this heading">¶</a></h1>
 <p>The last two sections showed how to model shape and symmetry individually, but we can be more
 creative and combine the two.</p>
 <p><a class="reference download internal" download="" href="../_downloads/048253d2c88ab5ee39a2b8505097a790/shape_symmetry.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
 <section id="nanoribbons">
-<span id="graphene-nanoribbons"></span><h2><span class="section-number">5.1. </span>Nanoribbons<a class="headerlink" href="#nanoribbons" title="Permalink to this heading">¶</a></h2>
+<span id="graphene-nanoribbons"></span><h2><span class="section-number">5.1. </span>Nanoribbons<a class="headerlink" href="#nanoribbons" title="Link to this heading">¶</a></h2>
 <p>To create a graphene nanoribbon, we’ll need a shape to give the finite width of the ribbon
 while the infinite length is achieved by imposing translational symmetry.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
@@ -215,7 +215,7 @@ lattice vector <span class="math notranslate nohighlight">\(a_2\)</span>, the po
 </figure>
 </section>
 <section id="d-periodic-supercell">
-<h2><span class="section-number">5.2. </span>1D periodic supercell<a class="headerlink" href="#d-periodic-supercell" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">5.2. </span>1D periodic supercell<a class="headerlink" href="#d-periodic-supercell" title="Link to this heading">¶</a></h2>
 <p>Up to now, we used <a class="reference internal" href="../_api/pybinding.translational_symmetry.html#pybinding.translational_symmetry" title="pybinding.translational_symmetry"><code class="xref py py-func docutils literal notranslate"><span class="pre">translational_symmetry()</span></code></a> with <code class="samp docutils literal notranslate"><span class="pre">True</span></code> or <code class="samp docutils literal notranslate"><span class="pre">False</span></code> parameters to enable
 or disable periodicity in certain directions. We can also pass a number to indicate the desired
 period length.</p>
@@ -282,7 +282,7 @@ that the inner ring shape is preserved and the periodic boundaries are placed on
 </figure>
 </section>
 <section id="id1">
-<h2><span class="section-number">5.3. </span>2D periodic supercell<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">5.3. </span>2D periodic supercell<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h2>
 <p>A 2D periodic system made up of just a primitive cell was already covered in the <a class="reference internal" href="bands.html"><span class="doc">Band structure</span></a>
 section. Here, we’ll create a system with a periodic unit cell which is larger than the primitive
 cell. Similar to the 1D case, this is accomplished by giving <a class="reference internal" href="../_api/pybinding.translational_symmetry.html#pybinding.translational_symmetry" title="pybinding.translational_symmetry"><code class="xref py py-func docutils literal notranslate"><span class="pre">translational_symmetry()</span></code></a>
@@ -319,12 +319,9 @@ to a higher value:</p>
 <span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">num_periods</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
-<figure class="align-default">
-<img alt="../_images/shape_symmetry-12.png" class="plot-directive" src="../_images/shape_symmetry-12.png" />
-</figure>
 </section>
 <section id="example">
-<h2><span class="section-number">5.4. </span>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">5.4. </span>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h2>
 <p>Note the zero-energy mode in the band structure. For wave vector <span class="math notranslate nohighlight">\(k = 0\)</span>, states on the
 outer edge of the ring have the highest LDOS intensity, but for <span class="math notranslate nohighlight">\(k = \pi / a\)</span> the inner
 edge states dominate.</p>

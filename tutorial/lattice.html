@@ -14,9 +14,9 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/documentation_options.js?v=61b282d3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -116,13 +116,13 @@
            <div itemprop="articleBody">
              
   <section id="lattice">
-<h1><span class="section-number">2. </span>Lattice<a class="headerlink" href="#lattice" title="Permalink to this heading">¶</a></h1>
+<h1><span class="section-number">2. </span>Lattice<a class="headerlink" href="#lattice" title="Link to this heading">¶</a></h1>
 <p>A <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice" title="pybinding.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> object describes the unit cell of a crystal lattice. This includes the
 primitive vectors, positions of sublattice sites and hopping parameters which connect those sites.
 All of this structural information is used to build up a larger system by translation.</p>
 <p><a class="reference download internal" download="" href="../_downloads/37a8aea8f4ee8b2066d9d979c4d6c993/lattice.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
 <section id="square-lattice">
-<h2><span class="section-number">2.1. </span>Square lattice<a class="headerlink" href="#square-lattice" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">2.1. </span>Square lattice<a class="headerlink" href="#square-lattice" title="Link to this heading">¶</a></h2>
 <p>Starting from the basics, we’ll create a simple square lattice.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pybinding</span> <span class="k">as</span> <span class="nn">pb</span>
 
@@ -193,7 +193,7 @@ are function arguments, which makes the lattice easily configurable.</p>
 </figure>
 </section>
 <section id="graphene">
-<h2><span class="section-number">2.2. </span>Graphene<a class="headerlink" href="#graphene" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">2.2. </span>Graphene<a class="headerlink" href="#graphene" title="Link to this heading">¶</a></h2>
 <p>The next example shows a slightly more complicated two-atom lattice of graphene.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
 
@@ -244,7 +244,7 @@ other half is automatically added to guarantee hermiticity.</p></li>
 It serves as a handy visual inspection tool.</p>
 </section>
 <section id="brillouin-zone">
-<h2><span class="section-number">2.3. </span>Brillouin zone<a class="headerlink" href="#brillouin-zone" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">2.3. </span>Brillouin zone<a class="headerlink" href="#brillouin-zone" title="Link to this heading">¶</a></h2>
 <p>The method <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice.plot_brillouin_zone" title="pybinding.Lattice.plot_brillouin_zone"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Lattice.plot_brillouin_zone()</span></code></a> is another handy tool that does just as its
 name implies.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lattice</span> <span class="o">=</span> <span class="n">monolayer_graphene</span><span class="p">()</span>
@@ -260,7 +260,7 @@ is determined as the Wigner–Seitz cell in reciprocal space. By default, the pl
 the vertices of the Brillouin zone.</p>
 </section>
 <section id="material-repository">
-<h2><span class="section-number">2.4. </span>Material repository<a class="headerlink" href="#material-repository" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">2.4. </span>Material repository<a class="headerlink" href="#material-repository" title="Link to this heading">¶</a></h2>
 <p>A few common lattices are included in pybinding’s <a class="reference internal" href="../materials/index.html"><span class="doc">Material Repository</span></a>. You can get started
 quickly by importing one of them. For example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
@@ -273,12 +273,12 @@ quickly by importing one of them. For example:</p>
 </figure>
 </section>
 <section id="further-reading">
-<h2><span class="section-number">2.5. </span>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">2.5. </span>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">¶</a></h2>
 <p>Additional features of the <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice" title="pybinding.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> class are explained in the <a class="reference internal" href="../advanced/lattice.html"><span class="doc">Advanced Topics</span></a>
 section. For more lattice specifications check out the <a class="reference internal" href="../examples/lattice/index.html"><span class="doc">examples section</span></a>.</p>
 </section>
 <section id="example">
-<h2><span class="section-number">2.6. </span>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">2.6. </span>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h2>
 <p>This is a full example file which you can download and run with <code class="samp docutils literal notranslate"><span class="pre">python3</span> <span class="pre">lattice_example.py</span></code>.</p>
 <p><a class="reference download internal" download="" href="../_downloads/40e7278492c3d905df7bd0e74eecd3a2/lattice_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">source</span> <span class="pre">code</span></code></a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Create and plot a monolayer graphene lattice and it&#39;s Brillouin zone&quot;&quot;&quot;</span>

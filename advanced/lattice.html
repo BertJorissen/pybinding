@@ -13,9 +13,9 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/documentation_options.js?v=61b282d3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -107,7 +107,7 @@
            <div itemprop="articleBody">
              
   <section id="lattice-specification">
-<h1>Lattice specification<a class="headerlink" href="#lattice-specification" title="Permalink to this heading">¶</a></h1>
+<h1>Lattice specification<a class="headerlink" href="#lattice-specification" title="Link to this heading">¶</a></h1>
 <p>This section covers a few extra features of the <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice" title="pybinding.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> class. It is assumed that you
 are already familiar with the <a class="reference internal" href="../tutorial/index.html"><span class="doc">Tutorial</span></a>.</p>
 <p><a class="reference download internal" download="" href="../_downloads/45412374df93e912756e05da7929cd48/lattice.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
@@ -125,7 +125,7 @@ are already familiar with the <a class="reference internal" href="../tutorial/in
 </pre></div>
 </div>
 <section id="intrinsic-onsite-energy">
-<h2>Intrinsic onsite energy<a class="headerlink" href="#intrinsic-onsite-energy" title="Permalink to this heading">¶</a></h2>
+<h2>Intrinsic onsite energy<a class="headerlink" href="#intrinsic-onsite-energy" title="Link to this heading">¶</a></h2>
 <p>During the construction of a <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice" title="pybinding.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> object, the full signature of a sublattice is
 (<code class="samp docutils literal notranslate"><span class="pre">name</span></code>, <code class="samp docutils literal notranslate"><span class="pre">offset</span></code>, <code class="samp docutils literal notranslate"><span class="pre">onsite_energy=0.0</span></code>), where the last argument is optional. The <code class="samp docutils literal notranslate"><span class="pre">name</span></code> and
 <code class="samp docutils literal notranslate"><span class="pre">offset</span></code> arguments were already explained in the basic tutorial. The <code class="samp docutils literal notranslate"><span class="pre">onsite_energy</span></code> is applied
@@ -173,7 +173,7 @@ the final (x, y, z) coordinates. Conversely, when the onsite energy is specified
 If both the intrinsic energy and the modifier are specified, the values are added up.</p>
 </section>
 <section id="constructing-a-supercell">
-<span id="construct-a-supercell"></span><h2>Constructing a supercell<a class="headerlink" href="#constructing-a-supercell" title="Permalink to this heading">¶</a></h2>
+<span id="construct-a-supercell"></span><h2>Constructing a supercell<a class="headerlink" href="#constructing-a-supercell" title="Link to this heading">¶</a></h2>
 <p>A primitive cell is the smallest unit cell of a crystal. For graphene, this is the usual 2-atom
 cell. It’s translated in space to construct a larger system. Sometimes it can be convenient to use
 a larger unit cell instead, i.e. a supercell consisting of multiple primitive cells. This allows us
@@ -241,7 +241,7 @@ A2 and B2 be equivalent to A and B. <a class="reference internal" href="../_api/
 rectangular which makes it a more convenient building block than the oblique 2-atom cell.</p>
 </section>
 <section id="removing-dangling-bonds">
-<h2>Removing dangling bonds<a class="headerlink" href="#removing-dangling-bonds" title="Permalink to this heading">¶</a></h2>
+<h2>Removing dangling bonds<a class="headerlink" href="#removing-dangling-bonds" title="Link to this heading">¶</a></h2>
 <p>When a finite-sized graphene system is constructed, it’s possible that it will contain a few
 dangling bonds on the edge of the system. These are usually not desired and can be removed easily
 by setting the <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice.min_neighbors" title="pybinding.Lattice.min_neighbors"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Lattice.min_neighbors</span></code></a> attribute:</p>
@@ -267,7 +267,7 @@ less than the specified minimum number of neighbors. Note that setting <a class=
 would produce an empty system since it is impossible for all atoms to have at least 3 neighbors.</p>
 </section>
 <section id="global-lattice-offset">
-<h2>Global lattice offset<a class="headerlink" href="#global-lattice-offset" title="Permalink to this heading">¶</a></h2>
+<h2>Global lattice offset<a class="headerlink" href="#global-lattice-offset" title="Link to this heading">¶</a></h2>
 <p>When we defined <code class="samp docutils literal notranslate"><span class="pre">monolayer_graphene()</span></code> at the start of this section, we set the positions of the
 sublattices as <span class="math notranslate nohighlight">\([x, y] = [0, \pm a_{cc}]\)</span>, i.e. the coordinate system origin is at the
 midpoint between A and B atoms. It can sometimes be convenient to choose a different origin
@@ -299,7 +299,7 @@ as needed. Note that the given offset must be within half the length of a primit
 sense to shift it any father.</p>
 </section>
 <section id="position-data-types">
-<h2>Position data types<a class="headerlink" href="#position-data-types" title="Permalink to this heading">¶</a></h2>
+<h2>Position data types<a class="headerlink" href="#position-data-types" title="Link to this heading">¶</a></h2>
 <p>By default, the data types for the positions are given in <code class="samp docutils literal notranslate"><span class="pre">double</span></code>. If you want to change this to <code class="samp docutils literal notranslate"><span class="pre">float</span></code>,
 remove any existing pybinding installation by executing the following
 command in terminal:</p>

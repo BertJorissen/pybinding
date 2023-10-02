@@ -13,9 +13,9 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/documentation_options.js?v=61b282d3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -104,7 +104,7 @@
            <div itemprop="articleBody">
              
   <section id="structure-mapped-data">
-<h1>Structure-mapped data<a class="headerlink" href="#structure-mapped-data" title="Permalink to this heading">¶</a></h1>
+<h1>Structure-mapped data<a class="headerlink" href="#structure-mapped-data" title="Link to this heading">¶</a></h1>
 <p>As shown in the previous section, many classes in pybinding use structure plots in a similar way.
 One class stands out here: <a class="reference internal" href="../_api/pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a> can be used to map any arbitrary data onto the
 spatial structure of a model. <a class="reference internal" href="../_api/pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a> objects are produced in two cases: as the
@@ -112,7 +112,7 @@ results of various computation functions (e.g. <a class="reference internal" hre
 from <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model.structure_map" title="pybinding.Model.structure_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Model.structure_map()</span></code></a> which can map custom user data.</p>
 <p><a class="reference download internal" download="" href="../_downloads/b786ea5a0465e02fa01d544c7d44da7c/structuremap.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
 <section id="draw-only-certain-hoppings">
-<h2>Draw only certain hoppings<a class="headerlink" href="#draw-only-certain-hoppings" title="Permalink to this heading">¶</a></h2>
+<h2>Draw only certain hoppings<a class="headerlink" href="#draw-only-certain-hoppings" title="Link to this heading">¶</a></h2>
 <p>Just as before, we can draw only the desired hoppings. Note that <code class="samp docutils literal notranslate"><span class="pre">smap</span></code> is a <a class="reference internal" href="../_api/pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a>
 returned by <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.Solver.calc_probability" title="pybinding.solver.Solver.calc_probability"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Solver.calc_probability()</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
@@ -135,7 +135,7 @@ returned by <a class="reference internal" href="../_api/pybinding.solver.html#py
 </figure>
 </section>
 <section id="slicing-a-structure">
-<h2>Slicing a structure<a class="headerlink" href="#slicing-a-structure" title="Permalink to this heading">¶</a></h2>
+<h2>Slicing a structure<a class="headerlink" href="#slicing-a-structure" title="Link to this heading">¶</a></h2>
 <p>This follows a syntax similar to numpy fancy indexing where we can give a condition as the index.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 
@@ -165,7 +165,7 @@ returned by <a class="reference internal" href="../_api/pybinding.solver.html#py
 </figure>
 </section>
 <section id="mapping-custom-data">
-<h2>Mapping custom data<a class="headerlink" href="#mapping-custom-data" title="Permalink to this heading">¶</a></h2>
+<h2>Mapping custom data<a class="headerlink" href="#mapping-custom-data" title="Link to this heading">¶</a></h2>
 <p>The method <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model.structure_map" title="pybinding.Model.structure_map"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Model.structure_map()</span></code></a> returns a <a class="reference internal" href="../_api/pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a> where any user-defined
 <code class="samp docutils literal notranslate"><span class="pre">data</span></code> can be mapped to the spatial positions of the lattice sites. The <code class="samp docutils literal notranslate"><span class="pre">data</span></code> just needs to be
 a 1D array with the same size as the total number of sites in the system.</p>
@@ -203,7 +203,7 @@ a 1D array with the same size as the total number of sites in the system.</p>
 </figure>
 </section>
 <section id="contour-plots-for-large-systems">
-<h2>Contour plots for large systems<a class="headerlink" href="#contour-plots-for-large-systems" title="Permalink to this heading">¶</a></h2>
+<h2>Contour plots for large systems<a class="headerlink" href="#contour-plots-for-large-systems" title="Link to this heading">¶</a></h2>
 <p>For larger systems, structure plots don’t make much sense because the details of the sites and
 hoppings would be too small to see. Contour plots look much better in this case.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">6.8</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
@@ -222,7 +222,7 @@ hoppings would be too small to see. Contour plots look much better in this case.
 </div>
 </section>
 <section id="composing-multiple-plots">
-<h2>Composing multiple plots<a class="headerlink" href="#composing-multiple-plots" title="Permalink to this heading">¶</a></h2>
+<h2>Composing multiple plots<a class="headerlink" href="#composing-multiple-plots" title="Link to this heading">¶</a></h2>
 <p>Various plotting methods or even different invocations of the same method can be composed to
 create nice figures. For example, we may want to use different colormaps to distinguish between
 sublattices A and B when plotting some data on top of the structure of graphene. Below, the first

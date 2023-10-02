@@ -13,9 +13,9 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/doctools.js"></script>
-        <script src="_static/sphinx_highlight.js"></script>
+        <script src="_static/documentation_options.js?v=61b282d3"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -168,7 +168,7 @@
            <div itemprop="articleBody">
              
   <section id="api-reference">
-<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this heading">¶</a></h1>
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading">¶</a></h1>
 <p>This detailed reference lists all the classes and functions contained in the package.
 If you are just looking to get started, read the <a class="reference internal" href="tutorial/index.html"><span class="doc">Tutorial</span></a> first.</p>
 <p>The <a class="reference internal" href="_api/pybinding.Lattice.html#pybinding.Lattice" title="pybinding.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> describes the unit cell of a crystal, while the <a class="reference internal" href="_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> is used to
@@ -185,7 +185,7 @@ The model builds the Hamiltonian matrix by applying fields and other modifier pa
 </tbody>
 </table>
 <section id="shapes">
-<span id="shapes-api"></span><h2>Shapes<a class="headerlink" href="#shapes" title="Permalink to this heading">¶</a></h2>
+<span id="shapes-api"></span><h2>Shapes<a class="headerlink" href="#shapes" title="Link to this heading">¶</a></h2>
 <p>The geometry of a finite-sized system can be defined using the <a class="reference internal" href="_api/pybinding.Polygon.html#pybinding.Polygon" title="pybinding.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code></a> class (2D only)
 or using <a class="reference internal" href="_api/pybinding.FreeformShape.html#pybinding.FreeformShape" title="pybinding.FreeformShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">FreeformShape</span></code></a> (1 to 3 dimensions). A few common shapes are included in the
 package and listed below. These predefined shapes are just functions which configure and return
@@ -226,7 +226,7 @@ a shape class object.</p>
 </table>
 </section>
 <section id="symmetry">
-<h2>Symmetry<a class="headerlink" href="#symmetry" title="Permalink to this heading">¶</a></h2>
+<h2>Symmetry<a class="headerlink" href="#symmetry" title="Link to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.translational_symmetry.html#pybinding.translational_symmetry" title="pybinding.translational_symmetry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translational_symmetry</span></code></a>([a1, a2, a3])</p></td>
@@ -236,23 +236,23 @@ a shape class object.</p>
 </table>
 </section>
 <section id="modifiers">
-<span id="modifiers-api"></span><h2>Modifiers<a class="headerlink" href="#modifiers" title="Permalink to this heading">¶</a></h2>
+<span id="modifiers-api"></span><h2>Modifiers<a class="headerlink" href="#modifiers" title="Link to this heading">¶</a></h2>
 <p>The following decorators are used to create functions which express some feature of a
 tight-binding model, such as various fields, defects or geometric deformations.</p>
 <p class="rubric">Decorators</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.site_state_modifier.html#pybinding.site_state_modifier" title="pybinding.site_state_modifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">site_state_modifier</span></code></a>([min_neighbors])</p></td>
-<td><p>Modify the state (valid or invalid) of lattice sites, e.g.</p></td>
+<td><p>Modify the state (valid or invalid) of lattice sites, e.g. to create vacancies.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="_api/pybinding.site_position_modifier.html#pybinding.site_position_modifier" title="pybinding.site_position_modifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">site_position_modifier</span></code></a>()</p></td>
-<td><p>Modify the position of lattice sites, e.g.</p></td>
+<td><p>Modify the position of lattice sites, e.g. to apply geometric deformations.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.onsite_energy_modifier.html#pybinding.onsite_energy_modifier" title="pybinding.onsite_energy_modifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">onsite_energy_modifier</span></code></a>([is_double, phase])</p></td>
-<td><p>Modify the onsite energy, e.g.</p></td>
+<td><p>Modify the onsite energy, e.g. to apply an electric field.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="_api/pybinding.hopping_energy_modifier.html#pybinding.hopping_energy_modifier" title="pybinding.hopping_energy_modifier"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hopping_energy_modifier</span></code></a>([is_double, ...])</p></td>
-<td><p>Modify the hopping energy, e.g.</p></td>
+<td><p>Modify the hopping energy, e.g. to apply a magnetic field.</p></td>
 </tr>
 </tbody>
 </table>
@@ -275,7 +275,7 @@ tight-binding model, such as various fields, defects or geometric deformations.<
 </table>
 </section>
 <section id="generators">
-<span id="generators-api"></span><h2>Generators<a class="headerlink" href="#generators" title="Permalink to this heading">¶</a></h2>
+<span id="generators-api"></span><h2>Generators<a class="headerlink" href="#generators" title="Link to this heading">¶</a></h2>
 <p>The following decorators are used to create functions which add features to a
 tight-binding model, such as hoppings and sites.</p>
 <p class="rubric">Decorators</p>
@@ -291,7 +291,7 @@ tight-binding model, such as hoppings and sites.</p>
 </table>
 </section>
 <section id="compute">
-<span id="compute-api"></span><h2>Compute<a class="headerlink" href="#compute" title="Permalink to this heading">¶</a></h2>
+<span id="compute-api"></span><h2>Compute<a class="headerlink" href="#compute" title="Link to this heading">¶</a></h2>
 <p>After a <a class="reference internal" href="_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> is constructed, computational routines can be applied to determine various
 physical properties. The following submodules contain functions for exact diagonalization as well
 as some approximative compute methods. Follow the links below for details.</p>
@@ -315,7 +315,7 @@ as some approximative compute methods. Follow the links below for details.</p>
 </table>
 </section>
 <section id="results">
-<span id="results-api"></span><h2>Results<a class="headerlink" href="#results" title="Permalink to this heading">¶</a></h2>
+<span id="results-api"></span><h2>Results<a class="headerlink" href="#results" title="Link to this heading">¶</a></h2>
 <p>Result objects are usually produced by compute functions, but they are also used to express certain
 model properties. They hold data and offer postprocessing and plotting methods specifically adapted
 to the nature of the physical properties (i.e. the stored data).</p>
@@ -389,7 +389,7 @@ followed by <code class="samp docutils literal notranslate"><span class="pre">re
 </table>
 </section>
 <section id="components">
-<h2>Components<a class="headerlink" href="#components" title="Permalink to this heading">¶</a></h2>
+<h2>Components<a class="headerlink" href="#components" title="Link to this heading">¶</a></h2>
 <p>The following submodules contain classes and functions which are not meant to created manually,
 but they are components of other classes (e.g. <a class="reference internal" href="_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>) so they are used regularly (even
 if indirectly).</p>
@@ -405,7 +405,7 @@ if indirectly).</p>
 </table>
 </section>
 <section id="miscellaneous">
-<h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this heading">¶</a></h2>
+<h2>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Link to this heading">¶</a></h2>
 <table class="autosummary longtable docutils align-default">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="_api/pybinding.constants.html#module-pybinding.constants" title="pybinding.constants"><code class="xref py py-obj docutils literal notranslate"><span class="pre">constants</span></code></a></p></td>

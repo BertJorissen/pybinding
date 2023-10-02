@@ -14,9 +14,9 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/documentation_options.js?v=61b282d3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -117,14 +117,14 @@
            <div itemprop="articleBody">
              
   <section id="finite-size">
-<h1><span class="section-number">4. </span>Finite size<a class="headerlink" href="#finite-size" title="Permalink to this heading">¶</a></h1>
+<h1><span class="section-number">4. </span>Finite size<a class="headerlink" href="#finite-size" title="Link to this heading">¶</a></h1>
 <p>This section introduces the concept of shapes with classes <a class="reference internal" href="../_api/pybinding.Polygon.html#pybinding.Polygon" title="pybinding.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code></a> and
 <a class="reference internal" href="../_api/pybinding.FreeformShape.html#pybinding.FreeformShape" title="pybinding.FreeformShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">FreeformShape</span></code></a> which are used to model systems of finite size. The sparse
 eigensolver <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.arpack" title="pybinding.solver.arpack"><code class="xref py py-func docutils literal notranslate"><span class="pre">arpack()</span></code></a> is also introduced as a good tool for exactly solving
 larger Hamiltonian matrices.</p>
 <p><a class="reference download internal" download="" href="../_downloads/6253a0c51f8427860011fa93d851e0f0/finite.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
 <section id="primitive">
-<h2><span class="section-number">4.1. </span>Primitive<a class="headerlink" href="#primitive" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">4.1. </span>Primitive<a class="headerlink" href="#primitive" title="Link to this heading">¶</a></h2>
 <p>The simplest finite-sized system is just the unit cell of the crystal lattice.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
 
@@ -152,7 +152,7 @@ larger Hamiltonian matrices.</p>
 realistic systems we need proper shapes.</p>
 </section>
 <section id="polygon">
-<h2><span class="section-number">4.2. </span>Polygon<a class="headerlink" href="#polygon" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">4.2. </span>Polygon<a class="headerlink" href="#polygon" title="Link to this heading">¶</a></h2>
 <p>The easiest way to create a 2D shape is with the <a class="reference internal" href="../_api/pybinding.Polygon.html#pybinding.Polygon" title="pybinding.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code></a> class. For example,
 a simple rectangle:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">rectangle</span><span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
@@ -210,7 +210,7 @@ the same <code class="samp docutils literal notranslate"><span class="pre">trape
 </figure>
 </section>
 <section id="freeform-shape">
-<h2><span class="section-number">4.3. </span>Freeform shape<a class="headerlink" href="#freeform-shape" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">4.3. </span>Freeform shape<a class="headerlink" href="#freeform-shape" title="Link to this heading">¶</a></h2>
 <p>Unlike a <a class="reference internal" href="../_api/pybinding.Polygon.html#pybinding.Polygon" title="pybinding.Polygon"><code class="xref py py-class docutils literal notranslate"><span class="pre">Polygon</span></code></a> which is defined by a list of vertices, a <a class="reference internal" href="../_api/pybinding.FreeformShape.html#pybinding.FreeformShape" title="pybinding.FreeformShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">FreeformShape</span></code></a> is
 defined by a <code class="samp docutils literal notranslate"><span class="pre">contains</span></code> function which determines if a lattice site is inside the desired shape.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">circle</span><span class="p">(</span><span class="n">radius</span><span class="p">):</span>
@@ -275,7 +275,7 @@ comparisons return boolean arrays:</p>
 Likewise, <code class="samp docutils literal notranslate"><span class="pre">math.sqrt</span></code> does not work with arrays, but <code class="samp docutils literal notranslate"><span class="pre">np.sqrt</span></code> does.</p>
 </section>
 <section id="composite-shape">
-<h2><span class="section-number">4.4. </span>Composite shape<a class="headerlink" href="#composite-shape" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">4.4. </span>Composite shape<a class="headerlink" href="#composite-shape" title="Link to this heading">¶</a></h2>
 <p>Complicated system geometry can also be produced by composing multiple simple shapes. The
 following example gives a quick taste of how it works. For a full overview of this functionality,
 see the <a class="reference internal" href="../advanced/shapes.html"><span class="doc">Composite shapes</span></a> section.</p>
@@ -297,7 +297,7 @@ see the <a class="reference internal" href="../advanced/shapes.html"><span class
 </figure>
 </section>
 <section id="spatial-ldos">
-<h2><span class="section-number">4.5. </span>Spatial LDOS<a class="headerlink" href="#spatial-ldos" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">4.5. </span>Spatial LDOS<a class="headerlink" href="#spatial-ldos" title="Link to this heading">¶</a></h2>
 <p>Now that we have a ring structure, we can exactly diagonalize its <code class="samp docutils literal notranslate"><span class="pre">model.hamiltonian</span></code> using a
 <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.Solver" title="pybinding.solver.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a>. We previously used the <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.lapack" title="pybinding.solver.lapack"><code class="xref py py-func docutils literal notranslate"><span class="pre">lapack()</span></code></a> solver to find all the eigenvalues and
 eigenvectors, but this is not efficient for larger systems. The sparse <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.arpack" title="pybinding.solver.arpack"><code class="xref py py-func docutils literal notranslate"><span class="pre">arpack()</span></code></a> solver can
@@ -327,11 +327,11 @@ large. The states with a high LDOS are clearly visible on the outer and inner ed
 graphene ring structure.</p>
 </section>
 <section id="further-reading">
-<h2><span class="section-number">4.6. </span>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">4.6. </span>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">¶</a></h2>
 <p>For more finite-sized systems check out the <a class="reference internal" href="../examples/finite/index.html"><span class="doc">examples section</span></a>.</p>
 </section>
 <section id="example">
-<h2><span class="section-number">4.7. </span>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">4.7. </span>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h2>
 <p><a class="reference download internal" download="" href="../_downloads/46af63bf2d94f4cca4d40d57b53bd1c2/finite_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Donwload</span> <span class="pre">source</span> <span class="pre">code</span></code></a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Model a graphene ring structure and calculate the local density of states&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">pybinding</span> <span class="k">as</span> <span class="nn">pb</span>

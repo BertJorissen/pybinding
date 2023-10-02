@@ -14,9 +14,9 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/documentation_options.js?v=61b282d3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -115,14 +115,14 @@
            <div itemprop="articleBody">
              
   <section id="defects-and-strain">
-<h1><span class="section-number">7. </span>Defects and strain<a class="headerlink" href="#defects-and-strain" title="Permalink to this heading">¶</a></h1>
+<h1><span class="section-number">7. </span>Defects and strain<a class="headerlink" href="#defects-and-strain" title="Link to this heading">¶</a></h1>
 <p>This section will introduce <a class="reference internal" href="../_api/pybinding.site_state_modifier.html#pybinding.site_state_modifier" title="pybinding.site_state_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;site_state_modifier</span></code></a> and
 <a class="reference internal" href="../_api/pybinding.site_position_modifier.html#pybinding.site_position_modifier" title="pybinding.site_position_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;site_position_modifier</span></code></a> which can be used to add defects and
 strain to the model. These modifiers are applied to the structure of the system before the
 Hamiltonian matrix is created.</p>
 <p><a class="reference download internal" download="" href="../_downloads/f2a4ce01c0ddaa1467256d30e2422d7d/strain.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
 <section id="vacancies">
-<h2><span class="section-number">7.1. </span>Vacancies<a class="headerlink" href="#vacancies" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">7.1. </span>Vacancies<a class="headerlink" href="#vacancies" title="Link to this heading">¶</a></h2>
 <p>A <a class="reference internal" href="../_api/pybinding.site_state_modifier.html#pybinding.site_state_modifier" title="pybinding.site_state_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;site_state_modifier</span></code></a> can be used to create vacancies in a crystal
 lattice. The definition is very similar to the onsite and hopping modifiers explained in the
 previous section.</p>
@@ -181,7 +181,7 @@ take advantage of this and create four different vacancies, with 1 to 4 missing 
 </figure>
 </section>
 <section id="layer-defect">
-<h2><span class="section-number">7.2. </span>Layer defect<a class="headerlink" href="#layer-defect" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">7.2. </span>Layer defect<a class="headerlink" href="#layer-defect" title="Link to this heading">¶</a></h2>
 <p>The site state modifier also has access to sublattice information. This can be used, for example,
 with bilayer graphene to remove a single layer in a specific area. We’ll use the bilayer lattice
 that’s included in the <a class="reference internal" href="../materials/index.html"><span class="doc">Material Repository</span></a>. The <code class="xref py py-func docutils literal notranslate"><span class="pre">graphene.bilayer()</span></code>
@@ -230,13 +230,13 @@ Which method is more convenient is up to the user.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>As with the onsite and hopping modifiers, all the arguments are given as numpy arrays.
-Therefore, we must use the array-specific <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.logical_or.html#numpy.logical_or" title="(in NumPy v1.25)"><code class="xref py py-data docutils literal notranslate"><span class="pre">np.logical_or()</span></code></a>/
-<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.logical_and.html#numpy.logical_and" title="(in NumPy v1.25)"><code class="xref py py-data docutils literal notranslate"><span class="pre">np.logical_and()</span></code></a> functions instead of the plain <code class="samp docutils literal notranslate"><span class="pre">or</span></code>/<code class="samp docutils literal notranslate"><span class="pre">and</span></code>
+Therefore, we must use the array-specific <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.logical_or.html#numpy.logical_or" title="(in NumPy v1.26)"><code class="xref py py-data docutils literal notranslate"><span class="pre">np.logical_or()</span></code></a>/
+<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.logical_and.html#numpy.logical_and" title="(in NumPy v1.26)"><code class="xref py py-data docutils literal notranslate"><span class="pre">np.logical_and()</span></code></a> functions instead of the plain <code class="samp docutils literal notranslate"><span class="pre">or</span></code>/<code class="samp docutils literal notranslate"><span class="pre">and</span></code>
 keywords.</p>
 </div>
 </section>
 <section id="strain">
-<h2><span class="section-number">7.3. </span>Strain<a class="headerlink" href="#strain" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">7.3. </span>Strain<a class="headerlink" href="#strain" title="Link to this heading">¶</a></h2>
 <p>A <a class="reference internal" href="../_api/pybinding.site_position_modifier.html#pybinding.site_position_modifier" title="pybinding.site_position_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;site_position_modifier</span></code></a> can be used to model the lattice site
 displacement caused by strain. Let’s start with a simple triangular system:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span>
@@ -361,11 +361,11 @@ features in the LDOS. Note that the zero-energy peak has double intensity on one
 zero on the other: this is a unique feature of the strain-induced pseudo-magnetic field.</p>
 </section>
 <section id="further-reading">
-<h2><span class="section-number">7.4. </span>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">7.4. </span>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">¶</a></h2>
 <p>Take a look at the <a class="reference internal" href="../api.html#modifiers-api"><span class="std std-ref">Modifiers</span></a> API reference for more information.</p>
 </section>
 <section id="example">
-<h2><span class="section-number">7.5. </span>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">7.5. </span>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h2>
 <p><a class="reference download internal" download="" href="../_downloads/4ada9ede0bd0a2460f52a3554fcdf7c1/strain_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">source</span> <span class="pre">code</span></code></a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Strain a triangular system by pulling on its vertices&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">pybinding</span> <span class="k">as</span> <span class="nn">pb</span>

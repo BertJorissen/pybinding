@@ -14,9 +14,9 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/documentation_options.js?v=61b282d3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -117,14 +117,14 @@
            <div itemprop="articleBody">
              
   <section id="fields-and-effects">
-<h1><span class="section-number">6. </span>Fields and effects<a class="headerlink" href="#fields-and-effects" title="Permalink to this heading">¶</a></h1>
+<h1><span class="section-number">6. </span>Fields and effects<a class="headerlink" href="#fields-and-effects" title="Link to this heading">¶</a></h1>
 <p>This section will introduce <a class="reference internal" href="../_api/pybinding.onsite_energy_modifier.html#pybinding.onsite_energy_modifier" title="pybinding.onsite_energy_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;onsite_energy_modifier</span></code></a> and
 <a class="reference internal" href="../_api/pybinding.hopping_energy_modifier.html#pybinding.hopping_energy_modifier" title="pybinding.hopping_energy_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;hopping_energy_modifier</span></code></a> which can be used to add various
 fields to the model. These functions can apply user-defined modifications to the Hamiltonian
 matrix which is why we shall refer to them as <em>modifier</em> functions.</p>
 <p><a class="reference download internal" download="" href="../_downloads/62d7530e7478ce66d9e137bc14f1f4a4/fields.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
 <section id="electric-potential">
-<h2><span class="section-number">6.1. </span>Electric potential<a class="headerlink" href="#electric-potential" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">6.1. </span>Electric potential<a class="headerlink" href="#electric-potential" title="Link to this heading">¶</a></h2>
 <p>We can define a simple potential function like the following:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span>
 <span class="k">def</span> <span class="nf">potential</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
@@ -215,7 +215,7 @@ multiple functions. For example, let’s combine the improved <code class="samp 
 because of the contribution of the <code class="samp docutils literal notranslate"><span class="pre">linear</span></code> potential.</p>
 </section>
 <section id="about-the-decorator">
-<h2><span class="section-number">6.2. </span>About the decorator<a class="headerlink" href="#about-the-decorator" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">6.2. </span>About the decorator<a class="headerlink" href="#about-the-decorator" title="Link to this heading">¶</a></h2>
 <p>Now that you have a general idea of how to add and compose electric potentials in a model,
 we should talk about the role of the <a class="reference internal" href="../_api/pybinding.onsite_energy_modifier.html#pybinding.onsite_energy_modifier" title="pybinding.onsite_energy_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;onsite_energy_modifier</span></code></a>.
 The full signature of a potential function looks like this:</p>
@@ -243,7 +243,7 @@ The decorator checks this at definition time and decides if the given function i
 or not, so any errors will be caught early.</p>
 </section>
 <section id="opening-a-band-gap">
-<span id="graphene-mass-term"></span><h2><span class="section-number">6.3. </span>Opening a band gap<a class="headerlink" href="#opening-a-band-gap" title="Permalink to this heading">¶</a></h2>
+<span id="graphene-mass-term"></span><h2><span class="section-number">6.3. </span>Opening a band gap<a class="headerlink" href="#opening-a-band-gap" title="Link to this heading">¶</a></h2>
 <p>The last thing to explain about <a class="reference internal" href="../_api/pybinding.onsite_energy_modifier.html#pybinding.onsite_energy_modifier" title="pybinding.onsite_energy_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;onsite_energy_modifier</span></code></a> is the
 use of the <code class="samp docutils literal notranslate"><span class="pre">sub_id</span></code> argument. It tells us which sublattice a site belongs to. If you remember
 from early on in the tutorial, <a class="reference internal" href="lattice.html"><span class="doc">in the process of specifying a lattice</span></a>, we gave
@@ -309,7 +309,7 @@ Now, let’s include the mass term and compute the band structure again.</p>
 (<code class="samp docutils literal notranslate"><span class="pre">delta</span> <span class="pre">*</span> <span class="pre">2</span></code>) is quite clearly visible in the band structure.</p>
 </section>
 <section id="pn-junction">
-<h2><span class="section-number">6.4. </span>PN junction<a class="headerlink" href="#pn-junction" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">6.4. </span>PN junction<a class="headerlink" href="#pn-junction" title="Link to this heading">¶</a></h2>
 <p>While we’re working with a nanoribbon, let’s add a PN junction along its main axis.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pn_junction</span><span class="p">(</span><span class="n">y0</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
     <span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span>
@@ -377,7 +377,7 @@ The square well affects the band structure by breaking electron-hole symmetry:</
 </figure>
 </section>
 <section id="magnetic-field">
-<span id="magnetic-field-modifier"></span><h2><span class="section-number">6.5. </span>Magnetic field<a class="headerlink" href="#magnetic-field" title="Permalink to this heading">¶</a></h2>
+<span id="magnetic-field-modifier"></span><h2><span class="section-number">6.5. </span>Magnetic field<a class="headerlink" href="#magnetic-field" title="Link to this heading">¶</a></h2>
 <p>To model a magnetic field, we need to apply the Peierls substitution:</p>
 <div class="math notranslate nohighlight">
 \[t_{nm} \rightarrow t_{nm} \text{e}^{i\frac{2\pi}{\Phi_0} \int_n^m \vec{A}_{nm} \cdot d\vec{l}}\]</div>
@@ -444,11 +444,11 @@ is explained in detail in the <a class="reference internal" href="kpm.html"><spa
 computation time low for the tutorial (less than 0.5 seconds for this LDOS calculation).</p>
 </section>
 <section id="further-reading">
-<h2><span class="section-number">6.6. </span>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">6.6. </span>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">¶</a></h2>
 <p>Take a look at the <a class="reference internal" href="../api.html#modifiers-api"><span class="std std-ref">Modifiers</span></a> API reference for more information.</p>
 </section>
 <section id="example">
-<h2><span class="section-number">6.7. </span>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">6.7. </span>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h2>
 <p><a class="reference download internal" download="" href="../_downloads/dd66af75bf1bafa047a2ae07eb14af3d/fields_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">source</span> <span class="pre">code</span></code></a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;PN junction and broken sublattice symmetry in a graphene nanoribbon&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">pybinding</span> <span class="k">as</span> <span class="nn">pb</span>

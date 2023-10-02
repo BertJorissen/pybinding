@@ -14,9 +14,9 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/documentation_options.js?v=61b282d3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -115,12 +115,12 @@
            <div itemprop="articleBody">
              
   <section id="band-structure">
-<h1><span class="section-number">3. </span>Band structure<a class="headerlink" href="#band-structure" title="Permalink to this heading">¶</a></h1>
+<h1><span class="section-number">3. </span>Band structure<a class="headerlink" href="#band-structure" title="Link to this heading">¶</a></h1>
 <p>In order to calculate the band structure of a crystal lattice, this section introduces
 the concepts of a <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> and a <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.Solver" title="pybinding.solver.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a>.</p>
 <p><a class="reference download internal" download="" href="../_downloads/393f7d1494a8fc597b00e3fe5ae65573/bands.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
 <section id="model">
-<h2><span class="section-number">3.1. </span>Model<a class="headerlink" href="#model" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">3.1. </span>Model<a class="headerlink" href="#model" title="Link to this heading">¶</a></h2>
 <p>A <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> contains the full tight-binding description of the physical system that we wish
 to solve. We’ll start by assigning a lattice to the model, and we’ll use a pre-made one from the
 material repository.</p>
@@ -153,7 +153,7 @@ sites in the system. The model also has a <a class="reference internal" href="..
 <span class="go">(1, 0)   -2.8</span>
 </pre></div>
 </div>
-<p>It’s a sparse matrix (see <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.11.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a>) which corresponds to the tight-binding
+<p>It’s a sparse matrix (see <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.11.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a>) which corresponds to the tight-binding
 Hamiltonian of our model. The output above shows the default sparse representation of the data
 where each line corresponds to <code class="samp docutils literal notranslate"><span class="pre">(row,</span> <span class="pre">col)</span> <span class="pre">value</span></code>. Alternatively, we can see the dense matrix
 output:</p>
@@ -178,7 +178,7 @@ translations of the unit cell. The number of translations is infinite, but the p
 the first one in each lattice vector direction.</p>
 </section>
 <section id="solver">
-<h2><span class="section-number">3.2. </span>Solver<a class="headerlink" href="#solver" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">3.2. </span>Solver<a class="headerlink" href="#solver" title="Link to this heading">¶</a></h2>
 <p>A <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.Solver" title="pybinding.solver.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a> can exactly calculate the eigenvalues and eigenvectors of a Hamiltonian matrix.
 We’ll take a look at various <a class="reference internal" href="solvers.html"><span class="doc">Eigenvalue solvers</span></a> and their capabilities in a later section, but right
 now we’ll just grab the <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.lapack" title="pybinding.solver.lapack"><code class="xref py py-func docutils literal notranslate"><span class="pre">lapack()</span></code></a> solver which is the simplest and most appropriate for
@@ -237,7 +237,7 @@ array of <a class="reference internal" href="../_api/pybinding.solver.html#pybin
 </div>
 </section>
 <section id="switching-lattices">
-<h2><span class="section-number">3.3. </span>Switching lattices<a class="headerlink" href="#switching-lattices" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">3.3. </span>Switching lattices<a class="headerlink" href="#switching-lattices" title="Link to this heading">¶</a></h2>
 <p>We can easily switch to a different material, just by passing a different lattice to the model.
 For this example, we’ll use our pre-made <code class="xref py py-func docutils literal notranslate"><span class="pre">graphene.bilayer()</span></code>
 from the <a class="reference internal" href="../materials/index.html"><span class="doc">Material Repository</span></a>. But you can create any lattice as described in the previous
@@ -281,14 +281,14 @@ the first of an infinite number of translation units. We’ll compute the band s
 </figure>
 </section>
 <section id="further-reading">
-<h2><span class="section-number">3.4. </span>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">3.4. </span>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">¶</a></h2>
 <p>Check out the <a class="reference internal" href="../examples/lattice/index.html"><span class="doc">examples section</span></a> for more band structure
 calculations with various other lattices. <a class="reference internal" href="solvers.html"><span class="doc">Eigenvalue solvers</span></a> will be covered in more detail at a
 later point in the tutorial, but this is enough information to get started. The next few sections
 are going to be dedicated to model building.</p>
 </section>
 <section id="example">
-<h2><span class="section-number">3.5. </span>Example<a class="headerlink" href="#example" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">3.5. </span>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h2>
 <p><a class="reference download internal" download="" href="../_downloads/b9319e43d41aa7679d4792f49e75ce4f/bands_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">source</span> <span class="pre">code</span></code></a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Calculate and plot the band structure of monolayer graphene&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">pybinding</span> <span class="k">as</span> <span class="nn">pb</span>

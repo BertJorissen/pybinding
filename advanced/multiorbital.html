@@ -14,9 +14,9 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/documentation_options.js?v=61b282d3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -105,7 +105,7 @@
            <div itemprop="articleBody">
              
   <section id="multi-orbital-models">
-<h1>Multi-orbital models<a class="headerlink" href="#multi-orbital-models" title="Permalink to this heading">¶</a></h1>
+<h1>Multi-orbital models<a class="headerlink" href="#multi-orbital-models" title="Link to this heading">¶</a></h1>
 <p>In pybinding, if an onsite or hopping energy term is defined as a matrix (instead of a scalar),
 we refer to the resulting model as <em>multi-orbital</em>. The elements of the matrix term may correspond
 to different spins, electrons and holes, or any other degrees of freedom. These can have different
@@ -118,7 +118,7 @@ replacing a scalar value with a matrix while all of the principals described in 
 <a class="reference internal" href="../tutorial/index.html"><span class="doc">Tutorial</span></a> still apply.</p>
 <p><a class="reference download internal" download="" href="../_downloads/f88721401748ebfa7c238d1d692aa0b3/multiorbital.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
 <section id="onsite-and-hopping-matrices">
-<h2>Onsite and hopping matrices<a class="headerlink" href="#onsite-and-hopping-matrices" title="Permalink to this heading">¶</a></h2>
+<h2>Onsite and hopping matrices<a class="headerlink" href="#onsite-and-hopping-matrices" title="Link to this heading">¶</a></h2>
 <p>Starting from the very beginning, the orbital count of a site is determined by the shape of the
 onsite energy matrix. Let’s take a look at a few possibilities:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lat</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Lattice</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
@@ -177,7 +177,7 @@ the number of columns must match the destination sublattice.</p>
 larger than <code class="samp docutils literal notranslate"><span class="pre">num_sites</span></code> due to the extra orbitals.</p>
 </section>
 <section id="effect-on-modifier-functions">
-<h2>Effect on modifier functions<a class="headerlink" href="#effect-on-modifier-functions" title="Permalink to this heading">¶</a></h2>
+<h2>Effect on modifier functions<a class="headerlink" href="#effect-on-modifier-functions" title="Link to this heading">¶</a></h2>
 <p>The <a class="reference internal" href="../_api/pybinding.onsite_energy_modifier.html#pybinding.onsite_energy_modifier" title="pybinding.onsite_energy_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;onsite_energy_modifier</span></code></a> and
 <a class="reference internal" href="../_api/pybinding.hopping_energy_modifier.html#pybinding.hopping_energy_modifier" title="pybinding.hopping_energy_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;hopping_energy_modifier</span></code></a> functions work equally well for
 single- and multi-orbital models. In case of the latter, the <code class="docutils literal notranslate"><span class="pre">energy</span></code> argument of the modifiers
@@ -188,7 +188,7 @@ will have a shape matching the onsite/hopping matrix term.</p>
     <span class="k">return</span> <span class="n">energy</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
 </pre></div>
 </div>
-<p>Note the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.eye.html#numpy.eye" title="(in NumPy v1.25)"><code class="xref py py-func docutils literal notranslate"><span class="pre">np.eye(2)</span></code></a> in the code above. The number 2 matches the 2-orbital
+<p>Note the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.eye.html#numpy.eye" title="(in NumPy v1.26)"><code class="xref py py-func docutils literal notranslate"><span class="pre">np.eye(2)</span></code></a> in the code above. The number 2 matches the 2-orbital
 structure of a specific model. Without this, <code class="docutils literal notranslate"><span class="pre">energy</span> <span class="pre">+</span> <span class="pre">x</span></code> would also add the value to the
 off-diagonal elements of the onsite matrix which is not desirable in this case.</p>
 <p>The modifier defined above will only work for 2-orbital models. In general, we might want to
@@ -252,7 +252,7 @@ single caveat:</p>
 </div>
 </section>
 <section id="local-properties-and-plotting">
-<h2>Local properties and plotting<a class="headerlink" href="#local-properties-and-plotting" title="Permalink to this heading">¶</a></h2>
+<h2>Local properties and plotting<a class="headerlink" href="#local-properties-and-plotting" title="Link to this heading">¶</a></h2>
 <p>When examining the local properties of a multi-orbital model, it is important to make the
 distinction between system indices which correspond to sites (unique positions) and Hamiltonian
 indices which correspond to the onsite or hopping terms in the Hamiltonian.</p>

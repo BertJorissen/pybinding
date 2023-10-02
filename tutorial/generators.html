@@ -14,9 +14,9 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/documentation_options.js?v=61b282d3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -112,7 +112,7 @@
            <div itemprop="articleBody">
              
   <section id="generators">
-<h1><span class="section-number">8. </span>Generators<a class="headerlink" href="#generators" title="Permalink to this heading">¶</a></h1>
+<h1><span class="section-number">8. </span>Generators<a class="headerlink" href="#generators" title="Link to this heading">¶</a></h1>
 <p>Up to now, we’ve only been using <strong>modifiers</strong> in order to manipulate existing lattice features
 and their corresponding Hamiltonian matrix terms (<a class="reference internal" href="../_api/pybinding.site_position_modifier.html#pybinding.site_position_modifier" title="pybinding.site_position_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;site_position_modifier</span></code></a>,
 <a class="reference internal" href="../_api/pybinding.site_state_modifier.html#pybinding.site_state_modifier" title="pybinding.site_state_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;site_state_modifier</span></code></a>, <a class="reference internal" href="../_api/pybinding.onsite_energy_modifier.html#pybinding.onsite_energy_modifier" title="pybinding.onsite_energy_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;onsite_energy_modifier</span></code></a>,
@@ -163,7 +163,7 @@ We start with two unconnected layers of graphene.</p>
 </div>
 <p>A <a class="reference internal" href="../_api/pybinding.site_position_modifier.html#pybinding.site_position_modifier" title="pybinding.site_position_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;site_position_modifier</span></code></a> is applied to rotate just one layer.
 Then, a <a class="reference internal" href="../_api/pybinding.hopping_generator.html#pybinding.hopping_generator" title="pybinding.hopping_generator"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;hopping_generator</span></code></a> finds and connects the layers via site
-pairs which satisfy the given criteria using <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.cKDTree.html#scipy.spatial.cKDTree" title="(in SciPy v1.11.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">cKDTree</span></code></a>.</p>
+pairs which satisfy the given criteria using <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.cKDTree.html#scipy.spatial.cKDTree" title="(in SciPy v1.11.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">cKDTree</span></code></a>.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">cKDTree</span>
 
 <span class="k">def</span> <span class="nf">twist_layers</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
@@ -340,11 +340,11 @@ account that a hopping check is performed each time a new hopping term is added 
 which would increase the model constructions time for lattices exceeding millions of hoppings.
 Finally, it is up to the user to chose an approach which suits their needs better.</p>
 <section id="further-reading">
-<h2><span class="section-number">8.1. </span>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">8.1. </span>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">¶</a></h2>
 <p>Take a look at the <a class="reference internal" href="../api.html#generators-api"><span class="std std-ref">Generators</span></a> API reference for more information.</p>
 </section>
 <section id="examples">
-<h2><span class="section-number">8.2. </span>Examples<a class="headerlink" href="#examples" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">8.2. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
 <p><a class="reference download internal" download="" href="../_downloads/13ee2bedb5631b92d01b2273aebd1800/twisted_heterostructures.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Construct a circular flake of twisted bilayer graphene (arbitrary angle)&quot;&quot;&quot;</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>

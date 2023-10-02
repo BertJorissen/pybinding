@@ -13,9 +13,9 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/documentation_options.js?v=61b282d3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -107,7 +107,7 @@
            <div itemprop="articleBody">
              
   <section id="model-structure">
-<h1>Model structure<a class="headerlink" href="#model-structure" title="Permalink to this heading">¶</a></h1>
+<h1>Model structure<a class="headerlink" href="#model-structure" title="Link to this heading">¶</a></h1>
 <p>A structure plot presents the crystal structure of a model by drawing lattice sites as circles and
 hoppings as lines which connect the circles. At first glance, this seems like a combination of the
 standard scatter and line plots found in matplotlib, but the specific requirements of tight-binding
@@ -116,7 +116,7 @@ functions. While these functions are based on matplotlib, they offer additional 
 be explained here.</p>
 <p><a class="reference download internal" download="" href="../_downloads/0d7047db80abcee5fcb8125cb28407b3/structure.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
 <section id="structure-plot-classes">
-<h2>Structure plot classes<a class="headerlink" href="#structure-plot-classes" title="Permalink to this heading">¶</a></h2>
+<h2>Structure plot classes<a class="headerlink" href="#structure-plot-classes" title="Link to this heading">¶</a></h2>
 <p>A few different classes in pybinding use structure plots. These are <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice" title="pybinding.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a>,
 <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>, <a class="reference internal" href="../_api/pybinding.system.html#pybinding.system.System" title="pybinding.system.System"><code class="xref py py-class docutils literal notranslate"><span class="pre">System</span></code></a>, <a class="reference internal" href="../_api/pybinding.leads.html#pybinding.leads.Lead" title="pybinding.leads.Lead"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lead</span></code></a> and <a class="reference internal" href="../_api/pybinding.StructureMap.html#pybinding.StructureMap" title="pybinding.StructureMap"><code class="xref py py-class docutils literal notranslate"><span class="pre">StructureMap</span></code></a>. They all represent
 some kind of spatial structure with sites and hoppings. Note that most of these classes are
@@ -135,7 +135,7 @@ they represent. The following pseudo-code presents a few possibilities:</p>
 will involve mainly <code class="xref py py-meth docutils literal notranslate"><span class="pre">Model.plot()</span></code>, but all of these methods share the same common API.</p>
 </section>
 <section id="draw-only-certain-hoppings">
-<h2>Draw only certain hoppings<a class="headerlink" href="#draw-only-certain-hoppings" title="Permalink to this heading">¶</a></h2>
+<h2>Draw only certain hoppings<a class="headerlink" href="#draw-only-certain-hoppings" title="Link to this heading">¶</a></h2>
 <p>The structure plot usually draws lines for all hoppings. We can see an example here with the
 third-nearest-neighbor model of graphene. Note the huge number of hoppings in the figure below.
 The extra information may be useful for calculations, but it is not always desirable for figures
@@ -171,7 +171,7 @@ as a list of hopping names. For example, if we only want the first-nearest neigh
 </figure>
 </section>
 <section id="site-radius-and-color">
-<h2>Site radius and color<a class="headerlink" href="#site-radius-and-color" title="Permalink to this heading">¶</a></h2>
+<h2>Site radius and color<a class="headerlink" href="#site-radius-and-color" title="Link to this heading">¶</a></h2>
 <p>The site radius is given in data units (nanometers in this example). Colors are passed as a list
 of colors or a matplotlib colormap.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
@@ -189,7 +189,7 @@ of colors or a matplotlib colormap.</p>
 </figure>
 </section>
 <section id="hopping-width-and-color">
-<h2>Hopping width and color<a class="headerlink" href="#hopping-width-and-color" title="Permalink to this heading">¶</a></h2>
+<h2>Hopping width and color<a class="headerlink" href="#hopping-width-and-color" title="Link to this heading">¶</a></h2>
 <p>By default, all hopping kinds (nearest, next-nearest, etc.) are shown using the same line color,
 but they can be colorized using the <code class="samp docutils literal notranslate"><span class="pre">cmap</span></code> parameter.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
@@ -207,7 +207,7 @@ but they can be colorized using the <code class="samp docutils literal notransla
 </figure>
 </section>
 <section id="redraw-all-axes-spines">
-<h2>Redraw all axes spines<a class="headerlink" href="#redraw-all-axes-spines" title="Permalink to this heading">¶</a></h2>
+<h2>Redraw all axes spines<a class="headerlink" href="#redraw-all-axes-spines" title="Link to this heading">¶</a></h2>
 <p>By default, pybinding plots will remove the right and top axes spines. To recover those lines
 call the <a class="reference internal" href="../_api/pybinding.pltutils.html#pybinding.pltutils.respine" title="pybinding.pltutils.respine"><code class="xref py py-func docutils literal notranslate"><span class="pre">pltutils.respine()</span></code></a> function.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span> <span class="n">graphene</span><span class="o">.</span><span class="n">hexagon_ac</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
@@ -220,7 +220,7 @@ call the <a class="reference internal" href="../_api/pybinding.pltutils.html#pyb
 </figure>
 </section>
 <section id="plot-only-sites-or-only-hoppings">
-<h2>Plot only sites or only hoppings<a class="headerlink" href="#plot-only-sites-or-only-hoppings" title="Permalink to this heading">¶</a></h2>
+<h2>Plot only sites or only hoppings<a class="headerlink" href="#plot-only-sites-or-only-hoppings" title="Link to this heading">¶</a></h2>
 <p>It can sometimes be useful to separate the plotting of sites and hoppings. Notably, for large
 systems drawing a huge number of hopping lines can become quite slow and they may even be too
 small to actually see in the figure. In such cases, removing the hoppings can speed up plotting
@@ -241,7 +241,7 @@ an example.</p>
 </figure>
 </section>
 <section id="rotating-the-view">
-<h2>Rotating the view<a class="headerlink" href="#rotating-the-view" title="Permalink to this heading">¶</a></h2>
+<h2>Rotating the view<a class="headerlink" href="#rotating-the-view" title="Link to this heading">¶</a></h2>
 <p>By default, all structure plots show the xy-plane. The view can be rotated by settings the <code class="samp docutils literal notranslate"><span class="pre">axes</span></code>
 argument to a string consisting of any combination of the letters “x”, “y” and “z”.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">()</span><span class="o">.</span><span class="n">with_offset</span><span class="p">([</span><span class="o">-</span><span class="n">graphene</span><span class="o">.</span><span class="n">a</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span>
@@ -261,7 +261,7 @@ argument to a string consisting of any combination of the letters “x”, “y�
 </div>
 </section>
 <section id="slicing-layers">
-<h2>Slicing layers<a class="headerlink" href="#slicing-layers" title="Permalink to this heading">¶</a></h2>
+<h2>Slicing layers<a class="headerlink" href="#slicing-layers" title="Link to this heading">¶</a></h2>
 <p>For multilayer materials, it is sometimes useful to plot each layer individually.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">bilayer</span><span class="p">()</span><span class="o">.</span><span class="n">with_offset</span><span class="p">([</span><span class="n">graphene</span><span class="o">.</span><span class="n">a</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">]),</span>
                  <span class="n">pb</span><span class="o">.</span><span class="n">regular_polygon</span><span class="p">(</span><span class="n">num_sides</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>

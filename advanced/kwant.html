@@ -13,9 +13,9 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/documentation_options.js?v=61b282d3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -105,7 +105,7 @@
            <div itemprop="articleBody">
              
   <section id="kwant-compatibility">
-<h1>Kwant compatibility<a class="headerlink" href="#kwant-compatibility" title="Permalink to this heading">¶</a></h1>
+<h1>Kwant compatibility<a class="headerlink" href="#kwant-compatibility" title="Link to this heading">¶</a></h1>
 <p><a class="reference external" href="http://kwant-project.org/">Kwant</a> is a Python package for numerical tight-binding similar to
 pybinding, but it’s specialized for transport calculations. Since the two packages work with the
 same kind of Hamiltonian matrices, it’s possible to build a model in pybinding and use Kwant to
@@ -115,7 +115,7 @@ advantage for Kwant users is the much faster system build times made possible by
 builder – see the <a class="reference internal" href="../benchmarks/index.html"><span class="doc">Benchmarks</span></a>.</p>
 <p><a class="reference download internal" download="" href="../_downloads/22e9b23be8a973496cf7d3a241e9cdac/kwant.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
 <section id="exporting-a-model">
-<h2>Exporting a model<a class="headerlink" href="#exporting-a-model" title="Permalink to this heading">¶</a></h2>
+<h2>Exporting a model<a class="headerlink" href="#exporting-a-model" title="Link to this heading">¶</a></h2>
 <p>The procedure for constructing and solving transport problems in Kwant can be summarized with
 the following lines of pseudo-code:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># 1. BUILD model system</span>
@@ -142,7 +142,7 @@ the following lines of pseudo-code:</p>
 by calling the <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model.tokwant" title="pybinding.Model.tokwant"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Model.tokwant()</span></code></a> method. The resulting <code class="samp docutils literal notranslate"><span class="pre">kwant_system</span></code> can be used as expected.</p>
 </section>
 <section id="complete-example">
-<h2>Complete example<a class="headerlink" href="#complete-example" title="Permalink to this heading">¶</a></h2>
+<h2>Complete example<a class="headerlink" href="#complete-example" title="Link to this heading">¶</a></h2>
 <p>A detailed overview of scattering model construction in pybinding is available in the
 <a class="reference internal" href="../tutorial/scattering.html"><span class="doc">tutorial</span></a>. Here, we present a simple example of a graphene wire
 with a potential barrier:</p>
@@ -210,7 +210,7 @@ barrier is increased, two regimes are clearly distinguishable: transmission over
 barrier.</p>
 </section>
 <section id="performance-considerations">
-<h2>Performance considerations<a class="headerlink" href="#performance-considerations" title="Permalink to this heading">¶</a></h2>
+<h2>Performance considerations<a class="headerlink" href="#performance-considerations" title="Link to this heading">¶</a></h2>
 <p>The Kwant documentation recommends separating model parameters into two parts: the structural data
 which remains constant and fields which can be varied. This yields better performance because only
 the field data needs to be repopulated. This is demonstrated with the following pseudo-code which
@@ -258,7 +258,7 @@ complicated field functions with multiple parameters, a speedup of 3-4 times can
 using pybinding’s model builder.</p>
 </section>
 <section id="floating-point-precision">
-<h2>Floating-point precision<a class="headerlink" href="#floating-point-precision" title="Permalink to this heading">¶</a></h2>
+<h2>Floating-point precision<a class="headerlink" href="#floating-point-precision" title="Link to this heading">¶</a></h2>
 <p>Pybinding can generate the Hamiltonian matrix with one of four data types: real or complex numbers
 with single or double precision (32-bit or 64-bit floating point). The selection is dynamic. The
 starting case is always real with single precision and from there the data type is automatically

@@ -14,9 +14,9 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/documentation_options.js?v=61b282d3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -122,14 +122,14 @@
            <div itemprop="articleBody">
              
   <section id="kernel-polynomial-method">
-<h1><span class="section-number">10. </span>Kernel polynomial method<a class="headerlink" href="#kernel-polynomial-method" title="Permalink to this heading">¶</a></h1>
+<h1><span class="section-number">10. </span>Kernel polynomial method<a class="headerlink" href="#kernel-polynomial-method" title="Link to this heading">¶</a></h1>
 <p>The kernel polynomial method (KPM) can be used to quickly compute various physical properties
 of very large tight-binding systems. It makes use of Chebyshev polynomial expansion together with
 damping kernels. Pybinding includes a fast <a class="reference internal" href="../_api/pybinding.chebyshev.html#pybinding.chebyshev.kpm" title="pybinding.chebyshev.kpm"><code class="xref py py-func docutils literal notranslate"><span class="pre">kpm()</span></code></a> implementation with several easy-to-use
 computation methods as well as a low-level interface for computing KPM expansion moments.</p>
 <p><a class="reference download internal" download="" href="../_downloads/815e0afe8bc9fd9a8bb077bca501618b/kpm.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
 <section id="about-kpm">
-<h2><span class="section-number">10.1. </span>About KPM<a class="headerlink" href="#about-kpm" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">10.1. </span>About KPM<a class="headerlink" href="#about-kpm" title="Link to this heading">¶</a></h2>
 <p>For a full review of the kernel polynomial method, see the reference paper
 <a class="reference external" href="https://doi.org/10.1103/RevModPhys.78.275">Rev. Mod. Phys. 78, 275 (2006)</a>.
 Here, we shall only briefly describe the main characteristics of KPM and some specifics of its
@@ -155,7 +155,7 @@ results for a very small energy range (eigenvalues) but does so for all position
 entire energy spectrum at once. In this way, the two approaches complement each other nicely.</p>
 </section>
 <section id="builtin-methods">
-<h2><span class="section-number">10.2. </span>Builtin methods<a class="headerlink" href="#builtin-methods" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">10.2. </span>Builtin methods<a class="headerlink" href="#builtin-methods" title="Link to this heading">¶</a></h2>
 <p>Before using any of the computation methods, the main <a class="reference internal" href="../_api/pybinding.chebyshev.html#pybinding.chebyshev.KPM" title="pybinding.chebyshev.KPM"><code class="xref py py-class docutils literal notranslate"><span class="pre">KPM</span></code></a> object needs to be created
 for a specific model:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
@@ -164,7 +164,7 @@ for a specific model:</p>
 </pre></div>
 </div>
 <section id="ldos">
-<h3><span class="section-number">10.2.1. </span>LDOS<a class="headerlink" href="#ldos" title="Permalink to this heading">¶</a></h3>
+<h3><span class="section-number">10.2.1. </span>LDOS<a class="headerlink" href="#ldos" title="Link to this heading">¶</a></h3>
 <p>The <a class="reference internal" href="../_api/pybinding.chebyshev.html#pybinding.chebyshev.KPM.calc_ldos" title="pybinding.chebyshev.KPM.calc_ldos"><code class="xref py py-meth docutils literal notranslate"><span class="pre">KPM.calc_ldos()</span></code></a> method makes it very easy to calculate the local density of states
 (LDOS). In the next example we’ll use a large square sheet of pristine graphene:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
@@ -226,7 +226,7 @@ the opposite sign in each sublattice. This is also why the LDOS lines for A and 
 antisymmetric around zero energy with respect to one another.</p>
 </section>
 <section id="dos">
-<h3><span class="section-number">10.2.2. </span>DOS<a class="headerlink" href="#dos" title="Permalink to this heading">¶</a></h3>
+<h3><span class="section-number">10.2.2. </span>DOS<a class="headerlink" href="#dos" title="Link to this heading">¶</a></h3>
 <p>The following example demonstates the usage of the <a class="reference internal" href="../_api/pybinding.chebyshev.html#pybinding.chebyshev.KPM.calc_dos" title="pybinding.chebyshev.KPM.calc_dos"><code class="xref py py-meth docutils literal notranslate"><span class="pre">KPM.calc_dos()</span></code></a> method which computes
 the total density of states (DOS) in a system:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span> <span class="n">pb</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
@@ -254,7 +254,7 @@ function of both the system size and number of random samples. Thus, the larger 
 the smaller <code class="samp docutils literal notranslate"><span class="pre">num_random</span></code> needs to be for the same result quality.</p>
 </section>
 <section id="spatial-ldos">
-<h3><span class="section-number">10.2.3. </span>Spatial LDOS<a class="headerlink" href="#spatial-ldos" title="Permalink to this heading">¶</a></h3>
+<h3><span class="section-number">10.2.3. </span>Spatial LDOS<a class="headerlink" href="#spatial-ldos" title="Link to this heading">¶</a></h3>
 <p>To see the spatial distribution of the density of states, we could call the <a class="reference internal" href="../_api/pybinding.chebyshev.html#pybinding.chebyshev.KPM.calc_ldos" title="pybinding.chebyshev.KPM.calc_ldos"><code class="xref py py-meth docutils literal notranslate"><span class="pre">KPM.calc_ldos()</span></code></a>
 method for several positions and populate a <code class="xref py py-class docutils literal notranslate"><span class="pre">SpatialMap</span></code>. However, this would be tedious and
 slow, so instead we have <a class="reference internal" href="../_api/pybinding.chebyshev.html#pybinding.chebyshev.KPM.calc_spatial_ldos" title="pybinding.chebyshev.KPM.calc_spatial_ldos"><code class="xref py py-meth docutils literal notranslate"><span class="pre">KPM.calc_spatial_ldos()</span></code></a> which makes this much simpler. Let’s use
@@ -321,7 +321,7 @@ spatial LDOS for several energy values. Calling <a class="reference internal" hr
 a specific energy.</p>
 </section>
 <section id="green-s-function">
-<h3><span class="section-number">10.2.4. </span>Green’s function<a class="headerlink" href="#green-s-function" title="Permalink to this heading">¶</a></h3>
+<h3><span class="section-number">10.2.4. </span>Green’s function<a class="headerlink" href="#green-s-function" title="Link to this heading">¶</a></h3>
 <p>The <a class="reference internal" href="../_api/pybinding.chebyshev.html#pybinding.chebyshev.KPM.calc_greens" title="pybinding.chebyshev.KPM.calc_greens"><code class="xref py py-meth docutils literal notranslate"><span class="pre">KPM.calc_greens()</span></code></a> can then be used to calculate Green’s function corresponding to
 Hamiltonian matrix element <code class="samp docutils literal notranslate"><span class="pre">i,j</span></code> for the desired energy range and broadening:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">g_ij</span> <span class="o">=</span> <span class="n">kpm</span><span class="o">.</span><span class="n">calc_greens</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">energy</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="n">broadening</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
@@ -330,7 +330,7 @@ Hamiltonian matrix element <code class="samp docutils literal notranslate"><span
 <p>The result is raw Green’s function data for the given matrix element.</p>
 </section>
 <section id="conductivity">
-<h3><span class="section-number">10.2.5. </span>Conductivity<a class="headerlink" href="#conductivity" title="Permalink to this heading">¶</a></h3>
+<h3><span class="section-number">10.2.5. </span>Conductivity<a class="headerlink" href="#conductivity" title="Link to this heading">¶</a></h3>
 <p>The <a class="reference internal" href="../_api/pybinding.chebyshev.html#pybinding.chebyshev.KPM.calc_conductivity" title="pybinding.chebyshev.KPM.calc_conductivity"><code class="xref py py-meth docutils literal notranslate"><span class="pre">KPM.calc_conductivity()</span></code></a> method computes the conductivity as a function of chemical
 potential. The implementation uses the Kubo-Bastin formula expanded in terms of Chebyshev
 polynomials, as described in <a class="reference external" href="https://doi.org/10.1103/PhysRevLett.114.116602">https://doi.org/10.1103/PhysRevLett.114.116602</a>. The following
@@ -380,7 +380,7 @@ the computation time from a few minutes to several hours.</p>
 </section>
 </section>
 <section id="damping-kernels">
-<h2><span class="section-number">10.3. </span>Damping kernels<a class="headerlink" href="#damping-kernels" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">10.3. </span>Damping kernels<a class="headerlink" href="#damping-kernels" title="Link to this heading">¶</a></h2>
 <p>KPM approximates a function as a series of Chebyshev polynomials. This series is infinite, but
 numerical calculations must end at some point, thus taking into account only a finite number of
 terms. This truncation results in a loss of precision and high frequency oscillations in the
@@ -427,7 +427,7 @@ Lorentz kernels is mostly suited for Green’s function (and thus also conductiv
 where the extra smoothing of the Lorentzian may be preferable (sometimes purely aesthetically).</p>
 </section>
 <section id="low-level-interface">
-<h2><span class="section-number">10.4. </span>Low-level interface<a class="headerlink" href="#low-level-interface" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">10.4. </span>Low-level interface<a class="headerlink" href="#low-level-interface" title="Link to this heading">¶</a></h2>
 <p>The KPM-based calculation methods presented so far have been user-friendly and aimed at computing
 a single physical property of a model. Pybinding also offers a low-level KPM interface via the
 <a class="reference internal" href="../_api/pybinding.chebyshev.html#pybinding.chebyshev.KPM.moments" title="pybinding.chebyshev.KPM.moments"><code class="xref py py-meth docutils literal notranslate"><span class="pre">KPM.moments()</span></code></a> method. It can be used to generally compute KPM expansion moments of the
@@ -476,7 +476,7 @@ methods which are not already covered by the builtins described above.</p>
 </figure>
 </section>
 <section id="further-reading">
-<h2><span class="section-number">10.5. </span>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">10.5. </span>Further reading<a class="headerlink" href="#further-reading" title="Link to this heading">¶</a></h2>
 <p>For an additional examples see the <a class="reference internal" href="fields.html#magnetic-field-modifier"><span class="std std-ref">Magnetic field</span></a> subsection of <a class="reference internal" href="fields.html"><span class="doc">Fields and effects</span></a> as
 well as the <a class="reference internal" href="strain.html#strain-modifier"><span class="std std-ref">Strain modifier</span></a> subsection of <a class="reference internal" href="strain.html"><span class="doc">Defects and strain</span></a>.
 The reference page for the <a class="reference internal" href="../_api/pybinding.chebyshev.html#module-pybinding.chebyshev" title="pybinding.chebyshev"><code class="xref py py-mod docutils literal notranslate"><span class="pre">chebyshev</span></code></a> submodule contains more information.</p>

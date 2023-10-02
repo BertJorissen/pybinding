@@ -13,9 +13,9 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/documentation_options.js?v=61b282d3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -104,13 +104,13 @@
            <div itemprop="articleBody">
              
   <section id="composite-shapes">
-<h1>Composite shapes<a class="headerlink" href="#composite-shapes" title="Permalink to this heading">¶</a></h1>
+<h1>Composite shapes<a class="headerlink" href="#composite-shapes" title="Link to this heading">¶</a></h1>
 <p>The basic usage of shapes was explained in the <a class="reference internal" href="../tutorial/finite.html"><span class="doc">Finite size</span></a> section of the tutorial. An
 overview of all the classes and function is available in the <a class="reference internal" href="../api.html#shapes-api"><span class="std std-ref">Shapes</span></a> API reference. This
 section show how multiple of those shapes can be composed to quickly create intricate systems.</p>
 <p><a class="reference download internal" download="" href="../_downloads/0b3686b2b7a1943bf34f6db7290d0ad8/shapes.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
 <section id="moving-shapes">
-<h2>Moving shapes<a class="headerlink" href="#moving-shapes" title="Permalink to this heading">¶</a></h2>
+<h2>Moving shapes<a class="headerlink" href="#moving-shapes" title="Link to this heading">¶</a></h2>
 <p>All shapes have a <a class="reference internal" href="../_api/pybinding.Polygon.html#pybinding.Polygon.with_offset" title="pybinding.Polygon.with_offset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">with_offset()</span></code></a> method which simply translates the shape
 by a vector:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">shape</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
@@ -143,7 +143,7 @@ lightly shaded silhouette which is filled in by calling the <code class="docutil
 dark pixels at positions where it returned <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 </section>
 <section id="using-set-operations">
-<h2>Using set operations<a class="headerlink" href="#using-set-operations" title="Permalink to this heading">¶</a></h2>
+<h2>Using set operations<a class="headerlink" href="#using-set-operations" title="Link to this heading">¶</a></h2>
 <p>In the examples above we placed 2 shapes so that they overlap, but those were only plots. In order
 to create a composite shape, we can use logical and arithmetic operator. For example, addition:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">s1</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mf">2.3</span><span class="p">,</span> <span class="mf">2.15</span><span class="p">)</span>
@@ -216,7 +216,7 @@ are available simply for convenience. Apart from <code class="docutils literal n
 </figure>
 </section>
 <section id="additional-examples">
-<h2>Additional examples<a class="headerlink" href="#additional-examples" title="Permalink to this heading">¶</a></h2>
+<h2>Additional examples<a class="headerlink" href="#additional-examples" title="Link to this heading">¶</a></h2>
 <p>Circular rings are easy to create even with a <a class="reference internal" href="../_api/pybinding.FreeformShape.html#pybinding.FreeformShape" title="pybinding.FreeformShape"><code class="xref py py-class docutils literal notranslate"><span class="pre">FreeformShape</span></code></a>, but composites make it
 trivial to create rings as the difference of any two shapes:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">outer</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">regular_polygon</span><span class="p">(</span><span class="n">num_sides</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mf">1.4</span><span class="p">)</span>

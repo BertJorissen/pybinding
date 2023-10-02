@@ -14,9 +14,9 @@
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/documentation_options.js?v=61b282d3"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -114,12 +114,12 @@
            <div itemprop="articleBody">
              
   <section id="scattering-model">
-<h1><span class="section-number">11. </span>Scattering model<a class="headerlink" href="#scattering-model" title="Permalink to this heading">¶</a></h1>
+<h1><span class="section-number">11. </span>Scattering model<a class="headerlink" href="#scattering-model" title="Link to this heading">¶</a></h1>
 <p>This section introduces the ability to attach semi-infinite leads to a finite-sized central region,
 thereby creating a scattering model.</p>
 <p><a class="reference download internal" download="" href="../_downloads/c3e9a2811c3481684057e59cd37e566a/scattering.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
 <section id="attaching-leads">
-<h2><span class="section-number">11.1. </span>Attaching leads<a class="headerlink" href="#attaching-leads" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">11.1. </span>Attaching leads<a class="headerlink" href="#attaching-leads" title="Link to this heading">¶</a></h2>
 <p>To start with, we need a finite-sized system to serve as the central scattering region. We’ll just
 make a simple ring. Refer to the <a class="reference internal" href="finite.html"><span class="doc">Finite size</span></a> section for more details.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
@@ -209,7 +209,7 @@ directions:</p>
 </figure>
 </section>
 <section id="lead-attributes">
-<h2><span class="section-number">11.2. </span>Lead attributes<a class="headerlink" href="#lead-attributes" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">11.2. </span>Lead attributes<a class="headerlink" href="#lead-attributes" title="Link to this heading">¶</a></h2>
 <p>The attached leads can be accessed using the <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model.leads" title="pybinding.Model.leads"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Model.leads</span></code></a> list. Each entry is a
 <a class="reference internal" href="../_api/pybinding.leads.html#pybinding.leads.Lead" title="pybinding.leads.Lead"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lead</span></code></a> object with a few useful attributes. The unit cell of a lead is described by the
 Hamiltonian <a class="reference internal" href="../_api/pybinding.leads.html#pybinding.leads.Lead.h0" title="pybinding.leads.Lead.h0"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Lead.h0</span></code></a>. It’s a sparse matrix, just like the <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model.hamiltonian" title="pybinding.Model.hamiltonian"><code class="xref py py-attr docutils literal notranslate"><span class="pre">Model.hamiltonian</span></code></a> of
@@ -231,7 +231,7 @@ figure above, the band plots of the leads are:</p>
 <p>This is expected as lead 0 has armchair edges, while lead 1 has zigzag edges.</p>
 </section>
 <section id="fields-in-the-leads">
-<h2><span class="section-number">11.3. </span>Fields in the leads<a class="headerlink" href="#fields-in-the-leads" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">11.3. </span>Fields in the leads<a class="headerlink" href="#fields-in-the-leads" title="Link to this heading">¶</a></h2>
 <p>There is no need to specifically apply a field to a lead. Fields (and all modifier functions) are
 always applied globally to both the main system and all leads. For example, we can define a PN
 junction at <span class="math notranslate nohighlight">\(x_0 = 0\)</span> and pass it to the model:</p>
@@ -281,7 +281,7 @@ or right of the PN junction. We can quickly check this by plotting the band stru
 <p>The leads are identical, except for a <span class="math notranslate nohighlight">\(\pm1\)</span> eV shift due to the PN junction, as expected.</p>
 </section>
 <section id="solving-a-scattering-problem">
-<h2><span class="section-number">11.4. </span>Solving a scattering problem<a class="headerlink" href="#solving-a-scattering-problem" title="Permalink to this heading">¶</a></h2>
+<h2><span class="section-number">11.4. </span>Solving a scattering problem<a class="headerlink" href="#solving-a-scattering-problem" title="Link to this heading">¶</a></h2>
 <p>At this time, pybinding doesn’t have a builtin solver for scattering problems. However, they can
 be solved using <a class="reference external" href="http://kwant-project.org/">Kwant</a>. An arbitrary model can be constructed in
 pybinding and then exported using the <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model.tokwant" title="pybinding.Model.tokwant"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Model.tokwant()</span></code></a> method. See the <a class="reference internal" href="../advanced/kwant.html"><span class="doc">Kwant compatibility</span></a>
