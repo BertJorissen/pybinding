@@ -20,4 +20,4 @@ def test_docs(example_file):
     with open(filename, "rb") as file:
         with warnings.catch_warnings():
             warnings.simplefilter("ignore", UserWarning)
-            # exec(compile(file.read(), filename, "exec"), {}) TODO: look at error with Matplotlib
+            exec(compile(file.read(), filename, "exec"), {}) # TODO: look at error with Matplotlib
