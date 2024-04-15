@@ -28,8 +28,8 @@ import kwant
 import pybinding as pb
 from pybinding.repository import graphene
 
-pb.utils.pltutils.use_style()
-pb.utils.pltutils.set_palette("Set1", start=3)
+pb.pltutils.use_style()
+pb.pltutils.set_palette("Set1", start=3)
 
 
 def calc_radius(num_sites, lattice=graphene.monolayer()):

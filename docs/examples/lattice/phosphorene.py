@@ -3,7 +3,7 @@ import pybinding as pb
 import matplotlib.pyplot as plt
 from math import pi, sin, cos
 
-pb.utils.pltutils.use_style()
+pb.pltutils.use_style()
 
 
 def phosphorene_4band():

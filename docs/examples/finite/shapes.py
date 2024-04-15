@@ -4,7 +4,7 @@ from pybinding.repository import graphene
 import matplotlib.pyplot as plt
 from math import pi
 
-pb.utils.pltutils.use_style()
+pb.pltutils.use_style()
 
 model = pb.Model(
     graphene.monolayer(),

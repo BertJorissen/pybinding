@@ -496,7 +496,7 @@ def _make_style():
         'axes.labelcolor': nearly_black,  # [black]
         'axes.unicode_minus': False,  # [True] use unicode for the minus symbol
         'axes.prop_cycle': plt.cycler('color', palette),  # ['bgrcmyk']
-        'axes.autolimit_mode': 'round_numbers',  # ['data']
+        'axes.autolimit_mode': 'data',  # ['round_numbers']
         'axes.xmargin': 0,  # [0.05]
         'axes.ymargin': 0,  # [0.05]
         'patch.facecolor': palette[1],  # [b]
