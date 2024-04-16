@@ -1,6 +1,6 @@
 """Package for numerical tight-binding calculations in solid state physics"""
 __author__ = "Dean Moldovan"
-__copyright__ = "20150-2024, " + __author__
+__copyright__ = "2015-2024, " + __author__
 __version__ = "1.0.3a"
 import os
 import sys
