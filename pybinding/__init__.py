@@ -13,8 +13,8 @@ if sys.platform.startswith("linux"):
     # to set RTLD_GLOBAL, import _pybinding and then reset to default flags. This is
     # fundamentally an MKL issue which makes it difficult to resolve. This workaround
     # is the best solution at the moment.
-    sys.setdlopenflags(sys.getdlopenflags() | os.RTLD_GLOBAL)
-
+    # TODO: solve this issue with this flag, plays wrong with scipy-eigh routine. Remove because less used
+    pass  # sys.setdlopenflags(sys.getdlopenflags() | os.RTLD_GLOBAL)
 try:
     import _pybinding as _cpp
 except ImportError as e:

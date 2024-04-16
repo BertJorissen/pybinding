@@ -11,7 +11,7 @@ description = "Package for tight-binding calculations, Documentation: http://pyb
 readme = "README.md"
 dependencies = [
     "numpy>=1.12",
-    "scipy>=0.19,<=1.12.0",
+    "scipy>=0.19",
     "matplotlib>=3.5",
     "pytest>=5.0"
 ]
