@@ -92,11 +92,14 @@ details. If you have everything, pybinding can be installed from the latest sour
 For development
 ---------------
 
+.. rubric:: pip
+
 If you would like to work on the pybinding source code itself, you can install it in an editable
 development environment. The procedure is similar to the "Compiling from source" section with
 the exception of the final step:
 
-#. Clone the repository using git (you can change the url to your own GitHub fork)::
+#. Clone the repository using git (you can change the url to your own GitHub fork).
+   The option `--recursive` is needed to clone the submodules (`pybind11`_) within the repository::
 
     git clone --recursive https://github.com/dean0x7d/pybinding.git
 
@@ -105,6 +108,54 @@ the exception of the final step:
     cd pybinding
     pip3 install -e .
 
+.. rubric:: wheel
+
+You can compile pybinding to obtain a source or binary distribution on one file, that you could share with other
+machines as pre-compiled software. This is normally done automatically on the servers for a new release, but you
+can also do it yourself if you wish.
+
+#. Install the dependency::
+
+    pip install build
+
+#. Build pybinding, you can specify a source build (`--sdist`) or binary build (pre-compiled, `--wheel`) and the
+   output directory (`--outdir`)::
+
+    python -m build --sdist --wheel --outdir dist/
+
+.. note::
+    The shared libraries (`.so`, `.dylib`, `.dll`) pybinding are linked to, are dependent on the version
+    of the operating system that is used. To be system independent, the binary needs to be compiled with
+    `cibuildwheel`_.
+
+.. rubric:: cmake
+
+You can compile the binary code (`_pybinding`) using cmake with the following commands:
+
+#. Clone the repository and submodules using git (optionally, via ssh)::
+
+    git clone --recursive git@github.com:dean0x7d/pybinding
+
+#. Make a directory for the build files::
+
+    mkdir build && cd build
+
+#. Run CMake to make the required makefiles. Optionally, the required python interpreter
+   can be given to get the right Python version::
+
+    cmake .. -DPYTHON_EXECUTABLE=/usr/bin/python3.10
+
+#. Build the libraries, the `Release` tag is optional, the `Development` tag can
+   give errors on specific systems/versions. ::
+
+    --build . --target tests --config Release
+
+You will see a new file, `_pybinding.cpython-*.*`. This is the shared library that python will use for the
+C++-calculations in pybinding. You can call pybinding with a python interpreter running from this folder.
+It is this shared library that is added to the wheel in the pypi-binary-release. Please don't share this
+library as this is system-dependent.
 
 .. _python.org: https://www.python.org/
 .. _CMake: https://cmake.org/
+.. _cibuildwheel: https://cibuildwheel.pypa.io/
+.. _pybind11: https://pybind11.readthedocs.io/
