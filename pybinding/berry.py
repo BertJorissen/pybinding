@@ -38,7 +38,7 @@ class Berry:
         """Reads in 1d array of numbers *pha* and makes sure that they are
         continuous, i.e., that there are no jumps of 2pi. First number is
         made as close to *clos* as possible."""
-        ret=np.copy(pha)
+        ret = np.copy(pha)
         # go through entire list and "iron out" 2pi jumps
         for i in range(len(ret)):
             # which number to compare to
@@ -83,9 +83,10 @@ class Berry:
         }
         if rescale:
             all_phases = all_phases / (np.max(all_phases) - np.min(all_phases)) * 2
+            labels["orbitals"] = [r"$\phi (au)$"]
         else:
             k = self.wavefunction_area.bands.k_area
             all_phases /= np.linalg.norm(np.cross(k[0, 0, :] - k[1, 0, :], k[0, 0, :] - k[0, 1, :]))
-            labels["orbitals"] = [r"$\phi (nm^2)}$"]
+            labels["orbitals"] = [r"$\phi (nm^2)$"]
         # ToDo: check if line-up of berry and k-space is correct
         return SeriesArea(self.wavefunction_area.bands.k_area, all_phases, labels=labels)
