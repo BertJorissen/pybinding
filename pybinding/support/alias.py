@@ -2,7 +2,7 @@ import numpy as np
 import scipy.sparse
 from scipy.sparse import csr_matrix
 from numpy.typing import ArrayLike
-from typing import Optional
+from typing import Optional, List
 
 
 class AliasArray(np.ndarray):
@@ -34,13 +34,12 @@ class AliasArray(np.ndarray):
     >>> list(a2 == "A")
     [True, False, True, True]
     """
-    # TODO: check typing of the subfunctions
-    def __new__(cls, array: ArrayLike, mapping: dict):
+    def __new__(cls, array: ArrayLike, mapping: dict) -> 'AliasArray':
         obj = np.asarray(array).view(cls)
         obj.mapping = {SplitName(k): v for k, v in mapping.items()}
         return obj
 
-    def __array_finalize__(self, obj: Optional['AliasArray']) -> None:
+    def __array_finalize__(self, obj: Optional['AliasArray']):
         if obj is None:
             return
         self.mapping = getattr(obj, "mapping", None)
@@ -138,6 +137,7 @@ class AliasIndex:
     where each call gets arrays with the same sub_id/hop_id for all elements.
     Instead of passing an `AliasArray` with `.size` identical element, `AliasIndex`
     does the same all-or-nothing indexing.
+    # TODO: add docstring
 
     Examples
     --------
@@ -168,37 +168,37 @@ class AliasIndex:
     >>> np.allclose(AliasIndex("A", 1, (2, 2)).eye, np.eye(2))
     True
     """
-    # TODO: check typing
     class LazyArray:
-        def __init__(self, value, shape):
+        # TODO: add docstring
+        def __init__(self, value, shape: List[int]):
             self.value = value
-            self.shape = shape
+            self.shape: List[int] = shape
 
-        def __bool__(self):
+        def __bool__(self) -> bool:
             return bool(self.value)
 
-        def __array__(self):
+        def __array__(self) -> np.array:
             return np.full(self.shape, self.value)
 
-    def __init__(self, name, shape, orbs=(1, 1)):
-        self.name = name
-        self.shape = shape
+    def __init__(self, name: str, shape: List[int], orbs=(1, 1)):
+        self.name: str = name
+        self.shape: List[int] = shape
         self.orbs = orbs
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.name
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> LazyArray:
         return self.LazyArray(self.name == other, self.shape)
 
-    def __ne__(self, other):
+    def __ne__(self, other) -> LazyArray:
         return self.LazyArray(self.name != other, self.shape)
 
     def __hash__(self):
         return hash(self.name)
 
     @property
-    def eye(self):
+    def eye(self) -> np.array:
         return np.eye(*self.orbs)
 
 

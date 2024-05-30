@@ -142,7 +142,7 @@ class Polygon(_cpp.Polygon, _CompositionMixin):
         if ax is None:
             ax = plt.gca()
         x, y, _ = zip(*self.vertices)
-        plt.plot(np.append(x, x[0]), np.append(y, y[0]), **with_defaults(kwargs, color='black'))
+        ax.plot(np.append(x, x[0]), np.append(y, y[0]), **with_defaults(kwargs, color='black'))
         ax.axis("scaled")
         ax.set_xlabel("x (nm)")
         ax.set_ylabel("y (nm)")

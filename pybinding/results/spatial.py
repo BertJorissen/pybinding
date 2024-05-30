@@ -161,7 +161,7 @@ class SpatialMap(AbstractStructure):
         """Clip (limit) the values in the `data` array, see :func:`~numpy.clip`"""
         return self.with_data(np.clip(self.data, v_min, v_max))
 
-    def convolve(self, sigma: float = 0.25) -> np.ndarray:
+    def convolve(self, sigma: float = 0.25):
         # TODO: slow and only works in the xy-plane
         x, y, _ = self.positions
         r = np.sqrt(x**2 + y**2)

@@ -534,7 +534,6 @@ def lapack(model: Model, **kwargs) -> Solver:
     """
     def solver_func(hamiltonian: csr_matrix, **kw) -> Tuple[np.ndarray, np.ndarray]:
         from scipy.linalg import eigh
-        # TODO: it seems that there is an issue with importing this function, which leads to an error with floats
         return eigh(hamiltonian.toarray(), **kw)
 
     return Solver(_SolverPythonImpl(solver_func, model, **kwargs))

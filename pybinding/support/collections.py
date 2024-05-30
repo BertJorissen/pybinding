@@ -30,8 +30,7 @@ class CircleCollection(Collection):
         self._transforms[:, 2, 2] = 1
 
     @allow_rasterization
-    def draw(self, renderer: matplotlib.backend_bases.RendererBase) -> None:
-        # TODO: check typing
+    def draw(self, renderer: matplotlib.backend_bases.RendererBase):
         self._set_transforms()
         super().draw(renderer)
 
@@ -44,7 +43,7 @@ class Circle3DCollection(CircleCollection):
         self.set_3d_properties(zs, zdir)
         self._A0 = self._A
 
-    def set_array(self, array: ArrayLike) -> None:
+    def set_array(self, array: ArrayLike):
         self._A0 = array
         super().set_array(array)
 

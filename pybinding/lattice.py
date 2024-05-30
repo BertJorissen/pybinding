@@ -448,7 +448,7 @@ class Lattice:
             The spatial axes to plot. E.g. 'xy', 'yz', etc.
         vector_position : array_like or 'center'
             Cartesian position to be used as the origin for the lattice vectors.
-            By default the origin is placed in the center of the primitive cell.
+            By default, the origin is placed in the center of the primitive cell.
         ax : Optional[plt.Axes]
             The axis to plot on.
         **kwargs
