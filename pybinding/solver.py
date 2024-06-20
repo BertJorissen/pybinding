@@ -450,7 +450,7 @@ class Solver:
         groups = np.split(idx, np.flatnonzero(np.diff(idx) != 1) + 1)
         # ...     groups == [[0], [3, 4], [7]]
         # return: [[0, 1], [3, 4, 5], [7, 8]]
-        return [list(g) + [g[-1] + 1] for g in groups]
+        return [[int(gg) for gg in g] + [int(g[-1]) + 1] for g in groups]
 
 
 class _SolverPythonImpl:

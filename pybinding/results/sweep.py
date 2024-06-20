@@ -60,7 +60,7 @@ class Sweep:
     def _xy_grids(self) -> Tuple[np.ndarray, np.ndarray]:
         """Expand x and y into 2D arrays matching data."""
         xgrid = np.column_stack([self.x] * self.y.size)
-        ygrid = np.row_stack([self.y] * self.x.size)
+        ygrid = np.vstack([self.y] * self.x.size)
         return xgrid, ygrid
 
     def save_txt(self, filename: str) -> None:

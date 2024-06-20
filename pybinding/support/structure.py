@@ -111,9 +111,9 @@ class AbstractSites(metaclass=ABCMeta):
         Examples
         --------
         >>> sites = Sites(([0, 1, 1.1], [0, 0, 0], [0, 0, 0]), [0, 1, 0])
-        >>> sites.find_nearest([1, 0, 0])
+        >>> int(sites.find_nearest([1, 0, 0]))
         1
-        >>> sites.find_nearest([1, 0, 0], target_site_family=0)
+        >>> int(sites.find_nearest([1, 0, 0], target_site_family=0))
         2
         """
         distances = self.distances(target_position)
@@ -138,9 +138,9 @@ class AbstractSites(metaclass=ABCMeta):
         Examples
         --------
         >>> sites = Sites(([0, 1, 1.1], [0, 0, 0], [0, 0, 0]), [0, 1, 0])
-        >>> np.all(sites.argsort_nearest([1, 0, 0]) == [1, 2, 0])
+        >>> bool(np.all(sites.argsort_nearest([1, 0, 0]) == [1, 2, 0]))
         True
-        >>> np.all(sites.argsort_nearest([1, 0, 0], target_site_family=0) == [2, 0, 1])
+        >>> bool(np.all(sites.argsort_nearest([1, 0, 0], target_site_family=0) == [2, 0, 1]))
         True
         """
         distances = self.distances(target_position)
