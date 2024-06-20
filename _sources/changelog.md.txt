@@ -1,5 +1,42 @@
 # Changelog
 
+## v1.0.4 |2024-06-20
+
+Majer new release, new additions:
+
+* `pb.Wavefunction` class to save the eigenvectors, similar to `pb.Bands`
+* `pb.Area` to save results in an area in reciprocal space
+* `pb.Disentangle` to disentangle the results, very usefull in case of `pb.solver.arpack()`
+* `pb.Berrt` to calculate the berry phase
+* `pb.FatBands` bands with contributions from the sublattices
+* `pb.force_phase()` to change the gauge for the phace used
+* `"shift"`-option in modifiers to see the relative shift in cells
+* expanded the repository of models for TMDs
+
+Bug fixes
+
+* numpy 2.0.0 integration
+* update of pybind11
+* block-diagonal reordering in the KPM routine
+* changing `pb.pltutils.use_style()`-default in `"axis.autolimit_mode"` from `"round_numers"` to `"data"` for bugfix
+
+Changes
+
+* changed locations for `pb.results` and `pb.pltutils`
+* Pre-compiled versions for all platforms
+* dropped support for python <3.8
+
+Major release, releases after v0.9.5 up to this release (v1.0.4) are unstable and should *not* be used.
+
+Major addition is the inclusion of the `pb.Wavefunction` to calculate properties that are related to the wavefunction,
+such as the berry phase, orbital contribution, bands disentanglement, operators and projections on different bases.
+
+
+#### Technical aspects
+
+
+
+
 ## v0.9.5 | 2020-08-30
 
 It has been a long time since the last version was released. The Python ecosystem has changed

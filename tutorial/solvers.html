@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="Computing the eigenvalues and eigenvectors of a tight-binding Hamiltonian matrix" name="description" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>9. Eigenvalue solvers &mdash; pybinding</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+
+  
     <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/documentation_options.js?v=61b282d3"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/documentation_options.js?v=da57aa06"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
         <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="../_static/js/theme.js"></script>
@@ -37,7 +39,7 @@
             pybinding
           </a>
               <div class="version">
-                0.9
+                1.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -75,6 +77,7 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="kpm.html">10. Kernel polynomial method</a></li>
 <li class="toctree-l2"><a class="reference internal" href="scattering.html">11. Scattering model</a></li>
+<li class="toctree-l2"><a class="reference internal" href="wavefunction.html">12. Wavefunction calculations</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced/index.html">Additional Topics</a></li>
@@ -129,7 +132,7 @@ only its implementations such as <a class="reference internal" href="../_api/pyb
 systems. However, a great advantage of this solver is that it always solves for all eigenvalues
 and eigenvectors of a Hamiltonian matrix. This makes it perfect for calculating the entire band
 structure of the bulk or nanoribbons, as has been shown several times in this tutorial.</p>
-<p>Internally, this solver uses the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.eigh.html#scipy.linalg.eigh" title="(in SciPy v1.11.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.linalg.eigh()</span></code></a> function for dense Hermitian matrices.
+<p>Internally, this solver uses the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.eigh.html#scipy.linalg.eigh" title="(in SciPy v1.13.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.linalg.eigh()</span></code></a> function for dense Hermitian matrices.
 See the <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.lapack" title="pybinding.solver.lapack"><code class="xref py py-func docutils literal notranslate"><span class="pre">solver.lapack()</span></code></a> API reference for more details.</p>
 </section>
 <section id="arpack">
@@ -138,11 +141,11 @@ See the <a class="reference internal" href="../_api/pybinding.solver.html#pybind
 large systems. However, only a small subset of the total eigenvalues and eigenvectors can be
 calculated. This tutorial already contains a few examples where the ARPACK solver was used, and
 one more is presented below.</p>
-<p>Internally, the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.11.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.sparse.linalg.eigsh()</span></code></a> function is used to solve large sparse Hermitian
+<p>Internally, the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.13.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.sparse.linalg.eigsh()</span></code></a> function is used to solve large sparse Hermitian
 matrices. The first argument to <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.arpack" title="pybinding.solver.arpack"><code class="xref py py-func docutils literal notranslate"><span class="pre">solver.arpack()</span></code></a> must be the pybinding <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>, but
-the following arguments are the same as <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.11.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">eigsh()</span></code></a>, so the solver routine
+the following arguments are the same as <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.13.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">eigsh()</span></code></a>, so the solver routine
 can be tweaked as desired. Rather than reproduce the full list of options here, we refer you to
-the scipy <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.11.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">eigsh()</span></code></a> reference documentation. Here, we will focus on the
+the scipy <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.13.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">eigsh()</span></code></a> reference documentation. Here, we will focus on the
 specific features of solvers within pybinding.</p>
 </section>
 <section id="solver-interface">
@@ -292,7 +295,7 @@ information. More solver examples are available throughout this tutorial.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
+    <p>&#169; Copyright 2015-2024, Dean Moldovan.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

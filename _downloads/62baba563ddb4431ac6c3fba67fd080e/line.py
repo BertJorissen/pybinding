@@ -2,7 +2,7 @@
 import pybinding as pb
 import matplotlib.pyplot as plt
 
-pb.utils.pltutils.use_style()
+pb.pltutils.use_style()
 
 
 def simple_chain_lattice(a=1, t=-1):

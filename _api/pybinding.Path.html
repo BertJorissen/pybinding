@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Path &mdash; pybinding</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+
+  
     <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/documentation_options.js?v=61b282d3"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/documentation_options.js?v=da57aa06"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -35,7 +37,7 @@
             pybinding
           </a>
               <div class="version">
-                0.9
+                1.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -133,7 +135,7 @@
 <h1>Path<a class="headerlink" href="#path" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="pybinding.Path">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.11)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.11)"><span class="pre">complex</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><span class="pre">bytes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.11)"><span class="pre">complex</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.11)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Path" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Path</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.0)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.0)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.12)"><span class="pre">Any</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.12)"><span class="pre">complex</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><span class="pre">bytes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.12)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#complex" title="(in Python v3.12)"><span class="pre">complex</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><span class="pre">bytes</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_indices</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.12)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Path" title="Link to this definition">¶</a></dt>
 <dd><p>A ndarray which represents a path connecting certain points</p>
 <dl class="field-list simple">
 <dt class="field-odd">Attributes<span class="colon">:</span></dt>
@@ -160,43 +162,58 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.data" title="pybinding.Path.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a></p></td>
 <td><p>Python buffer object pointing to the start of the array's data.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.dtype" title="pybinding.Path.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">device</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.dtype" title="pybinding.Path.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></p></td>
 <td><p>Data-type of the array's elements.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.flags" title="pybinding.Path.flags"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flags</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.flags" title="pybinding.Path.flags"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flags</span></code></a></p></td>
 <td><p>Information about the memory layout of the array.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.flat" title="pybinding.Path.flat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flat</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.flat" title="pybinding.Path.flat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">flat</span></code></a></p></td>
 <td><p>A 1-D iterator over the array.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.imag" title="pybinding.Path.imag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">imag</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.imag" title="pybinding.Path.imag"><code class="xref py py-obj docutils literal notranslate"><span class="pre">imag</span></code></a></p></td>
 <td><p>The imaginary part of the array.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.is_simple" title="pybinding.Path.is_simple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_simple</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.is_simple" title="pybinding.Path.is_simple"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_simple</span></code></a></p></td>
 <td><p>Is it just a simple path between two points?</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">itemset</span></code></p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.itemsize" title="pybinding.Path.itemsize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">itemsize</span></code></a></p></td>
 <td><p>Length of one array element in bytes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.nbytes" title="pybinding.Path.nbytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nbytes</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.mT" title="pybinding.Path.mT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mT</span></code></a></p></td>
+<td><p>View of the matrix transposed array.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.nbytes" title="pybinding.Path.nbytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nbytes</span></code></a></p></td>
 <td><p>Total bytes consumed by the elements of the array.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.ndim" title="pybinding.Path.ndim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndim</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.ndim" title="pybinding.Path.ndim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndim</span></code></a></p></td>
 <td><p>Number of array dimensions.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">newbyteorder</span></code></p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.points" title="pybinding.Path.points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">points</span></code></a></p></td>
 <td><p>Significant points along the path, including start and end</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.real" title="pybinding.Path.real"><code class="xref py py-obj docutils literal notranslate"><span class="pre">real</span></code></a></p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">ptp</span></code></p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.real" title="pybinding.Path.real"><code class="xref py py-obj docutils literal notranslate"><span class="pre">real</span></code></a></p></td>
 <td><p>The real part of the array.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.shape" title="pybinding.Path.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.shape" title="pybinding.Path.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
 <td><p>Tuple of array dimensions.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.size" title="pybinding.Path.size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.size" title="pybinding.Path.size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code></a></p></td>
 <td><p>Number of elements in the array.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.strides" title="pybinding.Path.strides"><code class="xref py py-obj docutils literal notranslate"><span class="pre">strides</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.strides" title="pybinding.Path.strides"><code class="xref py py-obj docutils literal notranslate"><span class="pre">strides</span></code></a></p></td>
 <td><p>Tuple of bytes to step in each dimension when traversing an array.</p></td>
 </tr>
 </tbody>
@@ -288,26 +305,20 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.item" title="pybinding.Path.item"><code class="xref py py-obj docutils literal notranslate"><span class="pre">item</span></code></a>(*args)</p></td>
 <td><p>Copy an element of an array to a standard Python scalar and return it.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.itemset" title="pybinding.Path.itemset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">itemset</span></code></a>(*args)</p></td>
-<td><p>Insert scalar into an array (scalar is cast to array's dtype, if possible)</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.max" title="pybinding.Path.max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max</span></code></a>([axis, out, keepdims, initial, where])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.max" title="pybinding.Path.max"><code class="xref py py-obj docutils literal notranslate"><span class="pre">max</span></code></a>([axis, out, keepdims, initial, where])</p></td>
 <td><p>Return the maximum along a given axis.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.mean" title="pybinding.Path.mean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mean</span></code></a>([axis, dtype, out, keepdims, where])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.mean" title="pybinding.Path.mean"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mean</span></code></a>([axis, dtype, out, keepdims, where])</p></td>
 <td><p>Returns the average of the array elements along given axis.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.min" title="pybinding.Path.min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min</span></code></a>([axis, out, keepdims, initial, where])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.min" title="pybinding.Path.min"><code class="xref py py-obj docutils literal notranslate"><span class="pre">min</span></code></a>([axis, out, keepdims, initial, where])</p></td>
 <td><p>Return the minimum along a given axis.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.newbyteorder" title="pybinding.Path.newbyteorder"><code class="xref py py-obj docutils literal notranslate"><span class="pre">newbyteorder</span></code></a>([new_order])</p></td>
-<td><p>Return the array with the same data viewed with a different byte order.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.nonzero" title="pybinding.Path.nonzero"><code class="xref py py-obj docutils literal notranslate"><span class="pre">nonzero</span></code></a>()</p></td>
 <td><p>Return the indices of the elements that are non-zero.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.partition" title="pybinding.Path.partition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">partition</span></code></a>(kth[, axis, kind, order])</p></td>
-<td><p>Rearranges the elements in the array in such a way that the value of the element in kth position is in the position it would be in a sorted array.</p></td>
+<td><p>Partially sorts the elements in the array in such a way that the value of the element in k-th position is in the position it would be in a sorted array.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.plot" title="pybinding.Path.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>([point_labels, ax])</p></td>
 <td><p>Quiver plot of the path</p></td>
@@ -315,53 +326,53 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.prod" title="pybinding.Path.prod"><code class="xref py py-obj docutils literal notranslate"><span class="pre">prod</span></code></a>([axis, dtype, out, keepdims, initial, ...])</p></td>
 <td><p>Return the product of the array elements over the given axis</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.ptp" title="pybinding.Path.ptp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ptp</span></code></a>([axis, out, keepdims])</p></td>
-<td><p>Peak to peak (maximum - minimum) value along a given axis.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.put" title="pybinding.Path.put"><code class="xref py py-obj docutils literal notranslate"><span class="pre">put</span></code></a>(indices, values[, mode])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.put" title="pybinding.Path.put"><code class="xref py py-obj docutils literal notranslate"><span class="pre">put</span></code></a>(indices, values[, mode])</p></td>
 <td><p>Set <code class="docutils literal notranslate"><span class="pre">a.flat[n]</span> <span class="pre">=</span> <span class="pre">values[n]</span></code> for all <code class="samp docutils literal notranslate"><span class="pre">n</span></code> in indices.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.ravel" title="pybinding.Path.ravel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ravel</span></code></a>([order])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.ravel" title="pybinding.Path.ravel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ravel</span></code></a>([order])</p></td>
 <td><p>Return a flattened array.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.repeat" title="pybinding.Path.repeat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">repeat</span></code></a>(repeats[, axis])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.repeat" title="pybinding.Path.repeat"><code class="xref py py-obj docutils literal notranslate"><span class="pre">repeat</span></code></a>(repeats[, axis])</p></td>
 <td><p>Repeat elements of an array.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.reshape" title="pybinding.Path.reshape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reshape</span></code></a>(shape[, order])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.reshape" title="pybinding.Path.reshape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reshape</span></code></a>(shape, /, *[, order])</p></td>
 <td><p>Returns an array containing the same data with a new shape.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.resize" title="pybinding.Path.resize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resize</span></code></a>(new_shape[, refcheck])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.resize" title="pybinding.Path.resize"><code class="xref py py-obj docutils literal notranslate"><span class="pre">resize</span></code></a>(new_shape[, refcheck])</p></td>
 <td><p>Change shape and size of array in-place.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.round" title="pybinding.Path.round"><code class="xref py py-obj docutils literal notranslate"><span class="pre">round</span></code></a>([decimals, out])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.round" title="pybinding.Path.round"><code class="xref py py-obj docutils literal notranslate"><span class="pre">round</span></code></a>([decimals, out])</p></td>
 <td><p>Return <code class="samp docutils literal notranslate"><span class="pre">a</span></code> with each element rounded to the given number of decimals.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.searchsorted" title="pybinding.Path.searchsorted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searchsorted</span></code></a>(v[, side, sorter])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.searchsorted" title="pybinding.Path.searchsorted"><code class="xref py py-obj docutils literal notranslate"><span class="pre">searchsorted</span></code></a>(v[, side, sorter])</p></td>
 <td><p>Find indices where elements of v should be inserted in a to maintain order.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.setfield" title="pybinding.Path.setfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setfield</span></code></a>(val, dtype[, offset])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.setfield" title="pybinding.Path.setfield"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setfield</span></code></a>(val, dtype[, offset])</p></td>
 <td><p>Put a value into a specified place in a field defined by a data-type.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.setflags" title="pybinding.Path.setflags"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setflags</span></code></a>([write, align, uic])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.setflags" title="pybinding.Path.setflags"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setflags</span></code></a>([write, align, uic])</p></td>
 <td><p>Set array flags WRITEABLE, ALIGNED, WRITEBACKIFCOPY, respectively.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.sort" title="pybinding.Path.sort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code></a>([axis, kind, order])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.sort" title="pybinding.Path.sort"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sort</span></code></a>([axis, kind, order])</p></td>
 <td><p>Sort an array in-place.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.squeeze" title="pybinding.Path.squeeze"><code class="xref py py-obj docutils literal notranslate"><span class="pre">squeeze</span></code></a>([axis])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.squeeze" title="pybinding.Path.squeeze"><code class="xref py py-obj docutils literal notranslate"><span class="pre">squeeze</span></code></a>([axis])</p></td>
 <td><p>Remove axes of length one from <code class="samp docutils literal notranslate"><span class="pre">a</span></code>.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.std" title="pybinding.Path.std"><code class="xref py py-obj docutils literal notranslate"><span class="pre">std</span></code></a>([axis, dtype, out, ddof, keepdims, where])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.std" title="pybinding.Path.std"><code class="xref py py-obj docutils literal notranslate"><span class="pre">std</span></code></a>([axis, dtype, out, ddof, keepdims, where])</p></td>
 <td><p>Returns the standard deviation of the array elements along given axis.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.sum" title="pybinding.Path.sum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sum</span></code></a>([axis, dtype, out, keepdims, initial, where])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.sum" title="pybinding.Path.sum"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sum</span></code></a>([axis, dtype, out, keepdims, initial, where])</p></td>
 <td><p>Return the sum of the array elements over the given axis.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.swapaxes" title="pybinding.Path.swapaxes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">swapaxes</span></code></a>(axis1, axis2)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.swapaxes" title="pybinding.Path.swapaxes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">swapaxes</span></code></a>(axis1, axis2)</p></td>
 <td><p>Return a view of the array with <code class="samp docutils literal notranslate"><span class="pre">axis1</span></code> and <code class="samp docutils literal notranslate"><span class="pre">axis2</span></code> interchanged.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.take" title="pybinding.Path.take"><code class="xref py py-obj docutils literal notranslate"><span class="pre">take</span></code></a>(indices[, axis, out, mode])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.take" title="pybinding.Path.take"><code class="xref py py-obj docutils literal notranslate"><span class="pre">take</span></code></a>(indices[, axis, out, mode])</p></td>
 <td><p>Return an array formed from the elements of <code class="samp docutils literal notranslate"><span class="pre">a</span></code> at the given indices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_device</span></code></p></td>
+<td><p></p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.tobytes" title="pybinding.Path.tobytes"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tobytes</span></code></a>([order])</p></td>
 <td><p>Construct Python bytes containing the raw data bytes in the array.</p></td>
@@ -373,7 +384,7 @@
 <td><p>Return the array as an <code class="docutils literal notranslate"><span class="pre">a.ndim</span></code>-levels deep nested list of Python scalars.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Path.tostring" title="pybinding.Path.tostring"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tostring</span></code></a>([order])</p></td>
-<td><p>A compatibility alias for <code class="samp docutils literal notranslate"><span class="pre">tobytes</span></code>, with exactly the same behavior.</p></td>
+<td><p>A compatibility alias for <code class="samp docutils literal notranslate"><span class="pre">~ndarray.tobytes</span></code>, with exactly the same behavior.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Path.trace" title="pybinding.Path.trace"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trace</span></code></a>([offset, axis1, axis2, dtype, out])</p></td>
 <td><p>Return the sum along diagonals of the array.</p></td>
@@ -403,7 +414,7 @@
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.all.html#numpy.all" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.all</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.all.html#numpy.all" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.all</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -417,7 +428,7 @@
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.any.html#numpy.any" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.any</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.any.html#numpy.any" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.any</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -431,7 +442,7 @@
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.argmax.html#numpy.argmax" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.argmax</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.argmax.html#numpy.argmax" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.argmax</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -445,7 +456,7 @@
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.argmin.html#numpy.argmin" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.argmin</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.argmin.html#numpy.argmin" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.argmin</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -457,12 +468,12 @@
 <dd><p>Returns the indices that would partition this array.</p>
 <p>Refer to <code class="samp docutils literal notranslate"><span class="pre">numpy.argpartition</span></code> for full documentation.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 1.8.0.</span></p>
+<p><span class="versionmodified added">Added in version 1.8.0.</span></p>
 </div>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.argpartition.html#numpy.argpartition" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.argpartition</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.argpartition.html#numpy.argpartition" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.argpartition</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -476,7 +487,7 @@
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.argsort.html#numpy.argsort" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.argsort</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.argsort.html#numpy.argsort" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.argsort</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -484,7 +495,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pybinding.Path.as_1d">
-<span class="sig-name descname"><span class="pre">as_1d</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a></span></span><a class="headerlink" href="#pybinding.Path.as_1d" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">as_1d</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><span class="pre">ndarray</span></a></span></span><a class="headerlink" href="#pybinding.Path.as_1d" title="Link to this definition">¶</a></dt>
 <dd><p>Return a 1D representation of the path – useful for plotting</p>
 <p>For simple paths (2 points) the closest 1D path with real positions is returned.
 Otherwise, an <code class="samp docutils literal notranslate"><span class="pre">np.arange(size)</span></code> is returned, where <code class="samp docutils literal notranslate"><span class="pre">size</span></code> matches the path. This doesn’t
@@ -504,9 +515,9 @@ have any real meaning, but it’s something that can be used as the x-axis in a 
 <dt class="sig sig-object py" id="pybinding.Path.astype">
 <span class="sig-name descname"><span class="pre">astype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'K'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">casting</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'unsafe'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">subok</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Path.astype" title="Link to this definition">¶</a></dt>
 <dd><p>Copy of the array, cast to a specified type.</p>
-<dl class="field-list">
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
+<dd class="field-odd"><dl class="simple">
 <dt><strong>dtype</strong><span class="classifier">str or dtype</span></dt><dd><p>Typecode or data-type to which the array is cast.</p>
 </dd>
 <dt><strong>order</strong><span class="classifier">{‘C’, ‘F’, ‘A’, ‘K’}, optional</span></dt><dd><p>Controls the memory layout order of the result.
@@ -518,8 +529,7 @@ Default is ‘K’.</p>
 </dd>
 <dt><strong>casting</strong><span class="classifier">{‘no’, ‘equiv’, ‘safe’, ‘same_kind’, ‘unsafe’}, optional</span></dt><dd><p>Controls what kind of data casting may occur. Defaults to ‘unsafe’
 for backwards compatibility.</p>
-<blockquote>
-<div><ul class="simple">
+<ul class="simple">
 <li><p>‘no’ means the data types should not be cast at all.</p></li>
 <li><p>‘equiv’ means only byte-order changes are allowed.</p></li>
 <li><p>‘safe’ means only casts which can preserve values are allowed.</p></li>
@@ -527,7 +537,6 @@ for backwards compatibility.</p>
 like float64 to float32, are allowed.</p></li>
 <li><p>‘unsafe’ means any data conversions may be done.</p></li>
 </ul>
-</div></blockquote>
 </dd>
 <dt><strong>subok</strong><span class="classifier">bool, optional</span></dt><dd><p>If True, then sub-classes will be passed-through (default), otherwise
 the returned array will be forced to be a base-class array.</p>
@@ -618,15 +627,13 @@ a view to self.</p>
 <span class="go">array([b&#39;ceg&#39;, b&#39;fac&#39;], dtype=&#39;|S3&#39;)</span>
 </pre></div>
 </div>
-<dl class="simple">
-<dt><code class="docutils literal notranslate"><span class="pre">A.newbyteorder().byteswap()</span></code> produces an array with the same values</dt><dd><p>but different representation in memory</p>
-</dd>
-</dl>
+<p><code class="docutils literal notranslate"><span class="pre">A.view(A.dtype.newbyteorder()).byteswap()</span></code> produces an array with
+the same values but different representation in memory</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 <span class="go">array([1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0,</span>
 <span class="go">       0, 0], dtype=uint8)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">()</span><span class="o">.</span><span class="n">byteswap</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">A</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">newbyteorder</span><span class="p">())</span><span class="o">.</span><span class="n">byteswap</span><span class="p">(</span><span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="go">array([1, 2, 3])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">A</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
 <span class="go">array([0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0,</span>
@@ -643,7 +650,7 @@ a view to self.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.choose.html#numpy.choose" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.choose</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.choose.html#numpy.choose" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.choose</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -658,7 +665,7 @@ One of max or min must be given.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.clip.html#numpy.clip" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.clip</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.clip.html#numpy.clip" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.clip</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -672,7 +679,7 @@ One of max or min must be given.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.compress.html#numpy.compress" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.compress</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.compress.html#numpy.compress" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.compress</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -686,7 +693,7 @@ One of max or min must be given.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.conjugate.html#numpy.conjugate" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.conjugate</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.conjugate.html#numpy.conjugate" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.conjugate</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -700,7 +707,7 @@ One of max or min must be given.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.conjugate.html#numpy.conjugate" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.conjugate</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.conjugate.html#numpy.conjugate" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.conjugate</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -716,7 +723,7 @@ One of max or min must be given.</p>
 <dt><strong>order</strong><span class="classifier">{‘C’, ‘F’, ‘A’, ‘K’}, optional</span></dt><dd><p>Controls the memory layout of the copy. ‘C’ means C-order,
 ‘F’ means F-order, ‘A’ means ‘F’ if <code class="samp docutils literal notranslate"><span class="pre">a</span></code> is Fortran contiguous,
 ‘C’ otherwise. ‘K’ means match the layout of <code class="samp docutils literal notranslate"><span class="pre">a</span></code> as closely
-as possible. (Note that this function and <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.copy.html#numpy.copy" title="(in NumPy v1.26)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.copy()</span></code></a> are very
+as possible. (Note that this function and <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.copy.html#numpy.copy" title="(in NumPy v2.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.copy()</span></code></a> are very
 similar but have different default values for their order=
 arguments, and this function always passes sub-classes through.)</p>
 </dd>
@@ -726,14 +733,14 @@ arguments, and this function always passes sub-classes through.)</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.copy.html#numpy.copy" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.copy</span></code></a></dt><dd><p>Similar function with different default behavior</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.copy.html#numpy.copy" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.copy</span></code></a></dt><dd><p>Similar function with different default behavior</p>
 </dd>
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.copyto.html#numpy.copyto" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.copyto</span></code></a></dt><dd></dd>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.copyto.html#numpy.copyto" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.copyto</span></code></a></dt><dd></dd>
 </dl>
 </div>
 <p class="rubric">Notes</p>
 <p>This function is the preferred method for creating an array copy.  The
-function <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.copy.html#numpy.copy" title="(in NumPy v1.26)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.copy()</span></code></a> is similar, but it defaults to using order ‘K’,
+function <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.copy.html#numpy.copy" title="(in NumPy v2.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.copy()</span></code></a> is similar, but it defaults to using order ‘K’,
 and will not pass sub-classes through by default.</p>
 <p class="rubric">Examples</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">]],</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
@@ -759,6 +766,29 @@ and will not pass sub-classes through by default.</p>
 <span class="go">True</span>
 </pre></div>
 </div>
+<p>For arrays containing Python objects (e.g. dtype=object),
+the copy is a shallow one. The new array will contain the
+same object which may lead to surprises if that object can
+be modified (is mutable):</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">b</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">array([1, &#39;m&#39;, list([10, 3, 4])], dtype=object)</span>
+</pre></div>
+</div>
+<p>To ensure all elements within an <code class="docutils literal notranslate"><span class="pre">object</span></code> array are copied,
+use <code class="samp docutils literal notranslate"><span class="pre">copy.deepcopy</span></code>:</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">c</span>
+<span class="go">array([1, &#39;m&#39;, list([10, 3, 4])], dtype=object)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">array([1, &#39;m&#39;, list([2, 3, 4])], dtype=object)</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -769,7 +799,7 @@ and will not pass sub-classes through by default.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.cumprod.html#numpy.cumprod" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.cumprod</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.cumprod.html#numpy.cumprod" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.cumprod</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -783,7 +813,7 @@ and will not pass sub-classes through by default.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.cumsum.html#numpy.cumsum" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.cumsum</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.cumsum.html#numpy.cumsum" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.cumsum</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -795,11 +825,11 @@ and will not pass sub-classes through by default.</p>
 <dd><p>Return specified diagonals. In NumPy 1.9 the returned array is a
 read-only view instead of a copy as in previous NumPy versions.  In
 a future version the read-only restriction will be removed.</p>
-<p>Refer to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.diagonal.html#numpy.diagonal" title="(in NumPy v1.26)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.diagonal()</span></code></a> for full documentation.</p>
+<p>Refer to <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.diagonal.html#numpy.diagonal" title="(in NumPy v2.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.diagonal()</span></code></a> for full documentation.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.diagonal.html#numpy.diagonal" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.diagonal</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.diagonal.html#numpy.diagonal" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.diagonal</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -1018,48 +1048,10 @@ array using Python’s optimized math.</p>
 <span class="go">1</span>
 </pre></div>
 </div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pybinding.Path.itemset">
-<span class="sig-name descname"><span class="pre">itemset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Path.itemset" title="Link to this definition">¶</a></dt>
-<dd><p>Insert scalar into an array (scalar is cast to array’s dtype, if possible)</p>
-<p>There must be at least 1 argument, and define the last argument
-as <em>item</em>.  Then, <code class="docutils literal notranslate"><span class="pre">a.itemset(*args)</span></code> is equivalent to but faster
-than <code class="docutils literal notranslate"><span class="pre">a[args]</span> <span class="pre">=</span> <span class="pre">item</span></code>.  The item should be a scalar value and <code class="samp docutils literal notranslate"><span class="pre">args</span></code>
-must select a single item in the array <code class="samp docutils literal notranslate"><span class="pre">a</span></code>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>*args</strong><span class="classifier">Arguments</span></dt><dd><p>If one argument: a scalar, only used in case <code class="samp docutils literal notranslate"><span class="pre">a</span></code> is of size 1.
-If two arguments: the last argument is the value to be set
-and must be a scalar, the first argument specifies a single array
-element location. It is either an int or a tuple.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-<p class="rubric">Notes</p>
-<p>Compared to indexing syntax, <code class="samp docutils literal notranslate"><span class="pre">itemset</span></code> provides some speed increase
-for placing a scalar into a particular location in an <code class="samp docutils literal notranslate"><span class="pre">ndarray</span></code>,
-if you must do this.  However, generally this is discouraged:
-among other problems, it complicates the appearance of the code.
-Also, when using <code class="samp docutils literal notranslate"><span class="pre">itemset</span></code> (and <code class="samp docutils literal notranslate"><span class="pre">item</span></code>) inside a loop, be sure
-to assign the methods to a local variable to avoid the attribute
-look-up at each loop iteration.</p>
-<p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">123</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
-<span class="go">array([[2, 2, 6],</span>
-<span class="go">       [1, 3, 6],</span>
-<span class="go">       [1, 0, 1]])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">itemset</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">itemset</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">9</span><span class="p">)</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span>
-<span class="go">array([[2, 2, 6],</span>
-<span class="go">       [1, 0, 6],</span>
-<span class="go">       [1, 0, 9]])</span>
+<p>For an array with object dtype, elements are returned as-is.</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">(</span><span class="mi">1</span><span class="p">)],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">object</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="c1">#return np.int64</span>
+<span class="go">np.int64(1)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -1072,7 +1064,7 @@ look-up at each loop iteration.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.amax.html#numpy.amax" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.amax</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.amax.html#numpy.amax" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.amax</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -1086,7 +1078,7 @@ look-up at each loop iteration.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html#numpy.mean" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.mean</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.mean.html#numpy.mean" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.mean</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -1100,47 +1092,10 @@ look-up at each loop iteration.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.amin.html#numpy.amin" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.amin</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.amin.html#numpy.amin" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.amin</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pybinding.Path.newbyteorder">
-<span class="sig-name descname"><span class="pre">newbyteorder</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'S'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Path.newbyteorder" title="Link to this definition">¶</a></dt>
-<dd><p>Return the array with the same data viewed with a different byte order.</p>
-<p>Equivalent to:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">arr</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">arr</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">newbytorder</span><span class="p">(</span><span class="n">new_order</span><span class="p">))</span>
-</pre></div>
-</div>
-<p>Changes are also made in all fields and sub-arrays of the array data
-type.</p>
-<dl class="field-list">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl>
-<dt><strong>new_order</strong><span class="classifier">string, optional</span></dt><dd><p>Byte order to force; a value from the byte order specifications
-below. <code class="samp docutils literal notranslate"><span class="pre">new_order</span></code> codes can be any of:</p>
-<ul class="simple">
-<li><p>‘S’ - swap dtype from current to opposite endian</p></li>
-<li><p>{‘&lt;’, ‘little’} - little endian</p></li>
-<li><p>{‘&gt;’, ‘big’} - big endian</p></li>
-<li><p>{‘=’, ‘native’} - native order, equivalent to <code class="samp docutils literal notranslate"><span class="pre">sys.byteorder</span></code></p></li>
-<li><p>{‘|’, ‘I’} - ignore (no change to byte order)</p></li>
-</ul>
-<p>The default value (‘S’) results in swapping the current
-byte order.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>new_arr</strong><span class="classifier">array</span></dt><dd><p>New array object with the dtype reflecting given change to the
-byte order.</p>
-</dd>
-</dl>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -1151,7 +1106,7 @@ byte order.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.nonzero.html#numpy.nonzero" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.nonzero</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.nonzero.html#numpy.nonzero" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.nonzero</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -1160,13 +1115,14 @@ byte order.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="pybinding.Path.partition">
 <span class="sig-name descname"><span class="pre">partition</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kind</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'introselect'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Path.partition" title="Link to this definition">¶</a></dt>
-<dd><p>Rearranges the elements in the array in such a way that the value of the
-element in kth position is in the position it would be in a sorted array.
-All elements smaller than the kth element are moved before this element and
-all equal or greater are moved behind it. The ordering of the elements in
-the two partitions is undefined.</p>
+<dd><p>Partially sorts the elements in the array in such a way that the value of
+the element in k-th position is in the position it would be in a sorted
+array. In the output array, all elements smaller than the k-th element
+are located to the left of this element and all equal or greater are
+located to its right. The ordering of the elements in the two partitions
+on the either side of the k-th element in the output array is undefined.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 1.8.0.</span></p>
+<p><span class="versionmodified added">Added in version 1.8.0.</span></p>
 </div>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1198,7 +1154,7 @@ they come up in the dtype, to break ties.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.partition.html#numpy.partition" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.partition</span></code></a></dt><dd><p>Return a partitioned copy of an array.</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.partition.html#numpy.partition" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.partition</span></code></a></dt><dd><p>Return a partitioned copy of an array.</p>
 </dd>
 <dt><a class="reference internal" href="#pybinding.Path.argpartition" title="pybinding.Path.argpartition"><code class="xref py py-obj docutils literal notranslate"><span class="pre">argpartition</span></code></a></dt><dd><p>Indirect partition.</p>
 </dd>
@@ -1212,7 +1168,7 @@ they come up in the dtype, to break ties.</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">partition</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
-<span class="go">array([2, 1, 3, 4])</span>
+<span class="go">array([2, 1, 3, 4]) # may vary</span>
 </pre></div>
 </div>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">partition</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
@@ -1224,7 +1180,7 @@ they come up in the dtype, to break ties.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pybinding.Path.plot">
-<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.11)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.8.0)"><span class="pre">Axes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.patches.FancyArrow.html#matplotlib.patches.FancyArrow" title="(in Matplotlib v3.8.0)"><span class="pre">FancyArrow</span></a></span></span><a class="headerlink" href="#pybinding.Path.plot" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point_labels</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.12)"><span class="pre">List</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.html#matplotlib.axes.Axes" title="(in Matplotlib v3.9.0)"><span class="pre">Axes</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.12)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.patches.FancyArrow.html#matplotlib.patches.FancyArrow" title="(in Matplotlib v3.9.0)"><span class="pre">FancyArrow</span></a></span></span><a class="headerlink" href="#pybinding.Path.plot" title="Link to this definition">¶</a></dt>
 <dd><p>Quiver plot of the path</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1233,7 +1189,7 @@ they come up in the dtype, to break ties.</p>
 </dd>
 <dt><strong>ax</strong><span class="classifier">Optional[plt.Axes]</span></dt><dd><p>The axis to plot on.</p>
 </dd>
-<dt><strong>**kwargs</strong></dt><dd><p>Forwarded to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.arrow.html#matplotlib.pyplot.arrow" title="(in Matplotlib v3.8.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">arrow()</span></code></a>.</p>
+<dt><strong>**kwargs</strong></dt><dd><p>Forwarded to <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.arrow.html#matplotlib.pyplot.arrow" title="(in Matplotlib v3.9.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">arrow()</span></code></a>.</p>
 </dd>
 </dl>
 </dd>
@@ -1248,21 +1204,7 @@ they come up in the dtype, to break ties.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.prod.html#numpy.prod" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.prod</span></code></a></dt><dd><p>equivalent function</p>
-</dd>
-</dl>
-</div>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pybinding.Path.ptp">
-<span class="sig-name descname"><span class="pre">ptp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">out</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Path.ptp" title="Link to this definition">¶</a></dt>
-<dd><p>Peak to peak (maximum - minimum) value along a given axis.</p>
-<p>Refer to <code class="samp docutils literal notranslate"><span class="pre">numpy.ptp</span></code> for full documentation.</p>
-<div class="admonition seealso">
-<p class="admonition-title">See also</p>
-<dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ptp.html#numpy.ptp" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ptp</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.prod.html#numpy.prod" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.prod</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -1276,7 +1218,7 @@ they come up in the dtype, to break ties.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.put.html#numpy.put" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.put</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.put.html#numpy.put" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.put</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -1290,7 +1232,7 @@ they come up in the dtype, to break ties.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ravel.html#numpy.ravel" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ravel</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ravel.html#numpy.ravel" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ravel</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray.flat</span></code></dt><dd><p>a flat iterator on the array.</p>
 </dd>
@@ -1306,7 +1248,7 @@ they come up in the dtype, to break ties.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.repeat.html#numpy.repeat" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.repeat</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.repeat.html#numpy.repeat" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.repeat</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -1314,13 +1256,13 @@ they come up in the dtype, to break ties.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pybinding.Path.reshape">
-<span class="sig-name descname"><span class="pre">reshape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Path.reshape" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">reshape</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">shape</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Path.reshape" title="Link to this definition">¶</a></dt>
 <dd><p>Returns an array containing the same data with a new shape.</p>
 <p>Refer to <code class="samp docutils literal notranslate"><span class="pre">numpy.reshape</span></code> for full documentation.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.reshape.html#numpy.reshape" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.reshape</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.reshape.html#numpy.reshape" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.reshape</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -1431,7 +1373,7 @@ stored in memory), resized, and reshaped:</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.around.html#numpy.around" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.around</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.around.html#numpy.around" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.around</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -1445,7 +1387,7 @@ stored in memory), resized, and reshaped:</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html#numpy.searchsorted" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.searchsorted</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html#numpy.searchsorted" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.searchsorted</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -1512,7 +1454,7 @@ respectively.</p>
 <p>These Boolean-valued flags affect how numpy interprets the memory
 area used by <code class="samp docutils literal notranslate"><span class="pre">a</span></code> (see Notes below). The ALIGNED flag can only
 be set to True if the data is actually aligned according to the type.
-The WRITEBACKIFCOPY and flag can never be set
+The WRITEBACKIFCOPY flag can never be set
 to True. The flag WRITEABLE can only be set to True if the array owns its
 own memory, or the ultimate owner of the memory exposes a writeable buffer
 interface, or is a string. (The exception for string is made so that
@@ -1532,7 +1474,7 @@ unpickling can be done without copying memory.)</p>
 <p class="rubric">Notes</p>
 <p>Array flags provide information about how the memory area used
 for the array is to be interpreted. There are 7 Boolean flags
-in use, only four of which can be changed by the user:
+in use, only three of which can be changed by the user:
 WRITEBACKIFCOPY, WRITEABLE, and ALIGNED.</p>
 <p>WRITEABLE (W) the data area can be written to;</p>
 <p>ALIGNED (A) the data and strides are aligned appropriately for the hardware
@@ -1603,15 +1545,15 @@ they come up in the dtype, to break ties.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sort.html#numpy.sort" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.sort</span></code></a></dt><dd><p>Return a sorted copy of an array.</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sort.html#numpy.sort" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.sort</span></code></a></dt><dd><p>Return a sorted copy of an array.</p>
 </dd>
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.argsort.html#numpy.argsort" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.argsort</span></code></a></dt><dd><p>Indirect sort.</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.argsort.html#numpy.argsort" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.argsort</span></code></a></dt><dd><p>Indirect sort.</p>
 </dd>
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.lexsort.html#numpy.lexsort" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.lexsort</span></code></a></dt><dd><p>Indirect stable sort on multiple keys.</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.lexsort.html#numpy.lexsort" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.lexsort</span></code></a></dt><dd><p>Indirect stable sort on multiple keys.</p>
 </dd>
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html#numpy.searchsorted" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.searchsorted</span></code></a></dt><dd><p>Find elements in sorted array.</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.searchsorted.html#numpy.searchsorted" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.searchsorted</span></code></a></dt><dd><p>Find elements in sorted array.</p>
 </dd>
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.partition.html#numpy.partition" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.partition</span></code></a></dt><dd><p>Partial sort.</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.partition.html#numpy.partition" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.partition</span></code></a></dt><dd><p>Partial sort.</p>
 </dd>
 </dl>
 </div>
@@ -1648,7 +1590,7 @@ structured array:</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.squeeze.html#numpy.squeeze" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.squeeze</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.squeeze.html#numpy.squeeze" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.squeeze</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -1662,7 +1604,7 @@ structured array:</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.std.html#numpy.std" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.std</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.std.html#numpy.std" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.std</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -1676,7 +1618,7 @@ structured array:</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sum.html#numpy.sum" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.sum</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.sum.html#numpy.sum" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.sum</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -1690,7 +1632,7 @@ structured array:</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.swapaxes.html#numpy.swapaxes" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.swapaxes</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.swapaxes.html#numpy.swapaxes" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.swapaxes</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -1704,7 +1646,7 @@ structured array:</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.take.html#numpy.take" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.take</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.take.html#numpy.take" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.take</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -1718,7 +1660,7 @@ structured array:</p>
 data memory. The bytes object is produced in C-order by default.
 This behavior is controlled by the <code class="docutils literal notranslate"><span class="pre">order</span></code> parameter.</p>
 <div class="versionadded">
-<p><span class="versionmodified added">New in version 1.9.0.</span></p>
+<p><span class="versionmodified added">Added in version 1.9.0.</span></p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1858,8 +1800,9 @@ except that <code class="docutils literal notranslate"><span class="pre">tolist<
 <dl class="py method">
 <dt class="sig sig-object py" id="pybinding.Path.tostring">
 <span class="sig-name descname"><span class="pre">tostring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'C'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pybinding.Path.tostring" title="Link to this definition">¶</a></dt>
-<dd><p>A compatibility alias for <code class="samp docutils literal notranslate"><span class="pre">tobytes</span></code>, with exactly the same behavior.</p>
-<p>Despite its name, it returns <code class="samp docutils literal notranslate"><span class="pre">bytes</span></code> not <code class="samp docutils literal notranslate"><span class="pre">str</span></code>s.</p>
+<dd><p>A compatibility alias for <code class="samp docutils literal notranslate"><span class="pre">~ndarray.tobytes</span></code>, with exactly the same
+behavior.</p>
+<p>Despite its name, it returns <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#bytes" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a> not <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.12)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>s.</p>
 <div class="deprecated">
 <p><span class="versionmodified deprecated">Deprecated since version 1.19.0.</span></p>
 </div>
@@ -1873,7 +1816,7 @@ except that <code class="docutils literal notranslate"><span class="pre">tolist<
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.trace.html#numpy.trace" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.trace</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.trace.html#numpy.trace" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.trace</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -1948,7 +1891,7 @@ intended simply as a “convenience” alternative to the tuple form).</p></li>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.var.html#numpy.var" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.var</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.var.html#numpy.var" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.var</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -1962,7 +1905,7 @@ intended simply as a “convenience” alternative to the tuple form).</p></li>
 <p class="admonition-title">Note</p>
 <p>Passing None for <code class="docutils literal notranslate"><span class="pre">dtype</span></code> is different from omitting the parameter,
 since the former invokes <code class="docutils literal notranslate"><span class="pre">dtype(None)</span></code> which is an alias for
-<code class="docutils literal notranslate"><span class="pre">dtype('float_')</span></code>.</p>
+<code class="docutils literal notranslate"><span class="pre">dtype('float64')</span></code>.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -2033,7 +1976,7 @@ had to be C-contiguous.</p>
 <p>Views share data:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">z</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="go">(9, 10)</span>
+<span class="go">np.record((9, 10), dtype=[(&#39;a&#39;, &#39;i1&#39;), (&#39;b&#39;, &#39;i1&#39;)])</span>
 </pre></div>
 </div>
 <p>Views that change the dtype size (bytes per entry) should normally be
@@ -2144,7 +2087,7 @@ as arguments to a shared library.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/routines.ctypeslib.html#module-numpy.ctypeslib" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ctypeslib</span></code></a></dt><dd></dd>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/routines.ctypeslib.html#module-numpy.ctypeslib" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ctypeslib</span></code></a></dt><dd></dd>
 </dl>
 </div>
 <p class="rubric">Notes</p>
@@ -2155,13 +2098,14 @@ as well as documented private attributes):</p>
 <dt class="sig sig-object py">
 <span class="sig-prename descclassname"><span class="pre">_ctypes.</span></span><span class="sig-name descname"><span class="pre">data</span></span></dt>
 <dd><p>A pointer to the memory area of the array as a Python integer.
-This memory area may contain data that is not aligned, or not in correct
-byte-order. The memory area may not even be writeable. The array
-flags and data-type of this array should be respected when passing this
-attribute to arbitrary C-code to avoid trouble that can include Python
-crashing. User Beware! The value of this attribute is exactly the same
-as <code class="docutils literal notranslate"><span class="pre">self._array_interface_['data'][0]</span></code>.</p>
-<p>Note that unlike <code class="docutils literal notranslate"><span class="pre">data_as</span></code>, a reference will not be kept to the array:
+This memory area may contain data that is not aligned, or not in
+correct byte-order. The memory area may not even be writeable.
+The array flags and data-type of this array should be respected
+when passing this attribute to arbitrary C-code to avoid trouble
+that can include Python crashing. User Beware! The value of this
+attribute is exactly the same as:
+<code class="docutils literal notranslate"><span class="pre">self._array_interface_['data'][0]</span></code>.</p>
+<p>Note that unlike <code class="docutils literal notranslate"><span class="pre">data_as</span></code>, a reference won’t be kept to the array:
 code like <code class="docutils literal notranslate"><span class="pre">ctypes.c_void_p((a</span> <span class="pre">+</span> <span class="pre">b).ctypes.data)</span></code> will result in a
 pointer to a deallocated array, and should be spelt
 <code class="docutils literal notranslate"><span class="pre">(a</span> <span class="pre">+</span> <span class="pre">b).ctypes.data_as(ctypes.c_void_p)</span></code></p>
@@ -2182,10 +2126,10 @@ the underlying array.</p>
 <dt class="sig sig-object py">
 <span class="sig-prename descclassname"><span class="pre">_ctypes.</span></span><span class="sig-name descname"><span class="pre">strides</span></span></dt>
 <dd><p>(c_intp*self.ndim): A ctypes array of length self.ndim where
-the basetype is the same as for the shape attribute. This ctypes array
-contains the strides information from the underlying array. This strides
-information is important for showing how many bytes must be jumped to
-get to the next element in the array.</p>
+the basetype is the same as for the shape attribute. This ctypes
+array contains the strides information from the underlying array.
+This strides information is important for showing how many bytes
+must be jumped to get to the next element in the array.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -2193,8 +2137,8 @@ get to the next element in the array.</p>
 <span class="sig-prename descclassname"><span class="pre">_ctypes.</span></span><span class="sig-name descname"><span class="pre">data_as</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Return the data pointer cast to a particular c-types object.
 For example, calling <code class="docutils literal notranslate"><span class="pre">self._as_parameter_</span></code> is equivalent to
-<code class="docutils literal notranslate"><span class="pre">self.data_as(ctypes.c_void_p)</span></code>. Perhaps you want to use the data as a
-pointer to a ctypes array of floating-point data:
+<code class="docutils literal notranslate"><span class="pre">self.data_as(ctypes.c_void_p)</span></code>. Perhaps you want to use
+the data as a pointer to a ctypes array of floating-point data:
 <code class="docutils literal notranslate"><span class="pre">self.data_as(ctypes.POINTER(ctypes.c_double))</span></code>.</p>
 <p>The returned pointer will keep a reference to the array.</p>
 </dd></dl>
@@ -2233,9 +2177,9 @@ return an integer equal to the data attribute.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">data_as</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">POINTER</span><span class="p">(</span><span class="n">ctypes</span><span class="o">.</span><span class="n">c_uint64</span><span class="p">))</span><span class="o">.</span><span class="n">contents</span>
 <span class="go">c_ulong(4294967296)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">shape</span>
-<span class="go">&lt;numpy.core._internal.c_long_Array_2 object at 0x7ff2fc1fce60&gt; # may vary</span>
+<span class="go">&lt;numpy._core._internal.c_long_Array_2 object at 0x7ff2fc1fce60&gt; # may vary</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">x</span><span class="o">.</span><span class="n">ctypes</span><span class="o">.</span><span class="n">strides</span>
-<span class="go">&lt;numpy.core._internal.c_long_Array_2 object at 0x7ff2fc1ff320&gt; # may vary</span>
+<span class="go">&lt;numpy._core._internal.c_long_Array_2 object at 0x7ff2fc1ff320&gt; # may vary</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -2275,7 +2219,7 @@ memory (see also <code class="samp docutils literal notranslate"><span class="pr
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray.view</span></code></dt><dd><p>Create a view of the same data but a different data-type.</p>
 </dd>
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.dtype</span></code></a></dt><dd></dd>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.dtype</span></code></a></dt><dd></dd>
 </dl>
 </div>
 <p class="rubric">Examples</p>
@@ -2417,7 +2361,7 @@ a subclass of, Python’s built-in iterator object.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pybinding.Path.is_simple">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_simple</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></em><a class="headerlink" href="#pybinding.Path.is_simple" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_simple</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.12)"><span class="pre">bool</span></a></em><a class="headerlink" href="#pybinding.Path.is_simple" title="Link to this definition">¶</a></dt>
 <dd><p>Is it just a simple path between two points?</p>
 </dd></dl>
 
@@ -2437,13 +2381,57 @@ a subclass of, Python’s built-in iterator object.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="pybinding.Path.mT">
+<span class="sig-name descname"><span class="pre">mT</span></span><a class="headerlink" href="#pybinding.Path.mT" title="Link to this definition">¶</a></dt>
+<dd><p>View of the matrix transposed array.</p>
+<p>The matrix transpose is the transpose of the last two dimensions, even
+if the array is of higher dimension.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 2.0.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>ValueError</dt><dd><p>If the array is of dimension less than 2.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">array([[1, 2],</span>
+<span class="go">       [3, 4]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">mT</span>
+<span class="go">array([[1, 3],</span>
+<span class="go">       [2, 4]])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">8</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span>
+<span class="go">array([[[0, 1],</span>
+<span class="go">        [2, 3]],</span>
+
+<span class="go">       [[4, 5],</span>
+<span class="go">        [6, 7]]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">a</span><span class="o">.</span><span class="n">mT</span>
+<span class="go">array([[[0, 2],</span>
+<span class="go">        [1, 3]],</span>
+
+<span class="go">       [[4, 6],</span>
+<span class="go">        [5, 7]]])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="pybinding.Path.nbytes">
 <span class="sig-name descname"><span class="pre">nbytes</span></span><a class="headerlink" href="#pybinding.Path.nbytes" title="Link to this definition">¶</a></dt>
 <dd><p>Total bytes consumed by the elements of the array.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.getsizeof" title="(in Python v3.11)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sys.getsizeof</span></code></a></dt><dd><p>Memory consumed by the object itself without parents in case view. This does include memory consumed by non-element attributes.</p>
+<dt><a class="reference external" href="https://docs.python.org/3/library/sys.html#sys.getsizeof" title="(in Python v3.12)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">sys.getsizeof</span></code></a></dt><dd><p>Memory consumed by the object itself without parents in case view. This does include memory consumed by non-element attributes.</p>
 </dd>
 </dl>
 </div>
@@ -2477,7 +2465,7 @@ array object.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pybinding.Path.points">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">points</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.26)"><span class="pre">ndarray</span></a></em><a class="headerlink" href="#pybinding.Path.points" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">points</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.0)"><span class="pre">ndarray</span></a></em><a class="headerlink" href="#pybinding.Path.points" title="Link to this definition">¶</a></dt>
 <dd><p>Significant points along the path, including start and end</p>
 </dd></dl>
 
@@ -2488,7 +2476,7 @@ array object.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.real.html#numpy.real" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.real</span></code></a></dt><dd><p>equivalent function</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.real.html#numpy.real" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.real</span></code></a></dt><dd><p>equivalent function</p>
 </dd>
 </dl>
 </div>
@@ -2520,9 +2508,9 @@ future.  Using <code class="samp docutils literal notranslate"><span class="pre"
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.shape.html#numpy.shape" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.shape</span></code></a></dt><dd><p>Equivalent getter function.</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.shape.html#numpy.shape" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.shape</span></code></a></dt><dd><p>Equivalent getter function.</p>
 </dd>
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.reshape.html#numpy.reshape" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.reshape</span></code></a></dt><dd><p>Function similar to setting <code class="docutils literal notranslate"><span class="pre">shape</span></code>.</p>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.reshape.html#numpy.reshape" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.reshape</span></code></a></dt><dd><p>Function similar to setting <code class="docutils literal notranslate"><span class="pre">shape</span></code>.</p>
 </dd>
 <dt><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndarray.reshape</span></code></dt><dd><p>Method similar to setting <code class="docutils literal notranslate"><span class="pre">shape</span></code>.</p>
 </dd>
@@ -2584,8 +2572,8 @@ is:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">offset</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">*</span> <span class="n">a</span><span class="o">.</span><span class="n">strides</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>A more detailed explanation of strides can be found in the
-“ndarray.rst” file in the NumPy reference guide.</p>
+<p>A more detailed explanation of strides can be found in
+<a class="reference external" href="https://numpy.org/doc/stable/reference/arrays.ndarray.html#arrays-ndarray" title="(in NumPy v2.0)"><span>The N-dimensional array (ndarray)</span></a>.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Setting <code class="docutils literal notranslate"><span class="pre">arr.strides</span></code> is discouraged and may be deprecated in the
@@ -2595,7 +2583,7 @@ to create a new view of the same data in a safer way.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <dl class="simple">
-<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.lib.stride_tricks.as_strided.html#numpy.lib.stride_tricks.as_strided" title="(in NumPy v1.26)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.lib.stride_tricks.as_strided</span></code></a></dt><dd></dd>
+<dt><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.lib.stride_tricks.as_strided.html#numpy.lib.stride_tricks.as_strided" title="(in NumPy v2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.lib.stride_tricks.as_strided</span></code></a></dt><dd></dd>
 </dl>
 </div>
 <p class="rubric">Notes</p>
@@ -2657,7 +2645,7 @@ position in the next row.  As such, the strides for the array <code class="samp 
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
+    <p>&#169; Copyright 2015-2024, Dean Moldovan.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

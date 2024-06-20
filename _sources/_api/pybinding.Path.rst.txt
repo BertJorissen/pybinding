@@ -18,15 +18,20 @@
         ~Path.base
         ~Path.ctypes
         ~Path.data
+        ~Path.device
         ~Path.dtype
         ~Path.flags
         ~Path.flat
         ~Path.imag
         ~Path.is_simple
+        ~Path.itemset
         ~Path.itemsize
+        ~Path.mT
         ~Path.nbytes
         ~Path.ndim
+        ~Path.newbyteorder
         ~Path.points
+        ~Path.ptp
         ~Path.real
         ~Path.shape
         ~Path.size
@@ -68,16 +73,13 @@
         ~Path.flatten
         ~Path.getfield
         ~Path.item
-        ~Path.itemset
         ~Path.max
         ~Path.mean
         ~Path.min
-        ~Path.newbyteorder
         ~Path.nonzero
         ~Path.partition
         ~Path.plot
         ~Path.prod
-        ~Path.ptp
         ~Path.put
         ~Path.ravel
         ~Path.repeat
@@ -93,6 +95,7 @@
         ~Path.sum
         ~Path.swapaxes
         ~Path.take
+        ~Path.to_device
         ~Path.tobytes
         ~Path.tofile
         ~Path.tolist

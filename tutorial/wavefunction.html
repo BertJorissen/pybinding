@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta content="Using the eigenvectors in the tight-binding calculation" name="description" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>12. Wavefunction calculations &mdash; pybinding</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+
+  
+    <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/documentation_options.js?v=da57aa06"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Additional Topics" href="../advanced/index.html" />
+    <link rel="prev" title="11. Scattering model" href="scattering.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            pybinding
+          </a>
+              <div class="version">
+                1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">About</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../benchmarks/index.html">Benchmarks</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">User guide</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="import.html">1. Imports</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lattice.html">2. Lattice</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bands.html">3. Band structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="finite.html">4. Finite size</a></li>
+<li class="toctree-l2"><a class="reference internal" href="shape_symmetry.html">5. Shape and symmetry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fields.html">6. Fields and effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="strain.html">7. Defects and strain</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generators.html">8. Generators</a></li>
+<li class="toctree-l2"><a class="reference internal" href="solvers.html">9. Eigenvalue solvers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="kpm.html">10. Kernel polynomial method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="scattering.html">11. Scattering model</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">12. Wavefunction calculations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#berry">12.1. Berry</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../advanced/index.html">Additional Topics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../plotting/index.html">Plotting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Random Examples</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Reference docs</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../materials/index.html">Material Repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experimental/index.html">Experimental</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">pybinding</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Tutorial</a></li>
+      <li class="breadcrumb-item active"><span class="section-number">12. </span>Wavefunction calculations</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/tutorial/wavefunction.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="wavefunction-calculations">
+<h1><span class="section-number">12. </span>Wavefunction calculations<a class="headerlink" href="#wavefunction-calculations" title="Link to this heading">¶</a></h1>
+<p>This section will introduce <a class="reference internal" href="../_api/pybinding.Wavefunction.html#pybinding.Wavefunction" title="pybinding.Wavefunction"><code class="xref py py-class docutils literal notranslate"><span class="pre">Wavefunction</span></code></a> which can be used to calculate effects that are connected
+to the properties in the eigenvectors, such as disentangling the bands, calculating the projected DOS, the
+spatial DOS and the Berry curvature.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For some of these properties, access to the <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>-object is needed.
+As a it is not possible to store a <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>, save the required data during the calculation.</p>
+</div>
+<p>Berry curvature
+Hamiltonian matrix is created.</p>
+<p><a class="reference download internal" download="" href="../_downloads/a78fd1b5fafb484989c84d4297cb34b5/wavefunction.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
+<section id="berry">
+<h2><span class="section-number">12.1. </span>Berry<a class="headerlink" href="#berry" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository.group6_tmd</span> <span class="kn">import</span> <span class="n">monolayer_3band</span>
+<span class="n">lat</span> <span class="o">=</span> <span class="n">monolayer_3band</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;MoS2&quot;</span><span class="p">)</span>
+<span class="n">wfc_area</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">lapack</span><span class="p">(</span><span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">pb</span><span class="o">.</span><span class="n">translational_symmetry</span><span class="p">()))</span><span class="o">.</span><span class="n">calc_wavefunction_area</span><span class="p">(</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">make_area</span><span class="p">(</span><span class="o">*</span><span class="n">lat</span><span class="o">.</span><span class="n">reciprocal_vectors</span><span class="p">(),</span> <span class="n">step</span><span class="o">=</span><span class="mf">.1</span><span class="p">)</span>
+<span class="p">)</span>
+<span class="n">berry</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Berry</span><span class="p">(</span><span class="n">wfc_area</span><span class="p">)</span>
+<span class="n">series_area</span> <span class="o">=</span> <span class="n">berry</span><span class="o">.</span><span class="n">calc_berry</span><span class="p">()</span>
+<span class="n">series_area</span><span class="o">.</span><span class="n">area_plot</span><span class="p">()</span>
+<span class="n">lat</span><span class="o">.</span><span class="n">plot_brillouin_zone</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<figure class="align-default">
+<img alt="Berry phase calculation for MoS2" class="plot-directive" src="../_images/wavefunction-1.png" />
+</figure>
+<p>et voila</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="scattering.html" class="btn btn-neutral float-left" title="11. Scattering model" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../advanced/index.html" class="btn btn-neutral float-right" title="Additional Topics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2015-2024, Dean Moldovan.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta content="Defining and solving multi-orbital tight-binding models in pybinding" name="description" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Multi-orbital models &mdash; pybinding</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/plot_directive.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
+
+  
     <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../_static/documentation_options.js?v=61b282d3"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/documentation_options.js?v=da57aa06"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -36,7 +38,7 @@
             pybinding
           </a>
               <div class="version">
-                0.9
+                1.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -188,7 +190,7 @@ will have a shape matching the onsite/hopping matrix term.</p>
     <span class="k">return</span> <span class="n">energy</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
 </pre></div>
 </div>
-<p>Note the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.eye.html#numpy.eye" title="(in NumPy v1.26)"><code class="xref py py-func docutils literal notranslate"><span class="pre">np.eye(2)</span></code></a> in the code above. The number 2 matches the 2-orbital
+<p>Note the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.eye.html#numpy.eye" title="(in NumPy v2.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">np.eye(2)</span></code></a> in the code above. The number 2 matches the 2-orbital
 structure of a specific model. Without this, <code class="docutils literal notranslate"><span class="pre">energy</span> <span class="pre">+</span> <span class="pre">x</span></code> would also add the value to the
 off-diagonal elements of the onsite matrix which is not desirable in this case.</p>
 <p>The modifier defined above will only work for 2-orbital models. In general, we might want to
@@ -323,7 +325,7 @@ sum of all orbitals but this is optional as shown in the following example:</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
+    <p>&#169; Copyright 2015-2024, Dean Moldovan.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

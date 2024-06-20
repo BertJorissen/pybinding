@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from math import sqrt, pi
 from pybinding.repository import graphene
 
-pb.utils.pltutils.use_style()
+pb.pltutils.use_style()
 
 
 model = pb.Model(

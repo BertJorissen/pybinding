@@ -1,20 +1,22 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Changelog &mdash; pybinding</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-      <link rel="stylesheet" href="_static/plot_directive.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+
+  
     <link rel="stylesheet" href="_static/extra.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="_static/documentation_options.js?v=61b282d3"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/documentation_options.js?v=da57aa06"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -35,7 +37,7 @@
             pybinding
           </a>
               <div class="version">
-                0.9
+                1.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -93,6 +95,39 @@
              
   <section id="changelog">
 <h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">¶</a></h1>
+<section id="v1-0-4-2024-06-20">
+<h2>v1.0.4 |2024-06-20<a class="headerlink" href="#v1-0-4-2024-06-20" title="Link to this heading">¶</a></h2>
+<p>Majer new release, new additions:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pb.Wavefunction</span></code> class to save the eigenvectors, similar to <code class="docutils literal notranslate"><span class="pre">pb.Bands</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pb.Area</span></code> to save results in an area in reciprocal space</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pb.Disentangle</span></code> to disentangle the results, very usefull in case of <code class="docutils literal notranslate"><span class="pre">pb.solver.arpack()</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pb.Berrt</span></code> to calculate the berry phase</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pb.FatBands</span></code> bands with contributions from the sublattices</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pb.force_phase()</span></code> to change the gauge for the phace used</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">&quot;shift&quot;</span></code>-option in modifiers to see the relative shift in cells</p></li>
+<li><p>expanded the repository of models for TMDs</p></li>
+</ul>
+<p>Bug fixes</p>
+<ul class="simple">
+<li><p>numpy 2.0.0 integration</p></li>
+<li><p>update of pybind11</p></li>
+<li><p>block-diagonal reordering in the KPM routine</p></li>
+<li><p>changing <code class="docutils literal notranslate"><span class="pre">pb.pltutils.use_style()</span></code>-default in <code class="docutils literal notranslate"><span class="pre">&quot;axis.autolimit_mode&quot;</span></code> from <code class="docutils literal notranslate"><span class="pre">&quot;round_numers&quot;</span></code> to <code class="docutils literal notranslate"><span class="pre">&quot;data&quot;</span></code> for bugfix</p></li>
+</ul>
+<p>Changes</p>
+<ul class="simple">
+<li><p>changed locations for <code class="docutils literal notranslate"><span class="pre">pb.results</span></code> and <code class="docutils literal notranslate"><span class="pre">pb.pltutils</span></code></p></li>
+<li><p>Pre-compiled versions for all platforms</p></li>
+<li><p>dropped support for python &lt;3.8</p></li>
+</ul>
+<p>Major release, releases after v0.9.5 up to this release (v1.0.4) are unstable and should <em>not</em> be used.</p>
+<p>Major addition is the inclusion of the <code class="docutils literal notranslate"><span class="pre">pb.Wavefunction</span></code> to calculate properties that are related to the wavefunction,
+such as the berry phase, orbital contribution, bands disentanglement, operators and projections on different bases.</p>
+<section id="technical-aspects">
+<h3>Technical aspects<a class="headerlink" href="#technical-aspects" title="Link to this heading">¶</a></h3>
+</section>
+</section>
 <section id="v0-9-5-2020-08-30">
 <h2>v0.9.5 | 2020-08-30<a class="headerlink" href="#v0-9-5-2020-08-30" title="Link to this heading">¶</a></h2>
 <p>It has been a long time since the last version was released. The Python ecosystem has changed
@@ -427,7 +462,7 @@ and OS X (Python 3.4 and 3.5)</p></li>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2015-2020, Dean Moldovan.</p>
+    <p>&#169; Copyright 2015-2024, Dean Moldovan.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
