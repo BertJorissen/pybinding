@@ -419,7 +419,7 @@ def test_invalid_return():
 
     @pb.onsite_energy_modifier
     def mod_nan(energy):
-        return np.ones_like(energy) * np.NaN
+        return np.ones_like(energy) * np.nan
 
     with pytest.raises(RuntimeError) as excinfo:
         build_model(mod_nan)
