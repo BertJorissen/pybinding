@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.0.3a | xxxx-xx-xx
+## v1.0.4 |2024-06-20
 
 Majer new release, new additions:
 
@@ -9,13 +9,13 @@ Majer new release, new additions:
 * `pb.Disentangle` to disentangle the results, very usefull in case of `pb.solver.arpack()`
 * `pb.Berrt` to calculate the berry phase
 * `pb.FatBands` bands with contributions from the sublattices
-* `pb.CPGF` the CPGF kernel added to the KPM kernels
 * `pb.force_phase()` to change the gauge for the phace used
 * `"shift"`-option in modifiers to see the relative shift in cells
 * expanded the repository of models for TMDs
 
 Bug fixes
 
+* numpy 2.0.0 integration
 * update of pybind11
 * block-diagonal reordering in the KPM routine
 * changing `pb.pltutils.use_style()`-default in `"axis.autolimit_mode"` from `"round_numers"` to `"data"` for bugfix
