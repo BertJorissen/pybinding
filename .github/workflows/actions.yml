@@ -42,7 +42,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-latest ]
-        python-version: [ "3.8", "3.9", "3.11", "3.12" ]
+        python-version: [ "3.9", "3.11", "3.12" ]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -99,7 +99,7 @@ jobs:
     strategy:
       matrix:
         os: [ windows-latest, macos-latest ]
-        python-version: [ "3.8", "3.9", "3.11", "3.12" ]
+        python-version: [ "3.9", "3.11", "3.12" ]
     steps:
       - uses: actions/checkout@v3
         with:
@@ -142,11 +142,21 @@ jobs:
           CIBW_ARCHS_MACOS: x86_64 arm64
           CIBW_ARCHS_LINUX: x86_64
           CIBW_BEFORE_BUILD: pip install scipy contourpy --prefer-binary
-          CIBW_ENVIRONMENT: PB_BUILD_TYPE=Release PB_NATIVE_SIMD=OFF
+          CIBW_ENVIRONMENT: |
+            PB_BUILD_TYPE=Release
+            PB_NATIVE_SIMD=OFF
+            DELOCATE_VERBOSITY=1  # Enable verbose output for delocate
+          CIBW_BUILD_VERBOSITY: 1
           CIBW_BEFORE_TEST: pip install scipy contourpy --prefer-binary
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: python -c "import pybinding as pb; exit(pb.tests())"
           CIBW_SKIP: cp36-* cp37-* pp* *win32 *i686 *musllinux* *ppc64le *s390x *aarch64
+      - name: List dependencies in the built wheel
+        if: runner.os != 'Windows'
+        run: |
+          for whl in wheelhouse/*.whl; do
+            delocate-listdeps $whl;
+          done
       - uses: actions/upload-artifact@v3
         with:
           path: ./wheelhouse/*.whl
