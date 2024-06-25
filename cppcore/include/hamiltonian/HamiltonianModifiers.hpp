@@ -130,9 +130,11 @@ void HamiltonianModifiers::apply_to_onsite(System const& system, Fn lambda) cons
             );
 
             auto start = idx_t{0};
-            for (auto const& value : intrinsic_energy) {
-                onsite_energy.segment(start, nsites).setConstant(value);
-                start += nsites;
+            for (int row = 0; row < intrinsic_energy.rows(); ++row) {
+                for (int col = 0; col < intrinsic_energy.cols(); ++col) {
+                    onsite_energy.segment(start, nsites).setConstant(intrinsic_energy(row, col));
+                    start += nsites;
+                }
             }
         }
 
@@ -229,9 +231,11 @@ struct HoppingBuffer {
     /// Replicate each value from the `unit_hopping` matrix `num` times
     void reset_hoppings(idx_t num) {
         auto start = idx_t{0};
-        for (auto const& value : unit_hopping) {
-            hoppings.segment(start, num).setConstant(value);
-            start += num;
+        for (int row = 0; row < unit_hopping.rows(); ++row) {
+            for (int col = 0; col < unit_hopping.cols(); ++col) {
+                hoppings.segment(start, num).setConstant(unit_hopping(row, col));
+                start += num;
+            }
         }
     }
 
@@ -253,6 +257,7 @@ void HamiltonianModifiers::apply_to_hoppings_impl(System const& system,
     // Fast path: Modifiers don't need to be applied and the single-orbital model
     // allows direct mapping between sites and Hamiltonian matrix elements.
     if (hopping.empty() && !hopping_registry.has_multiple_orbitals()) {
+
         for (auto const& block : system_or_boundary.hopping_blocks) {
             auto const energy = num::force_cast<scalar_t>(
                 hopping_registry.energy(block.family_id())

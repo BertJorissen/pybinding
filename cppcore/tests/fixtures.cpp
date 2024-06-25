@@ -83,11 +83,11 @@ Lattice checkerboard_multiorbital() {
 Lattice hexagonal_complex() {
     constexpr auto i1 = num::get_complex_t<double>{constant::i1};
     // lattice vectors
-    auto a1 = Cartesian{ 0.5f, 0.5f * sqrt(3.0f), 0};
-    auto a2 = Cartesian{-0.5f, 0.5f * sqrt(3.0f), 0};
+    auto a1 = Cartesian{ 0.5, 0.5 * sqrt(3.0), 0};
+    auto a2 = Cartesian{-0.5, 0.5 * sqrt(3.0), 0};
     // positions
-    auto const pos_a = Cartesian{0,                       0, 0};
-    auto const pos_b = Cartesian{0, -1.0f/3 * sqrt(3.0f), 0};
+    auto const pos_a = Cartesian{0,                  0, 0};
+    auto const pos_b = Cartesian{0, -1.0/3 * sqrt(3.0), 0};
 
     auto lattice = Lattice(a1, a2);
 
@@ -101,6 +101,7 @@ Lattice hexagonal_complex() {
     lattice.add_hopping({0, 0, 0}, "A", "B", "t1");
     lattice.add_hopping({0, 1, 0}, "A", "B", "t2");
     lattice.add_hopping({1, 0, 0}, "A", "B", "t3");
+    lattice.add_hopping({1, 0, 0}, "A", "A", "t1");
 
     return lattice;
 }

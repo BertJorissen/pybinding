@@ -88,9 +88,12 @@ TEST_CASE("complex_valued_hoppings") {
         using constant::i1;
         auto const lattice = lattice::hexagonal_complex();
         // distance from A to three neighbor sites
-        auto const d1 = Cartesian{0.0, -1.0 / 3 * sqrt(3.0), 0.0};
-        auto const d2 = Cartesian{d1 + Cartesian{ 0.5, 0.5 * sqrt(3.0), 0.0}};
-        auto const d3 = Cartesian{d1 + Cartesian{-0.5, 0.5 * sqrt(3.0), 0.0}};
+        auto const& a1 = lattice.get_vectors()[0];
+        auto const& a2 = lattice.get_vectors()[1];
+
+        auto const d1 = Cartesian{0, 0, 0};
+        auto const d2 = Cartesian{a2};
+        auto const d3 = Cartesian{a1};
         // hoppings
         auto const t1 = -i1;
         auto const t2 = 2.0 * i1;
@@ -99,25 +102,74 @@ TEST_CASE("complex_valued_hoppings") {
         auto model = Model(lattice, TranslationalSymmetry(1, 1), OnsiteModifier(
                 [](const ComplexArrayRef&, const CartesianArrayConstRef&, string_view){},
                 true, true, false));
-        using constant::pi;
-        // set the wavevector to K point
-        auto const k_vector = Cartesian{2 * pi, 0, 0};
+        // set the wave vector
+        auto const k_vector = Cartesian{0.1234, -.56789, 0};
         model.set_wave_vector(k_vector);
 
         auto const& system = *model.system();
         auto const& matrix = ham::get_reference<std::complex<double>>(model.hamiltonian());
 
-        auto const expected_hopping = t1 * exp(i1 * k_vector.dot(d1)) +
-                                      t2 * exp(i1 * k_vector.dot(d2)) +
-                                      t3 * exp(i1 * k_vector.dot(d3));
+        auto const expected_hopping = t1 * exp(i1 * (k_vector.dot(d1))) +
+                                      t2 * exp(i1 * (k_vector.dot(d2))) +
+                                      t3 * exp(i1 * (k_vector.dot(d3)));
 
+        auto const expected_onsite = t1 * exp(i1 * (k_vector.dot(a1))) + conj(t1) * exp(i1 * (k_vector.dot(-a1)));
         REQUIRE(system.num_sites() == 2);
         REQUIRE(system.hamiltonian_size() == 2);
         REQUIRE(system.hamiltonian_nnz() == 4);
-        REQUIRE(num::approx_equal(matrix.coeff(0, 1).real(),  expected_hopping.real()));
+        REQUIRE(num::approx_equal(matrix.coeff(0, 0).real(),  expected_onsite.real()));
+        REQUIRE(num::approx_equal(matrix.coeff(0, 0).imag(),  expected_onsite.imag()));
         REQUIRE(num::approx_equal(matrix.coeff(0, 1).imag(),  expected_hopping.imag()));
-        REQUIRE(num::approx_equal(matrix.coeff(1, 0).real(),  expected_hopping.real()));
         REQUIRE(num::approx_equal(matrix.coeff(1, 0).imag(), -expected_hopping.imag()));
+        REQUIRE(num::approx_equal(matrix.coeff(1, 1).imag(),  0.));
+        REQUIRE(num::approx_equal(matrix.coeff(1, 1).real(),  0.));
+        REQUIRE(num::approx_equal(matrix.coeff(1, 0).real(),  expected_hopping.real()));
+        REQUIRE(num::approx_equal(matrix.coeff(0, 1).real(),  expected_hopping.real()));
+    }
+
+    SECTION("single-orbital-complex-phase") {
+        using constant::i1;
+        auto const lattice = lattice::hexagonal_complex();
+        // distance from A to three neighbor sites
+        auto const& a1 = lattice.get_vectors()[0];
+        auto const& a2 = lattice.get_vectors()[1];
+
+        auto const& sublattices = lattice.get_sublattices();
+        auto const d1 = sublattices.at("B").position - sublattices.at("A").position; // within unit-cell
+        auto const d2 = Cartesian{d1 + a2};
+        auto const d3 = Cartesian{d1 + a1};
+        // hoppings
+        auto const t1 = -i1;
+        auto const t2 = 2.0 * i1;
+        auto const t3 = 3.0 * i1;
+
+        auto model = Model(lattice, TranslationalSymmetry(1, 1), OnsiteModifier(
+                [](const ComplexArrayRef&, const CartesianArrayConstRef&, string_view){},
+                true, true, true));
+        // set the wave vector
+        auto const k_vector = Cartesian{0.1234, -.56789, 0};
+        model.set_wave_vector(k_vector);
+
+        auto const& system = *model.system();
+        //get the first element from the first column from the model.hailtonian
+        auto const ham = model.hamiltonian();
+        auto const& matrix = ham::get_reference<std::complex<double>>(model.hamiltonian());
+
+        auto const expected_hopping = t1 * exp(i1 * (k_vector.dot(d1))) +
+                                      t2 * exp(i1 * (k_vector.dot(d2))) +
+                                      t3 * exp(i1 * (k_vector.dot(d3)));
+        auto const expected_onsite = t1 * exp(i1 * (k_vector.dot(a1))) + conj(t1) * exp(i1 * (k_vector.dot(-a1)));
+        REQUIRE(system.num_sites() == 2);
+        REQUIRE(system.hamiltonian_size() == 2);
+        REQUIRE(system.hamiltonian_nnz() == 4);
+        REQUIRE(num::approx_equal(matrix.coeff(0, 0).real(),  expected_onsite.real()));
+        REQUIRE(num::approx_equal(matrix.coeff(0, 0).imag(),  expected_onsite.imag()));
+        REQUIRE(num::approx_equal(matrix.coeff(0, 1).imag(),  expected_hopping.imag()));
+        REQUIRE(num::approx_equal(matrix.coeff(1, 0).imag(), -expected_hopping.imag()));
+        REQUIRE(num::approx_equal(matrix.coeff(1, 1).imag(),  0.));
+        REQUIRE(num::approx_equal(matrix.coeff(1, 1).real(),  0.));
+        REQUIRE(num::approx_equal(matrix.coeff(1, 0).real(),  expected_hopping.real()));
+        REQUIRE(num::approx_equal(matrix.coeff(0, 1).real(),  expected_hopping.real()));
     }
 
     SECTION("multi-orbital-complex") {

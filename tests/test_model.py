@@ -152,3 +152,56 @@ def test_complex_multiorbital_hamiltonian():
     assert pytest.fuzzy_equal(h, h.T.conjugate())  # check if Hermitian
     assert pytest.fuzzy_equal(h[:2, :2], -h[-2:, -2:])  # onsite energy on A and B is opposite
     assert pytest.fuzzy_equal(h[:2, 2:4], 4 * hopp_t)  # hopping A <-> B is 4 * hopp_t
+
+
+def test_wave_vector():
+    def hexagonal_lattice(ons_1, ons_2, t_map):
+        lat = pb.Lattice(a1=[1, 0], a2=[-1/2, np.sqrt(3)/2])
+        lat.add_sublattices(('A', [0, 0],    ons_1),
+                            ('B', [1/2, np.sqrt(3)/6], ons_2))
+        lat.register_hopping_energies(t_map)
+        lat.add_hoppings(
+            ([0, 0], 'A', 'B', 't1'),
+            ([-1, 0], 'A', 'B', 't2'),
+            ([-1, -1], 'A', 'B', 't3'),
+            ([[1, 0], 'A', 'A', 't4']),
+            ([[1, 1], 'B', 'B', 't5']),
+        )
+        return lat
+
+    # first test, just floats
+    ons_a, ons_b, hop_t = 1, 2, {'t1': 1, 't2': 2, 't3': 3, 't4': 4, 't5': 5}
+    model = pb.Model(hexagonal_lattice(ons_a, ons_b, hop_t), pb.translational_symmetry(),
+                     pb.force_complex_numbers(), pb.force_double_precision())
+    k_vector = np.array([0.123, -4.567, 0.])
+    model.set_wave_vector(k_vector)
+    ham = model.hamiltonian.todense()
+    assert ham.shape == (2, 2)
+    a1, a2 = model.lattice.vectors
+    d1 = 0 * a1
+    d2, d3 = d1 - a1, d1 - a1 - a2
+    hop_term = hop_t["t1"] * np.exp(1j * k_vector @ d1)
+    hop_term += hop_t["t2"] * np.exp(1j * k_vector @ d2)
+    hop_term += hop_t["t3"] * np.exp(1j * k_vector @ d3)
+    ons_term_a = ons_a + hop_t["t4"] * (np.exp(1j * k_vector @ a1) + np.exp(1j * k_vector @ -a1))
+    ons_term_b = ons_b + hop_t["t5"] * (np.exp(1j * k_vector @ (a1+a2)) + np.exp(1j * k_vector @ -(a1+a2)))
+    expected_ham = np.diag((ons_term_a, ons_term_b)) + np.array([[0, hop_term], [np.conj(hop_term), 0]])
+    assert np.sum(np.abs(ham - expected_ham)) < 1e-10
+
+    # second test, just floats, change phase
+    model = pb.Model(hexagonal_lattice(ons_a, ons_b, hop_t), pb.translational_symmetry(),
+                     pb.force_complex_numbers(), pb.force_double_precision(), pb.force_phase())
+    model.set_wave_vector(k_vector)
+    ham = model.hamiltonian.todense()
+    assert ham.shape == (2, 2)
+    a1, a2 = model.lattice.vectors
+    d1 = np.array(model.lattice.sublattices["B"].position-model.lattice.sublattices["A"].position)
+    d2, d3 = d1 - a1, d1 - a1 - a2
+    hop_term = hop_t["t1"] * np.exp(1j * k_vector @ d1)
+    hop_term += hop_t["t2"] * np.exp(1j * k_vector @ d2)
+    hop_term += hop_t["t3"] * np.exp(1j * k_vector @ d3)
+    ons_term_a = ons_a + hop_t["t4"] * (np.exp(1j * k_vector @ a1) + np.exp(1j * k_vector @ -a1))
+    ons_term_b = ons_b + hop_t["t5"] * (np.exp(1j * k_vector @ (a1+a2)) + np.exp(1j * k_vector @ -(a1+a2)))
+    expected_ham = np.diag((ons_term_a, ons_term_b)) + np.array([[0, hop_term], [np.conj(hop_term), 0]])
+    print(ham, expected_ham)
+    assert np.sum(np.abs(ham - expected_ham)) < 1e-10

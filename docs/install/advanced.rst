@@ -148,7 +148,7 @@ You can compile the binary code (`_pybinding`) using cmake with the following co
 #. Build the libraries, the `Release` tag is optional, the `Development` tag can
    give errors on specific systems/versions. ::
 
-    --build . --target tests --config Release
+    cmake --build . --target tests --config Release
 
 You will see a new file, `_pybinding.cpython-*.*`. This is the shared library that python will use for the
 C++-calculations in pybinding. You can call pybinding with a python interpreter running from this folder.
