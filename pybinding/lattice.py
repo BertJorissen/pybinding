@@ -4,7 +4,6 @@ import warnings
 from copy import deepcopy
 from math import pi, atan2, sqrt
 from numpy.typing import ArrayLike
-from matplotlib.pyplot import Axes as plt_axes
 from typing import Optional, Union, Iterable, Tuple, List
 from pathlib import Path
 
@@ -18,6 +17,8 @@ from .support.deprecated import LoudDeprecationWarning
 from .support.parse import xyz
 
 __all__ = ['Lattice']
+
+HoppingType = Tuple[Union[ArrayLike, int], str, str, Union[str, float, np.ndarray]]
 
 
 class Lattice:
@@ -37,6 +38,7 @@ class Lattice:
         If `a2` is also specified, a 2D lattice is created. Passing values for all
         three vectors will create a 3D lattice.
     """
+
     def __init__(self, a1: ArrayLike, a2: Optional[ArrayLike] = None, a3: Optional[ArrayLike] = None):
         vectors = (v for v in (a1, a2, a3) if v is not None)
         self.impl = _cpp.Lattice(*vectors)
@@ -227,7 +229,7 @@ class Lattice:
         """
         self.impl.add_hopping(relative_index, from_sub, to_sub, hop_name_or_energy)
 
-    def add_hoppings(self, *hoppings: Iterable[Tuple[Union[ArrayLike, int], str, str, Union[str, float, np.ndarray]]]) -> None:
+    def add_hoppings(self, *hoppings: Iterable[HoppingType]) -> None:
         """Add multiple new hoppings
 
         Parameters
@@ -299,7 +301,7 @@ class Lattice:
         Examples
         --------
         >>> lat = Lattice(a1=[0, 1], a2=[0.5, 0.5])
-        >>> np.allclose(lat.reciprocal_vectors(), [[-2*pi, 2*pi, 0], [4*pi, 0, 0]])
+        >>> np.allclose(np.array(lat.reciprocal_vectors()), np.array([[-2*pi, 2*pi, 0], [4*pi, 0, 0]]))
         True
         """
         n = self.ndim
@@ -321,15 +323,15 @@ class Lattice:
         >>> np.allclose(lat_1d.brillouin_zone(), [-pi, pi])
         True
         >>> lat_2d = Lattice(a1=[0, 1], a2=[0.5, 0.5])
-        >>> np.allclose(lat_2d.brillouin_zone(), [[0, -2*pi], [2*pi, 0], [0, 2*pi], [-2*pi, 0]])
+        >>> np.allclose(np.array(lat_2d.brillouin_zone()), np.array([[0, -2*pi], [2*pi, 0], [0, 2*pi], [-2*pi, 0]]))
         True
         """
         from scipy.spatial import Voronoi
 
         if self.ndim == 1:
             v1, = self.reciprocal_vectors()
-            l = np.linalg.norm(v1)
-            return [-l/2, l/2]
+            v1_l = np.linalg.norm(v1)
+            return [-v1_l / 2, v1_l / 2]
         elif self.ndim == 2:
             # The closest reciprocal lattice points are combinations of the primitive vectors
             vectors = self.reciprocal_vectors()
@@ -365,8 +367,14 @@ class Lattice:
             ax = plt.gca()
         pltutils.plot_vectors(self.vectors, position, scale=scale, ax=ax, color="black")
 
-    def _visible_sublattices(self, axes: plt_axes) -> dict:
-        """Return the sublattices which are visible when viewed top-down in the `axes` plane"""
+    def _visible_sublattices(self, axes: str) -> dict:
+        """Return the sublattices which are visible when viewed top-down in the `axes` plane
+
+        Parameters
+        ----------
+        axes : str
+            The spatial axes to consider. E.g. 'xy', 'yz', etc.
+        """
         idx = list(rotate_axes([0, 1, 2], axes))
         xy_idx, z_idx = idx[:2], idx[2]
 
@@ -399,6 +407,7 @@ class Lattice:
         -------
         float
         """
+
         def heuristic_radius(lattice: 'Lattice') -> float:
             """The `magic` numbers were picked base on what looks nice in figures"""
             if lattice.ndim == 1:
@@ -429,7 +438,7 @@ class Lattice:
             distances = distances[distances > 0]
 
             if np.any(distances):
-                return np.min(distances)
+                return float(np.min(distances))
             else:
                 vector_lengths = [np.linalg.norm(v) for v in lattice.vectors]
                 return np.min(vector_lengths)
@@ -456,7 +465,6 @@ class Lattice:
         """
         if ax is None:
             ax = plt.gca()
-        # TODO: add the boundary of the unit-cell and shift unit-vectors to the lower boundary instead
         from .model import Model
         from .shape import translational_symmetry
 
@@ -568,5 +576,6 @@ def from_xyz(file: Union[str, Path]) -> Lattice:
     vecs = xyz_file["extended"]["Lattice"]
     assert isinstance(vecs, np.ndarray), "The specified couldn't be interpreted, {0}".format(vecs)
     lat = Lattice(*vecs)
-    lat.add_sublattices(*(("{0}_{1}".format(atom, atom_i), pos, 0.) for atom_i, (atom, pos) in enumerate(zip(xyz_file["atoms"], xyz_file["xyz"]))))
+    lat.add_sublattices(*(("{0}_{1}".format(atom, atom_i), pos, 0.) for atom_i, (atom, pos) in
+                          enumerate(zip(xyz_file["atoms"], xyz_file["xyz"]))))
     return lat

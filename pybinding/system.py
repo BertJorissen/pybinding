@@ -9,7 +9,7 @@ import scipy.sparse
 from matplotlib.collections import LineCollection
 from numpy.typing import ArrayLike
 from typing import Literal, Optional, Union, Iterable, Tuple, List
-from matplotlib.pyplot import Axes as plt_axes
+from scipy.sparse import coo_matrix
 
 from . import _cpp
 from .lattice import Lattice
@@ -21,7 +21,7 @@ from .support.structure import AbstractSites, Sites
 from .results import Structure, StructureMap
 
 __all__ = ['Sites', 'System', 'plot_hoppings', 'plot_periodic_boundaries', 'plot_sites',
-           'structure_plot_properties']
+           'structure_plot_properties', 'decorate_structure_plot']
 
 
 class _CppSites(AbstractSites):
@@ -255,7 +255,7 @@ def decorate_structure_plot(axes: Literal['xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 
         pltutils.despine(ax=ax)
 
 
-def _data_units_to_points(ax: plt_axes, value: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
+def _data_units_to_points(ax: plt.Axes, value: Union[float, np.ndarray]) -> Union[float, np.ndarray]:
     """Convert a value from data units to points"""
     fig = ax.get_figure()
     length = fig.bbox_inches.width * ax.get_position().width
@@ -345,7 +345,7 @@ def plot_sites(positions: Tuple[ArrayLike, ArrayLike, ArrayLike], data: ArrayLik
 
         ax.add_collection(col)
 
-        def dynamic_scale(active_ax: plt_axes) -> None:
+        def dynamic_scale(active_ax: plt.Axes) -> None:
             """Rescale the circumference line width and radius based on data units"""
             scale = _data_units_to_points(active_ax, 0.005)  # [nm] reference for 1 screen point
             line_scale = np.clip(scale, 0.2, 1.1)  # don't make the line too thin or thick
@@ -373,7 +373,7 @@ def plot_sites(positions: Tuple[ArrayLike, ArrayLike, ArrayLike], data: ArrayLik
     return col
 
 
-def plot_hoppings(positions: Tuple[ArrayLike, ArrayLike, ArrayLike], hoppings: scipy.sparse.coo_matrix,
+def plot_hoppings(positions: Tuple[ArrayLike, ArrayLike, ArrayLike], hoppings: coo_matrix,
                   width: float = 1.0, offset: Tuple[float, float, float] = (0, 0, 0), blend: float = 1.0,
                   color: str = '#666666', axes: Literal['xyz', 'xy', 'xz', 'yx', 'yz', 'zx', 'zy'] = 'xyz',
                   boundary: Tuple[int, ArrayLike] = (), draw_only: Iterable[str] = (),
@@ -465,7 +465,7 @@ def plot_hoppings(positions: Tuple[ArrayLike, ArrayLike, ArrayLike], hoppings: s
             col.set_array(hoppings.data)
         ax.add_collection(col)
 
-        def dynamic_scale(active_ax: plt_axes) -> None:
+        def dynamic_scale(active_ax: plt.Axes) -> None:
             """Rescale the line width based on data units"""
             scale = _data_units_to_points(active_ax, 0.005)  # [nm] reference for 1 screen point
             scale = np.clip(scale, 0.6, 1.2)  # don't make the line too thin or thick
@@ -503,7 +503,7 @@ def _make_shift_set(boundaries: List[_cpp.Boundary], level: Union[int, List[int]
     return FuzzySet(exclusive_shifts)
 
 
-def plot_periodic_boundaries(positions: Tuple[ArrayLike, ArrayLike, ArrayLike], hoppings: scipy.sparse.coo_matrix,
+def plot_periodic_boundaries(positions: Tuple[ArrayLike, ArrayLike, ArrayLike], hoppings: coo_matrix,
                              boundaries: List[_cpp.Boundary], data: ArrayLike, num_periods: int = 1,
                              ax: Optional[plt.Axes] = None, **kwargs) -> None:
     """Plot the periodic boundaries of a system

@@ -581,8 +581,16 @@ def dacp(model: Model, window: Tuple[float, float] = (-2, 2), random_vectors: in
 
     Parameters
     ----------
-    model : Model
+    model : pb.Model
         Model which will provide the Hamiltonian matrix.
+    window : tuple of float
+        The lowest and highest eigenvalue between which to compute the solutions.
+    random_vectors : int, optional
+        Number of random vectors to use for the initial guess.
+    filter_order : int, optional
+        Order of the filter to use for the solution.
+    tol : float, optional
+        Tolerance for the solution.
     **kwargs
         Advanced arguments: forwarded to :func:`scipy.sparse.linalg.eigsh`.
 

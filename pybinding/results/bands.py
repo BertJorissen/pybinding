@@ -12,7 +12,7 @@ from ..utils import pltutils
 from ..support.pickle import pickleable
 from .path import Path, Area, AbstractArea
 from .series import Series
-from matplotlib.collections import LineCollection, PathCollection
+from matplotlib.collections import LineCollection, PathCollection, QuadMesh
 
 __all__ = ['Bands', 'FatBands', 'Eigenvalues', 'BandsArea', 'FatBandsArea']
 
@@ -489,7 +489,35 @@ class BandsArea(AbstractArea, Bands):
             Forwarded to :func:`~matplotlib.pyplot.scatter`.
         """
         self.k_area.plot(point_labels, **kwargs)
-        # TODO: add a function to make a area-plot for the results
+
+    def plot(self, point_labels: Optional[List[str]] = None, ax: Optional[plt.Axes] = None,
+             band_index: int = 0, colorbar: bool = True, **kwargs) -> QuadMesh:
+        """Area plot of the selected band from the band structure
+
+        Parameters
+        ----------
+        point_labels : Optional[List[str]]
+            Labels for the `k_points`.
+        ax : Optional[plt.Axes]
+            The Axis to plot the bands on.
+        band_index : int
+            The index of the band to plot. Default: 0.
+        colorbar : bool
+            Show also the colorbar.
+        """
+        if ax is None:
+            ax = plt.gca()
+        ax.set_aspect('equal')
+
+        mesh = ax.pcolormesh(self.list_to_area(self.k_path[:, 0]), self.list_to_area(self.k_path[:, 1]),
+                             self.energy_area[:-1, :-1, band_index],
+                             **with_defaults(kwargs, cmap='RdYlBu_r', rasterized=True))
+        ax._sci(mesh)
+
+        if colorbar:
+            pltutils.colorbar(label="Energy (eV)", ax=ax)
+        self.k_path.decorate_plot(point_labels, ax)
+        return mesh
 
 
 @pickleable

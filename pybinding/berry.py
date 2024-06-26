@@ -25,8 +25,8 @@ class Berry:
         return np.dot(wf1.flatten().conjugate(), wf2.flatten())
 
     @staticmethod
-    def _no_pi(x,clos):
-        "Make x as close to clos by adding or removing pi"
+    def _no_pi(x, clos):
+        """Make x as close to clos by adding or removing pi"""
         while abs(clos-x) > .5 * np.pi:
             if clos - x > .5 * np.pi:
                 x += np.pi
@@ -67,8 +67,14 @@ class Berry:
         pha = (-1.0) * np.angle(det)
         return pha
 
-    def calc_berry(self, rescale=False) -> SeriesArea:
-        """Calculate the berry curvature"""
+    def calc_berry(self, rescale: bool = False) -> SeriesArea:
+        """Calculate the berry curvature
+
+        Parameters
+        ----------
+        rescale : bool
+            If True, the returned values are rescaled to the right units wrt k-space.
+        """
         wfs2d = np.array(self.wavefunction_area.wavefunction_area[:, :, :self.occ, :], dtype=complex)
         all_phases = np.zeros((wfs2d.shape[0], wfs2d.shape[1]), dtype=float)
         for i in range(wfs2d.shape[0] - 1):
@@ -88,5 +94,4 @@ class Berry:
             k = self.wavefunction_area.bands.k_area
             all_phases /= np.linalg.norm(np.cross(k[0, 0, :] - k[1, 0, :], k[0, 0, :] - k[0, 1, :]))
             labels["orbitals"] = [r"$\phi (nm^2)$"]
-        # ToDo: check if line-up of berry and k-space is correct
         return SeriesArea(self.wavefunction_area.bands.k_area, all_phases, labels=labels)

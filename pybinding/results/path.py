@@ -21,7 +21,8 @@ class Path(np.ndarray):
     point_labels : Optional[List[str]]
         Labels for the significant points along the path.
     """
-    def __new__(cls, array: ArrayLike, point_indices: List[int], point_labels: Optional[List[str]] = None):
+    def __new__(cls, array: ArrayLike, point_indices: Union[List[int], ArrayLike],
+                point_labels: Optional[List[str]] = None):
         obj = np.asarray(array).view(cls)
         assert len(point_indices) >= 2
         obj.point_indices = point_indices
@@ -109,7 +110,6 @@ class Path(np.ndarray):
         if ax is None:
             ax = plt.gca()
         ax.set_aspect('equal')
-        # TODO: plot in 3D
         default_color = pltutils.get_palette('Set1')[1]
         kwargs = with_defaults(kwargs, scale=1, zorder=2, lw=1.5, color=default_color,
                                name=None, head_width=0.08, head_length=0.2)
@@ -194,7 +194,7 @@ class Area(Path):
         if np.ndim(point_indices) >= 2:
             point_indices = np.array(point_indices, dtype=int).reshape(-1, 2)
             idx_x, idx_y = np.transpose(point_indices)
-            point_indices = np.arange(len_x * len_y).reshape((len_x, len_y))[idx_x, idx_y]
+            point_indices = np.arange(len_x * len_y, dtype=int).reshape((len_x, len_y))[idx_x, idx_y]
         return super().__new__(cls, array, point_indices, point_labels)
 
     def _default_points(self, obj):
@@ -221,11 +221,25 @@ class AbstractArea:
     """Abstract class to implement features to interact with the Area"""
 
     def __init__(self, k_area: Area):
+        """Create an abstract class to interact with the Area
+
+        Parameters
+        ----------
+        k_area : Area
+            The area in the k-space.
+        """
         self.k_dims = np.shape(k_area)
         self.k_path: Optional[Path] = None  # to be overloaded
         self.data: Optional[np.ndarray] = None  # to be overloaded
 
     def karea_to_kpath(self, k_area: Area) -> Path:
+        """Convert the Area to the Path
+
+        Parameters
+        ----------
+        k_area : Area
+            The area in the k-space.
+        """
         return Path(
             np.atleast_1d(k_area.reshape(np.prod(self.k_dims[:2]), -1)),
             k_area.point_indices,
@@ -233,6 +247,13 @@ class AbstractArea:
         )
 
     def area_to_list(self, data: ArrayLike) -> np.ndarray:
+        """Convert the data to the list
+
+        Parameters
+        ----------
+        data : ArrayLike
+            The data to convert.
+        """
         data_size = [self.k_dims[0] * self.k_dims[1]]
         data = np.atleast_2d(data)
         for ds in data.shape[2:]:
@@ -240,6 +261,13 @@ class AbstractArea:
         return data.reshape(data_size)
 
     def list_to_area(self, data: ArrayLike) -> np.ndarray:
+        """Convert the list to the area
+
+        Parameters
+        ----------
+        data : ArrayLike
+            The data to convert.
+        """
         data_size = [self.k_dims[0], self.k_dims[1]]
         data = np.atleast_1d(data)
         for ds in data.shape[1:]:
@@ -248,6 +276,7 @@ class AbstractArea:
 
     @property
     def k_area(self) -> Area:
+        """The area in the k-space"""
         return Area(
             self.list_to_area(self.k_path),
             self.k_path.point_indices,

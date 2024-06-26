@@ -175,7 +175,20 @@ def test_wave_vector():
                      pb.force_complex_numbers(), pb.force_double_precision())
     k_vector = np.array([0.123, -4.567, 0.])
     model.set_wave_vector(k_vector)
-    ham = model.hamiltonian.todense()
+
+    # For the Hamiltonian, we hop from A to B with t1, this goes in the bottom left corner
+    # USUAL CASE: <to|H|from>
+    #      from:  |A> |B>
+    #     to: <A| 0   t1*
+    #     to: <B| t1  0
+    # PYBINDING CASE: <from|H|to>
+    #        to:  |A> |B>
+    #   from: <A| 0   t1
+    #   from: <B| t1*  0
+    # => compare with the transpose for the complex valued Hamiltonian
+    #             (this preserves the observables as this is just a phase change)
+
+    ham = model.hamiltonian.todense().T
     assert ham.shape == (2, 2)
     a1, a2 = model.lattice.vectors
     d1 = 0 * a1
@@ -185,16 +198,15 @@ def test_wave_vector():
     hop_term += hop_t["t3"] * np.exp(1j * k_vector @ d3)
     ons_term_a = ons_a + hop_t["t4"] * (np.exp(1j * k_vector @ a1) + np.exp(1j * k_vector @ -a1))
     ons_term_b = ons_b + hop_t["t5"] * (np.exp(1j * k_vector @ (a1+a2)) + np.exp(1j * k_vector @ -(a1+a2)))
-    expected_ham = np.diag((ons_term_a, ons_term_b)) + np.array([[0, hop_term], [np.conj(hop_term), 0]])
+    expected_ham = np.diag((ons_term_a, ons_term_b)) + np.array([[0, np.conj(hop_term)], [hop_term, 0]])
     assert np.sum(np.abs(ham - expected_ham)) < 1e-10
 
     # second test, just floats, change phase
     model = pb.Model(hexagonal_lattice(ons_a, ons_b, hop_t), pb.translational_symmetry(),
                      pb.force_complex_numbers(), pb.force_double_precision(), pb.force_phase())
     model.set_wave_vector(k_vector)
-    ham = model.hamiltonian.todense()
+    ham = model.hamiltonian.todense().T
     assert ham.shape == (2, 2)
-    a1, a2 = model.lattice.vectors
     d1 = np.array(model.lattice.sublattices["B"].position-model.lattice.sublattices["A"].position)
     d2, d3 = d1 - a1, d1 - a1 - a2
     hop_term = hop_t["t1"] * np.exp(1j * k_vector @ d1)
@@ -202,6 +214,226 @@ def test_wave_vector():
     hop_term += hop_t["t3"] * np.exp(1j * k_vector @ d3)
     ons_term_a = ons_a + hop_t["t4"] * (np.exp(1j * k_vector @ a1) + np.exp(1j * k_vector @ -a1))
     ons_term_b = ons_b + hop_t["t5"] * (np.exp(1j * k_vector @ (a1+a2)) + np.exp(1j * k_vector @ -(a1+a2)))
-    expected_ham = np.diag((ons_term_a, ons_term_b)) + np.array([[0, hop_term], [np.conj(hop_term), 0]])
-    print(ham, expected_ham)
+    expected_ham = np.diag((ons_term_a, ons_term_b)) + np.array([[0, np.conj(hop_term)], [hop_term, 0]])
+    assert np.sum(np.abs(ham - expected_ham)) < 1e-10
+
+    # complex hoppings
+    hop_t = {'t1': 1+.1j, 't2': 2+.2j, 't3': 3+.3j, 't4': 4+.4j, 't5': 5+.5j}
+    model = pb.Model(hexagonal_lattice(ons_a, ons_b, hop_t), pb.translational_symmetry(),
+                     pb.force_complex_numbers(), pb.force_double_precision())
+    model.set_wave_vector(k_vector)
+    ham = model.hamiltonian.todense().T
+    assert ham.shape == (2, 2)
+    d1 = 0 * a1
+    d2, d3 = d1 - a1, d1 - a1 - a2
+    hop_term = hop_t["t1"] * np.exp(1j * k_vector @ d1)
+    hop_term += hop_t["t2"] * np.exp(1j * k_vector @ d2)
+    hop_term += hop_t["t3"] * np.exp(1j * k_vector @ d3)
+    ons_term_a = ons_a + hop_t["t4"] * np.exp(1j * k_vector @ a1) + np.conj(hop_t["t4"]) * np.exp(1j * k_vector @ -a1)
+    ons_term_b = ons_b + hop_t["t5"] * np.exp(1j * k_vector @ (a1+a2)) + np.conj(hop_t["t5"]) * np.exp(1j * k_vector @ -(a1+a2))
+    expected_ham = np.diag((ons_term_a, ons_term_b)) + np.array([[0, np.conj(hop_term)], [hop_term, 0]])
+    assert np.sum(np.abs(ham - expected_ham)) < 1e-10
+
+    # complex hoppings, with phase
+    hop_t = {'t1': 1+.1j, 't2': 2+.2j, 't3': 3+.3j, 't4': 4+.4j, 't5': 5+.5j}
+    model = pb.Model(hexagonal_lattice(ons_a, ons_b, hop_t), pb.translational_symmetry(),
+                     pb.force_complex_numbers(), pb.force_double_precision(), pb.force_phase())
+    model.set_wave_vector(k_vector)
+    ham = model.hamiltonian.todense().T
+    assert ham.shape == (2, 2)
+    d1 = np.array(model.lattice.sublattices["B"].position-model.lattice.sublattices["A"].position)
+    d2, d3 = d1 - a1, d1 - a1 - a2
+    hop_term = hop_t["t1"] * np.exp(1j * k_vector @ d1)
+    hop_term += hop_t["t2"] * np.exp(1j * k_vector @ d2)
+    hop_term += hop_t["t3"] * np.exp(1j * k_vector @ d3)
+    ons_term_a = ons_a + hop_t["t4"] * np.exp(1j * k_vector @ a1) + np.conj(hop_t["t4"]) * np.exp(1j * k_vector @ -a1)
+    ons_term_b = ons_b + hop_t["t5"] * np.exp(1j * k_vector @ (a1+a2)) + np.conj(hop_t["t5"]) * np.exp(1j * k_vector @ -(a1+a2))
+    expected_ham = np.diag((ons_term_a, ons_term_b)) + np.array([[0, np.conj(hop_term)], [hop_term, 0]])
+    assert np.sum(np.abs(ham - expected_ham)) < 1e-10
+
+    # multi-orbital case
+    ons_a = np.array([[1, 2], [2, 3]])
+    ons_b = np.array([[-1, -2, -3], [-2, -3, -4], [-3, -4, -5]])
+    hop_t = {
+        't1': np.array([[1, 2, 3], [4, 5, 6]]),
+        't2': np.array([[7, 8, 9], [10, 11, 12]]),
+        't3': np.array([[13, 14, 15], [16, 17, 18]]),
+        't4': np.array([[19, 20], [21, 22]]),
+        't5': np.array([[23, 24, 25], [26, 27, 28], [29, 30, 31]]),
+    }
+    model = pb.Model(hexagonal_lattice(ons_a.T, ons_b.T, hop_t), pb.translational_symmetry(),
+                     pb.force_complex_numbers(), pb.force_double_precision())
+    model.set_wave_vector(k_vector)
+    ham = model.hamiltonian.todense().T
+    assert ham.shape == (5, 5)
+    a_idx = model.system.to_hamiltonian_indices(model.lattice.sublattices["A"].unique_id)
+    b_idx = model.system.to_hamiltonian_indices(model.lattice.sublattices["B"].unique_id)
+    d1 = 0 * a1
+    d2, d3 = d1 - a1, d1 - a1 - a2
+    hop_term = hop_t["t1"].T * np.exp(1j * k_vector @ d1)
+    hop_term += hop_t["t2"].T * np.exp(1j * k_vector @ d2)
+    hop_term += hop_t["t3"].T * np.exp(1j * k_vector @ d3)
+    ons_term_a = ons_a + (hop_t["t4"].T * np.exp(1j * k_vector @ a1) + np.conj(hop_t["t4"].T).T * np.exp(1j * k_vector @ -a1))
+    ons_term_b = ons_b + (hop_t["t5"].T * np.exp(1j * k_vector @ (a1+a2)) + np.conj(hop_t["t5"].T).T * np.exp(1j * k_vector @ -(a1+a2)))
+    expected_ham = np.zeros((5, 5), dtype=np.complex128)
+    expected_ham[a_idx[0]:(a_idx[-1]+1), a_idx[0]:(a_idx[-1]+1)] = ons_term_a
+    expected_ham[b_idx[0]:(b_idx[-1]+1), b_idx[0]:(b_idx[-1]+1)] = ons_term_b
+    expected_ham[a_idx[0]:(a_idx[-1]+1), b_idx[0]:(b_idx[-1]+1)] = np.conj(hop_term).T
+    expected_ham[b_idx[0]:(b_idx[-1]+1), a_idx[0]:(a_idx[-1]+1)] = hop_term
+    assert np.sum(np.abs(ham - expected_ham)) < 1e-10
+
+    # multi-orbital case, phase
+    ons_a = np.array([[1, 2], [2, 3]])
+    ons_b = np.array([[-1, -2, -3], [-2, -3, -4], [-3, -4, -5]])
+    hop_t = {
+        't1': np.array([[1, 2, 3], [4, 5, 6]]),
+        't2': np.array([[7, 8, 9], [10, 11, 12]]),
+        't3': np.array([[13, 14, 15], [16, 17, 18]]),
+        't4': np.array([[19, 20], [21, 22]]),
+        't5': np.array([[23, 24, 25], [26, 27, 28], [29, 30, 31]]),
+    }
+    model = pb.Model(hexagonal_lattice(ons_a.T, ons_b.T, hop_t), pb.translational_symmetry(),
+                     pb.force_complex_numbers(), pb.force_double_precision(), pb.force_phase())
+    model.set_wave_vector(k_vector)
+    ham = model.hamiltonian.todense().T
+    assert ham.shape == (5, 5)
+    a_idx = model.system.to_hamiltonian_indices(model.lattice.sublattices["A"].unique_id)
+    b_idx = model.system.to_hamiltonian_indices(model.lattice.sublattices["B"].unique_id)
+    d1 = np.array(model.lattice.sublattices["B"].position-model.lattice.sublattices["A"].position)
+    d2, d3 = d1 - a1, d1 - a1 - a2
+    hop_term = hop_t["t1"].T * np.exp(1j * k_vector @ d1)
+    hop_term += hop_t["t2"].T * np.exp(1j * k_vector @ d2)
+    hop_term += hop_t["t3"].T * np.exp(1j * k_vector @ d3)
+    ons_term_a = ons_a + (hop_t["t4"].T * np.exp(1j * k_vector @ a1) + np.conj(hop_t["t4"].T).T * np.exp(1j * k_vector @ -a1))
+    ons_term_b = ons_b + (hop_t["t5"].T * np.exp(1j * k_vector @ (a1+a2)) + np.conj(hop_t["t5"].T).T * np.exp(1j * k_vector @ -(a1+a2)))
+    expected_ham = np.zeros((5, 5), dtype=np.complex128)
+    expected_ham[a_idx[0]:(a_idx[-1]+1), a_idx[0]:(a_idx[-1]+1)] = ons_term_a
+    expected_ham[b_idx[0]:(b_idx[-1]+1), b_idx[0]:(b_idx[-1]+1)] = ons_term_b
+    expected_ham[a_idx[0]:(a_idx[-1]+1), b_idx[0]:(b_idx[-1]+1)] = np.conj(hop_term).T
+    expected_ham[b_idx[0]:(b_idx[-1]+1), a_idx[0]:(a_idx[-1]+1)] = hop_term
+    assert np.sum(np.abs(ham - expected_ham)) < 1e-10
+
+    # multi-orbital case-complex-onsite
+    ons_a = np.array([[1, 2], [2, 3]]) + 1j * np.array([[0, 1], [-1, 0]])
+    ons_b = np.array([[-1, -2, -3], [-2, -3, -4], [-3, -4, -5]]) + 1j * np.array([[0, 1, 2], [-1, 0, 1], [-2, -1, 0]])
+    hop_t = {
+        't1': np.array([[1, 2, 3], [4, 5, 6]]),
+        't2': np.array([[7, 8, 9], [10, 11, 12]]),
+        't3': np.array([[13, 14, 15], [16, 17, 18]]),
+        't4': np.array([[19, 20], [21, 22]]),
+        't5': np.array([[23, 24, 25], [26, 27, 28], [29, 30, 31]]),
+    }
+    model = pb.Model(hexagonal_lattice(ons_a.T, ons_b.T, hop_t), pb.translational_symmetry(),
+                     pb.force_complex_numbers(), pb.force_double_precision())
+    model.set_wave_vector(k_vector)
+    ham = model.hamiltonian.todense().T
+    assert ham.shape == (5, 5)
+    a_idx = model.system.to_hamiltonian_indices(model.lattice.sublattices["A"].unique_id)
+    b_idx = model.system.to_hamiltonian_indices(model.lattice.sublattices["B"].unique_id)
+    d1 = 0 * a1
+    d2, d3 = d1 - a1, d1 - a1 - a2
+    hop_term = hop_t["t1"].T * np.exp(1j * k_vector @ d1)
+    hop_term += hop_t["t2"].T * np.exp(1j * k_vector @ d2)
+    hop_term += hop_t["t3"].T * np.exp(1j * k_vector @ d3)
+    ons_term_a = ons_a + (hop_t["t4"].T * np.exp(1j * k_vector @ a1) + np.conj(hop_t["t4"].T).T * np.exp(1j * k_vector @ -a1))
+    ons_term_b = ons_b + (hop_t["t5"].T * np.exp(1j * k_vector @ (a1+a2)) + np.conj(hop_t["t5"].T).T * np.exp(1j * k_vector @ -(a1+a2)))
+    expected_ham = np.zeros((5, 5), dtype=np.complex128)
+    expected_ham[a_idx[0]:(a_idx[-1]+1), a_idx[0]:(a_idx[-1]+1)] = ons_term_a
+    expected_ham[b_idx[0]:(b_idx[-1]+1), b_idx[0]:(b_idx[-1]+1)] = ons_term_b
+    expected_ham[a_idx[0]:(a_idx[-1]+1), b_idx[0]:(b_idx[-1]+1)] = np.conj(hop_term).T
+    expected_ham[b_idx[0]:(b_idx[-1]+1), a_idx[0]:(a_idx[-1]+1)] = hop_term
+    assert np.sum(np.abs(ham - expected_ham)) < 1e-10
+    assert np.sum(np.abs(ham - expected_ham)) < 1e-10
+
+    # multi-orbital case-complex-onsite, phase
+    ons_a = np.array([[1, 2], [2, 3]]) + 1j * np.array([[0, 1], [-1, 0]])
+    ons_b = np.array([[-1, -2, -3], [-2, -3, -4], [-3, -4, -5]]) + 1j * np.array([[0, 1, 2], [-1, 0, 1], [-2, -1, 0]])
+    hop_t = {
+        't1': np.array([[1, 2, 3], [4, 5, 6]]),
+        't2': np.array([[7, 8, 9], [10, 11, 12]]),
+        't3': np.array([[13, 14, 15], [16, 17, 18]]),
+        't4': np.array([[19, 20], [21, 22]]),
+        't5': np.array([[23, 24, 25], [26, 27, 28], [29, 30, 31]]),
+    }
+    model = pb.Model(hexagonal_lattice(ons_a.T, ons_b.T, hop_t), pb.translational_symmetry(),
+                     pb.force_complex_numbers(), pb.force_double_precision(), pb.force_phase())
+    model.set_wave_vector(k_vector)
+    ham = model.hamiltonian.todense().T
+    assert ham.shape == (5, 5)
+    a_idx = model.system.to_hamiltonian_indices(model.lattice.sublattices["A"].unique_id)
+    b_idx = model.system.to_hamiltonian_indices(model.lattice.sublattices["B"].unique_id)
+    d1 = np.array(model.lattice.sublattices["B"].position-model.lattice.sublattices["A"].position)
+    d2, d3 = d1 - a1, d1 - a1 - a2
+    hop_term = hop_t["t1"].T * np.exp(1j * k_vector @ d1)
+    hop_term += hop_t["t2"].T * np.exp(1j * k_vector @ d2)
+    hop_term += hop_t["t3"].T * np.exp(1j * k_vector @ d3)
+    ons_term_a = ons_a + (hop_t["t4"].T * np.exp(1j * k_vector @ a1) + np.conj(hop_t["t4"].T).T * np.exp(1j * k_vector @ -a1))
+    ons_term_b = ons_b + (hop_t["t5"].T * np.exp(1j * k_vector @ (a1+a2)) + np.conj(hop_t["t5"].T).T * np.exp(1j * k_vector @ -(a1+a2)))
+    expected_ham = np.zeros((5, 5), dtype=np.complex128)
+    expected_ham[a_idx[0]:(a_idx[-1]+1), a_idx[0]:(a_idx[-1]+1)] = ons_term_a
+    expected_ham[b_idx[0]:(b_idx[-1]+1), b_idx[0]:(b_idx[-1]+1)] = ons_term_b
+    expected_ham[a_idx[0]:(a_idx[-1]+1), b_idx[0]:(b_idx[-1]+1)] = np.conj(hop_term).T
+    expected_ham[b_idx[0]:(b_idx[-1]+1), a_idx[0]:(a_idx[-1]+1)] = hop_term
+    assert np.sum(np.abs(ham - expected_ham)) < 1e-10
+
+    # complex-multi-orbital case
+    ons_a = np.array([[1, 2], [2, 3]]) + 1j * np.array([[0, 1], [-1, 0]])
+    ons_b = np.array([[-1, -2, -3], [-2, -3, -4], [-3, -4, -5]]) + 1j * np.array([[0, 1, 2], [-1, 0, 1], [-2, -1, 0]])
+    hop_t = {
+        't1': np.array([[1, 2, 3], [4, 5, 6]]) + 1j * np.array([[.1, .2, .3], [.4, .5, .6]]),
+        't2': np.array([[7, 8, 9], [10, 11, 12]]) + 1j * np.array([[.7, .8, .9], [.10, .11, .12]]),
+        't3': np.array([[13, 14, 15], [16, 17, 18]]) + 1j * np.array([[.13, .14, .15], [.16, .17, .18]]),
+        't4': np.array([[19, 20], [21, 22]]) + 1j * np.array([[.19, .20], [.21, .22]]),
+        't5': np.array([[23, 24, 25], [26, 27, 28], [29, 30, 31]]) + 1j * np.array([[.23, .24, .25], [.26, .27, .28], [.29, .30, .31]]),
+    }
+    model = pb.Model(hexagonal_lattice(ons_a.T, ons_b.T, hop_t), pb.translational_symmetry(),
+                     pb.force_complex_numbers(), pb.force_double_precision())
+    model.set_wave_vector(k_vector)
+    ham = model.hamiltonian.todense().T
+    assert ham.shape == (5, 5)
+    a_idx = model.system.to_hamiltonian_indices(model.lattice.sublattices["A"].unique_id)
+    b_idx = model.system.to_hamiltonian_indices(model.lattice.sublattices["B"].unique_id)
+    d1 = 0 * a1
+    d2, d3 = d1 - a1, d1 - a1 - a2
+    hop_term = hop_t["t1"].T * np.exp(1j * k_vector @ d1)
+    hop_term += hop_t["t2"].T * np.exp(1j * k_vector @ d2)
+    hop_term += hop_t["t3"].T * np.exp(1j * k_vector @ d3)
+    ons_term_a = ons_a + (hop_t["t4"].T * np.exp(1j * k_vector @ a1) + np.conj(hop_t["t4"].T).T * np.exp(1j * k_vector @ -a1))
+    ons_term_b = ons_b + (hop_t["t5"].T * np.exp(1j * k_vector @ (a1+a2)) + np.conj(hop_t["t5"].T).T * np.exp(1j * k_vector @ -(a1+a2)))
+    expected_ham = np.zeros((5, 5), dtype=np.complex128)
+    expected_ham[a_idx[0]:(a_idx[-1]+1), a_idx[0]:(a_idx[-1]+1)] = ons_term_a
+    expected_ham[b_idx[0]:(b_idx[-1]+1), b_idx[0]:(b_idx[-1]+1)] = ons_term_b
+    expected_ham[a_idx[0]:(a_idx[-1]+1), b_idx[0]:(b_idx[-1]+1)] = np.conj(hop_term).T
+    expected_ham[b_idx[0]:(b_idx[-1]+1), a_idx[0]:(a_idx[-1]+1)] = hop_term
+    assert np.sum(np.abs(ham - expected_ham)) < 1e-10
+
+    # complex-multi-orbital case, phase
+    ons_a = np.array([[1, 2], [2, 3]]) + 1j * np.array([[0, 1], [-1, 0]])
+    ons_b = np.array([[-1, -2, -3], [-2, -3, -4], [-3, -4, -5]]) + 1j * np.array([[0, 1, 2], [-1, 0, 1], [-2, -1, 0]])
+    hop_t = {
+        't1': np.array([[1, 2, 3], [4, 5, 6]]) + 1j * np.array([[.1, .2, .3], [.4, .5, .6]]),
+        't2': np.array([[7, 8, 9], [10, 11, 12]]) + 1j * np.array([[.7, .8, .9], [.10, .11, .12]]),
+        't3': np.array([[13, 14, 15], [16, 17, 18]]) + 1j * np.array([[.13, .14, .15], [.16, .17, .18]]),
+        't4': np.array([[19, 20], [21, 22]]) + 1j * np.array([[.19, .20], [.21, .22]]),
+        't5': np.array([[23, 24, 25], [26, 27, 28], [29, 30, 31]]) + 1j * np.array([[.23, .24, .25], [.26, .27, .28], [.29, .30, .31]]),
+    }
+    model = pb.Model(hexagonal_lattice(ons_a.T, ons_b.T, hop_t), pb.translational_symmetry(),
+                     pb.force_complex_numbers(), pb.force_double_precision(), pb.force_phase())
+    model.set_wave_vector(k_vector)
+    ham = model.hamiltonian.todense().T
+    assert ham.shape == (5, 5)
+    a_idx = model.system.to_hamiltonian_indices(model.lattice.sublattices["A"].unique_id)
+    b_idx = model.system.to_hamiltonian_indices(model.lattice.sublattices["B"].unique_id)
+    d1 = np.array(model.lattice.sublattices["B"].position-model.lattice.sublattices["A"].position)
+    d2, d3 = d1 - a1, d1 - a1 - a2
+    hop_term = hop_t["t1"].T * np.exp(1j * k_vector @ d1)
+    hop_term += hop_t["t2"].T * np.exp(1j * k_vector @ d2)
+    hop_term += hop_t["t3"].T * np.exp(1j * k_vector @ d3)
+    ons_term_a = ons_a + (hop_t["t4"].T * np.exp(1j * k_vector @ a1) + np.conj(hop_t["t4"].T).T * np.exp(1j * k_vector @ -a1))
+    ons_term_b = ons_b + (hop_t["t5"].T * np.exp(1j * k_vector @ (a1+a2)) + np.conj(hop_t["t5"].T).T * np.exp(1j * k_vector @ -(a1+a2)))
+    expected_ham = np.zeros((5, 5), dtype=np.complex128)
+    expected_ham[a_idx[0]:(a_idx[-1]+1), a_idx[0]:(a_idx[-1]+1)] = ons_term_a
+    expected_ham[b_idx[0]:(b_idx[-1]+1), b_idx[0]:(b_idx[-1]+1)] = ons_term_b
+    expected_ham[a_idx[0]:(a_idx[-1]+1), b_idx[0]:(b_idx[-1]+1)] = np.conj(hop_term).T
+    expected_ham[b_idx[0]:(b_idx[-1]+1), a_idx[0]:(a_idx[-1]+1)] = hop_term
     assert np.sum(np.abs(ham - expected_ham)) < 1e-10

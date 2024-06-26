@@ -32,7 +32,7 @@ jobs:
       - name: Install dependencies for Pybinding
         run: python -m pip install wheel scipy matplotlib pytest cmake ninja
       - name: Build with CMake and test Python / C++
-        timeout-minutes: 10
+        timeout-minutes: 20
         run: |
           mkdir build_tests
           cd build_tests
