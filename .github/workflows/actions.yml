@@ -183,7 +183,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
     permissions:
       id-token: write
-    needs: [ build-wheels, build-wheels-14, test-sdist ]
+    needs: [ build-wheels, build-wheels-arm, test-sdist ]
     runs-on: ubuntu-latest
     steps:
       - name: Download artefacts
