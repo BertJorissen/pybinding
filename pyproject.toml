@@ -1,6 +1,6 @@
 [project]
 name = "pybinding"
-version = "1.0.4"
+version = "1.0.5a"
 authors = [
     {name="Dean Moldovan", email="dean0x7d@gmail.com"},
 ]

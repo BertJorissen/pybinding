@@ -1,7 +1,7 @@
 """Package for numerical tight-binding calculations in solid state physics"""
 __author__ = "Dean Moldovan"
 __copyright__ = "2015-2024, " + __author__
-__version__ = "1.0.3a"
+__version__ = "1.0.5a"
 import os
 import sys
 if sys.platform.startswith("linux"):
