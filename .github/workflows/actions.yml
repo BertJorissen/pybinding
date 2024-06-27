@@ -37,7 +37,7 @@ jobs:
           mkdir build_tests
           cd build_tests
           cmake ..
-          cmake --build . -j --target tests
+          cmake --build . -j --target tests --config Release
           cd ..
       - name: Test Python
         run: python -c "import pybinding as pb; exit(pb.tests())"
