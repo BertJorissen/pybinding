@@ -2,7 +2,7 @@
 ==================
 
 .. automodule:: pybinding.pltutils
-    :members: _is_jupyter_notebook, _is_notebook_inline_backend, _make_style, _reset_notebook_inline_backend, _set_smart_bounds, add_margin, align, annotate_box, axes, backend, blend_colors, cm2inch, colorbar, despine, despine_all, direct_cmap_norm, get_palette, legend, plot_color, plot_vectors, respine, set_min_axis_length, set_min_axis_ratio, set_palette, use_style
+    :members: _is_jupyter_notebook, _is_notebook_inline_backend, _make_style, _reset_notebook_inline_backend, add_margin, align, annotate_box, axes, backend, blend_colors, cm2inch, colorbar, despine, despine_all, direct_cmap_norm, get_palette, legend, plot_color, plot_vectors, respine, set_min_axis_length, set_min_axis_ratio, set_palette, use_style
 
     
 
@@ -20,7 +20,6 @@
         _is_notebook_inline_backend
         _make_style
         _reset_notebook_inline_backend
-        _set_smart_bounds
         add_margin
         align
         annotate_box

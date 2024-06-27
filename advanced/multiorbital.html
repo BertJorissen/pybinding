@@ -19,6 +19,7 @@
         <script src="../_static/documentation_options.js?v=da57aa06"></script>
         <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -119,6 +120,14 @@ affects modifier functions and the results obtained from solvers. In general, it
 replacing a scalar value with a matrix while all of the principals described in the
 <a class="reference internal" href="../tutorial/index.html"><span class="doc">Tutorial</span></a> still apply.</p>
 <p><a class="reference download internal" download="" href="../_downloads/f88721401748ebfa7c238d1d692aa0b3/multiorbital.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The hoppings in pybinding are implemented as the Hermitian conjugate,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\langle \text{to} | \hat H | \text{from} \rangle = \left(\begin{matrix}0 &amp; t^\dagger\\t &amp; 0\end{matrix}\right)\end{split}\]</div>
+<p>the element <span class="math notranslate nohighlight">\(t^\dagger\)</span> is the input for the hoppings function.
+However, the onsite energy is not affected by this and should be given in the normal manner.</p>
+</div>
 <section id="onsite-and-hopping-matrices">
 <h2>Onsite and hopping matrices<a class="headerlink" href="#onsite-and-hopping-matrices" title="Link to this heading">¶</a></h2>
 <p>Starting from the very beginning, the orbital count of a site is determined by the shape of the

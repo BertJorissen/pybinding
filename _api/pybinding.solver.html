@@ -551,7 +551,7 @@ ahead of time as needed.</p>
 <dd><p>ARPACK <a class="reference internal" href="#pybinding.solver.Solver" title="pybinding.solver.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a> implementation for sparse matrices</p>
 <p>This solver is intended for large models with sparse Hamiltonian matrices.
 It only computes a small targeted subset of eigenvalues and eigenvectors.
-Internally this solver uses the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.13.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.sparse.linalg.eigsh()</span></code></a> function
+Internally this solver uses the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.sparse.linalg.eigsh()</span></code></a> function
 for sparse Hermitian matrices.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -564,7 +564,7 @@ The computed eigenvalues are the ones closest to <code class="samp docutils lite
 </dd>
 <dt><strong>sigma</strong><span class="classifier">float, optional</span></dt><dd><p>Look for eigenvalues near <code class="samp docutils literal notranslate"><span class="pre">sigma</span></code>.</p>
 </dd>
-<dt><strong>**kwargs</strong></dt><dd><p>Advanced arguments: forwarded to <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.13.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.sparse.linalg.eigsh()</span></code></a>.</p>
+<dt><strong>**kwargs</strong></dt><dd><p>Advanced arguments: forwarded to <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.sparse.linalg.eigsh()</span></code></a>.</p>
 </dd>
 </dl>
 </dd>
@@ -586,9 +586,17 @@ Also look at <a class="reference external" href="https://gitlab.kwant-project.or
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>model</strong><span class="classifier">Model</span></dt><dd><p>Model which will provide the Hamiltonian matrix.</p>
+<dt><strong>model</strong><span class="classifier">pb.Model</span></dt><dd><p>Model which will provide the Hamiltonian matrix.</p>
 </dd>
-<dt><strong>**kwargs</strong></dt><dd><p>Advanced arguments: forwarded to <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.13.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.sparse.linalg.eigsh()</span></code></a>.</p>
+<dt><strong>window</strong><span class="classifier">tuple of float</span></dt><dd><p>The lowest and highest eigenvalue between which to compute the solutions.</p>
+</dd>
+<dt><strong>random_vectors</strong><span class="classifier">int, optional</span></dt><dd><p>Number of random vectors to use for the initial guess.</p>
+</dd>
+<dt><strong>filter_order</strong><span class="classifier">int, optional</span></dt><dd><p>Order of the filter to use for the solution.</p>
+</dd>
+<dt><strong>tol</strong><span class="classifier">float, optional</span></dt><dd><p>Tolerance for the solution.</p>
+</dd>
+<dt><strong>**kwargs</strong></dt><dd><p>Advanced arguments: forwarded to <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.sparse.linalg.eigsh()</span></code></a>.</p>
 </dd>
 </dl>
 </dd>
@@ -640,14 +648,14 @@ gradually as a function of the wave vector. It may hurt performance otherwise.</
 <dd><p>LAPACK <a class="reference internal" href="#pybinding.solver.Solver" title="pybinding.solver.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a> implementation for dense matrices</p>
 <p>This solver is intended for small models which are best represented by
 dense matrices. Always solves for all the eigenvalues and eigenvectors.
-Internally this solver uses the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.eigh.html#scipy.linalg.eigh" title="(in SciPy v1.13.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.linalg.eigh()</span></code></a> function for
+Internally this solver uses the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.eigh.html#scipy.linalg.eigh" title="(in SciPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.linalg.eigh()</span></code></a> function for
 dense Hermitian matrices.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>model</strong><span class="classifier">Model</span></dt><dd><p>Model which will provide the Hamiltonian matrix.</p>
 </dd>
-<dt><strong>**kwargs</strong></dt><dd><p>Advanced arguments: forwarded to <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.eigh.html#scipy.linalg.eigh" title="(in SciPy v1.13.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.linalg.eigh()</span></code></a>.</p>
+<dt><strong>**kwargs</strong></dt><dd><p>Advanced arguments: forwarded to <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.eigh.html#scipy.linalg.eigh" title="(in SciPy v1.14.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.linalg.eigh()</span></code></a>.</p>
 </dd>
 </dl>
 </dd>

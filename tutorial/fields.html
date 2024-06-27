@@ -164,6 +164,9 @@ be extremely slow. Arrays are much faster.</p>
 <span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;U (eV)&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+<figure class="align-default">
+<img alt="../_images/fields-3.png" class="plot-directive" src="../_images/fields-3.png" />
+</figure>
 <p>The figure shows a 2D colormap representation of our wavy potential in a square system. The
 <a class="reference internal" href="../_api/pybinding.StructureMap.html#pybinding.StructureMap.plot_contourf" title="pybinding.StructureMap.plot_contourf"><code class="xref py py-meth docutils literal notranslate"><span class="pre">StructureMap.plot_contourf()</span></code></a> method we just called is implemented in terms of matplotlib’s
 <code class="samp docutils literal notranslate"><span class="pre">contourf</span></code> function with some slight adjustments for convenience.</p>
@@ -184,6 +187,9 @@ just like this:</p>
 <span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;U (eV)&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+<figure class="align-default">
+<img alt="../_images/fields-4.png" class="plot-directive" src="../_images/fields-4.png" />
+</figure>
 <p>Note that we are using a system with hexagonal shape this time (via <a class="reference internal" href="../_api/pybinding.regular_polygon.html#pybinding.regular_polygon" title="pybinding.regular_polygon"><code class="xref py py-func docutils literal notranslate"><span class="pre">regular_polygon()</span></code></a>).
 The potential is only plotted inside the area of the actual system.</p>
 <p>We can make one more improvement to our <code class="samp docutils literal notranslate"><span class="pre">wavy</span></code> function. We’ll add an <code class="samp docutils literal notranslate"><span class="pre">energy</span></code> argument:</p>
@@ -214,6 +220,9 @@ multiple functions. For example, let’s combine the improved <code class="samp 
 <span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;U (eV)&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
+<figure class="align-default">
+<img alt="../_images/fields-6.png" class="plot-directive" src="../_images/fields-6.png" />
+</figure>
 <p>We see a similar wavy pattern as before, but the magnitude increases linearly along the x-axis
 because of the contribution of the <code class="samp docutils literal notranslate"><span class="pre">linear</span></code> potential.</p>
 </section>
@@ -504,7 +513,7 @@ computation time low for the tutorial (less than 0.5 seconds for this LDOS calcu
 </figure>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># plot the potential: note that pn_junction cancels out delta on some sites</span>
 <span class="n">model</span><span class="o">.</span><span class="n">onsite_map</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;coolwarm&quot;</span><span class="p">,</span> <span class="n">site_radius</span><span class="o">=</span><span class="mf">0.04</span><span class="p">)</span>
-<span class="n">pb</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;U (eV)&quot;</span><span class="p">)</span>
+<span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s2">&quot;U (eV)&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>

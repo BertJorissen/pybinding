@@ -175,6 +175,14 @@ are trivial. Generally, <code class="samp docutils literal notranslate"><span cl
 and <code class="samp docutils literal notranslate"><span class="pre">to_sublattice</span></code> in the neighboring cell. This will be explained further in the next example.</p></li>
 <li><p>The last parameter is simply the value of the hopping energy.</p></li>
 </ul>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The hoppings in pybinding are implemented as the Hermitian conjugate,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\langle \text{to} | \hat H | \text{from} \rangle = \left(\begin{matrix}0 &amp; t^\dagger\\t &amp; 0\end{matrix}\right)\end{split}\]</div>
+<p>the element <span class="math notranslate nohighlight">\(t^\dagger\)</span> is the input for the hoppings function.
+However, the onsite energy is not affected by this and should be given in the normal manner.</p>
+</div>
 <p>It’s good practice to build the lattice inside a function to make it easily reusable.
 Here we define the same lattice as before, but note that the unit cell length and hopping energy
 are function arguments, which makes the lattice easily configurable.</p>
