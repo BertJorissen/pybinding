@@ -197,21 +197,22 @@ class SeriesPath(Series):
 
 
 class SeriesArea(AbstractArea, SeriesPath):
-    """A series of data points determined by a common relation, i.e. :math:`y = f(x)`, with x in the reciprocal area
-
-    Attributes
-    ----------
-    k_area : Area
-        Independent variable for which the data was computed.
-    data : array_like
-        An array of values which were computed as a function of `variable`.
-        It can be 1D or 2D. In the latter case each column represents the result
-        of a different function applied to the same `variable` input.
-    labels : dict
-        Plot labels: 'variable', 'data', 'orbitals', 'title' and 'columns'.
-    """
+    """A series of data points determined by a common relation, i.e. :math:`y = f(x)`, with x in the reciprocal area"""
 
     def __init__(self, k_area: Area, data: ArrayLike, labels: Optional[dict] = None):
+        """Create a new SeriesArea object
+
+        Attributes
+        ----------
+        k_area : Area
+            Independent variable for which the data was computed.
+        data : array_like
+            An array of values which were computed as a function of `variable`.
+            It can be 1D or 2D. In the latter case each column represents the result
+            of a different function applied to the same `variable` input.
+        labels : dict
+            Plot labels: 'variable', 'data', 'orbitals', 'title' and 'columns'.
+        """
         super().__init__(k_area)
         super(AbstractArea, self).__init__(self.karea_to_kpath(k_area), self.area_to_list(np.atleast_3d(data)), labels)
 
@@ -227,7 +228,7 @@ class SeriesArea(AbstractArea, SeriesPath):
             The Axis to plot the bands on.
         idx : int
             The i-th column to plot. Default: 0.
-        plot_colorbar : bool
+        colorbar : bool
             Show also the colorbar.
         **kwargs
             Forwarded to :func:`matplotlib.pyplot.pcolormesh`.

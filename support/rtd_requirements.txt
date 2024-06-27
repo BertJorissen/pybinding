@@ -4,3 +4,4 @@ scipy
 matplotlib
 nbconvert
 numpydoc
+uuid

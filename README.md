@@ -34,12 +34,12 @@ See the [documentation] for more details.
 
 Pybinding can be installed on Windows, Linux or Mac, with the following prerequisites:
 
-* [Python] 3.6 or newer (Python 2.x is not supported)
+* [Python] 3.9 or newer (Python 2.x is not supported)
 * The [SciPy] stack of scientific packages, with required versions:
   * numpy >= v1.12
   * scipy >= v0.19
   * matplotlib >= v2.0
-* If you're using Linux, you'll also need GCC >= v5.0 (or clang >= v3.5) and CMake >= v3.1.
+* If you're using Linux, you'll also need GCC >= v5.0 (or clang >= v3.5) and CMake >= v3.5.
 
 Detailed [install instructions] are part of the documentation, but if you already have all the
 prerequisites, it's just a simple case of using `pip`, Python's usual package manager:

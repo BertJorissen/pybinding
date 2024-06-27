@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 from numpy.typing import ArrayLike
 from typing import Optional, Union, Tuple, Dict, List
 import matplotlib
+from scipy.spatial import cKDTree
 
 from ..utils.misc import with_defaults
 from ..utils import pltutils
@@ -162,16 +163,28 @@ class SpatialMap(AbstractStructure):
         return self.with_data(np.clip(self.data, v_min, v_max))
 
     def convolve(self, sigma: float = 0.25):
-        # TODO: slow and only works in the xy-plane
-        x, y, _ = self.positions
-        r = np.sqrt(x**2 + y**2)
+        """Convolve the data with a Gaussian kernel of the given standard deviation
 
+        Parameters
+        ----------
+        sigma : float
+            Standard deviation of the Gaussian kernel
+        """
+        # Adjust to work in 3D space
+        x, y, z = self.positions
+        r = np.sqrt(x**2 + y**2 + z**2)
+
+        # Build a KDTree for efficient nearest neighbor search
+        tree = cKDTree(np.column_stack([x, y, z]))
+
+        # Find points within sigma distance of each point
+        indices = tree.query_ball_point(np.column_stack([x, y, z]), r=sigma)
+
+        # Perform convolution operation
         data = np.empty_like(self.data)
-        for i in range(len(data)):
-            idx = np.abs(r - r[i]) < sigma
+        for i, idx in enumerate(indices):
             data[i] = np.sum(self.data[idx] * np.exp(-0.5 * ((r[i] - r[idx]) / sigma)**2))
             data[i] /= np.sum(np.exp(-0.5 * ((r[i] - r[idx]) / sigma)**2))
-
         self._data = data
 
     @staticmethod
@@ -280,7 +293,8 @@ class StructureMap(SpatialMap):
         result._data = data
         return result
 
-    def plot(self, cmap: str = 'YlGnBu', site_radius: Tuple[float, float] = (0.03, 0.05), num_periods: int = 1,
+    def plot(self, cmap: str = 'YlGnBu', site_radius: Union[List[float], float, Tuple[float, float]] = (0.03, 0.05),
+             num_periods: int = 1,
              ax: Optional[plt.Axes] = None, **kwargs) -> Optional[matplotlib.collections.CircleCollection]:
         """Plot the spatial structure with a colormap of :attr:`data` at the lattice sites
 
@@ -290,7 +304,7 @@ class StructureMap(SpatialMap):
         ----------
         cmap : str
             Matplotlib colormap to be used for the data.
-        site_radius : Tuple[float, float]
+        site_radius : Union[List[float], float, Tuple[float, float]]
             Min and max radius of lattice sites. This range will be used to visually
             represent the magnitude of the data.
         num_periods : int
@@ -422,7 +436,7 @@ class Structure(AbstractStructure):
         if ax is None:
             ax = plt.gca()
         from ..system import (plot_sites, plot_hoppings, plot_periodic_boundaries,
-                             structure_plot_properties, decorate_structure_plot)
+                              structure_plot_properties, decorate_structure_plot)
 
         props = structure_plot_properties(**kwargs)
         if hasattr(self, "lattice"):

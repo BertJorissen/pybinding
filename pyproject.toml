@@ -24,7 +24,6 @@ classifiers = [
     'License :: OSI Approved :: BSD License',
     'Programming Language :: C++',
     'Programming Language :: Python :: 3 :: Only',
-    'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
@@ -49,8 +48,8 @@ keywords = [
 
 [build-system]
 requires = [
-    "setuptools>=42",
+    "setuptools",
     "wheel",
-    "cmake>=3.1.0"
+    "cmake>=3.5.0"
 ]
 build-backend = "setuptools.build_meta"

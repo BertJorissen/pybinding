@@ -19,6 +19,7 @@ def _slice_csr_matrix(csr: csr_matrix, idx: Union[int, ArrayLike]):
     m.data -= 1
     return m
 
+
 Positions = namedtuple("Positions", "x y z")
 Positions.__doc__ = """
 Named tuple of arrays
@@ -102,7 +103,7 @@ class AbstractSites(metaclass=ABCMeta):
         ----------
         target_position : array_like
         target_site_family : Optional[str]
-            Look for a specific sublattice site. By default any will do.
+            Look for a specific sublattice site. By default, any will do.
 
         Returns
         -------
@@ -118,7 +119,7 @@ class AbstractSites(metaclass=ABCMeta):
         """
         distances = self.distances(target_position)
         if target_site_family == "":
-            return np.argmin(distances)
+            return int(np.argmin(distances))
         else:
             return ma.argmin(ma.array(distances, mask=(self.ids != target_site_family)))
 

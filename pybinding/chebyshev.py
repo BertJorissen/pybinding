@@ -545,7 +545,8 @@ class _PythonImpl:
                 return result_data
 
     def report(self, *_) -> str:
-        from .utils import with_suffix, pretty_duration
+        from .utils.misc import with_suffix
+        from .utils.time import pretty_duration
 
         stats = self.stats.copy()
         stats.update({k: with_suffix(stats[k]) for k in ("num_moments", "eps")})

@@ -6,134 +6,56 @@ permissions:
 
 
 jobs:
-  test-ubuntu-310:
+  test-compile:
     name: Test Build on ${{ matrix.os }} with Python ${{ matrix.python-version }}
     runs-on: ${{ matrix.os }}
     env:
       PB_BUILD_TYPE: Release
     strategy:
       matrix:
-        os: [ ubuntu-latest ]
+        os: [ ubuntu-latest, macos-12, windows-latest ]
         python-version: [ "3.10" ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Set up MSVC
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies for Pybinding
         run: python -m pip install wheel scipy matplotlib pytest cmake ninja
       - name: Build with CMake and test Python / C++
-        timeout-minutes: 10
-        run: mkdir build_tests && cd build_tests && cmake .. && cmake --build . --target tests --config Release && cd ..
-      - name: Test Python
-        run: python -c "import pybinding as pb; exit(pb.tests())"
-
-  test-ubuntu-all:
-    name: Test Build on ${{ matrix.os }} with Python ${{ matrix.python-version }}
-    environment: actions
-    if: github.ref == 'refs/heads/master'
-    needs: [ test-ubuntu-310 ]
-    runs-on: ${{ matrix.os }}
-    env:
-      PB_BUILD_TYPE: Release
-    strategy:
-      matrix:
-        os: [ ubuntu-latest ]
-        python-version: [ "3.9", "3.11", "3.12" ]
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: true
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies for Pybinding
-        run: python -m pip install wheel scipy matplotlib pytest cmake ninja
-      - name: Build with CMake and test C++
-        timeout-minutes: 10
-        run: mkdir build_tests && cd build_tests && cmake .. && cmake --build . --target tests --config Release && cd ..
-      - name: Test Python
-        run: python -c "import pybinding as pb; exit(pb.tests())"
-
-  test-all-310:
-    name: Test Build on ${{ matrix.os }} with Python ${{ matrix.python-version }}
-    needs: [ test-ubuntu-310 ]
-    runs-on: ${{ matrix.os }}
-    env:
-      PB_BUILD_TYPE: Release
-    strategy:
-      matrix:
-        os: [ windows-latest, macos-latest ]
-        python-version: [ "3.10" ]
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: true
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies Pybinding
-        run: python -m pip install wheel scipy matplotlib pytest cmake ninja
-      - name: Set up MSVC
-        if: runner.os == 'Windows'
-        uses: ilammy/msvc-dev-cmd@v1
-      - name: Build with CMake and test Python / C++
         timeout-minutes: 20
-        run: mkdir build_tests && cd build_tests && cmake .. && cmake --build . --target tests --config Release && cd ..
+        run: |
+          mkdir build_tests
+          cd build_tests
+          cmake ..
+          cmake --build . -j --target tests --config Release
+          cd ..
       - name: Test Python
         run: python -c "import pybinding as pb; exit(pb.tests())"
-
-  test-all-all:
-    name: Test Build on ${{ matrix.os }} with Python ${{ matrix.python-version }}
-    environment: actions
-    if: github.ref == 'refs/heads/master'
-    needs: [ test-ubuntu-310, test-ubuntu-all, test-all-310 ]
-    runs-on: ${{ matrix.os }}
-    env:
-      PB_BUILD_TYPE: Release
-    strategy:
-      matrix:
-        os: [ windows-latest, macos-latest ]
-        python-version: [ "3.9", "3.11", "3.12" ]
-    steps:
-      - uses: actions/checkout@v3
-        with:
-          submodules: true
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-      - name: Install dependencies Pybinding
-        run: python -m pip install wheel scipy matplotlib pytest cmake ninja
-      - name: Set up MSVC
-        if: runner.os == 'Windows'
-        uses: ilammy/msvc-dev-cmd@v1
-      - name: Build with CMake and test Python / C++
-        timeout-minutes: 20
-        run: mkdir build_tests && cd build_tests && cmake .. && cmake --build . --target tests --config Release && cd ..
-      - name: Test Python
-        run: python -c "import pybinding as pb; exit(pb.tests())"
-
 
   build-wheels:
     name: Build wheels on ${{ matrix.os }}
     environment: actions
     if: github.ref == 'refs/heads/master'
-    needs: [ test-all-all ]
+    needs: [ test-compile ]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
-      - uses: actions/setup-python@v3
+      - uses: actions/setup-python@v5
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel
       - name: Build wheels
@@ -151,13 +73,7 @@ jobs:
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: python -c "import pybinding as pb; exit(pb.tests())"
           CIBW_SKIP: cp36-* cp37-* pp* *win32 *i686 *musllinux* *ppc64le *s390x *aarch64
-      - name: List dependencies in the built wheel
-        if: runner.os != 'Windows'
-        run: |
-          for whl in wheelhouse/*.whl; do
-            delocate-listdeps $whl;
-          done
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           path: ./wheelhouse/*.whl
 
@@ -165,7 +81,7 @@ jobs:
     name: Create sources on ${{ matrix.os }} with Python ${{ matrix.python-version }}
     environment: actions
     if: github.ref == 'refs/heads/master'
-    needs: [ test-all-all ]
+    needs: [ test-compile ]
     runs-on: ${{ matrix.os }}
     env:
       PB_BUILD_TYPE: Release
@@ -175,11 +91,11 @@ jobs:
         os: [ ubuntu-latest]
         python-version: [ "3.10" ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies Pybinding
@@ -187,7 +103,7 @@ jobs:
       - name: Build wheel
         run: python -m build --sdist --outdir dist/
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           path: dist/*.tar.gz
 
@@ -205,18 +121,18 @@ jobs:
         os: [ ubuntu-latest, windows-latest, macos-latest ]
         python-version: [ "3.10" ]
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
       - name: Set up MSVC
         if: runner.os == 'Windows'
         uses: ilammy/msvc-dev-cmd@v1
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
       - name: Download artefacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: artifact
           path: dist
@@ -237,7 +153,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download artefacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: artifact
           path: dist
@@ -256,7 +172,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download artefacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: artifact
           path: dist
@@ -266,23 +182,23 @@ jobs:
   documentation:
     name: Make and upload the documentation
     environment: actions
-    needs: [ test-ubuntu-310 ]
+    needs: [ test-compile ]
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     env:
       PB_BUILD_TYPE: Release
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
       - name: Set up Python 3.10
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
       - name: Install dependencies Pybinding
         run: python -m pip install wheel scipy matplotlib pytest cmake ninja sphinx-rtd-theme recommonmark numpydoc nbconvert
       - name: Test Documentation
-        run: mkdir build_tests && cd build_tests && cmake .. && cmake --build . --target docs && ls && pwd && touch docs/html/.nojekyll
+        run: mkdir build_tests && cd build_tests && cmake .. && cmake -j --build . --target docs && ls && pwd && touch docs/html/.nojekyll
       - name: Publish docs
         uses: JamesIves/github-pages-deploy-action@v4
         with:

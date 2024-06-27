@@ -1,18 +1,16 @@
 """Collection of utility functions for matplotlib"""
-import warnings
 from contextlib import contextmanager, suppress
 
 import numpy as np
-from matplotlib.pyplot import Axes as plt_axes
 from matplotlib.patches import FancyArrow
 import matplotlib as mpl
 import matplotlib.style as mpl_style
 import matplotlib.pyplot as plt
-from matplotlib.spines import Spine
-from typing import Literal, Optional, List, Union
+from typing import Literal, Optional, List, Union, Tuple
 from numpy.typing import ArrayLike
 from matplotlib.collections import LineCollection
 from matplotlib.colors import ListedColormap
+from matplotlib.cm import ScalarMappable
 
 from .misc import with_defaults
 
@@ -20,23 +18,8 @@ __all__ = ['cm2inch', 'colorbar', 'despine', 'despine_all', 'get_palette', 'lege
            'set_palette', 'use_style']
 
 
-def _set_smart_bounds(spine: Spine, value: bool):
-    """Hold on to the deprecated `set_smart_bounds()` for a little while longer
-
-    `set_smart_bounds()` was deprecated in matplotlib 3.2 and will be removed in the future.
-    This compatibility function ensures that we can keep using the function (while it's still
-    there) without any deprecation warnings. And when it is removed, suppress `AttributeError`
-    to make it a no-op. It's purely aesthetic change to the plots, but it's nice to keep it
-    while it's there.
-    TODO: remove this; it's not there anymore
-    """
-    with warnings.catch_warnings(), suppress(AttributeError):
-        warnings.simplefilter("ignore", mpl.MatplotlibDeprecationWarning)
-        spine.set_smart_bounds(value)
-
-
 @contextmanager
-def axes(ax: plt_axes) -> None:
+def axes(ax: plt.Axes) -> None:
     """A context manager that sets the active Axes instance to `ax`
 
     Parameters
@@ -101,8 +84,7 @@ def despine(trim: bool = False, ax: Optional[plt.Axes] = None) -> None:
         ax.xaxis.set_major_locator(plt.MaxNLocator(nbins="auto", steps=[1, 2, 5, 10]))
         ax.yaxis.set_major_locator(plt.MaxNLocator(nbins="auto", steps=[1, 2, 5, 10]))
 
-        for v, side in [('x', 'bottom'), ('y', 'left')]:
-            _set_smart_bounds(ax.spines[side], True)
+        for v in ['x', 'y']:
             ticks = getattr(ax, "get_{}ticks".format(v))()
             vmin, vmax = getattr(ax, "get_{}lim".format(v))()
             ticks = ticks[(ticks >= vmin) & (ticks <= vmax)]
@@ -143,7 +125,6 @@ def respine(ax: Optional[plt.Axes] = None) -> None:
         ax = plt.gca()
     for side in ['top', 'right', 'bottom', 'left']:
         ax.spines[side].set_visible(True)
-        _set_smart_bounds(ax.spines[side], False)
     ax.xaxis.set_ticks_position('both')
     ax.yaxis.set_ticks_position('both')
 
@@ -233,7 +214,8 @@ def blend_colors(color, bg, factor):
     return (1 - factor) * bg + factor * color
 
 
-def colorbar(mappable=None, cax=None, ax=None, label="", powerlimits=(0, 0), **kwargs):
+def colorbar(mappable: Optional[ScalarMappable] = None, ax: Optional[plt.Axes] = None, cax: Optional[plt.Axes] = None,
+             label="", powerlimits=(0, 0), **kwargs):
     """Custom colorbar with modified style and optional label
 
     Changes default `pad` and `aspect` argument values and turns on rasterization for a
@@ -241,15 +223,27 @@ def colorbar(mappable=None, cax=None, ax=None, label="", powerlimits=(0, 0), **k
 
     Parameters
     ----------
+    mappable : Optional[ScalarMappable]
+        The image or contour set over which the colorbar will be drawn.
+    ax : Optional[plt.Axes]
+        Axis to add the colorbar to.
+    cax : Optional[plt.Axes]
+        Axis to draw the colorbar in.
     label : str
         Color data label.
     powerlimits : Tuple[int, int]
         Sets size thresholds for scientific notation.
-    mappable, cax, ax, **kwargs
+    **kwargs
         Forwarded to :func:`matplotlib.pyplot.colorbar`.
     """
-    # TODO: add mappable
-    cbar = plt.colorbar(mappable, cax, ax, **with_defaults(kwargs, pad=0.02, aspect=28))
+    if ax is None:
+        ax = plt.gca()
+    if mappable is None:
+        print(ax.get_images())
+        print("yes" if ax.get_images() else "no")
+        print(ax.collections[0])
+        mappable = ax.get_images()[0] if ax.get_images() else ax.collections[0]
+    cbar = plt.colorbar(mappable, cax=cax, ax=ax, **with_defaults(kwargs, pad=0.02, aspect=28))
 
     cbar.solids.set_edgecolor("face")  # remove white gaps between segments
     cbar.solids.set_rasterized(True)   # and reduce pdf and svg output size
@@ -300,7 +294,7 @@ def annotate_box(s, xy, fontcolor='black', ax: Optional[plt.Axes] = None, **kwar
                                         verticalalignment='center'))
 
 
-def cm2inch(*values):
+def cm2inch(*values) -> Tuple[int, int]:
     """Convert from centimeter to inch
 
     Parameters
@@ -344,7 +338,7 @@ def legend(*args, reverse=False, facecolor='0.98', lw=0, ax: Optional[plt.Axes] 
     if not reverse or not handles:
         ret = ax.legend(*args, **kwargs)
     else:
-        ret = ax.legend(handles[::-1], labels[::-1], *args, **kwargs)
+        ret = ax.legend(handles[::-1], labels[::-1], *args, **kwargs)  # ignore typing warning
 
     frame = ret.get_frame()
     frame.set_facecolor(facecolor)
@@ -582,6 +576,8 @@ def plot_vectors(vectors: ArrayLike, position: ArrayLike = (0, 0), name: Optiona
         The width for the head of the arrow. Default: 0.08 .
     head_length : float
         The length for the arrow head. Default: 0.2 .
+    arrow_width : float
+        The width of the arrow. Default: 0.01 .
     ax : optional[plt.Axes]
         The axis to draw on. If None, ax=plt.gca(). Default: ax.
     **kwargs
@@ -601,7 +597,7 @@ def plot_vectors(vectors: ArrayLike, position: ArrayLike = (0, 0), name: Optiona
             continue  # nonzero only in z dimension, but the plot is 2D
         pos = np.array(position if np.ndim(position) == 1 else position[i]) * scale
         out.append(
-            ax.arrow(pos[0], pos[1], *v2d, length_includes_head=True, head_width=vnorm * head_width,
+            ax.arrow(float(pos[0]), float(pos[1]), *v2d, length_includes_head=True, head_width=vnorm * head_width,
                      head_length=vnorm * head_length, width=arrow_width * vnorm, **kwargs)
         )
         if name:

@@ -2,7 +2,9 @@ import numpy as np
 import scipy.sparse
 from scipy.sparse import csr_matrix
 from numpy.typing import ArrayLike
-from typing import Optional, List
+from typing import Optional, List, Tuple, Union
+
+tli = Union[int, Tuple[int, ...], List[int]]
 
 
 class AliasArray(np.ndarray):
@@ -137,7 +139,6 @@ class AliasIndex:
     where each call gets arrays with the same sub_id/hop_id for all elements.
     Instead of passing an `AliasArray` with `.size` identical element, `AliasIndex`
     does the same all-or-nothing indexing.
-    # TODO: add docstring
 
     Examples
     --------
@@ -169,10 +170,19 @@ class AliasIndex:
     True
     """
     class LazyArray:
-        # TODO: add docstring
-        def __init__(self, value, shape: List[int]):
-            self.value = value
-            self.shape: List[int] = shape
+        """Lazy array which is either all True or all False"""
+        def __init__(self, value: bool, shape: tli):
+            """Initialize the lazy array
+
+            Parameters
+            ----------
+            value : bool
+                The value of the lazy array, either True or False
+            shape : Union[int, Tuple[int, ...], List[int]]
+                The shape of the array
+            """
+            self.value: bool = value
+            self.shape: tli = shape
 
         def __bool__(self) -> bool:
             return bool(self.value)
@@ -180,10 +190,20 @@ class AliasIndex:
         def __array__(self) -> np.array:
             return np.full(self.shape, self.value)
 
-    def __init__(self, name: str, shape: List[int], orbs=(1, 1)):
+    def __init__(self, name: str, shape: tli, orbs: tli = (1, 1)):
+        """Initialize the AliasIndex
+
+        Parameters
+        ----------
+        name : str
+            The name of the index
+        shape : Tuple[int, ...]
+            The shape of the array
+        orbs : Tuple[int, ...]
+            The shape among the orbitals"""
         self.name: str = name
-        self.shape: List[int] = shape
-        self.orbs = orbs
+        self.shape: tli = shape
+        self.orbs: tli = orbs
 
     def __str__(self) -> str:
         return self.name

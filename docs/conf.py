@@ -62,7 +62,7 @@ import pybinding as pb
 import numpy as np
 import matplotlib.pyplot as plt
 """
-plot_rcparams = pb.utils.pltutils.pb_style
+plot_rcparams = pb.pltutils.pb_style
 plot_apply_rcparams = True
 
 nbexport_pre_code = plot_pre_code + """

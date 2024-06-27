@@ -145,7 +145,7 @@ void build_periodic(SparseMatrixX<scalar_t>& matrix, System const& system,
             for (typename SparseMatrixX<scalar_t>::InnerIterator it(matrix, k); it; ++it) {
                 Cartesian pos_1 = pos_expanded[it.row()];
                 Cartesian pos_2 = pos_expanded[it.col()];
-                it.valueRef() *= num::force_cast<scalar_t>(exp(-i1 * k_vector.dot(pos_1 - pos_2)));
+                it.valueRef() *= num::force_cast<scalar_t>(exp(-i1 * k_vector.dot(pos_2 - pos_1)));
             }
     }
 }

@@ -4,6 +4,7 @@ import posixpath
 
 from sphinx import addnodes, roles
 from docutils import nodes, writers
+from uuid import uuid4
 
 import nbformat
 from nbconvert.preprocessors import ExecutePreprocessor
@@ -77,6 +78,7 @@ class NBTranslator(nodes.NodeVisitor):
         if self.nb.cells[-1].cell_type != "markdown":
             self.nb.cells.append(nbformat.from_dict({
                 "cell_type": "markdown",
+                "id": str(uuid4())[:8],
                 "metadata": {},
                 "source": []
             }))
@@ -93,6 +95,7 @@ class NBTranslator(nodes.NodeVisitor):
     def add_codecell(self, code):
         self.nb.cells.append(nbformat.from_dict({
             "cell_type": "code",
+            "id": str(uuid4())[:8],
             "execution_count": None,
             "metadata": {},
             "source": code.strip(),

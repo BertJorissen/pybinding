@@ -8,7 +8,6 @@
 
 namespace cpb {
 
-// TODO: replace with proper string_view
 using string_view = std::string const&;
 
 /// Sublattice and hopping ID data types

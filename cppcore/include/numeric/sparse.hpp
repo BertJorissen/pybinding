@@ -142,7 +142,6 @@ public:
 
     /// Iterate over all elements in a single row (or column) at the 'outer' index:
     ///     lambda(idx_t inner, scalar_t value)
-    // TODO: KPM method breakd sown over here
     template<class F>
     void for_each_in_row(idx_t outer, F lambda) const {
         for (auto idx = indptr[outer]; idx < indptr[outer + 1]; ++idx) {

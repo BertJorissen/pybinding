@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.5)
 project(pybinding_cppcore CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
@@ -109,12 +109,11 @@ include(warnings)
 enable_warnings(cppcore)
 
 include(download)
-#TODO: change versions for Eigen, Variant, Simdpp and Catch
-download_dependency(eigen3 3.3.0
+download_dependency(eigen3 3.4.0
                     https://gitlab.com/libeigen/eigen/-/archive/\${VERSION}
                     eigen-\${VERSION}.tar.gz */Eigen)
 target_include_directories(cppcore SYSTEM PUBLIC ${EIGEN3_INCLUDE_DIR})
-download_dependency(variant 1.1.4
+download_dependency(variant 1.2.0
                     https://raw.githubusercontent.com/mapbox/variant/v\${VERSION}/include
                     mapbox/variant.hpp mapbox/recursive_wrapper.hpp mapbox/variant_visitor.hpp)
 target_include_directories(cppcore SYSTEM PUBLIC ${VARIANT_INCLUDE_DIR})

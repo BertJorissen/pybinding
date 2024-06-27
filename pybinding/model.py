@@ -254,7 +254,7 @@ class Model(_cpp.Model):
         ]
 
         # apply the modifier
-        # TODO: add the modifiers here from the model ebject itself
+        # TODO: add the modifiers here from the model object itself
         onsite_modifier = []
         hopping_modifier = []
         if self.onsite_modifiers:

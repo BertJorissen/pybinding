@@ -337,7 +337,7 @@ def circle(radius: float, center: ArrayLike = (0, 0)) -> FreeformShape:
 
 def translational_symmetry(a1: Union[bool, float] = True, a2: Union[bool, float] = True,
                            a3: Union[bool, float] = True) -> _cpp.TranslationalSymmetry:
-    """Simple translational symmetry
+    """Simple translational symmetry in, the form of :math:`e^{i \\vec k \\cdot \\vec r}`.
 
     Parameters
     ----------
