@@ -43,14 +43,22 @@ jobs:
         run: python -c "import pybinding as pb; exit(pb.tests())"
 
   build-wheels:
-    name: Build wheels on ${{ matrix.os }}
+    name: Build wheels on ${{ matrix.os }} for ${{ matrix.arch }}
     environment: actions
     if: github.ref == 'refs/heads/master'
     needs: [ test-compile ]
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-12]
+        include:
+          - os: ubuntu-latest
+            arch: x86_64
+          - os: windows-latest
+            arch: x86_64
+          - os: macos-12
+            arch: x86_64
+          - os: macos-14
+            arch: arm64
     steps:
       - uses: actions/checkout@v4
         with:
@@ -61,7 +69,7 @@ jobs:
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
         env:
-          CIBW_ARCHS_MACOS: x86_64
+          CIBW_ARCHS_MACOS: ${{ matrix.arch }}
           CIBW_ARCHS_LINUX: x86_64
           CIBW_BEFORE_BUILD: pip install scipy contourpy --prefer-binary
           CIBW_ENVIRONMENT: |
@@ -73,42 +81,9 @@ jobs:
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: python -c "import pybinding as pb; exit(pb.tests())"
           CIBW_SKIP: cp36-* cp37-* pp* *win32 *i686 *musllinux* *ppc64le *s390x *aarch64
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          path: ./wheelhouse/*.whl
-
-  build-wheels-arm:
-    name: Build wheels on ${{ matrix.os }}
-    environment: actions
-    if: github.ref == 'refs/heads/master'
-    needs: [ test-compile ]
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [ macos-14 ]
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
-      - uses: actions/setup-python@v5
-      - name: Install cibuildwheel
-        run: python -m pip install cibuildwheel
-      - name: Build wheels
-        run: python -m cibuildwheel --output-dir wheelhouse
-        env:
-          CIBW_ARCHS_MACOS: arm64
-          CIBW_BEFORE_BUILD: pip install scipy contourpy --prefer-binary
-          CIBW_ENVIRONMENT: |
-            PB_BUILD_TYPE=Release
-            PB_NATIVE_SIMD=OFF
-            DELOCATE_VERBOSITY=1  # Enable verbose output for delocate
-          CIBW_BUILD_VERBOSITY: 1
-          CIBW_BEFORE_TEST: pip install scipy contourpy --prefer-binary
-          CIBW_TEST_REQUIRES: pytest
-          CIBW_TEST_COMMAND: python -c "import pybinding as pb; exit(pb.tests())"
-          CIBW_SKIP: cp36-* cp37-* pp* *win32 *i686 *musllinux* *ppc64le *s390x *aarch64
-      - uses: actions/upload-artifact@v3
-        with:
+          name: ${{ matrix.os }}-${{ matrix.arch }}-wheels
           path: ./wheelhouse/*.whl
 
   build-sdist:
@@ -137,8 +112,9 @@ jobs:
       - name: Build wheel
         run: python -m build --sdist --outdir dist/
       - name: Upload Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
+          name: sources
           path: dist/*.tar.gz
 
   test-sdist:
@@ -168,7 +144,7 @@ jobs:
       - name: Download artefacts
         uses: actions/download-artifact@v4
         with:
-          name: artifact
+          name: sources
           path: dist
       - name: Install Pybinding
         run: |
@@ -183,13 +159,12 @@ jobs:
     if: github.ref == 'refs/heads/master'
     permissions:
       id-token: write
-    needs: [ build-wheels, build-wheels-arm, test-sdist ]
+    needs: [ build-wheels, test-sdist ]
     runs-on: ubuntu-latest
     steps:
       - name: Download artefacts
         uses: actions/download-artifact@v4
         with:
-          name: artifact
           path: dist
       - name: Publish distribution 📦 to Test PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
@@ -208,7 +183,6 @@ jobs:
       - name: Download artefacts
         uses: actions/download-artifact@v4
         with:
-          name: artifact
           path: dist
       - name: Publish distribution 📦 to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
