@@ -61,8 +61,42 @@ jobs:
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
         env:
-          CIBW_ARCHS_MACOS: x86_64 arm64
+          CIBW_ARCHS_MACOS: x86_64
           CIBW_ARCHS_LINUX: x86_64
+          CIBW_BEFORE_BUILD: pip install scipy contourpy --prefer-binary
+          CIBW_ENVIRONMENT: |
+            PB_BUILD_TYPE=Release
+            PB_NATIVE_SIMD=OFF
+            DELOCATE_VERBOSITY=1  # Enable verbose output for delocate
+          CIBW_BUILD_VERBOSITY: 1
+          CIBW_BEFORE_TEST: pip install scipy contourpy --prefer-binary
+          CIBW_TEST_REQUIRES: pytest
+          CIBW_TEST_COMMAND: python -c "import pybinding as pb; exit(pb.tests())"
+          CIBW_SKIP: cp36-* cp37-* pp* *win32 *i686 *musllinux* *ppc64le *s390x *aarch64
+      - uses: actions/upload-artifact@v4
+        with:
+          path: ./wheelhouse/*.whl
+
+  build-wheels-arm:
+    name: Build wheels on ${{ matrix.os }}
+    environment: actions
+    if: github.ref == 'refs/heads/master'
+    needs: [ test-compile ]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ macos-14 ]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: actions/setup-python@v5
+      - name: Install cibuildwheel
+        run: python -m pip install cibuildwheel
+      - name: Build wheels
+        run: python -m cibuildwheel --output-dir wheelhouse
+        env:
+          CIBW_ARCHS_MACOS: arm64
           CIBW_BEFORE_BUILD: pip install scipy contourpy --prefer-binary
           CIBW_ENVIRONMENT: |
             PB_BUILD_TYPE=Release
@@ -118,7 +152,7 @@ jobs:
       PB_NATIVE_SIMD: OFF
     strategy:
       matrix:
-        os: [ ubuntu-latest, windows-latest, macos-12 ]
+        os: [ ubuntu-latest, windows-latest, macos-12, macos-14 ]
         python-version: [ "3.10" ]
     steps:
       - uses: actions/checkout@v4
@@ -149,7 +183,7 @@ jobs:
     if: github.ref == 'refs/heads/master'
     permissions:
       id-token: write
-    needs: [ build-wheels, test-sdist ]
+    needs: [ build-wheels, build-wheels-arm, test-sdist ]
     runs-on: ubuntu-latest
     steps:
       - name: Download artefacts
@@ -198,7 +232,15 @@ jobs:
       - name: Install dependencies Pybinding
         run: python -m pip install wheel scipy matplotlib pytest cmake ninja sphinx-rtd-theme recommonmark numpydoc nbconvert
       - name: Test Documentation
-        run: mkdir build_tests && cd build_tests && cmake .. && cmake -j --build . --target docs && ls && pwd && touch docs/html/.nojekyll
+        timeout-minutes: 20
+        run: |
+          mkdir build_tests
+          cd build_tests
+          cmake ..
+          cmake --build . -j --target docs --config Release
+          ls
+          pwd
+          touch docs/html/.nojekyll
       - name: Publish docs
         uses: JamesIves/github-pages-deploy-action@v4
         with:
