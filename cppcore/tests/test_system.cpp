@@ -95,9 +95,9 @@ TEST_CASE("complex_valued_hoppings") {
         auto const d2 = Cartesian{a2};
         auto const d3 = Cartesian{a1};
         // hoppings
-        auto const t1 = -i1;
-        auto const t2 = 2.0 * i1;
-        auto const t3 = 3.0 * i1;
+        auto const t1 = conj(lattice.get_hoppings().at("t1").energy.coeffRef(0, 0));
+        auto const t2 = conj(lattice.get_hoppings().at("t2").energy.coeffRef(0, 0));
+        auto const t3 = conj(lattice.get_hoppings().at("t3").energy.coeffRef(0, 0));
 
         auto model = Model(lattice, TranslationalSymmetry(1, 1), OnsiteModifier(
                 [](const ComplexArrayRef&, const CartesianArrayConstRef&, string_view){},
@@ -119,8 +119,8 @@ TEST_CASE("complex_valued_hoppings") {
         REQUIRE(system.hamiltonian_nnz() == 4);
         REQUIRE(num::approx_equal(matrix.coeff(0, 0).real(),  expected_onsite.real()));
         REQUIRE(num::approx_equal(matrix.coeff(0, 0).imag(),  expected_onsite.imag()));
-        REQUIRE(num::approx_equal(matrix.coeff(0, 1).imag(),  expected_hopping.imag()));
-        REQUIRE(num::approx_equal(matrix.coeff(1, 0).imag(), -expected_hopping.imag()));
+        REQUIRE(num::approx_equal(matrix.coeff(0, 1).imag(), -expected_hopping.imag()));
+        REQUIRE(num::approx_equal(matrix.coeff(1, 0).imag(),  expected_hopping.imag()));
         REQUIRE(num::approx_equal(matrix.coeff(1, 1).imag(),  0.));
         REQUIRE(num::approx_equal(matrix.coeff(1, 1).real(),  0.));
         REQUIRE(num::approx_equal(matrix.coeff(1, 0).real(),  expected_hopping.real()));
@@ -139,9 +139,9 @@ TEST_CASE("complex_valued_hoppings") {
         auto const d2 = Cartesian{d1 + a2};
         auto const d3 = Cartesian{d1 + a1};
         // hoppings
-        auto const t1 = -i1;
-        auto const t2 = 2.0 * i1;
-        auto const t3 = 3.0 * i1;
+        auto const t1 = conj(-i1);
+        auto const t2 = conj(2.0 * i1);
+        auto const t3 = conj(3.0 * i1);
 
         auto model = Model(lattice, TranslationalSymmetry(1, 1), OnsiteModifier(
                 [](const ComplexArrayRef&, const CartesianArrayConstRef&, string_view){},
@@ -164,8 +164,8 @@ TEST_CASE("complex_valued_hoppings") {
         REQUIRE(system.hamiltonian_nnz() == 4);
         REQUIRE(num::approx_equal(matrix.coeff(0, 0).real(),  expected_onsite.real()));
         REQUIRE(num::approx_equal(matrix.coeff(0, 0).imag(),  expected_onsite.imag()));
-        REQUIRE(num::approx_equal(matrix.coeff(0, 1).imag(),  expected_hopping.imag()));
-        REQUIRE(num::approx_equal(matrix.coeff(1, 0).imag(), -expected_hopping.imag()));
+        REQUIRE(num::approx_equal(matrix.coeff(0, 1).imag(), -expected_hopping.imag()));
+        REQUIRE(num::approx_equal(matrix.coeff(1, 0).imag(),  expected_hopping.imag()));
         REQUIRE(num::approx_equal(matrix.coeff(1, 1).imag(),  0.));
         REQUIRE(num::approx_equal(matrix.coeff(1, 1).real(),  0.));
         REQUIRE(num::approx_equal(matrix.coeff(1, 0).real(),  expected_hopping.real()));

@@ -10,6 +10,7 @@ from typing import Literal, Optional, List, Union, Tuple
 from numpy.typing import ArrayLike
 from matplotlib.collections import LineCollection
 from matplotlib.colors import ListedColormap
+from matplotlib.cm import ScalarMappable
 
 from .misc import with_defaults
 
@@ -213,7 +214,8 @@ def blend_colors(color, bg, factor):
     return (1 - factor) * bg + factor * color
 
 
-def colorbar(mappable=None, cax=None, ax=None, label="", powerlimits=(0, 0), **kwargs):
+def colorbar(mappable: Optional[ScalarMappable] = None, ax: Optional[plt.Axes] = None, cax: Optional[plt.Axes] = None,
+             label="", powerlimits=(0, 0), **kwargs):
     """Custom colorbar with modified style and optional label
 
     Changes default `pad` and `aspect` argument values and turns on rasterization for a
@@ -221,14 +223,27 @@ def colorbar(mappable=None, cax=None, ax=None, label="", powerlimits=(0, 0), **k
 
     Parameters
     ----------
+    mappable : Optional[ScalarMappable]
+        The image or contour set over which the colorbar will be drawn.
+    ax : Optional[plt.Axes]
+        Axis to add the colorbar to.
+    cax : Optional[plt.Axes]
+        Axis to draw the colorbar in.
     label : str
         Color data label.
     powerlimits : Tuple[int, int]
         Sets size thresholds for scientific notation.
-    mappable, cax, ax, **kwargs
+    **kwargs
         Forwarded to :func:`matplotlib.pyplot.colorbar`.
     """
-    cbar = plt.colorbar(mappable, cax, ax, **with_defaults(kwargs, pad=0.02, aspect=28))
+    if ax is None:
+        ax = plt.gca()
+    if mappable is None:
+        print(ax.get_images())
+        print("yes" if ax.get_images() else "no")
+        print(ax.collections[0])
+        mappable = ax.get_images()[0] if ax.get_images() else ax.collections[0]
+    cbar = plt.colorbar(mappable, cax=cax, ax=ax, **with_defaults(kwargs, pad=0.02, aspect=28))
 
     cbar.solids.set_edgecolor("face")  # remove white gaps between segments
     cbar.solids.set_rasterized(True)   # and reduce pdf and svg output size
@@ -323,9 +338,7 @@ def legend(*args, reverse=False, facecolor='0.98', lw=0, ax: Optional[plt.Axes] 
     if not reverse or not handles:
         ret = ax.legend(*args, **kwargs)
     else:
-        kwargs["handles"] = handles[::-1]
-        kwargs["label"] = labels[::-1]
-        ret = ax.legend(*args, **kwargs)
+        ret = ax.legend(handles[::-1], labels[::-1], *args, **kwargs)  # ignore typing warning
 
     frame = ret.get_frame()
     frame.set_facecolor(facecolor)

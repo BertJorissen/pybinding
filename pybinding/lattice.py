@@ -115,6 +115,18 @@ class Lattice:
     def register_hopping_energies(self, mapping: dict) -> None:
         """Register a mapping of user-friendly names to hopping energies
 
+
+
+        .. warning::
+
+            The hoppings in pybinding are implemented as the Hermitian conjugate,
+
+            .. math::
+
+                \\langle \\text{to} | \\hat H | \\text{from} \\rangle = \\left(\\begin{matrix}0 & t^\\dagger\\\\t & 0\\end{matrix}\\right)
+
+            the element :math:`t^\\dagger` is the input for the hoppings function.
+
         Parameters
         ----------
         mapping : dict
@@ -122,11 +134,29 @@ class Lattice:
             of the hopping energy.
         """
         for name, energy in sorted(mapping.items(), key=lambda item: item[0]):
-            self.impl.register_hopping_energy(name, energy)
+            # convert single-element arrays to scalars
+            if isinstance(energy, str):
+                self.impl.register_hopping_energy(name, energy)
+            else:
+                hop_energy = np.asarray(energy)
+                if hop_energy.size == 1:
+                    hop_energy = hop_energy.item()
+                self.impl.register_hopping_energy(name, hop_energy)
 
     def add_one_sublattice(self, name: str, position: ArrayLike, onsite_energy: Union[float, np.ndarray] = 0.0,
                            alias: str = "") -> None:
         """Add a new sublattice
+
+        .. warning::
+
+            The hoppings in pybinding are implemented as the Hermitian conjugate,
+
+            .. math::
+
+                \\langle \\text{to} | \\hat H | \\text{from} \\rangle = \\left(\\begin{matrix}0 & t^\\dagger\\\\t & 0\\end{matrix}\\right)
+
+            the element :math:`t^\\dagger` is the input for the hoppings function.
+            However, the onsite energy is not affected by this and should be given in the normal manner.
 
         Parameters
         ----------
@@ -145,10 +175,26 @@ class Lattice:
                           LoudDeprecationWarning, stacklevel=2)
             self.add_one_alias(name, alias, position)
         else:
-            self.impl.add_sublattice(name, position, np.asarray(onsite_energy))
+            # convert single-element arrays to scalars
+            energy = np.asarray(onsite_energy)
+            if energy.size == 1:
+                energy = energy.item()
+            self.impl.add_sublattice(name, position, energy)
 
     def add_sublattices(self, *sublattices: Iterable[Tuple[str, ArrayLike, Union[float, np.ndarray]]]) -> None:
         """Add multiple new sublattices
+
+
+        .. warning::
+
+            The hoppings in pybinding are implemented as the Hermitian conjugate,
+
+            .. math::
+
+                \\langle \\text{to} | \\hat H | \\text{from} \\rangle = \\left(\\begin{matrix}0 & t^\\dagger\\\\t & 0\\end{matrix}\\right)
+
+            the element :math:`t^\\dagger` is the input for the hoppings function.
+            However, the onsite energy is not affected by this and should be given in the normal manner.
 
         Parameters
         ----------
@@ -215,6 +261,16 @@ class Lattice:
         manually, i.e. adding a hopping which is the Hermitian conjugate of an existing
         one, will result in an exception being raised.
 
+        .. warning::
+
+            The hoppings in pybinding are implemented as the Hermitian conjugate,
+
+            .. math::
+
+                \\langle \\text{to} | \\hat H | \\text{from} \\rangle = \\left(\\begin{matrix}0 & t^\\dagger\\\\t & 0\\end{matrix}\\right)
+
+            the element :math:`t^\\dagger` is the input for the hoppings function.
+
         Parameters
         ----------
         relative_index : array_like of int
@@ -231,6 +287,16 @@ class Lattice:
 
     def add_hoppings(self, *hoppings: Iterable[HoppingType]) -> None:
         """Add multiple new hoppings
+
+        .. warning::
+
+            The hoppings in pybinding are implemented as the Hermitian conjugate,
+
+            .. math::
+
+                \\langle \\text{to} | \\hat H | \\text{from} \\rangle = \\left(\\begin{matrix}0 & t^\\dagger\\\\t & 0\\end{matrix}\\right)
+
+            the element :math:`t^\\dagger` is the input for the hoppings function.
 
         Parameters
         ----------

@@ -77,6 +77,18 @@ of `(relative_index, from_sublattice, to_sublattice, energy)`:
 
 * The last parameter is simply the value of the hopping energy.
 
+
+.. warning::
+
+    The hoppings in pybinding are implemented as the Hermitian conjugate,
+
+    .. math::
+
+        \langle \text{to} | \hat H | \text{from} \rangle = \left(\begin{matrix}0 & t^\dagger\\t & 0\end{matrix}\right)
+
+    the element :math:`t^\dagger` is the input for the hoppings function.
+    However, the onsite energy is not affected by this and should be given in the normal manner.
+
 It's good practice to build the lattice inside a function to make it easily reusable.
 Here we define the same lattice as before, but note that the unit cell length and hopping energy
 are function arguments, which makes the lattice easily configurable.

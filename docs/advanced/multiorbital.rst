@@ -21,6 +21,17 @@ replacing a scalar value with a matrix while all of the principals described in 
     :nbexport:`Download this page as a Jupyter notebook <self>`
 
 
+.. warning::
+
+    The hoppings in pybinding are implemented as the Hermitian conjugate,
+
+    .. math::
+
+        \langle \text{to} | \hat H | \text{from} \rangle = \left(\begin{matrix}0 & t^\dagger\\t & 0\end{matrix}\right)
+
+    the element :math:`t^\dagger` is the input for the hoppings function.
+    However, the onsite energy is not affected by this and should be given in the normal manner.
+
 Onsite and hopping matrices
 ---------------------------
 
