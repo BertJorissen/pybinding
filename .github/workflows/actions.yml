@@ -102,9 +102,9 @@ jobs:
               $_
             }
           } | Set-Content pyproject.toml
-      - name: Change package to pybinding-dev Windows
+      - name: Change package to pybinding-dev not Windows
         if: (matrix.dev == 'development') && (runner.os != 'Windows')
-        run: sed -i '/^name =/s/pybinding/pybinding-dev/g' pyproject.toml
+        run: sed -i '' '/^name =/s/pybinding/pybinding-dev/g' pyproject.toml
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel
       - name: Build wheels
@@ -185,7 +185,7 @@ jobs:
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
-          python-version: matrix.python-version
+          python-version: ${{ matrix.python-version }}
       - name: Download artefacts
         uses: actions/download-artifact@v4
         with:
