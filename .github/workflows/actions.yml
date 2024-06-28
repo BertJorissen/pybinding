@@ -218,8 +218,8 @@ jobs:
         run: |
           mkdir pythonfiles-${{ matrix.dev }}
           for dir in allfiles/*; do
-            if [ -d "$dir" && "$dir" == *"${{ matrix.dev}}"* ]; then
-                cp -r "$dir"/* pythonfiles-${{ matrix.dev }}/
+            if [ -d "$dir" ] && [[ "$dir" == *"${{ matrix.dev}}"* ]]; then
+              cp -r "$dir"/* pythonfiles-${{ matrix.dev }}/
             fi
           done
       - uses: actions/upload-artifact@v4
