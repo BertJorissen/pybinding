@@ -43,7 +43,7 @@ jobs:
         run: python -c "import pybinding as pb; exit(pb.tests())"
 
   build-wheels:
-    name: Build wheels on ${{ matrix.os }} for ${{ matrix.arch }}
+    name: Build wheels on ${{ matrix.os }} for ${{ matrix.arch }} with ${{ matrix.dev }} mode and Python ${{ matrix.python-version }}
     environment: actions
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop'
     needs: [ test-compile ]
@@ -54,35 +54,35 @@ jobs:
           - os: ubuntu-latest
             arch: x86_64
             dev: normal
-            python-version: 3.10
+            python-version: "3.10"
           - os: ubuntu-latest
             arch: x86_64
             dev: development
-            python-version: 3.10
+            python-version: "3.10"
           - os: windows-latest
             arch: x86_64
             dev: normal
-            python-version: 3.10
+            python-version: "3.10"
           - os: windows-latest
             arch: x86_64
             dev: development
-            python-version: 3.10
+            python-version: "3.10"
           - os: macos-12
             arch: x86_64
             dev: normal
-            python-version: 3.10
+            python-version: "3.10"
           - os: macos-12
             arch: x86_64
             dev: development
-            python-version: 3.10
+            python-version: "3.10"
           - os: macos-14
             arch: arm64
             dev: normal
-            python-version: 3.10
+            python-version: "3.10"
           - os: macos-14
             arch: arm64
             dev: development
-            python-version: 3.10
+            python-version: "3.10"
     steps:
       - uses: actions/checkout@v4
         with:
