@@ -13,7 +13,7 @@ jobs:
       PB_BUILD_TYPE: Release
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-12, windows-latest ]
+        os: [ ubuntu-latest, macos-12, macos-14, windows-latest ]
         python-version: [ "3.10" ]
     steps:
       - uses: actions/checkout@v4
@@ -104,7 +104,12 @@ jobs:
           } | Set-Content pyproject.toml
       - name: Change package to pybinding-dev not Windows
         if: (matrix.dev == 'development') && (runner.os != 'Windows')
-        run: sed -i 's/^name = "pybinding"/name = "pybinding-dev"/g' pyproject.toml
+        run: |
+          if [[ "${{ runner.os }}" == "Linux" ]]; then
+            sed -i 's/^name *= *"pybinding"/name = "pybinding-dev"/g' pyproject.toml
+          elif [[ "${{ runner.os }}" == "macOS" ]]; then
+            sed -i '' 's/^name *= *"pybinding"/name = "pybinding-dev"/g' pyproject.toml
+          fi
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel
       - name: Build wheels
@@ -151,7 +156,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Change package to pybinding-dev
         if: matrix.dev == 'development'
-        run: sed -i 's/^name = "pybinding"/name = "pybinding-dev"/g' pyproject.toml
+        run: sed -i 's/^name *= *"pybinding"/name = "pybinding-dev"/g' pyproject.toml
       - name: Install dependencies Pybinding
         run: python -m pip install wheel scipy matplotlib pytest cmake ninja build
       - name: Build wheel
