@@ -95,9 +95,16 @@ jobs:
         if: ${{ matrix.dev }} == 'development'
         run: |
           if (${{ runner.os }} -eq 'Windows') {
-            (Get-Content pyproject.toml) -replace 'pybinding', 'pybinding-dev' | Set-Content pyproject.toml
+            $content = Get-Content pyproject.toml
+            $content | ForEach-Object {
+            if ($_ -match '^name =') {
+                $_ -replace 'pybinding', 'pybinding-dev'
+              } else {
+                $_
+              }
+            } | Set-Content pyproject.toml
           } else {
-            sed -i 's/pybinding/pybinding-dev/g' pyproject.toml
+            sed -i '/^name =/s/pybinding/pybinding-dev/g' pyproject.toml
           }
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel
@@ -145,7 +152,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Change package to pybinding-dev
         if: ${{ matrix.dev }} == 'development'
-        run: sed -i 's/pybinding/pybinding-dev/g' pyproject.toml
+        run: sed -i '/^name =/s/pybinding/pybinding-dev/g' pyproject.toml
       - name: Install dependencies Pybinding
         run: python -m pip install wheel scipy matplotlib pytest cmake ninja build
       - name: Build wheel
