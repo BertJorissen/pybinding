@@ -44,7 +44,7 @@ public:
     RealArrayConstRef eigenvalues();
     ComplexArrayConstRef eigenvectors();
 
-    ArrayXd calc_dos(EnergyXArray energies, EnergyX broadening);
+    ArrayXd calc_dos(const EnergyXArray& energies, EnergyX broadening);
     ArrayXd calc_spatial_ldos(EnergyX energy, EnergyX broadening);
 
 protected:

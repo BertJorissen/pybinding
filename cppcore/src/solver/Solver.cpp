@@ -13,7 +13,7 @@ struct CalcDOS {
 
         // DOS(E) = 1 / (broadening * sqrt(2pi)) * sum(exp(-0.5 * (En-E)^2 / broadening^2))
         ArrayXd dos(target_energies.size());
-        transform(target_energies, dos, [&](float E) {
+        transform(target_energies, dos, [&](double E) {
             auto gaussian = exp((En - E).square() * constant);
             return scale * sum(gaussian);
         });
@@ -85,7 +85,7 @@ ComplexArrayConstRef BaseSolver::eigenvectors() {
     return strategy->eigenvectors();
 }
 
-ArrayXd BaseSolver::calc_dos(EnergyXArray target_energies, EnergyX broadening) {
+ArrayXd BaseSolver::calc_dos(const EnergyXArray& target_energies, EnergyX broadening) {
     return num::match<ArrayX>(eigenvalues(), compute::CalcDOS{target_energies, broadening});
 }
 
