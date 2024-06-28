@@ -91,21 +91,20 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-      - name: Change package to pybinding-dev
-        if: ${{ matrix.dev }} == 'development'
+      - name: Change package to pybinding-dev Windows
+        if: (matrix.dev == 'development') && (runner.os == 'Windows')
         run: |
-          if (${{ runner.os }} -eq 'Windows') {
-            $content = Get-Content pyproject.toml
-            $content | ForEach-Object {
-            if ($_ -match '^name =') {
-                $_ -replace 'pybinding', 'pybinding-dev'
-              } else {
-                $_
-              }
-            } | Set-Content pyproject.toml
-          } else {
-            sed -i '/^name =/s/pybinding/pybinding-dev/g' pyproject.toml
-          }
+          $content = Get-Content pyproject.toml
+          $content | ForEach-Object {
+          if ($_ -match '^name =') {
+              $_ -replace 'pybinding', 'pybinding-dev'
+            } else {
+              $_
+            }
+          } | Set-Content pyproject.toml
+      - name: Change package to pybinding-dev Windows
+        if: (matrix.dev == 'development') && (runner.os != 'Windows')
+        run: sed -i '/^name =/s/pybinding/pybinding-dev/g' pyproject.toml
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel
       - name: Build wheels
@@ -151,7 +150,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Change package to pybinding-dev
-        if: ${{ matrix.dev }} == 'development'
+        if: matrix.dev == 'development'
         run: sed -i '/^name =/s/pybinding/pybinding-dev/g' pyproject.toml
       - name: Install dependencies Pybinding
         run: python -m pip install wheel scipy matplotlib pytest cmake ninja build
@@ -181,12 +180,12 @@ jobs:
         with:
           submodules: true
       - name: Set up MSVC
-        if: ${{ runner.os }} == 'Windows'
+        if: runner.os == 'Windows'
         uses: ilammy/msvc-dev-cmd@v1
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: matrix.python-version
       - name: Download artefacts
         uses: actions/download-artifact@v4
         with:
