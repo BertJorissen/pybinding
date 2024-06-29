@@ -10,6 +10,13 @@ option(PB_MKL "Use Intel's Math Kernel Library" OFF)
 option(PB_CUDA "Enable compilation of components written in CUDA" OFF)
 option(PB_CARTESIAN_FLOAT "Use floats for positions" OFF)
 
+message(STATUS "PB_WERROR: ${PB_WERROR}")
+message(STATUS "PB_TESTS: ${PB_TESTS}")
+message(STATUS "PB_NATIVE_SIMD: ${PB_NATIVE_SIMD}")
+message(STATUS "PB_MKL: ${PB_MKL}")
+message(STATUS "PB_CUDA: ${PB_CUDA}")
+message(STATUS "PB_CARTESIAN_FLOAT: ${PB_CARTESIAN_FLOAT}")
+
 add_library(cppcore
     include/compute/eigen3/lanczos.hpp
     include/compute/mkl/lanczos.hpp

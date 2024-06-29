@@ -123,6 +123,9 @@ jobs:
             PB_NATIVE_SIMD=OFF
             DELOCATE_VERBOSITY=1  # Enable verbose output for delocate
           CIBW_BUILD_VERBOSITY: 1
+          # Use delvewheel on windows
+          CIBW_BEFORE_BUILD_WINDOWS: "pip install delvewheel"
+          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel}"
           CIBW_BEFORE_TEST: pip install scipy contourpy --prefer-binary
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: python -c "import pybinding as pb; exit(pb.tests())"
