@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 11)
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build" FORCE)
 endif()
+messege(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
 find_program(ccache_found ccache)
 if(ccache_found)

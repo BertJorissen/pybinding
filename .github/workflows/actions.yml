@@ -118,11 +118,7 @@ jobs:
           CIBW_ARCHS_MACOS: ${{ matrix.arch }}
           CIBW_ARCHS_LINUX: x86_64
           CIBW_BEFORE_BUILD: pip install scipy contourpy --prefer-binary
-          CIBW_ENVIRONMENT: |
-            PB_BUILD_TYPE=Release
-            DPB_NATIVE_SIMD=OFF
-            PB_NATIVE_SIMD=OFF
-            DELOCATE_VERBOSITY=1  # Enable verbose output for delocate
+          CIBW_ENVIRONMENT: PB_BUILD_TYPE=Release PB_NATIVE_SIMD=OFF DELOCATE_VERBOSITY=1
           CIBW_BUILD_VERBOSITY: 1
           # Use delvewheel on windows
           CIBW_BEFORE_BUILD_WINDOWS: "pip install delvewheel"
