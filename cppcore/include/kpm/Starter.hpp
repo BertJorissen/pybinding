@@ -5,6 +5,7 @@
 #include "compute/detail.hpp"
 
 #include <mutex>
+#include <iostream>
 
 namespace cpb { namespace kpm {
 
@@ -16,11 +17,15 @@ struct Starter {
     idx_t vector_size;
     mutable idx_t count = 0; ///< the number of vector this starter has produced
     std::unique_ptr<std::mutex> mutex = std14::make_unique<std::mutex>();
+    // print a debug message when the destructor is called
+    ~Starter() { std::cout << "Starter destructor called" << std::endl; }
 
     void lock() const { mutex->lock(); }
     void unlock() const { mutex->unlock(); }
 
-    Starter(Make make, idx_t vector_size) : make(std::move(make)), vector_size(vector_size) {}
+    Starter(Make make, idx_t vector_size) : make(std::move(make)), vector_size(vector_size) {
+        std::cout << "Starter constructor called" << std::endl;
+    }
 };
 
 /// Starter vector equal to the constant `alpha` (`oh` is needed for reordering)

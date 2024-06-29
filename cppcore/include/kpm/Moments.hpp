@@ -2,6 +2,7 @@
 #include "kpm/OptimizedHamiltonian.hpp"
 
 #include <mutex>
+#include <iostream>
 
 namespace cpb { namespace kpm {
 
@@ -30,9 +31,13 @@ struct BatchDiagonalMoments {
     Collect collect;
     BatchData data;
     std::unique_ptr<std::mutex> mutex = std14::make_unique<std::mutex>();
+    // print a debug message when the destructor is called
+    ~BatchDiagonalMoments() { std::cout << "BatchDiagonalMoments destructor called" << std::endl; }
 
     BatchDiagonalMoments(idx_t num_moments, idx_t num_vectors, Collect collect)
-        : num_moments(num_moments), num_vectors(num_vectors), collect(std::move(collect)) {}
+        : num_moments(num_moments), num_vectors(num_vectors), collect(std::move(collect)) {
+        std::cout << "BatchDiagonalMoments constructor called" << std::endl;
+    }
 
     /// `idx` is the index of the `new_data` within `data`
     void add(BatchData const& new_data, idx_t idx) {
