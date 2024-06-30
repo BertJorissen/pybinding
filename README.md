@@ -25,7 +25,7 @@ The main features include:
   help visualize the model structure and to make sense of the results.
 
 The code interface is written in Python with the aim to be as user-friendly and flexible as
-possible. Under the hood, C++11 is used to accelerate demanding tasks to deliver high performance
+possible. Under the hood, C++17 is used to accelerate demanding tasks to deliver high performance
 with low memory usage.
 
 See the [documentation] for more details.

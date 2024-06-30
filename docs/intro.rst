@@ -23,7 +23,7 @@ The main features include:
   help visualize the model structure and to make sense of the results.
 
 The main interface is written in Python with the aim to be as user-friendly and flexible as
-possible. Under the hood, C++11 is used to accelerate demanding tasks to deliver high performance
+possible. Under the hood, C++17 is used to accelerate demanding tasks to deliver high performance
 with low memory usage.
 
 
@@ -40,7 +40,7 @@ of atoms.
 Python is a programming language which is easy to learn and a joy to use. It has deep roots in
 the scientific community as evidenced by the rich scientific Python library collection: `SciPy
 <http://www.scipy.org/>`_. As such, Python is the ideal choice as the main interface for pybinding.
-In the core of the package, C++11 is used to accelerate model construction and the most demanding
+In the core of the package, C++17 is used to accelerate model construction and the most demanding
 calculations. This is done silently in the background.
 
 

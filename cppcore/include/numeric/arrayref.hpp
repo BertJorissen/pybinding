@@ -166,8 +166,8 @@ namespace detail {
     );
 
     template<class Function, template<class> class Container, class Variant>
-    using MatchResult = typename std::result_of<
-        Function(DeclContainer<Container, Variant>)
+    using MatchResult = typename std::invoke_result<
+        Function, DeclContainer<Container, Variant>
     >::type;
 
     template<class Result, template<class> class /*Container*/, class Variant, class Function>
@@ -187,8 +187,8 @@ namespace detail {
 
     template<class Function, template<class> class Container1, template<class> class Container2,
              class Variant1, class Variant2>
-    using Match2Result = typename std::result_of<
-        Function(DeclContainer<Container1, Variant1>, DeclContainer<Container2, Variant2>)
+    using Match2Result = typename std::invoke_result<
+        Function, DeclContainer<Container1, Variant1>, DeclContainer<Container2, Variant2>
     >::type;
 
     template<class Result, template<class> class /*Container1*/,
