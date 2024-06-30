@@ -28,7 +28,6 @@
 
 #include "detail/config.hpp"
 #include "detail/macros.hpp"
-#include "support/cppfuture.hpp"
 #include <complex>
 
 namespace cpb { namespace simd {
@@ -53,9 +52,9 @@ namespace detail {
     template<> struct select_vector<std::complex<double>> : select_vector<double> {};
 
     template<class T>
-    using requires_real = std14::enable_if_t<std::is_floating_point<T>::value, int>;
+    using requires_real = std::enable_if_t<std::is_floating_point<T>::value, int>;
     template<class T>
-    using requires_complex = std14::enable_if_t<!std::is_floating_point<T>::value, int>;
+    using requires_complex = std::enable_if_t<!std::is_floating_point<T>::value, int>;
 } // namespace detail
 
 /**

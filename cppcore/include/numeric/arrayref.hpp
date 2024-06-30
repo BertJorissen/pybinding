@@ -1,6 +1,5 @@
 #pragma once
 #include "detail/typelist.hpp"
-#include "support/cppfuture.hpp"
 #include "numeric/traits.hpp"
 
 #include <algorithm>
@@ -32,10 +31,10 @@ namespace detail {
     template<class T>
     constexpr Tag get_tag() {
         static_assert(std::is_integral<T>::value && (sizeof(T) == 8 || sizeof(T) == 4), "");
-        using type = std14::conditional_t<
+        using type = std::conditional_t<
             std::is_signed<T>::value,
-            std14::conditional_t<sizeof(T) == 8, std::int64_t, std::int32_t>,
-            std14::conditional_t<sizeof(T) == 8, std::uint64_t, std::uint32_t>
+            std::conditional_t<sizeof(T) == 8, std::int64_t, std::int32_t>,
+            std::conditional_t<sizeof(T) == 8, std::uint64_t, std::uint32_t>
         >;
         return get_tag<type>();
     }
@@ -43,7 +42,7 @@ namespace detail {
     /// Reference to any 1D, 2D or 3D array with any scalar type supported by Tag
     template<bool is_const>
     struct BasicArrayRef {
-        using Ptr = std14::conditional_t<is_const, void const*, void*>;
+        using Ptr = std::conditional_t<is_const, void const*, void*>;
         using Dim = std::int8_t;
         using Shape = std::array<idx_t, 3>;
 
@@ -61,7 +60,7 @@ namespace detail {
 
         template<class T>
         BasicArrayRef(T* data, Dim ndim, bool rm, idx_t x, idx_t y = 0, idx_t z = 0)
-            : BasicArrayRef(data, get_tag<std14::remove_const_t<T>>(), ndim, rm, x, y, z) {}
+            : BasicArrayRef(data, get_tag<std::remove_const_t<T>>(), ndim, rm, x, y, z) {}
 
         /// Non-const array can be converted to const, but not the other way around
         BasicArrayRef(BasicArrayRef<false> const& a)
@@ -72,7 +71,7 @@ namespace detail {
     };
 
     template<class T>
-    using MakeArrayRef = BasicArrayRef<std::is_const<std14::remove_pointer_t<T>>::value>;
+    using MakeArrayRef = BasicArrayRef<std::is_const<std::remove_pointer_t<T>>::value>;
 
     template<class T>
     auto make_arrayref(T* data, std::int8_t ndim, bool is_row_major, idx_t x, idx_t y, idx_t z)

@@ -29,7 +29,7 @@ struct BatchDiagonalMoments {
     idx_t num_vectors;
     Collect collect;
     BatchData data;
-    std::unique_ptr<std::mutex> mutex = std14::make_unique<std::mutex>();
+    std::unique_ptr<std::mutex> mutex = std::make_unique<std::mutex>();
 
     BatchDiagonalMoments(idx_t num_moments, idx_t num_vectors, Collect collect)
         : num_moments(num_moments), num_vectors(num_vectors), collect(std::move(collect)) {}

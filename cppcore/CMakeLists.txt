@@ -61,8 +61,7 @@ add_library(cppcore
     include/numeric/traits.hpp
     include/solver/FEAST.hpp
     include/solver/Solver.hpp
-    include/support/cppfuture.hpp
-    include/support/format.hpp
+        include/support/format.hpp
     include/support/simd.hpp
     include/support/variant.hpp
     include/system/CompressedSublattices.hpp
