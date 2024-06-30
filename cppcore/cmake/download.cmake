@@ -44,6 +44,7 @@ endfunction()
 # The version number is saved in a file along with the dependency.
 # If a matching version already exists, the download is skipped.
 function(download_dependency NAME VERSION URL_FMT FIRST_FILE_FMT)
+    message(STATUS "Using ${NAME} v${VERSION}, downloading if necessary")
     set(dir "${CMAKE_CURRENT_SOURCE_DIR}/deps/${NAME}")
 
     set(version_file "${dir}/_pybinding_dependency_version")
