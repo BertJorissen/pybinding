@@ -123,9 +123,9 @@ download_dependency(variant 1.2.0
                     https://raw.githubusercontent.com/mapbox/variant/v\${VERSION}/include
                     mapbox/variant.hpp mapbox/recursive_wrapper.hpp mapbox/variant_visitor.hpp)
 target_include_directories(cppcore SYSTEM PUBLIC ${VARIANT_INCLUDE_DIR})
-download_dependency(simdpp 2.1
-                    https://github.com/p12tic/libsimdpp/archive
-                    /v\${VERSION}.tar.gz */simdpp)
+download_dependency(simdpp master # dangerous, but we need the latest version. No release since 2017.
+                    https://github.com/p12tic/libsimdpp/archive/refs/heads
+                    /\${VERSION}.zip */simdpp)
 target_include_directories(cppcore SYSTEM PUBLIC ${SIMDPP_INCLUDE_DIR})
 
 include(fmt)

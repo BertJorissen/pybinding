@@ -288,9 +288,9 @@ namespace detail {
     };
 #endif
 
-    template<template<unsigned, class> class V, unsigned N>
-    struct Gather<V<N, void>> {
-        using Vec = V<N, void>;
+    template<class V>
+    struct Gather {
+        using Vec = V;
         using BaseVec = typename Vec::base_vector_type;
         static constexpr auto element_size = sizeof(typename Vec::element_type);
 
@@ -333,40 +333,40 @@ Vec gather(Scalar const* data, Index const* indices) {
      r3 = a3 + b3
      ...
  */
-template<template<unsigned, class> class Vec, unsigned N, class E1, class E2> CPB_ALWAYS_INLINE
-Vec<N, void> addsub(Vec<N, E1> const& a, Vec<N, E2> const& b) {
+template<template<unsigned> class Vec, unsigned N> CPB_ALWAYS_INLINE
+Vec<N> addsub(Vec<N> const& a, Vec<N> const& b) {
     return a + simd::shuffle4x2<0, 5, 2, 7>(simd::neg(b), b);
 }
 
 #if SIMDPP_USE_SSE3
-template<class E1, class E2> CPB_ALWAYS_INLINE
-float32x4 addsub(float32<4, E1> const& a, float32<4, E2> const& b) {
-    return _mm_addsub_ps(a.eval().native(), b.eval().native());
+template<> CPB_ALWAYS_INLINE
+float32x4 addsub(float32<4> const& a, float32<4> const& b) {
+    return _mm_addsub_ps(a.native(), b.native());
 }
 
-template<class E1, class E2> CPB_ALWAYS_INLINE
-float64x2 addsub(float64<2, E1> const& a, float64<2, E2> const& b) {
-    return _mm_addsub_pd(a.eval().native(), b.eval().native());
+template<> CPB_ALWAYS_INLINE
+float64x2 addsub(float64<2> const& a, float64<2> const& b) {
+    return _mm_addsub_pd(a.native(), b.native());
 }
 #endif // SIMDPP_USE_SSE3
 
 #if SIMDPP_USE_AVX
-template<class E1, class E2> CPB_ALWAYS_INLINE
-float32x8 addsub(float32<8, E1> const& a, float32<8, E2> const& b) {
-    return _mm256_addsub_ps(a.eval().native(), b.eval().native());
+template<> CPB_ALWAYS_INLINE
+float32x8 addsub(float32<8> const& a, float32<8> const& b) {
+    return _mm256_addsub_ps(a.native(), b.native());
 }
 
-template<class E1, class E2> CPB_ALWAYS_INLINE
-float64x4 addsub(float64<4, E1> const& a, float64<4, E2> const& b) {
-    return _mm256_addsub_pd(a.eval().native(), b.eval().native());
+template<> CPB_ALWAYS_INLINE
+float64x4 addsub(float64<4> const& a, float64<4> const& b) {
+    return _mm256_addsub_pd(a.native(), b.native());
 }
 #endif // SIMDPP_USE_AVX
 
 /**
  Complex multiplication
  */
-template<template<unsigned, class> class Vec, unsigned N, class E1, class E2> CPB_ALWAYS_INLINE
-Vec<N, void> complex_mul(Vec<N, E1> const& ab, Vec<N, E2> const& xy) {
+template<template<unsigned> class Vec, unsigned N> CPB_ALWAYS_INLINE
+Vec<N> complex_mul(Vec<N> const& ab, Vec<N> const& xy) {
     // (a + ib) * (x + iy) = (ax - by) + i(ay + bx)
     auto const aa = permute2<0, 0>(ab);
     auto const axay = aa * xy;
@@ -379,13 +379,13 @@ Vec<N, void> complex_mul(Vec<N, E1> const& ab, Vec<N, E2> const& xy) {
 /**
  Complex conjugate
  */
-template<unsigned N, class E> CPB_ALWAYS_INLINE
-float32<N> conjugate(float32<N, E> const& a) {
+template<unsigned N> CPB_ALWAYS_INLINE
+float32<N> conjugate(float32<N> const& a) {
     return bit_xor(a, make_uint<uint32<N>>(0, 0x80000000));
 }
 
-template<unsigned N, class E> CPB_ALWAYS_INLINE
-float64<N> conjugate(float64<N, E> const& a) {
+template<unsigned N> CPB_ALWAYS_INLINE
+float64<N> conjugate(float64<N> const& a) {
     return bit_xor(a, make_uint<uint64<N>>(0, 0x8000000000000000));
 }
 
