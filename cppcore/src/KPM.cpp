@@ -20,8 +20,8 @@ ArrayXcd KPM::moments(idx_t num_moments, VectorXcd const& alpha, VectorXcd const
                       SparseMatrixXcd const& op) const {
     auto const ham_size =  model.system()->hamiltonian_size();
     auto const check_size = std::unordered_map<char const*, bool>{
-        {"alpha", alpha.size() == model.system()->hamiltonian_size()},
-        {"beta", beta.size() == 0 || beta.size() == model.system()->hamiltonian_size()},
+        {"alpha", alpha.size() == ham_size},
+        {"beta", beta.size() == 0 || beta.size() == ham_size},
         {"operator", op.size() == 0 || (op.rows() == ham_size && op.cols() == ham_size)}
     };
     for (auto const& pair : check_size) {
@@ -32,6 +32,8 @@ ArrayXcd KPM::moments(idx_t num_moments, VectorXcd const& alpha, VectorXcd const
     }
 
     if (!model.is_complex()) {
+        auto const opv = op.valuePtr();
+        auto const opn = op.nonZeros();
         auto const check_scalar_type = std::unordered_map<char const*, bool>{
             {"alpha", alpha.imag().isZero()},
             {"beta", beta.imag().isZero()},

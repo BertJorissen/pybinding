@@ -176,7 +176,7 @@ class Lattice:
             self.add_one_alias(name, alias, position)
         else:
             # convert single-element arrays to scalars
-            energy = np.asarray(onsite_energy)
+            energy = np.asarray(onsite_energy, dtype=float)
             if energy.size == 1:
                 energy = energy.item()
             self.impl.add_sublattice(name, position, energy)
