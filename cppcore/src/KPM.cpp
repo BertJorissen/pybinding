@@ -32,8 +32,6 @@ ArrayXcd KPM::moments(idx_t num_moments, VectorXcd const& alpha, VectorXcd const
     }
 
     if (!model.is_complex()) {
-        auto const opv = op.valuePtr();
-        auto const opn = op.nonZeros();
         auto const check_scalar_type = std::unordered_map<char const*, bool>{
             {"alpha", alpha.imag().isZero()},
             {"beta", beta.imag().isZero()},
