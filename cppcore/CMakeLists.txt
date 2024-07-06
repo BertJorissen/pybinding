@@ -135,6 +135,7 @@ if(PB_NATIVE_SIMD AND NOT MSVC) # MSVC does not have anything like a /arch:nativ
     include(CheckCXXCompilerFlag)
     check_cxx_compiler_flag(-march=native PB_HAS_ARCH_NATIVE)
     if(PB_HAS_ARCH_NATIVE)
+        MESSAGE(STATUS "march=native option added")
         target_compile_options(cppcore PUBLIC -march=native)
     endif()
 endif()
