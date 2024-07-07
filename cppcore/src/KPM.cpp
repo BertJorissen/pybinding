@@ -18,6 +18,18 @@ std::string KPM::report(bool shortform) const {
 
 ArrayXcd KPM::moments(idx_t num_moments, VectorXcd const& alpha, VectorXcd const& beta,
                       SparseMatrixXcd const& op) const {
+    if (!num_moments) { // Check if the source object is null
+        throw std::runtime_error("Attempting to cast from a null source, num_moments");
+    }
+    if (alpha.size() <= 0) { // Check if the source object is null
+        throw std::runtime_error("Attempting to cast from a null source, alpha");
+    }
+    if (beta.size() <= 0) { // Check if the source object is null
+        throw std::runtime_error("Attempting to cast from a null source, beta");
+    }
+    if (op.size() <= 0) { // Check if the source object is null
+        throw std::runtime_error("Attempting to cast from a null source, op");
+    }
     auto const ham_size =  model.system()->hamiltonian_size();
     auto const check_size = std::unordered_map<char const*, bool>{
         {"alpha", alpha.size() == ham_size},
