@@ -320,3 +320,134 @@ TEST_CASE("KPM core", "[kpm]") {
     }
 #endif // CPB_USE_CUDA
 }
+
+
+TEST_CASE("KPM interface") {
+    SECTION("KPM construction") {
+        auto const model = make_test_model();
+        auto const compute = kpm::DefaultCompute{};
+        auto const config = kpm::Config{};
+        auto kpm = KPM(model, compute, config);
+
+        REQUIRE(kpm.get_model().system() == model.system());
+    }
+
+    SECTION("KPM moments") {
+        auto const model = make_test_model();
+        auto const compute = kpm::DefaultCompute{};
+        auto const config = kpm::Config{};
+        auto kpm = KPM(model, compute, config);
+
+        auto const ham_size = model.system()->hamiltonian_size();
+        auto const alpha = VectorXcd::Random(ham_size);
+        auto const beta = VectorXcd::Random(ham_size);
+        MatrixXcd dense_op_real(ham_size, ham_size);
+        dense_op_real.real() = MatrixXd::Random(ham_size, ham_size);
+        dense_op_real.imag() = MatrixXd::Zero(ham_size, ham_size);
+        auto op_real = dense_op_real.sparseView();
+        MatrixXcd dense_op_imag(ham_size, ham_size);
+        dense_op_imag.real() = MatrixXd::Random(ham_size, ham_size);
+        dense_op_imag.imag() = MatrixXd::Random(ham_size, ham_size);
+        auto op_imag = dense_op_imag.sparseView();
+        auto const num_moments = 10;
+        REQUIRE_THROWS_WITH(kpm.moments(num_moments, alpha, beta.real(), op_real),
+                            "The model Hamiltonian is real, but the given argument 'alpha' is complex");
+        REQUIRE_THROWS_WITH(kpm.moments(num_moments, alpha.real(), beta, op_real),
+                            "The model Hamiltonian is real, but the given argument 'beta' is complex");
+        REQUIRE_THROWS_WITH(kpm.moments(num_moments, alpha.real(), beta.real(), op_imag),
+                            "The model Hamiltonian is real, but the given argument 'operator' is complex");
+
+        auto const alpha_small = VectorXd::Random(ham_size - 1);
+        auto const beta_small = VectorXd::Random(ham_size - 1);
+        MatrixXcd dense_op_real_small(ham_size - 1, ham_size - 1);
+        dense_op_real_small.real() = MatrixXd::Random(ham_size, ham_size);
+        auto op_real_small = dense_op_real_small.sparseView();
+        REQUIRE_THROWS_WITH(kpm.moments(num_moments, alpha_small, beta.real(), op_real),
+                            "Size mismatch between the model Hamiltonian and the given argument 'alpha'");
+        REQUIRE_THROWS_WITH(kpm.moments(num_moments, alpha.real(), beta_small, op_real),
+                            "Size mismatch between the model Hamiltonian and the given argument 'beta'");
+        REQUIRE_THROWS_WITH(kpm.moments(num_moments, alpha.real(), beta.real(), op_real_small),
+                            "Size mismatch between the model Hamiltonian and the given argument 'operator'");
+    }
+
+    SECTION("KPM ldos") {
+        auto const model = make_test_model();
+        auto const compute = kpm::DefaultCompute{};
+        auto const config = kpm::Config{};
+        auto kpm = KPM(model, compute, config);
+
+        auto const energy = ArrayXd::LinSpaced(10, -0.3, 0.3);
+        auto const broadening = 0.8;
+        auto const position = Cartesian{0, 0.07f, 0};
+        auto const sublattice = "B";
+        auto const reduce = true;
+        REQUIRE_NOTHROW(kpm.calc_ldos(energy, broadening, position, sublattice, reduce));
+    }
+
+    SECTION("KPM spatial ldos") {
+        auto const model = make_test_model();
+        auto const compute = kpm::DefaultCompute{};
+        auto const config = kpm::Config{};
+        auto kpm = KPM(model, compute, config);
+
+        auto const energy = ArrayXd::LinSpaced(10, -0.3, 0.3);
+        auto const broadening = 0.8;
+        auto const shape = shape::rectangle(0.6f, 0.8f);
+        auto const sublattice = "A";
+        REQUIRE_NOTHROW(kpm.calc_spatial_ldos(energy, broadening, shape, sublattice));
+    }
+
+    SECTION("KPM DOS") {
+        auto const model = make_test_model();
+        auto const compute = kpm::DefaultCompute{};
+        auto const config = kpm::Config{};
+        auto kpm = KPM(model, compute, config);
+
+        auto const energy = ArrayXd::LinSpaced(10, -0.3, 0.3);
+        auto const broadening = 0.8;
+        auto const num_random = 1;
+        REQUIRE_NOTHROW(kpm.calc_dos(energy, broadening, num_random));
+    }
+
+    SECTION("KPM Green's function") {
+        auto const model = make_test_model();
+        auto const compute = kpm::DefaultCompute{};
+        auto const config = kpm::Config{};
+        auto kpm = KPM(model, compute, config);
+
+        auto const energy = ArrayXd::LinSpaced(10, -0.3, 0.3);
+        auto const broadening = 0.8;
+        auto const row = 0;
+        auto const col = 1;
+        REQUIRE_NOTHROW(kpm.calc_greens(row, col, energy, broadening));
+    }
+
+    SECTION("KPM Green's function vector") {
+        auto const model = make_test_model();
+        auto const compute = kpm::DefaultCompute{};
+        auto const config = kpm::Config{};
+        auto kpm = KPM(model, compute, config);
+
+        auto const energy = ArrayXd::LinSpaced(10, -0.3, 0.3);
+        auto const broadening = 0.8;
+        auto const row = 0;
+        auto const cols = std::vector<idx_t>{1, 2, 3};
+        REQUIRE_NOTHROW(kpm.calc_greens_vector(row, cols, energy, broadening));
+    }
+
+    SECTION("KPM conductivity") {
+        auto const model = make_test_model();
+        auto const compute = kpm::DefaultCompute{};
+        auto const config = kpm::Config{};
+        auto kpm = KPM(model, compute, config);
+
+        auto const chemical_potential = ArrayXd::LinSpaced(10, -0.3, 0.3);
+        auto const broadening = 0.8;
+        auto const temperature = 0.1;
+        auto const direction = "xx";
+        auto const num_random = 1;
+        auto const num_points = 10;
+        REQUIRE_NOTHROW(kpm.calc_conductivity(chemical_potential, broadening, temperature,
+                                              direction, num_random, num_points));
+    }
+}

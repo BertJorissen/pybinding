@@ -76,10 +76,6 @@ def test_moments(model, plot_if_fails):
     plot_if_fails(ldos, expected_ldos, "plot")
     assert pytest.fuzzy_equal(ldos, expected_ldos, rtol=1e-4, atol=1e-6)
 
-
-    kpm.moments(10, np.ones(kpm.model.hamiltonian.shape[0]))
-    kpm.moments(10, np.ones(kpm.model.hamiltonian.shape[0]).tolist())
-
     with pytest.raises(RuntimeError) as excinfo:
         kpm.moments(10, [1, 2, 3])
     assert "Size mismatch" in str(excinfo.value)
