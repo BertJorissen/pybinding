@@ -31,6 +31,10 @@ ArrayXcd KPM::moments(idx_t num_moments, VectorXcd const& alpha, VectorXcd const
         }
     }
 
+    assert(alpha.size() == ham_size);
+    assert(beta.size() == 0 || beta.size() == ham_size);
+    assert(op.size() == 0 || (op.rows() == ham_size && op.cols() == ham_size));
+
     if (!model.is_complex()) {
         auto const check_scalar_type = std::unordered_map<char const*, bool>{
             {"alpha", alpha.imag().isZero()},
