@@ -63,7 +63,7 @@ def test_moments(model, plot_if_fails):
         alpha[idx] = 1
 
         a, b = kpm.scaling_factors
-        num_moments = kpm.kernel.required_num_moments(broadening / a)
+        num_moments = int(kpm.kernel.required_num_moments(broadening / a))
         moments = kpm.moments(num_moments, alpha)
 
         ns = np.arange(num_moments)
