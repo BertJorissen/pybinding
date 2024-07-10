@@ -21,7 +21,8 @@ ArrayXcd KPM::moments(idx_t num_moments, VectorXcd const& alpha, VectorXcd const
     auto const ham_size =  model.system()->hamiltonian_size();
     auto const check_size = std::unordered_map<char const*, bool>{
         {"alpha", alpha.size() == ham_size},
-        {"beta", beta.size() == 0 || beta.size() == ham_size}
+        {"beta", beta.size() == 0 || beta.size() == ham_size},
+        {"operator", op.size() == 0 || (op.rows() == ham_size && op.cols() == ham_size)}
     };
     for (auto const& pair : check_size) {
         if (!pair.second) {
