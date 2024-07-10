@@ -31,7 +31,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies for Pybinding
-        run: python -m pip install wheel scipy matplotlib pytest cmake ninja
+        run: python -m pip install wheel scipy matplotlib==3.9.0 pytest cmake ninja
       - name: Build with CMake and test Python / C++
         timeout-minutes: 20
         run: |
@@ -157,7 +157,7 @@ jobs:
         if: matrix.dev == 'development'
         run: sed -i 's/^name *= *"pybinding"/name = "pybinding-dev"/g' pyproject.toml
       - name: Install dependencies Pybinding
-        run: python -m pip install wheel scipy matplotlib pytest cmake ninja build
+        run: python -m pip install wheel scipy matplotlib==3.9.0 pytest cmake ninja build
       - name: Build wheel
         run: python -m build --sdist --outdir dist/
       - name: Upload Artifact
@@ -197,7 +197,7 @@ jobs:
           path: dist
       - name: Install Pybinding
         run: |
-          python -m pip install wheel scipy matplotlib pytest cmake ninja build numpy setuptools
+          python -m pip install wheel scipy matplotlib==3.9.0 pytest cmake ninja build numpy setuptools
           python -m pip install --find-links=dist pybinding --no-binary pybinding
       - name: Run tests
         run: python -c "import pybinding as pb; pb.tests();"
@@ -285,7 +285,7 @@ jobs:
         with:
           python-version: "3.10"
       - name: Install dependencies Pybinding
-        run: python -m pip install wheel scipy matplotlib pytest cmake ninja sphinx-rtd-theme recommonmark numpydoc nbconvert
+        run: python -m pip install wheel scipy matplotlib==3.9.0 pytest cmake ninja sphinx-rtd-theme recommonmark numpydoc nbconvert
       - name: Test Documentation
         timeout-minutes: 20
         run: |
