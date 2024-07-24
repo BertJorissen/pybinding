@@ -29,13 +29,13 @@ Registry<ID>::Registry(std::vector<MatrixXcd> energies, std::vector<std::string>
 template<class ID>
 void Registry<ID>::register_family(std::string const& name, MatrixXcd const& energy) {
     if (name.empty()) {
-        throw std::logic_error("{} family name can't be blank"_format(kind<ID>()));
+        throw std::logic_error(fmt::format("{} family name can't be blank", kind<ID>()));
     }
     check_energy(*this, energy);
 
     auto const not_unique = std::find(names.begin(), names.end(), name) != names.end();
     if (not_unique) {
-        throw std::logic_error("{} family '{}' already exists"_format(kind<ID>(), name));
+        throw std::logic_error(fmt::format("{} family '{}' already exists", kind<ID>(), name));
     }
 
     names.push_back(name);
@@ -55,7 +55,7 @@ template<class ID>
 string_view Registry<ID>::name(ID id) const {
     auto const index = id.value();
     if (index >= size()) {
-        throw std::out_of_range("There is no {} with ID = {}"_format(kind<ID>(), index));
+        throw std::out_of_range(fmt::format("There is no {} with ID = {}", kind<ID>(), index));
     }
     return names[index];
 }
@@ -64,7 +64,7 @@ template<class ID>
 MatrixXcd const& Registry<ID>::energy(ID id) const {
     auto const index = id.value();
     if (index >= size()) {
-        throw std::out_of_range("There is no {} with ID = {}"_format(kind<ID>(), index));
+        throw std::out_of_range(fmt::format("There is no {} with ID = {}", kind<ID>(), index));
     }
     return energies[index];
 }
@@ -73,7 +73,7 @@ template<class ID>
 ID Registry<ID>::id(string_view name) const {
     auto const it = std::find(names.begin(), names.end(), name);
     if (it == names.end()) {
-        throw std::out_of_range("There is no {} named '{}'"_format(kind<ID>(), name));
+        throw std::out_of_range(fmt::format("There is no {} named '{}'", kind<ID>(), name));
     }
     return ID(std::distance(names.begin(), it));
 }

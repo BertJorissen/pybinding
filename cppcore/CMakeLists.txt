@@ -10,6 +10,13 @@ option(PB_MKL "Use Intel's Math Kernel Library" OFF)
 option(PB_CUDA "Enable compilation of components written in CUDA" OFF)
 option(PB_CARTESIAN_FLOAT "Use floats for positions" OFF)
 
+message(STATUS "PB_WERROR: ${PB_WERROR}")
+message(STATUS "PB_TESTS: ${PB_TESTS}")
+message(STATUS "PB_NATIVE_SIMD: ${PB_NATIVE_SIMD}")
+message(STATUS "PB_MKL: ${PB_MKL}")
+message(STATUS "PB_CUDA: ${PB_CUDA}")
+message(STATUS "PB_CARTESIAN_FLOAT: ${PB_CARTESIAN_FLOAT}")
+
 add_library(cppcore
     include/compute/eigen3/lanczos.hpp
     include/compute/mkl/lanczos.hpp
@@ -54,8 +61,7 @@ add_library(cppcore
     include/numeric/traits.hpp
     include/solver/FEAST.hpp
     include/solver/Solver.hpp
-    include/support/cppfuture.hpp
-    include/support/format.hpp
+        include/support/format.hpp
     include/support/simd.hpp
     include/support/variant.hpp
     include/system/CompressedSublattices.hpp
@@ -117,9 +123,9 @@ download_dependency(variant 1.2.0
                     https://raw.githubusercontent.com/mapbox/variant/v\${VERSION}/include
                     mapbox/variant.hpp mapbox/recursive_wrapper.hpp mapbox/variant_visitor.hpp)
 target_include_directories(cppcore SYSTEM PUBLIC ${VARIANT_INCLUDE_DIR})
-download_dependency(simdpp 2.1
-                    https://github.com/p12tic/libsimdpp/archive
-                    /v\${VERSION}.tar.gz */simdpp)
+download_dependency(simdpp dev # dangerous, but we need the latest version. No release since 2017.
+                    https://github.com/p12tic/libsimdpp/archive/refs/heads
+                    /\${VERSION}.zip */simdpp)
 target_include_directories(cppcore SYSTEM PUBLIC ${SIMDPP_INCLUDE_DIR})
 
 include(fmt)
@@ -129,6 +135,7 @@ if(PB_NATIVE_SIMD AND NOT MSVC) # MSVC does not have anything like a /arch:nativ
     include(CheckCXXCompilerFlag)
     check_cxx_compiler_flag(-march=native PB_HAS_ARCH_NATIVE)
     if(PB_HAS_ARCH_NATIVE)
+        MESSAGE(STATUS "march=native option added")
         target_compile_options(cppcore PUBLIC -march=native)
     endif()
 endif()

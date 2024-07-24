@@ -54,7 +54,7 @@ template<class Scalar, class... Scalars>
 struct VariantCsrConstRef : AnyCsrConstRef {
     using Types = TypeList<Scalar, Scalars...>;
 
-    template<class scalar_t, class = std14::enable_if_t<tl::AnyOf<Types, scalar_t>::value>>
+    template<class scalar_t, class = std::enable_if_t<tl::AnyOf<Types, scalar_t>::value>>
     VariantCsrConstRef(CsrConstRef<scalar_t> const& other) : AnyCsrConstRef(other) {}
 };
 
@@ -117,7 +117,7 @@ template<class Scalar, class... Scalars>
 struct VariantEllConstRef : AnyEllConstRef {
     using Types = TypeList<Scalar, Scalars...>;
 
-    template<class scalar_t, class = std14::enable_if_t<tl::AnyOf<Types, scalar_t>::value>>
+    template<class scalar_t, class = std::enable_if_t<tl::AnyOf<Types, scalar_t>::value>>
     VariantEllConstRef(EllConstRef<scalar_t> const& other) : AnyEllConstRef(other) {}
 };
 

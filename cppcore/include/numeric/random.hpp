@@ -1,6 +1,5 @@
 #pragma once
 #include "numeric/dense.hpp"
-#include "support/cppfuture.hpp"
 
 #include <random>
 
@@ -8,10 +7,10 @@ namespace cpb { namespace num {
 
 namespace detail {
     template<class Container>
-    using get_element_t = get_real_t<std14::decay_t<decltype(std::declval<Container>()[0])>>;
+    using get_element_t = get_real_t<std::decay_t<decltype(std::declval<Container>()[0])>>;
 
     template<class scalar_t>
-    using select_distribution = std14::conditional_t<
+    using select_distribution = std::conditional_t<
         std::is_floating_point<scalar_t>::value,
         std::uniform_real_distribution<scalar_t>,
         std::uniform_int_distribution<scalar_t>

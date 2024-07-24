@@ -1,6 +1,5 @@
 #pragma once
 #include "hamiltonian/Hamiltonian.hpp"
-#include "support/cppfuture.hpp"
 
 namespace cpb { namespace detail {
 
@@ -38,7 +37,7 @@ private:
     std::unique_ptr<BaseStrategy> try_strategy(Hamiltonian const& h) const {
         if (ham::is<scalar_t>(h)) {
             return std::unique_ptr<BaseStrategy>{
-                std14::make_unique<Strategy<scalar_t>>(ham::get_shared_ptr<scalar_t>(h), config)
+                std::make_unique<Strategy<scalar_t>>(ham::get_shared_ptr<scalar_t>(h), config)
             };
         }
         return {};

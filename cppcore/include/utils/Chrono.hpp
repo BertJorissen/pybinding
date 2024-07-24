@@ -2,6 +2,7 @@
 #include <string>
 #include <chrono>
 #include <ostream>
+#include <fmt/format.h>
 
 namespace cpb {
 
@@ -50,3 +51,23 @@ private:
 };
 
 } // namespace cpb
+
+// update fmt, fmt::formatter<cpb::Chrono> is a required method  in the new version. Thanks to GH Copilot.
+namespace fmt {
+    template<>
+    struct formatter<cpb::Chrono> {
+        // parse is a required method
+        template<typename ParseContext>
+        constexpr auto parse(ParseContext& ctx) {
+            // No parsing is needed here. Forward to the end of the format string.
+            return ctx.begin();
+        }
+
+        // format is a required method
+        template<typename FormatContext>
+        auto format(const cpb::Chrono& chrono, FormatContext& ctx) {
+            // Format the Chrono object as you wish. Here's an example:
+            return format_to(ctx.out(), "{}", chrono.str());
+        }
+    };
+}

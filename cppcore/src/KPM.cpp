@@ -20,14 +20,14 @@ ArrayXcd KPM::moments(idx_t num_moments, VectorXcd const& alpha, VectorXcd const
                       SparseMatrixXcd const& op) const {
     auto const ham_size =  model.system()->hamiltonian_size();
     auto const check_size = std::unordered_map<char const*, bool>{
-        {"alpha", alpha.size() == model.system()->hamiltonian_size()},
-        {"beta", beta.size() == 0 || beta.size() == model.system()->hamiltonian_size()},
+        {"alpha", alpha.size() == ham_size},
+        {"beta", beta.size() == 0 || beta.size() == ham_size},
         {"operator", op.size() == 0 || (op.rows() == ham_size && op.cols() == ham_size)}
     };
     for (auto const& pair : check_size) {
         if (!pair.second) {
-            throw std::runtime_error("Size mismatch between the model Hamiltonian and the given "
-                                     "argument '{}'"_format(pair.first));
+            throw std::runtime_error(fmt::format("Size mismatch between the model Hamiltonian and the given "
+                                                 "argument '{}'", pair.first));
         }
     }
 
@@ -40,8 +40,8 @@ ArrayXcd KPM::moments(idx_t num_moments, VectorXcd const& alpha, VectorXcd const
 
         for (auto const& pair : check_scalar_type) {
             if (!pair.second) {
-                throw std::runtime_error("The model Hamiltonian is real, but the given argument "
-                                         "'{}' is complex"_format(pair.first));
+                throw std::runtime_error(fmt::format("The model Hamiltonian is real, but the given argument "
+                                                 "'{}' is complex", pair.first));
             }
         }
     }

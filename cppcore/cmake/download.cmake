@@ -38,12 +38,35 @@ function(download_tar_gz URL DIR)
     file(REMOVE_RECURSE ${tmp_dir})
 endfunction()
 
+# Download zip file from URL, extract it and copy
+# files given by ARGN glob expressions to DIR.
+function(download_zip URL DIR)
+    set(tmp_dir "${CMAKE_CURRENT_SOURCE_DIR}/deps/tmp")
+    set(zip_file "${tmp_dir}/tmp.zip")
+    download("${url}/${first_file}" ${zip_file})
+    execute_process(COMMAND ${CMAKE_COMMAND} -E tar xf ${zip_file} WORKING_DIRECTORY ${tmp_dir}
+            RESULT_VARIABLE error)
+    if(error)
+        message(FATAL_ERROR "Could not extract ${URL}")
+    endif()
+    file(REMOVE ${zip_file})
+
+    file(MAKE_DIRECTORY ${DIR})
+    foreach(file_expr ${ARGN})
+        file(GLOB path "${tmp_dir}/${file_expr}")
+        get_filename_component(filename ${path} NAME)
+        file(RENAME ${path} "${DIR}/${filename}")
+    endforeach()
+    file(REMOVE_RECURSE ${tmp_dir})
+endfunction()
+
 # Download a dependency from the given URL. The files to download
 # are given by ARGN. If the first file is *.tar.gz, the following
 # argument must be a glob pattern specifying the files to extract.
 # The version number is saved in a file along with the dependency.
 # If a matching version already exists, the download is skipped.
 function(download_dependency NAME VERSION URL_FMT FIRST_FILE_FMT)
+    message(STATUS "Using ${NAME} v${VERSION}, downloading if necessary")
     set(dir "${CMAKE_CURRENT_SOURCE_DIR}/deps/${NAME}")
 
     set(version_file "${dir}/_pybinding_dependency_version")
@@ -63,6 +86,8 @@ function(download_dependency NAME VERSION URL_FMT FIRST_FILE_FMT)
 
         if(${first_file} MATCHES ".*\\.tar\\.gz")
             download_tar_gz(${url} ${dir} ${ARGN})
+        elseif(${first_file} MATCHES ".*\\.zip")
+            download_zip(${url} ${dir} ${ARGN})
         else()
             foreach(file_fmt ${first_file} ${ARGN})
                 string(CONFIGURE ${file_fmt} file)

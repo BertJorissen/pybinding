@@ -81,7 +81,7 @@ void Lattice::add_hopping(Index3D relative_index, string_view from_sub, string_v
 
     if (from.energy.rows() != hop_matrix.rows() || to.energy.cols() != hop_matrix.cols()) {
         throw std::logic_error(
-            "Hopping size mismatch: from '{}' ({}) to '{}' ({}) with matrix '{}' ({}, {})"_format(
+                fmt::format("Hopping size mismatch: from '{}' ({}) to '{}' ({}) with matrix '{}' ({}, {})",
                 from_sub, from.energy.rows(), to_sub, to.energy.cols(),
                 hopping_family_name, hop_matrix.rows(), hop_matrix.cols()
             )
@@ -115,7 +115,7 @@ void Lattice::add_hopping(Index3D relative_index, string_view from_sub, string_v
         if (it != hoppings.end()) {
             return it->first;
         } else {
-            auto const name = "__anonymous__{}"_format(hoppings.size());
+            auto const name = fmt::format("__anonymous__{}", hoppings.size());
             register_hopping_energy(name, energy);
             return name;
         }
@@ -135,7 +135,7 @@ void Lattice::set_offset(Cartesian position) {
 Lattice::Sublattice const& Lattice::sublattice(std::string const& name) const {
     auto const it = sublattices.find(name);
     if (it == sublattices.end()) {
-        throw std::out_of_range("There is no sublattice named '{}'"_format(name));
+        throw std::out_of_range(fmt::format("There is no sublattice named '{}'", name));
     }
     return it->second;
 }
@@ -145,7 +145,7 @@ Lattice::Sublattice const& Lattice::sublattice(SubID id) const {
     auto const it = std::find_if(sublattices.begin(), sublattices.end(),
                                  [&](Pair const& p) { return p.second.unique_id == id; });
     if (it == sublattices.end()) {
-        throw std::out_of_range("There is no sublattice with ID = {}"_format(id.value()));
+        throw std::out_of_range(fmt::format("There is no sublattice with ID = {}", id.value()));
     }
     return it->second;
 }
@@ -153,7 +153,7 @@ Lattice::Sublattice const& Lattice::sublattice(SubID id) const {
 Lattice::HoppingFamily const& Lattice::hopping_family(std::string const& name) const {
     auto const it = hoppings.find(name);
     if (it == hoppings.end()) {
-        throw std::out_of_range("There is no hopping named '{}'"_format(name));
+        throw std::out_of_range(fmt::format("There is no hopping named '{}'", name));
     }
     return it->second;
 }
@@ -163,7 +163,7 @@ Lattice::HoppingFamily const& Lattice::hopping_family(HopID id) const {
     auto const it = std::find_if(hoppings.begin(), hoppings.end(),
                                  [&](Pair const& p) { return p.second.family_id == id; });
     if (it == hoppings.end()) {
-        throw std::out_of_range("There is no hopping with ID = {}"_format(id.value()));
+        throw std::out_of_range(fmt::format("There is no hopping with ID = {}", id.value()));
     }
     return it->second;
 }

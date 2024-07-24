@@ -15,7 +15,7 @@ struct Starter {
     Make make;
     idx_t vector_size;
     mutable idx_t count = 0; ///< the number of vector this starter has produced
-    std::unique_ptr<std::mutex> mutex = std14::make_unique<std::mutex>();
+    std::unique_ptr<std::mutex> mutex = std::make_unique<std::mutex>();
 
     void lock() const { mutex->lock(); }
     void unlock() const { mutex->unlock(); }

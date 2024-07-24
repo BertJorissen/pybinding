@@ -7,13 +7,14 @@ permissions:
 
 jobs:
   test-compile:
-    name: Test Build on ${{ matrix.os }} with Python ${{ matrix.python-version }}
+    name: Test Build on ${{ matrix.os }} with Python ${{ matrix.python-version }} with ${{ matrix.dev }}
     runs-on: ${{ matrix.os }}
     env:
       PB_BUILD_TYPE: Release
     strategy:
+      fail-fast: false
       matrix:
-        os: [ ubuntu-latest, macos-12, windows-latest ]
+        os: [ ubuntu-latest, macos-12, macos-14, windows-latest ]
         python-version: [ "3.10" ]
     steps:
       - uses: actions/checkout@v4
@@ -30,7 +31,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies for Pybinding
-        run: python -m pip install wheel scipy matplotlib pytest cmake ninja
+        run: python -m pip install wheel scipy matplotlib==3.9.0 pytest cmake ninja
       - name: Build with CMake and test Python / C++
         timeout-minutes: 20
         run: |
@@ -43,9 +44,9 @@ jobs:
         run: python -c "import pybinding as pb; exit(pb.tests())"
 
   build-wheels:
-    name: Build wheels on ${{ matrix.os }} for ${{ matrix.arch }}
+    name: Build wheels on ${{ matrix.os }} for ${{ matrix.arch }} with ${{ matrix.dev }} mode and Python ${{ matrix.python-version }}
     environment: actions
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop'
     needs: [ test-compile ]
     runs-on: ${{ matrix.os }}
     strategy:
@@ -53,52 +54,36 @@ jobs:
         include:
           - os: ubuntu-latest
             arch: x86_64
+            dev: normal
+            python-version: "3.10"
+          - os: ubuntu-latest
+            arch: x86_64
+            dev: development
+            python-version: "3.10"
           - os: windows-latest
             arch: x86_64
+            dev: normal
+            python-version: "3.10"
+          - os: windows-latest
+            arch: x86_64
+            dev: development
+            python-version: "3.10"
           - os: macos-12
             arch: x86_64
+            dev: normal
+            python-version: "3.10"
+          - os: macos-12
+            arch: x86_64
+            dev: development
+            python-version: "3.10"
           - os: macos-14
             arch: arm64
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
-      - uses: actions/setup-python@v5
-      - name: Install cibuildwheel
-        run: python -m pip install cibuildwheel
-      - name: Build wheels
-        run: python -m cibuildwheel --output-dir wheelhouse
-        env:
-          CIBW_ARCHS_MACOS: ${{ matrix.arch }}
-          CIBW_ARCHS_LINUX: x86_64
-          CIBW_BEFORE_BUILD: pip install scipy contourpy --prefer-binary
-          CIBW_ENVIRONMENT: |
-            PB_BUILD_TYPE=Release
-            PB_NATIVE_SIMD=OFF
-            DELOCATE_VERBOSITY=1  # Enable verbose output for delocate
-          CIBW_BUILD_VERBOSITY: 1
-          CIBW_BEFORE_TEST: pip install scipy contourpy --prefer-binary
-          CIBW_TEST_REQUIRES: pytest
-          CIBW_TEST_COMMAND: python -c "import pybinding as pb; exit(pb.tests())"
-          CIBW_SKIP: cp36-* cp37-* pp* *win32 *i686 *musllinux* *ppc64le *s390x *aarch64
-      - uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.os }}-${{ matrix.arch }}-wheels
-          path: ./wheelhouse/*.whl
-
-  build-sdist:
-    name: Create sources on ${{ matrix.os }} with Python ${{ matrix.python-version }}
-    environment: actions
-    if: github.ref == 'refs/heads/master'
-    needs: [ test-compile ]
-    runs-on: ${{ matrix.os }}
-    env:
-      PB_BUILD_TYPE: Release
-      PB_NATIVE_SIMD: OFF
-    strategy:
-      matrix:
-        os: [ ubuntu-latest]
-        python-version: [ "3.10" ]
+            dev: normal
+            python-version: "3.10"
+          - os: macos-14
+            arch: arm64
+            dev: development
+            python-version: "3.10"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -107,20 +92,84 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Change package to pybinding-dev Windows
+        if: (matrix.dev == 'development') && (runner.os == 'Windows')
+        run: |
+          $content = Get-Content pyproject.toml
+          $content | ForEach-Object {
+          if ($_ -match '^name =') {
+              $_ -replace 'pybinding', 'pybinding-dev'
+            } else {
+              $_
+            }
+          } | Set-Content pyproject.toml
+      - name: Change package to pybinding-dev not Windows
+        if: (matrix.dev == 'development') && (runner.os != 'Windows')
+        run: |
+          if [[ "${{ runner.os }}" == "Linux" ]]; then
+            sed -i 's/^name *= *"pybinding"/name = "pybinding-dev"/g' pyproject.toml
+          elif [[ "${{ runner.os }}" == "macOS" ]]; then
+            sed -i '' 's/^name *= *"pybinding"/name = "pybinding-dev"/g' pyproject.toml
+          fi
+      - name: Install cibuildwheel
+        run: python -m pip install cibuildwheel
+      - name: Build wheels
+        run: python -m cibuildwheel --output-dir wheelhouse
+        env:
+          CIBW_ARCHS_MACOS: ${{ matrix.arch }}
+          CIBW_ARCHS_LINUX: x86_64
+          CIBW_BEFORE_BUILD: pip install scipy contourpy --prefer-binary
+          CIBW_ENVIRONMENT: PB_BUILD_TYPE=Release PB_NATIVE_SIMD=OFF DELOCATE_VERBOSITY=1
+          CIBW_BUILD_VERBOSITY: 1
+          # Use delvewheel on windows
+          CIBW_BEFORE_TEST: pip install scipy contourpy --prefer-binary
+          CIBW_TEST_REQUIRES: pytest
+          CIBW_TEST_COMMAND: python -c "import pybinding as pb; exit(pb.tests())"
+          CIBW_SKIP: cp36-* cp37-* pp* *win32 *i686 *musllinux* *ppc64le *s390x *aarch64
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.dev }}-wheels
+          path: ./wheelhouse/*.whl
+
+  build-sdist:
+    name: Create sources on ${{ matrix.os }} with Python ${{ matrix.python-version }}
+    environment: actions
+    strategy:
+      matrix:
+        dev: [ normal, development]
+        os: [ ubuntu-latest]
+        python-version: [ "3.10" ]
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop'
+    needs: [ test-compile ]
+    runs-on: ${{ matrix.os }}
+    env:
+      PB_BUILD_TYPE: Release
+      PB_NATIVE_SIMD: OFF
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Change package to pybinding-dev
+        if: matrix.dev == 'development'
+        run: sed -i 's/^name *= *"pybinding"/name = "pybinding-dev"/g' pyproject.toml
       - name: Install dependencies Pybinding
-        run: python -m pip install wheel scipy matplotlib pytest cmake ninja build
+        run: python -m pip install wheel scipy matplotlib==3.9.0 pytest cmake ninja build
       - name: Build wheel
         run: python -m build --sdist --outdir dist/
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: sources
+          name: sources-${{ matrix.dev }}
           path: dist/*.tar.gz
 
   test-sdist:
     name: Test sources on ${{ matrix.os }} with Python ${{ matrix.python-version }}
     environment: actions
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop'
     needs: [ build-sdist ]
     runs-on: ${{ matrix.os }}
     env:
@@ -144,11 +193,10 @@ jobs:
       - name: Download artefacts
         uses: actions/download-artifact@v4
         with:
-          name: sources
+          name: sources-normal
           path: dist
       - name: Install Pybinding
         run: |
-          python -m pip install wheel scipy matplotlib pytest cmake ninja build numpy setuptools
           python -m pip install --find-links=dist pybinding --no-binary pybinding
       - name: Run tests
         run: python -c "import pybinding as pb; pb.tests();"
@@ -157,64 +205,73 @@ jobs:
     name: Merge all the artifacts
     runs-on: ubuntu-latest
     needs: [ build-wheels, test-sdist ]
+    strategy:
+      matrix:
+        dev: [ normal, development]
     steps:
       - uses: actions/download-artifact@v4
         with:
           path: allfiles
       - name: merge the files
         run: |
-          mkdir pythonfiles
+          mkdir pythonfiles-${{ matrix.dev }}
           for dir in allfiles/*; do
-            if [ -d "$dir" ]; then
-                cp -r "$dir"/* pythonfiles/
+            if [ -d "$dir" ] && [[ "$dir" == *"${{ matrix.dev}}"* ]]; then
+              cp -r "$dir"/* pythonfiles-${{ matrix.dev }}/
             fi
           done
       - uses: actions/upload-artifact@v4
         with:
-          name: pythonfiles
-          path: pythonfiles
+          name: pythonfiles-${{ matrix.dev }}
+          path: pythonfiles-${{ matrix.dev }}
 
   testpypi:
-    name: Test upload on PyPi
+    name: Test upload on PyPi for ${{ matrix.dev }}
     environment: actions
-    if: github.ref == 'refs/heads/master'
     permissions:
       id-token: write
+    strategy:
+      matrix:
+        dev: [ normal, development]
     needs: [ merge-artifacts ]
     runs-on: ubuntu-latest
     steps:
       - name: Download artefacts
         uses: actions/download-artifact@v4
         with:
-          name: pythonfiles
+          name: pythonfiles-${{ matrix.dev }}
           path: dist
       - name: Publish distribution 📦 to Test PyPI
+        if: ((github.ref == 'refs/heads/master') && (matrix.dev == 'normal')) || ((github.ref == 'refs/heads/master') && (matrix.dev == 'development'))
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
 
   pypi:
-    name: Publish to PyPi
+    name: Publish to PyPi for ${{ matrix.dev }}
     environment: actions
-    if: (github.ref == 'refs/heads/master') && (github.repository_owner == 'dean0x7d')
     permissions:
       id-token: write
+    strategy:
+      matrix:
+        dev: [ normal, development]
     needs: [ testpypi ]
     runs-on: ubuntu-latest
     steps:
       - name: Download artefacts
         uses: actions/download-artifact@v4
         with:
-          name: pythonfiles
+          name: pythonfiles-${{ matrix.dev }}
           path: dist
       - name: Publish distribution 📦 to PyPI
+        if: ((github.ref == 'refs/heads/master') && (github.repository_owner == 'dean0x7d') && (matrix.dev == 'normal')) || ((github.ref == 'refs/heads/master') && (matrix.dev == 'development'))
         uses: pypa/gh-action-pypi-publish@release/v1
 
   documentation:
     name: Make and upload the documentation
     environment: actions
     needs: [ test-compile ]
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     env:
       PB_BUILD_TYPE: Release
@@ -227,7 +284,7 @@ jobs:
         with:
           python-version: "3.10"
       - name: Install dependencies Pybinding
-        run: python -m pip install wheel scipy matplotlib pytest cmake ninja sphinx-rtd-theme recommonmark numpydoc nbconvert
+        run: python -m pip install wheel scipy matplotlib==3.9.0 pytest cmake ninja sphinx-rtd-theme recommonmark numpydoc nbconvert
       - name: Test Documentation
         timeout-minutes: 20
         run: |

@@ -1,6 +1,6 @@
 find_package(CUDA REQUIRED)
 
-set(CUDA_NVCC_FLAGS "--std c++11;-Wno-deprecated-gpu-targets;${CUDA_NVCC_FLAGS}")
+set(CUDA_NVCC_FLAGS "--std c++17;-Wno-deprecated-gpu-targets;${CUDA_NVCC_FLAGS}")
 
 cuda_add_library(pybinding_cuda
     kpm/calc_moments.hpp
