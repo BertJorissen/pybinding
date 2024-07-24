@@ -197,7 +197,6 @@ jobs:
           path: dist
       - name: Install Pybinding
         run: |
-          python -m pip install wheel scipy matplotlib==3.9.0 pytest cmake ninja build numpy setuptools
           python -m pip install --find-links=dist pybinding --no-binary pybinding
       - name: Run tests
         run: python -c "import pybinding as pb; pb.tests();"
