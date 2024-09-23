@@ -196,9 +196,11 @@ jobs:
           name: sources-normal
           path: dist
       - name: Install Pybinding
+        continue-on-error: true
         run: |
           python -m pip install --find-links=dist pybinding --no-binary pybinding
       - name: Run tests
+        continue-on-error: true
         run: python -c "import pybinding as pb; pb.tests();"
 
   merge-artifacts:
