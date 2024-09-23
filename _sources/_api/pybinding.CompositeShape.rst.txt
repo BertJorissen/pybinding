@@ -25,6 +25,7 @@
 
     .. autosummary::
     
+        ~CompositeShape._pybind11_conduit_v1_
         ~CompositeShape.contains
         ~CompositeShape.plot
         ~CompositeShape.with_offset

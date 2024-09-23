@@ -38,6 +38,7 @@
 
     .. autosummary::
     
+        ~Model._pybind11_conduit_v1_
         ~Model.add
         ~Model.attach_lead
         ~Model.eval

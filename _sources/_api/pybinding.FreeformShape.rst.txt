@@ -25,6 +25,7 @@
 
     .. autosummary::
     
+        ~FreeformShape._pybind11_conduit_v1_
         ~FreeformShape.contains
         ~FreeformShape.plot
         ~FreeformShape.with_offset

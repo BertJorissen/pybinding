@@ -25,6 +25,7 @@
 
     .. autosummary::
     
+        ~Polygon._pybind11_conduit_v1_
         ~Polygon.contains
         ~Polygon.plot
         ~Polygon.with_offset
