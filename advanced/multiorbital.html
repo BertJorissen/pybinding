@@ -199,7 +199,7 @@ will have a shape matching the onsite/hopping matrix term.</p>
     <span class="k">return</span> <span class="n">energy</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
 </pre></div>
 </div>
-<p>Note the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.eye.html#numpy.eye" title="(in NumPy v2.0)"><code class="xref py py-func docutils literal notranslate"><span class="pre">np.eye(2)</span></code></a> in the code above. The number 2 matches the 2-orbital
+<p>Note the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.eye.html#numpy.eye" title="(in NumPy v2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">np.eye(2)</span></code></a> in the code above. The number 2 matches the 2-orbital
 structure of a specific model. Without this, <code class="docutils literal notranslate"><span class="pre">energy</span> <span class="pre">+</span> <span class="pre">x</span></code> would also add the value to the
 off-diagonal elements of the onsite matrix which is not desirable in this case.</p>
 <p>The modifier defined above will only work for 2-orbital models. In general, we might want to
