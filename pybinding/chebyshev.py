@@ -261,6 +261,27 @@ class KPM:
         """
         return self.impl.deferred_ldos(energy, broadening, position, sublattice)
 
+    def deferred_greens(self, i: int, j: int, energy: np.ndarray, broadening: float) -> _cpp.DeferredXd:
+        """Sa²me as :meth:`calc_greens` but for parallel computation: see the :mod:`.parallel` module
+
+        Parameters
+        ----------
+        i : int or list
+            Hamiltonian index.
+        j : int
+            Hamiltonian index.
+        energy : ndarray
+            Energy value array.
+        broadening : float
+            Width, in energy, of the smallest detail which can be resolved.
+            Lower values result in longer calculation time.
+
+
+        Returns
+        -------
+        """
+        return self.impl.deferred_greens(i, j, energy, broadening)
+
     def calc_conductivity(self, chemical_potential: ArrayLike, broadening: float, temperature: float,
                           direction: Literal['xx', 'xy', 'xz', 'yx', 'yy', 'yz', 'zx', 'zy', 'zz'] = "xx",
                           volume: float = 1.0, num_random: int = 1, num_points: int = 1000) -> results.Series:

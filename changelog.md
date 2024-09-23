@@ -1,5 +1,10 @@
 # Changelog
 
+
+## v1.0.5.dev0 |2024-09-23
+
+* `pb.kpmm.deferred_greens` has been added to caluclate the Green's function in a deferred way
+
 ## v1.0.4 |2024-06-20
 
 Majer new release, new additions:

@@ -188,7 +188,10 @@ def bilayer(gamma3=False, gamma4=False, onsite=(0, 0, 0, 0)):
         lat.add_hoppings(
             ([0, 0], 'A2', 'A1', 'gamma4'),
             ([0, 1], 'A2', 'A1', 'gamma4'),
-            ([1, 0], 'A2', 'A1', 'gamma4')
+            ([1, 0], 'A2', 'A1', 'gamma4'),
+            ([0, 0], 'B2', 'B1', 'gamma4'),
+            ([0, 1], 'B2', 'B1', 'gamma4'),
+            ([1, 0], 'B2', 'B1', 'gamma4')
         )
 
     lat.min_neighbors = 2

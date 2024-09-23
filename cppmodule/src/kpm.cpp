@@ -89,6 +89,13 @@ void wrap_greens(py::module& m) {
                 self, [=, &kpm] { return kpm.calc_ldos(energy, broadening, position, sublattice); }
             };
         })
+        .def("deferred_greens", [](py::object self, int i, int j, ArrayXd energy, double broadening) {
+            auto& kpm = self.cast<KPM&>();
+            kpm.get_model().eval();
+            return Deferred<ArrayXcd>{
+                    self, [=, &kpm] { return kpm.calc_greens(i, j, energy, broadening); }
+            };
+        })
         .def("report", &KPM::report, "shortform"_a=false)
         .def_property("model", &KPM::get_model, &KPM::set_model)
         .def_property_readonly("system", [](KPM const& kpm) { return kpm.get_model().system(); })

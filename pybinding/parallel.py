@@ -346,7 +346,10 @@ def parallelize(num_threads=num_cores, queue_size=num_cores, **kwargs):
     """
     callsig = kwargs.pop('callsig', None)
     if not callsig:
-        callsig = get_call_signature(up=2)
+        try:
+            callsig = get_call_signature(up=2)
+        except IndexError:
+            callsig = get_call_signature(up=1)
 
     def decorator(produce_func):
         params = inspect.signature(produce_func).parameters

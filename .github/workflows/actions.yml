@@ -242,7 +242,7 @@ jobs:
           name: pythonfiles-${{ matrix.dev }}
           path: dist
       - name: Publish distribution 📦 to Test PyPI
-        if: ((github.ref == 'refs/heads/master') && (matrix.dev == 'normal')) || ((github.ref == 'refs/heads/master') && (matrix.dev == 'development'))
+        if: ((github.ref == 'refs/heads/master') && (matrix.dev == 'normal')) || ((github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop') && (matrix.dev == 'development'))
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
@@ -264,7 +264,7 @@ jobs:
           name: pythonfiles-${{ matrix.dev }}
           path: dist
       - name: Publish distribution 📦 to PyPI
-        if: ((github.ref == 'refs/heads/master') && (github.repository_owner == 'dean0x7d') && (matrix.dev == 'normal')) || ((github.ref == 'refs/heads/master') && (matrix.dev == 'development'))
+        if: ((github.ref == 'refs/heads/master') && (github.repository_owner == 'dean0x7d') && (matrix.dev == 'normal')) || ((github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop') && (matrix.dev == 'development'))
         uses: pypa/gh-action-pypi-publish@release/v1
 
   documentation:
