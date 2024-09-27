@@ -285,8 +285,19 @@ class WavefunctionArea(Wavefunction):
         return FatBandsArea(self.bands, self.bands.list_to_area(self.fatbands.data), self.fatbands.labels)
 
     @property
+    def fatbandsarea_suborbital(self) -> FatBandsArea:
+        return FatBandsArea(self.bands, self.bands.list_to_area(self.fatbands_suborbital.data), self.fatbands_suborbital.labels)
+
+    @property
     def fatbandsarea_disentangled(self) -> FatBandsArea:
         return FatBandsArea(
             BandsArea(self.bands.k_area, self.bands.list_to_area(self.bands_disentangled.energy)),
             self.bands.list_to_area(self.disentangle(self.fatbands.data)), self.fatbands.labels
+        )
+
+    @property
+    def fatbandsarea_suborbital_disentangled(self) -> FatBandsArea:
+        return FatBandsArea(
+            BandsArea(self.bands.k_area, self.bands.list_to_area(self.bands_disentangled.energy)),
+            self.bands.list_to_area(self.disentangle(self.fatbands_suborbital.data)), self.fatbands_suborbital.labels
         )
