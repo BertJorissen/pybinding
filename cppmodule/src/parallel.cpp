@@ -1,6 +1,8 @@
 #include "wrappers.hpp"
 #include "thread.hpp"
 #include "numeric/dense.hpp"
+#include <vector>
+#include <pybind11/stl.h>
 using namespace cpb;
 
 void wrap_parallel(py::module& m) {
@@ -13,6 +15,8 @@ void wrap_parallel(py::module& m) {
     py::class_<DeferredXdCM, std::shared_ptr<DeferredXdCM>, DeferredBase>(m, "DeferredXd");
     using Deferredcd = Deferred<ArrayXcd>;
     py::class_<Deferredcd, std::shared_ptr<Deferredcd>, DeferredBase>(m, "Deferredcd");
+    using DeferredXcd = Deferred<std::vector<ArrayXcd>>;
+    py::class_<DeferredXcd, std::shared_ptr<DeferredXcd>, DeferredBase>(m, "DeferredXcd");
 
     m.def("parallel_for", [](py::object sequence, py::object produce, py::object retire,
                              std::size_t num_threads, std::size_t queue_size) {

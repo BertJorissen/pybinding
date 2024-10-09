@@ -4,6 +4,8 @@ import inspect
 import itertools
 from copy import copy
 from functools import partial
+from typing import Callable, Optional, Tuple, Dict, List
+from numpy.typing import ArrayLike
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -86,9 +88,9 @@ class Hooks:
         Called once in a while with a `result` argument to be plotted.
     """
     def __init__(self):
-        self.first = []
-        self.status = []
-        self.plot = []
+        self.first: List[Callable] = []
+        self.status: List[Callable] = []
+        self.plot: List[Callable] = []
 
 
 class Config:
@@ -170,13 +172,14 @@ class Factory:
     config : Config
     hooks : Hooks
     """
-    def __init__(self, variables, fixtures, produce, config):
-        self.variables = variables
-        self.fixtures = fixtures
-        self.produce = produce
-        self.config = config
+    def __init__(self, variables: Tuple[float] | ArrayLike, fixtures: Dict, produce: Callable,
+                 config: Hooks):
+        self.variables: Tuple[float] | ArrayLike = variables
+        self.fixtures: Dict = fixtures
+        self.produce: Callable = produce
+        self.config: Hooks = config
 
-        self.sequence = list(itertools.product(*variables))
+        self.sequence: list = list(itertools.product(*variables))
 
         self.hooks = Hooks()
         self.hooks.status.append(DefaultStatus(
@@ -194,15 +197,17 @@ class ParallelFor:
     make_result : callable
         Creates the final result from raw data. See `_make_result` prototype.
     """
-    def __init__(self, factory, make_result=None):
-        self.factory = factory
-        self.hooks = factory.hooks
+    def __init__(self, factory: Factory, make_result: Optional[Callable[[list], list]] = None):
+        self.factory: Factory = factory
+        self.hooks: Hooks = factory.hooks
         self.config = factory.config
 
         if make_result:
             self._make_result = make_result
 
         size = len(factory.sequence)
+        self._size = size
+        self._shape = None
         self.save_at = self.config.make_save_set(size)
 
         logname = self.config.filename + ".log" if self.config.filename else ""
@@ -216,7 +221,7 @@ class ParallelFor:
 
         self.called_first = False
         self.result = None
-        self.data = [None] * size
+        self.data: Optional[list] = None
 
     @staticmethod
     def _make_result(data):
@@ -237,12 +242,15 @@ class ParallelFor:
             f(deferred)
 
     def _retire(self, deferred, idx):
-        self.data[idx] = copy(deferred.result)
+        results = copy(deferred.result)
+        results_shape = np.shape(results)
+        if self.data is None:
+            self.data = np.zeros((self._size, *results_shape), dtype=np.complex128)
+        self.data[idx] = results
 
         count = self.pbar.value + 1
         self._status(deferred, idx, count)
         self.pbar += 1  # also refreshes output stream
-
         if count in self.save_at:
             result = self._make_result(self.data)
             self.result = copy(result)  # _plot() may modify the local
@@ -386,7 +394,7 @@ def sweep(factory, plot=lambda r: r.plot(), labels=None, tags=None, silent=False
     zero = np.zeros_like(energy, np.float32)
 
     def make_result(data):
-        sweep_data = np.vstack([v.squeeze() if v is not None else zero for v in data])
+        sweep_data = np.vstack([v.squeeze() if v is not None else zero for v in np.asarray(data)])
         return Sweep(x, energy, sweep_data, labels, tags)
 
     if silent:
