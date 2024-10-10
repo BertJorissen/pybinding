@@ -262,7 +262,7 @@ class KPM:
         return self.impl.deferred_ldos(energy, broadening, position, sublattice)
 
     def deferred_greens(self, i: int, j: int, energy: np.ndarray,
-                        broadening: float) -> Union[_cpp.Deferredd |_cpp.DeferredXXd]:
+                        broadening: float) -> Union[_cpp.Deferredd, _cpp.DeferredXXd]:
         """Same as :meth:`calc_greens` but for parallel computation: see the :mod:`.parallel` module
 
         Parameters
