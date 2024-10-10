@@ -4,7 +4,7 @@ import inspect
 import itertools
 from copy import copy
 from functools import partial
-from typing import Callable, Optional, Tuple, Dict, List
+from typing import Callable, Optional, Tuple, Dict, List, Union
 from numpy.typing import ArrayLike
 
 import numpy as np
@@ -172,9 +172,9 @@ class Factory:
     config : Config
     hooks : Hooks
     """
-    def __init__(self, variables: Tuple[float] | ArrayLike, fixtures: Dict, produce: Callable,
+    def __init__(self, variables: Union[Tuple[float], ArrayLike], fixtures: Dict, produce: Callable,
                  config: Hooks):
-        self.variables: Tuple[float] | ArrayLike = variables
+        self.variables: Union[Tuple[float], ArrayLike] = variables
         self.fixtures: Dict = fixtures
         self.produce: Callable = produce
         self.config: Hooks = config

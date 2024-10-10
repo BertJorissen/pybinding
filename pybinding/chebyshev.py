@@ -122,7 +122,7 @@ class KPM:
             op = op.tocsr()
         return self.impl.moments(num_moments, alpha, beta, op)
 
-    def calc_greens(self, i: int, j: int | np.ndarray, energy: np.ndarray, broadening: float) -> np.ndarray:
+    def calc_greens(self, i: int, j: Union[int, np.ndarray], energy: np.ndarray, broadening: float) -> np.ndarray:
         """Calculate Green's function of a single Hamiltonian element
 
         Parameters
@@ -261,7 +261,8 @@ class KPM:
         """
         return self.impl.deferred_ldos(energy, broadening, position, sublattice)
 
-    def deferred_greens(self, i: int, j: int, energy: np.ndarray, broadening: float) -> _cpp.Deferredcd:
+    def deferred_greens(self, i: int, j: int, energy: np.ndarray,
+                        broadening: float) -> Union[_cpp.Deferredd |_cpp.DeferredXXd]:
         """Same as :meth:`calc_greens` but for parallel computation: see the :mod:`.parallel` module
 
         Parameters
