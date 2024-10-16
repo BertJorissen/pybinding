@@ -4,7 +4,7 @@ import warnings
 from copy import deepcopy
 from math import pi, atan2, sqrt
 from numpy.typing import ArrayLike
-from typing import Optional, Union, Iterable, Tuple, List
+from typing import Optional, Union, Iterable, Tuple, List, Sequence
 from pathlib import Path
 
 import numpy as np
@@ -18,7 +18,8 @@ from .support.parse import xyz
 
 __all__ = ['Lattice']
 
-HoppingType = Tuple[Union[ArrayLike, int], str, str, Union[str, float, np.ndarray]]
+OnsEnergyType = Union[float, ArrayLike, Sequence[ArrayLike]]
+HopEnergyType = Union[str, float, complex, ArrayLike, Sequence[ArrayLike]]
 
 
 class Lattice:
@@ -143,7 +144,7 @@ class Lattice:
                     hop_energy = hop_energy.item()
                 self.impl.register_hopping_energy(name, hop_energy)
 
-    def add_one_sublattice(self, name: str, position: ArrayLike, onsite_energy: Union[float, np.ndarray] = 0.0,
+    def add_one_sublattice(self, name: str, position: ArrayLike, onsite_energy: OnsEnergyType = 0.0,
                            alias: str = "") -> None:
         """Add a new sublattice
 
@@ -181,7 +182,7 @@ class Lattice:
                 energy = energy.item()
             self.impl.add_sublattice(name, position, energy)
 
-    def add_sublattices(self, *sublattices: Iterable[Tuple[str, ArrayLike, Union[float, np.ndarray]]]) -> None:
+    def add_sublattices(self, *sublattices: Tuple[str, ArrayLike, OnsEnergyType]) -> None:
         """Add multiple new sublattices
 
 
@@ -254,7 +255,7 @@ class Lattice:
             self.add_one_alias(*alias)
 
     def add_one_hopping(self, relative_index: Union[ArrayLike, int], from_sub: str, to_sub: str,
-                        hop_name_or_energy: Union[str, float, np.ndarray]) -> None:
+                        hop_name_or_energy: HopEnergyType) -> None:
         """Add a new hopping
 
         For each new hopping, its Hermitian conjugate is added automatically. Doing so
@@ -285,7 +286,7 @@ class Lattice:
         """
         self.impl.add_hopping(relative_index, from_sub, to_sub, hop_name_or_energy)
 
-    def add_hoppings(self, *hoppings: Iterable[HoppingType]) -> None:
+    def add_hoppings(self, *hoppings: Tuple[Union[ArrayLike, int], str, str, HopEnergyType]) -> None:
         """Add multiple new hoppings
 
         .. warning::

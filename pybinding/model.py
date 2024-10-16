@@ -41,7 +41,7 @@ class Model(_cpp.Model):
         * Any number of modifiers can be added. Adding the same modifier more than once
           is allowed: this will usually multiply the modifier's effect.
     """
-    def __init__(self, lattice: Lattice, *args: Iterable[model_arg]):
+    def __init__(self, lattice: Lattice, *args: model_arg):
         super().__init__(lattice.impl)
 
         self._lattice = lattice
