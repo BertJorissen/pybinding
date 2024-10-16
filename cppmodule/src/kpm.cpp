@@ -1,6 +1,7 @@
 #include "KPM.hpp"
 #include "wrappers.hpp"
 #include "thread.hpp"
+#include <pybind11/stl.h>
 using namespace cpb;
 
 namespace {
@@ -87,6 +88,20 @@ void wrap_greens(py::module& m) {
             kpm.get_model().eval();
             return Deferred<ArrayXXdCM>{
                 self, [=, &kpm] { return kpm.calc_ldos(energy, broadening, position, sublattice); }
+            };
+        })
+        .def("deferred_greens", [](py::object self, int i, int j, ArrayXd energy, double broadening) {
+            auto& kpm = self.cast<KPM&>();
+            kpm.get_model().eval();
+            return Deferred<ArrayXcd>{
+                    self, [=, &kpm] { return kpm.calc_greens(i, j, energy, broadening); }
+            };
+        })
+        .def("deferred_greens", [](py::object self, int i, std::vector<idx_t> j, ArrayXd energy, double broadening) {
+            auto& kpm = self.cast<KPM&>();
+            kpm.get_model().eval();
+            return Deferred<std::vector<ArrayXcd>>{
+                    self, [=, &kpm] { return kpm.calc_greens_vector(i, j, energy, broadening); }
             };
         })
         .def("report", &KPM::report, "shortform"_a=false)

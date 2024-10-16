@@ -122,15 +122,15 @@ class KPM:
             op = op.tocsr()
         return self.impl.moments(num_moments, alpha, beta, op)
 
-    def calc_greens(self, i: int, j: int, energy: np.ndarray, broadening: float) -> np.ndarray:
+    def calc_greens(self, i: int, j: Union[int, np.ndarray], energy: np.ndarray, broadening: float) -> np.ndarray:
         """Calculate Green's function of a single Hamiltonian element
 
         Parameters
         ----------
         i : int or list
             Hamiltonian index.
-        j : int
-            Hamiltonian index.
+        j : int or np.ndarray
+            Hamiltonian index or vector of Hamiltonian indices
         energy : ndarray
             Energy value array.
         broadening : float
@@ -260,6 +260,28 @@ class KPM:
         -------
         """
         return self.impl.deferred_ldos(energy, broadening, position, sublattice)
+
+    def deferred_greens(self, i: int, j: int, energy: np.ndarray,
+                        broadening: float) -> Union[_cpp.Deferredd, _cpp.DeferredXXd]:
+        """Same as :meth:`calc_greens` but for parallel computation: see the :mod:`.parallel` module
+
+        Parameters
+        ----------
+        i : int or list
+            Hamiltonian index.
+        j : int
+            Hamiltonian index.
+        energy : ndarray
+            Energy value array.
+        broadening : float
+            Width, in energy, of the smallest detail which can be resolved.
+            Lower values result in longer calculation time.
+
+
+        Returns
+        -------
+        """
+        return self.impl.deferred_greens(i, j, energy, broadening)
 
     def calc_conductivity(self, chemical_potential: ArrayLike, broadening: float, temperature: float,
                           direction: Literal['xx', 'xy', 'xz', 'yx', 'yy', 'yz', 'zx', 'zy', 'zz'] = "xx",

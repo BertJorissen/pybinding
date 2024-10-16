@@ -1,13 +1,13 @@
 [project]
 name = "pybinding"
-version = "1.0.4.post1"
+version = "1.0.5"
 authors = [
     {name="Dean Moldovan", email="dean0x7d@gmail.com"},
 ]
 maintainers = [
     {name="Bert Jorissen", email="info@bertjorissen.be"}
 ]
-description = "Package for tight-binding calculations, Documentation: http://pybinding.site/ (c) 2015-2023"
+description = "Package for tight-binding calculations, Documentation: http://pybinding.site/ (c) 2015-2024"
 readme = "README.md"
 dependencies = [
     "numpy>=1.12",
@@ -43,9 +43,9 @@ keywords = [
     "CPGF"
 ]
 [project.urls]
-"repository" = "https://github.com/dean0x7d/pybinding"
-"documentation" = "http://pybinding.site/"
-"changelog" = "https://github.com/dean0x7d/pybinding/blob/master/changelog.md"
+"repository" = "https://github.com/BertJorissen/pybinding"
+"documentation" = "https://bertjorissen.github.io/pybinding/"
+"changelog" = "https://github.com/BertJorissen/pybinding/blob/master/changelog.md"
 
 [build-system]
 requires = [

@@ -24,6 +24,7 @@ from . import _cpp
 from . import results
 from .model import Model
 from .system import System
+from .utils.progressbar import ProgressBar
 
 __all__ = ['Solver', 'arpack', 'feast', 'lapack', 'dacp']
 
@@ -287,7 +288,7 @@ class Solver:
         return self.system.with_data(ldos)
 
     def calc_bands(self, k0: ArrayLike, k1: ArrayLike, *ks: Iterable[ArrayLike], step: float = 0.1,
-                   point_labels: Optional[List[str]] = None) -> results.Bands:
+                   point_labels: Optional[List[str]] = None, progress: bool = False) -> results.Bands:
         """Calculate the band structure on a path in reciprocal space
 
         Parameters
@@ -300,6 +301,8 @@ class Solver:
             will return more detailed results.
         point_labels : List[str], optional
             The point_labels for plots
+        progress : bool, optional
+            Show a progress bar for the calculation, Default is False.
 
         Returns
         -------
@@ -307,9 +310,9 @@ class Solver:
         """
         k_points = [np.atleast_1d(k) for k in (k0, k1) + ks]
         k_path = results.make_path(*k_points, step=step, point_labels=point_labels)
-        return self.calc_bands_path(k_path)
+        return self.calc_bands_path(k_path, progress=progress)
 
-    def calc_bands_path(self, k_path: results.Path) -> results.Bands:
+    def calc_bands_path(self, k_path: results.Path, progress: bool = False) -> results.Bands:
         """Calculate the band structure on a path in reciprocal space
 
         Parameters
@@ -317,19 +320,27 @@ class Solver:
         k_path : `~pybinding.Path`
             Points in reciprocal space which form the path for the band calculation.
             At least two points are required.
+        progress : bool, optional
+            Show a progress bar for the calculation, Default is False.
 
         Returns
         -------
         :class:`~pybinding.Bands`
         """
         bands = []
+        if progress:
+            pbar = ProgressBar(len(k_path))
+            pbar.start()
         for k in k_path:
             self.set_wave_vector(k)
             bands.append(self.eigenvalues)
-
+            if progress:
+                pbar.update(len(bands))
+        if progress:
+            pbar.finish()
         return results.Bands(k_path, np.vstack(bands))
 
-    def calc_bands_area(self, k_area: results.Area) -> results.BandsArea:
+    def calc_bands_area(self, k_area: results.Area, progress: bool = False) -> results.BandsArea:
         """Calculate the band structure on a path in reciprocal space
 
         Parameters
@@ -337,20 +348,29 @@ class Solver:
         k_area : `~pybinding.Area`
             Points in reciprocal space which form the Area for the band calculation.
             At least two points are required.
+        progress : bool, optional
+            Show a progress bar for the calculation, Default is False.
 
         Returns
         -------
         :class:`~pybinding.BandsArea`
         """
         bands = []
+        if progress:
+            pbar = ProgressBar(np.prod(k_area.shape[:2]))
+            pbar.start()
         for k in k_area.reshape((np.prod(k_area.shape[:2]), -1)):
             self.set_wave_vector(k)
             bands.append(self.eigenvalues)
+            if progress:
+                pbar.update(len(bands))
+        if progress:
+            pbar.finish()
 
         return results.BandsArea(k_area, np.vstack(bands).reshape((k_area.shape[0], k_area.shape[1], -1)))
 
     def calc_wavefunction(self, k0: ArrayLike, k1: ArrayLike, *ks: Iterable[ArrayLike], step: float = 0.1,
-                          point_labels: Optional[List[str]] = None) -> results.Wavefunction:
+                          point_labels: Optional[List[str]] = None, progress: bool = False) -> results.Wavefunction:
         """Calculate the wavefunction on a path in reciprocal space
 
         Parameters
@@ -363,6 +383,8 @@ class Solver:
             will return more detailed results.
         point_labels : List[str], optional
             The point_labels for plots
+        progress : bool, optional
+            Show a progress bar for the calculation, Default is False.
 
         Returns
         -------
@@ -371,9 +393,9 @@ class Solver:
 
         k_points = [np.atleast_1d(k) for k in (k0, k1) + ks]
         k_path = results.make_path(*k_points, step=step, point_labels=point_labels)
-        return self.calc_wavefunction_path(k_path)
+        return self.calc_wavefunction_path(k_path, progress=progress)
 
-    def calc_wavefunction_path(self, k_path: results.Path) -> results.Wavefunction:
+    def calc_wavefunction_path(self, k_path: results.Path, progress: bool = False) -> results.Wavefunction:
         """Calculate the wavefunction on a path in reciprocal space
 
         Parameters
@@ -381,6 +403,8 @@ class Solver:
         k_path : `~pybinding.Path`
             Points in reciprocal space which form the path for the band calculation.
             At least two points are required.
+        progress : bool, optional
+            Show a progress bar for the calculation, Default is False.
 
         Returns
         -------
@@ -388,17 +412,23 @@ class Solver:
         """
         bands = []
         wavefunction = []
+        if progress:
+            pbar = ProgressBar(len(k_path))
+            pbar.start()
         for k in k_path:
             self.set_wave_vector(k)
             bands.append(self.eigenvalues)
             wavefunction.append(self.eigenvectors.T)
-
+            if progress:
+                pbar.update(len(bands))
+        if progress:
+            pbar.finish()
         return results.Wavefunction(results.Bands(k_path, np.vstack(bands)),
                                     np.array(wavefunction, dtype=complex),
                                     self.system.expanded_sublattices,
                                     self.system)
 
-    def calc_wavefunction_area(self, k_area: results.Area) -> results.WavefunctionArea:
+    def calc_wavefunction_area(self, k_area: results.Area, progress: bool = False) -> results.WavefunctionArea:
         """Calculate the wavefunction on a path in reciprocal space
 
         Parameters
@@ -406,6 +436,8 @@ class Solver:
         k_path : `~pybinding.Path`
             Points in reciprocal space which form the path for the band calculation.
             At least two points are required.
+        progress : bool, optional
+            Show a progress bar for the calculation, Default is False.
 
         Returns
         -------
@@ -413,10 +445,18 @@ class Solver:
         """
         bands = []
         wavefunction = []
+        if progress:
+            pbar = ProgressBar(np.prod(k_area.shape[:2]))
+            pbar.start()
+
         for k in k_area.reshape((np.prod(k_area.shape[:2]), -1)):
             self.set_wave_vector(k)
             bands.append(self.eigenvalues)
             wavefunction.append(self.eigenvectors.T)
+            if progress:
+                pbar.update(len(bands))
+        if progress:
+            pbar.finish()
 
         return results.WavefunctionArea(
             results.BandsArea(k_area, np.vstack(bands).reshape((k_area.shape[0], k_area.shape[1], -1))),

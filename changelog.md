@@ -1,5 +1,17 @@
 # Changelog
 
+
+## v1.0.5 |2024-10-16
+
+* `pb.kpmm.deferred_greens` has been added to calculate the Green's function in a deferred way, also for vectors
+* `pb.Wavefunction`class has to option to obtain the `pb.FatBands` for each suborbital instead of summing over them
+* some typing fixes for `pb.Lattice` and `pb.Model`
+* added an optional progress bar for the exact diagonalization routines in `pb.solver`.
+
+## v1.0.5.dev0 |2024-09-23
+
+* `pb.kpmm.deferred_greens` has been added to caluclate the Green's function in a deferred way
+
 ## v1.0.4 |2024-06-20
 
 Majer new release, new additions:

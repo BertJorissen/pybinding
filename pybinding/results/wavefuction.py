@@ -76,9 +76,13 @@ class Wavefunction:
             The reordered eigenvalues in a Bands-class."""
         return Bands(self.bands.k_path, self.disentangle(self.bands.energy))
 
-    @property
-    def fatbands(self) -> FatBands:
+    def _fatbands(self, suborbital: bool = False) -> FatBands:
         """ Return FatBands with the pDOS for each sublattice.
+
+        Parameters
+        ----------
+        suborbital : bool
+            If the pDOS should be calculated for each orbital. Default: False.
 
         Returns : FatBands
             The (unsorted) bands with the pDOS.
@@ -88,13 +92,42 @@ class Wavefunction:
         if self._sublattices is not None:
             mapping = self._sublattices.mapping
             keys = mapping.keys()
-            data = np.zeros((self.bands.energy.shape[0], self.bands.energy.shape[1], len(keys)))
-            for i_k, key in enumerate(keys):
-                data[:, :, i_k] = np.sum(probablitiy[:, :, self._sublattices == key], axis=2)
-            labels["orbitals"] = [str(key) for key in keys]
+            data_len = np.shape(probablitiy)[2] if suborbital else len(keys)
+            data = np.zeros((self.bands.energy.shape[0], self.bands.energy.shape[1], data_len))
+            data_index = 0
+            orbital_labels = []
+            for key in keys:
+                probablitiy_sliced = probablitiy[:, :, self._sublattices == key]
+                if suborbital:
+                    for suborbital_index in range(probablitiy_sliced.shape[2]):
+                        data[:, :, len(orbital_labels)] = probablitiy_sliced[:, :, suborbital_index]
+                        orbital_labels.append(str(key) + "_" + str(suborbital_index))
+                        data_index += 1
+                else:
+                    data[:, :, len(orbital_labels)] = np.sum(probablitiy_sliced, axis=2)
+                    orbital_labels.append(str(key))
+            labels["orbitals"] = orbital_labels
         else:
             data = probablitiy
         return FatBands(Bands(self.bands.k_path, self.bands.energy), data, labels)
+
+    @property
+    def fatbands(self) -> FatBands:
+        """ Return FatBands with the pDOS for each sublattice.
+
+        Returns : FatBands
+            The (unsorted) bands with the pDOS.
+        """
+        return self._fatbands()
+
+    @property
+    def fatbands_suborbital(self) -> FatBands:
+        """ Return FatBands with the pDOS for each sublattice.
+
+        Returns : FatBands
+            The (unsorted) bands with the pDOS.
+        """
+        return self._fatbands(suborbital=True)
 
     @property
     def fatbands_disentangled(self) -> FatBands:
@@ -104,6 +137,17 @@ class Wavefunction:
             The (sorted) bands with the pDOS.
         """
         fatbands = self.fatbands
+        return FatBands(Bands(self.bands.k_path, self.bands_disentangled.energy),
+                        self.disentangle(fatbands.data), fatbands.labels)
+
+    @property
+    def fatbands_suborbital_disentangled(self) -> FatBands:
+        """ Return FatBands with the pDOS for each sublattice.
+
+        Returns : FatBands
+            The (sorted) bands with the pDOS.
+        """
+        fatbands = self.fatbands_suborbital
         return FatBands(Bands(self.bands.k_path, self.bands_disentangled.energy),
                         self.disentangle(fatbands.data), fatbands.labels)
 
@@ -241,8 +285,19 @@ class WavefunctionArea(Wavefunction):
         return FatBandsArea(self.bands, self.bands.list_to_area(self.fatbands.data), self.fatbands.labels)
 
     @property
+    def fatbandsarea_suborbital(self) -> FatBandsArea:
+        return FatBandsArea(self.bands, self.bands.list_to_area(self.fatbands_suborbital.data), self.fatbands_suborbital.labels)
+
+    @property
     def fatbandsarea_disentangled(self) -> FatBandsArea:
         return FatBandsArea(
             BandsArea(self.bands.k_area, self.bands.list_to_area(self.bands_disentangled.energy)),
             self.bands.list_to_area(self.disentangle(self.fatbands.data)), self.fatbands.labels
+        )
+
+    @property
+    def fatbandsarea_suborbital_disentangled(self) -> FatBandsArea:
+        return FatBandsArea(
+            BandsArea(self.bands.k_area, self.bands.list_to_area(self.bands_disentangled.energy)),
+            self.bands.list_to_area(self.disentangle(self.fatbands_suborbital.data)), self.fatbands_suborbital.labels
         )
