@@ -18,6 +18,8 @@
         ~Wavefunction.disentangle
         ~Wavefunction.fatbands
         ~Wavefunction.fatbands_disentangled
+        ~Wavefunction.fatbands_suborbital
+        ~Wavefunction.fatbands_suborbital_disentangled
         ~Wavefunction.overlap_matrix
     
     
@@ -29,6 +31,7 @@
     .. autosummary::
     
         ~Wavefunction._calc_overlap_matrix
+        ~Wavefunction._fatbands
         ~Wavefunction.operator
         ~Wavefunction.spatial_ldos
     

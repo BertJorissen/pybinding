@@ -13,8 +13,8 @@
 
   
     <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
-      <script src="../_static/documentation_options.js?v=71272d9f"></script>
-      <script src="../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../_static/documentation_options.js?v=d55fa986"></script>
+      <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script src="../_static/js/theme.js"></script>
@@ -147,6 +147,12 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Wavefunction.fatbands_disentangled" title="pybinding.Wavefunction.fatbands_disentangled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fatbands_disentangled</span></code></a></p></td>
 <td><p>Return FatBands with the pDOS for each sublattice.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Wavefunction.fatbands_suborbital" title="pybinding.Wavefunction.fatbands_suborbital"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fatbands_suborbital</span></code></a></p></td>
+<td><p>Return FatBands with the pDOS for each sublattice.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Wavefunction.fatbands_suborbital_disentangled" title="pybinding.Wavefunction.fatbands_suborbital_disentangled"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fatbands_suborbital_disentangled</span></code></a></p></td>
+<td><p>Return FatBands with the pDOS for each sublattice.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Wavefunction.overlap_matrix" title="pybinding.Wavefunction.overlap_matrix"><code class="xref py py-obj docutils literal notranslate"><span class="pre">overlap_matrix</span></code></a></p></td>
 <td><p>Give back the overlap matrix</p></td>
 </tr>
@@ -158,10 +164,13 @@
 <tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_calc_overlap_matrix</span></code>()</p></td>
 <td><p>Calculate the overlap of all the wavefunctions with each other</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Wavefunction.operator" title="pybinding.Wavefunction.operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">operator</span></code></a>(operator[, disentangle, names])</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">_fatbands</span></code>([suborbital])</p></td>
+<td><p>Return FatBands with the pDOS for each sublattice.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Wavefunction.operator" title="pybinding.Wavefunction.operator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">operator</span></code></a>(operator[, disentangle, names])</p></td>
 <td><p>Apply the operator on the wavefunction.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#pybinding.Wavefunction.spatial_ldos" title="pybinding.Wavefunction.spatial_ldos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spatial_ldos</span></code></a>([energies, broadening])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#pybinding.Wavefunction.spatial_ldos" title="pybinding.Wavefunction.spatial_ldos"><code class="xref py py-obj docutils literal notranslate"><span class="pre">spatial_ldos</span></code></a>([energies, broadening])</p></td>
 <td><p>Calculate the spatial local density of states at the given energy</p></td>
 </tr>
 </tbody>
@@ -263,6 +272,26 @@ is <code class="samp docutils literal notranslate"><span class="pre">eigenvector
 </dd></dl>
 
 <dl class="py property">
+<dt class="sig sig-object py" id="pybinding.Wavefunction.fatbands_suborbital">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fatbands_suborbital</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pybinding.FatBands.html#pybinding.FatBands" title="pybinding.results.bands.FatBands"><span class="pre">FatBands</span></a></em><a class="headerlink" href="#pybinding.Wavefunction.fatbands_suborbital" title="Link to this definition">¶</a></dt>
+<dd><p>Return FatBands with the pDOS for each sublattice.</p>
+<dl class="simple">
+<dt>Returns<span class="classifier">FatBands</span></dt><dd><p>The (unsorted) bands with the pDOS.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pybinding.Wavefunction.fatbands_suborbital_disentangled">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fatbands_suborbital_disentangled</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="pybinding.FatBands.html#pybinding.FatBands" title="pybinding.results.bands.FatBands"><span class="pre">FatBands</span></a></em><a class="headerlink" href="#pybinding.Wavefunction.fatbands_suborbital_disentangled" title="Link to this definition">¶</a></dt>
+<dd><p>Return FatBands with the pDOS for each sublattice.</p>
+<dl class="simple">
+<dt>Returns<span class="classifier">FatBands</span></dt><dd><p>The (sorted) bands with the pDOS.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="pybinding.Wavefunction.overlap_matrix">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">overlap_matrix</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.1)"><span class="pre">ndarray</span></a></em><a class="headerlink" href="#pybinding.Wavefunction.overlap_matrix" title="Link to this definition">¶</a></dt>
 <dd><p>Give back the overlap matrix</p>
@@ -287,7 +316,7 @@ is <code class="samp docutils literal notranslate"><span class="pre">eigenvector
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2015-2024, Dean Moldovan.</p>
+    <p>&#169; Copyright 2015-2024, Bert Jorissen, Dean Moldovan.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
