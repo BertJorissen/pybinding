@@ -6,7 +6,23 @@ from pybinding.repository import graphene, group6_tmd
 
 # test multi-orbital models, test block-diagonal models, test zero-row models, test mutli-orbital sldos
 
+
+def block_diagonal_lattice() -> pb.Lattice:
+    a = 1
+    lat = pb.Lattice(a1=[a, 0], a2=[0, a])
+    lat.add_sublattices(
+        ('A', [0, 0], [0, 0, 0]),
+        ('B', [0.5, 0.5], [0, 0, 0])
+    )
+    lat.add_hoppings(
+        ([1, 0], 'A', 'A', np.eye(3)),
+        ([0, 1], 'A', 'A', np.eye(3)),
+        ([1, 0], 'B', 'B', np.eye(3)),
+        ([0, 1], 'B', 'B', np.eye(3)))
+    return lat
+
 models = {
+    "block-diagonal": [block_diagonal_lattice(), pb.rectangle(10)],
     'graphene-pristine': [graphene.monolayer(), pb.rectangle(15)],
     'graphene-pristine-oversized': [graphene.monolayer(), pb.rectangle(20)],
     'graphene-const_potential': [graphene.monolayer(), pb.rectangle(15),
