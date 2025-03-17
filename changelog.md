@@ -1,9 +1,15 @@
 # Changelog
 
+## v1.0.6 | 2025-03-17
+
+* Update the versions for Catch, fmt, pybind11 and python dependencies
+* Remove support for python 3.9
+* Strict C++17 requirement, removed mapbox/variant for std/variant
+* Changed output print statement for legend
 
 ## v1.0.5 |2024-10-16
 
-* `pb.kpmm.deferred_greens` has been added to calculate the Green's function in a deferred way, also for vectors
+* `pb.kpm.deferred_greens` has been added to calculate the Green's function in a deferred way, also for vectors
 * `pb.Wavefunction`class has to option to obtain the `pb.FatBands` for each suborbital instead of summing over them
 * some typing fixes for `pb.Lattice` and `pb.Model`
 * added an optional progress bar for the exact diagonalization routines in `pb.solver`.

@@ -127,7 +127,7 @@ using MomentsRef = var::variant<DiagonalMoments*, BatchDiagonalMoments*, Generic
 
 template<class M>
 void apply_damping(M& moments, Kernel const& kernel) {
-    var::apply_visitor(kernel, moments.data);
+    var::visit(kernel, moments.data);
 }
 
 struct ExtractData {
@@ -141,7 +141,7 @@ struct ExtractData {
 
 template<class M>
 ArrayXcd extract_data(M const& moments, idx_t num_moments) {
-    return moments.data.match(ExtractData{num_moments});
+    return var::visit(ExtractData{num_moments}, moments.data);
 }
 
 /// Return the velocity operator for the direction given by the `alpha` position vector

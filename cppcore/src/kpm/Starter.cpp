@@ -13,7 +13,7 @@ struct ConstantStarter {
     ConstantStarter(OptimizedHamiltonian const& oh, VectorXcd const& alpha)
         : oh(oh), alpha(alpha) {}
 
-    var::complex<VectorX> operator()(var::scalar_tag tag) const { return tag.match(*this); }
+    var::complex<VectorX> operator()(var::scalar_tag tag) const { return var::visit(*this, tag); }
 
     template<class scalar_t>
     var::complex<VectorX> operator()(var::tag<scalar_t>) const {
@@ -31,7 +31,7 @@ struct UnitStarter {
     UnitStarter(OptimizedHamiltonian const& oh) : size(oh.size()), sources(oh.idx().src) {}
 
     var::complex<VectorX> operator()(var::scalar_tag tag) {
-        return var::apply_visitor(*this, tag);
+        return var::visit(*this, tag);
     }
 
     template<class scalar_t>
@@ -53,7 +53,7 @@ struct RandomStarter {
     RandomStarter(OptimizedHamiltonian const& oh, VariantCSR const& op) : oh(oh), op(op) {}
 
     var::complex<VectorX> operator()(var::scalar_tag tag) {
-        return var::apply_visitor(*this, tag);
+        return var::visit(*this, tag);
     }
 
     template<class real_t>

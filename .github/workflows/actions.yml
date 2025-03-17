@@ -125,7 +125,7 @@ jobs:
           CIBW_BEFORE_TEST: pip install scipy contourpy --prefer-binary
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: python -c "import pybinding as pb; exit(pb.tests())"
-          CIBW_SKIP: cp36-* cp37-* cp313-* pp* *win32 *i686 *musllinux* *ppc64le *s390x *aarch64
+          CIBW_SKIP: cp36-* cp37-* pp* *win32 *i686 *musllinux* *ppc64le *s390x *aarch64
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.dev }}-wheels

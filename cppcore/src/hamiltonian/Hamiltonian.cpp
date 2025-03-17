@@ -36,27 +36,27 @@ struct Cols {
 } // namespace
 
 Hamiltonian::operator bool() const {
-    return var::apply_visitor(IsValid(), variant_matrix);
+    return var::visit(IsValid(), variant_matrix);
 }
 
 void Hamiltonian::reset() {
-    return var::apply_visitor(Reset(), variant_matrix);
+    return var::visit(Reset(), variant_matrix);
 }
 
 ComplexCsrConstRef Hamiltonian::csrref() const {
-    return var::apply_visitor(GetSparseRef(), variant_matrix);
+    return var::visit(GetSparseRef(), variant_matrix);
 }
 
 idx_t Hamiltonian::non_zeros() const {
-    return var::apply_visitor(NonZeros(), variant_matrix);
+    return var::visit(NonZeros(), variant_matrix);
 }
 
 idx_t Hamiltonian::rows() const {
-    return var::apply_visitor(Rows(), variant_matrix);
+    return var::visit(Rows(), variant_matrix);
 }
 
 idx_t Hamiltonian::cols() const {
-    return var::apply_visitor(Cols(), variant_matrix);
+    return var::visit(Cols(), variant_matrix);
 }
 
 } // namespace cpb

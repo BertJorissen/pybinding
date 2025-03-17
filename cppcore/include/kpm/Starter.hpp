@@ -36,7 +36,7 @@ Starter random_starter(OptimizedHamiltonian const& oh, VariantCSR const& op = {}
 template<class scalar_t>
 VectorX<scalar_t> make_r0(Starter const& starter, var::tag<VectorX<scalar_t>>, idx_t /*cols=1*/) {
     ++starter.count;
-    return starter.make(var::tag<scalar_t>{}).template get<VectorX<scalar_t>>();
+    return var::get<VectorX<scalar_t>>(starter.make(var::tag<scalar_t>{}));
 }
 
 template<class scalar_t>
@@ -44,7 +44,7 @@ MatrixX<scalar_t> make_r0(Starter const& starter, var::tag<MatrixX<scalar_t>>, i
     starter.count += cols;
     auto r0 = MatrixX<scalar_t>(starter.vector_size, cols);
     for (auto i = idx_t{0}; i < cols; ++i) {
-        r0.col(i) = starter.make(var::tag<scalar_t>{}).template get<VectorX<scalar_t>>();
+        r0.col(i) = var::get<VectorX<scalar_t>>(starter.make(var::tag<scalar_t>{}));
     }
     return r0;
 }

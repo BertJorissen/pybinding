@@ -31,7 +31,7 @@ struct Optimize {
         }
 
         if (oh.matrix_format == MatrixFormat::ELL) {
-            auto const& csr = oh.optimized_matrix.template get<SparseMatrixX<scalar_t>>();
+            auto const& csr = var::get<SparseMatrixX<scalar_t>>(oh.optimized_matrix);
             oh.optimized_matrix = num::csr_to_ell(csr);
         }
 
@@ -45,7 +45,7 @@ void OptimizedHamiltonian::optimize_for(Indices const& idx, Scale<> scale) {
     }
 
     timer.tic();
-    original_h.get_variant().match(Optimize{*this, idx, scale});
+    var::visit(Optimize{*this, idx, scale}, original_h.get_variant());
     timer.toc();
 
     original_idx = idx;
@@ -311,11 +311,11 @@ namespace {
 size_t OptimizedHamiltonian::num_nonzeros(idx_t num_moments, bool optimal_size) const {
     auto result = size_t{0};
     if (!optimal_size) {
-        result = num_moments * var::apply_visitor(NonZeros{size()}, optimized_matrix);
+        result = num_moments * var::visit(NonZeros{size()}, optimized_matrix);
     } else {
         for (auto n = 0; n < num_moments; ++n) {
             auto const opt_size = slice_map.optimal_size(n, num_moments);
-            auto const num_nonzeros = var::apply_visitor(NonZeros{opt_size}, optimized_matrix);
+            auto const num_nonzeros = var::visit(NonZeros{opt_size}, optimized_matrix);
             result += num_nonzeros;
         }
     }
@@ -366,11 +366,11 @@ namespace {
 }
 
 size_t OptimizedHamiltonian::matrix_memory() const {
-    return var::apply_visitor(MatrixMemory{}, optimized_matrix);
+    return var::visit(MatrixMemory{}, optimized_matrix);
 }
 
 size_t OptimizedHamiltonian::vector_memory() const {
-    return size() * original_h.get_variant().match(VectorMemory{});
+    return size() * var::visit(VectorMemory{}, original_h.get_variant());
 }
 
 }} // namespace cpb::kpm
