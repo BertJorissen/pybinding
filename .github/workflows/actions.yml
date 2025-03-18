@@ -49,8 +49,6 @@ jobs:
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop'
     needs: [ test-compile ]
     runs-on: ${{ matrix.os }}
-    env:
-      MACOSX_DEPLOYMENT_TARGET: "11.0"
     strategy:
       matrix:
         include:
@@ -122,10 +120,8 @@ jobs:
         env:
           CIBW_ARCHS_MACOS: ${{ matrix.arch }}
           CIBW_ARCHS_LINUX: x86_64
-          CIBW_BEFORE_BUILD: |
-            export MACOSX_DEPLOYMENT_TARGET=11.0
-            pip install scipy contourpy --prefer-binary
-          CIBW_ENVIRONMENT: PB_BUILD_TYPE=Release PB_NATIVE_SIMD=OFF DELOCATE_VERBOSITY=1 MACOSX_DEPLOYMENT_TARGET=11.0 # minimum supported version for C++17
+          CIBW_BEFORE_BUILD: pip install scipy contourpy --prefer-binary
+          CIBW_ENVIRONMENT: PB_BUILD_TYPE=Release PB_NATIVE_SIMD=OFF DELOCATE_VERBOSITY=1 MACOSX_DEPLOYMENT_TARGET=11.0 _PYTHON_HOST_PLATFORM=macosx-11.0-${{ matrix.arch }}
           CIBW_BUILD_VERBOSITY: 1
           # Use delvewheel on windows
           CIBW_BEFORE_TEST: pip install scipy contourpy --prefer-binary
@@ -134,6 +130,7 @@ jobs:
           CIBW_SKIP: cp36-* cp37-* pp* *win32 *i686 *musllinux* *ppc64le *s390x *aarch64
           CIBW_VERBOSE: 1
           MACOSX_DEPLOYMENT_TARGET: "11.0"
+          _PYTHON_HOST_PLATFORM: "macosx-11.0-${{ matrix.arch }}"
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.dev }}-wheels
