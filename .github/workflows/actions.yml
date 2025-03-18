@@ -49,6 +49,8 @@ jobs:
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop'
     needs: [ test-compile ]
     runs-on: ${{ matrix.os }}
+    env:
+      MACOSX_DEPLOYMENT_TARGET: 11.0
     strategy:
       matrix:
         include:
@@ -120,8 +122,6 @@ jobs:
           CIBW_ARCHS_LINUX: x86_64
           CIBW_BEFORE_BUILD: |
             pip install scipy contourpy --prefer-binary
-            env | grep MACOSX_DEPLOYMENT_TARGET
-            export MACOSX_DEPLOYMENT_TARGET=11.0
           CIBW_ENVIRONMENT: PB_BUILD_TYPE=Release PB_NATIVE_SIMD=OFF DELOCATE_VERBOSITY=1 MACOSX_DEPLOYMENT_TARGET=11.0 # minimum supported version for C++17
           CIBW_BUILD_VERBOSITY: 1
           # Use delvewheel on windows
