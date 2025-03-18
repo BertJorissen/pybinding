@@ -126,7 +126,7 @@ jobs:
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: python -c "import pybinding as pb; exit(pb.tests())"
           CIBW_SKIP: cp36-* cp37-* pp* *win32 *i686 *musllinux* *ppc64le *s390x *aarch64
-          CIBW_MACOSX_DEPLOYMENT_TARGET: 10.14 # minimum supported version for C++17
+          MACOSX_DEPLOYMENT_TARGET: 10.15 # minimum supported version for C++17
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.dev }}-wheels
