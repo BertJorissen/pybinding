@@ -8,13 +8,13 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>2. Lattice &mdash; pybinding</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
 
   
     <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
-      <script src="../_static/documentation_options.js?v=d55fa986"></script>
+      <script src="../_static/documentation_options.js?v=e2a723ec"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -122,7 +122,7 @@ All of this structural information is used to build up a larger system by transl
 <section id="square-lattice">
 <h2><span class="section-number">2.1. </span>Square lattice<a class="headerlink" href="#square-lattice" title="Link to this heading">¶</a></h2>
 <p>Starting from the basics, we’ll create a simple square lattice.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pybinding</span> <span class="k">as</span> <span class="nn">pb</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pybinding</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pb</span>
 
 <span class="n">d</span> <span class="o">=</span> <span class="mf">0.2</span>  <span class="c1"># [nm] unit cell length</span>
 <span class="n">t</span> <span class="o">=</span> <span class="mi">1</span>    <span class="c1"># [eV] hopping energy</span>
@@ -181,7 +181,7 @@ However, the onsite energy is not affected by this and should be given in the no
 <p>It’s good practice to build the lattice inside a function to make it easily reusable.
 Here we define the same lattice as before, but note that the unit cell length and hopping energy
 are function arguments, which makes the lattice easily configurable.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">square_lattice</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">square_lattice</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
     <span class="n">lat</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="n">a1</span><span class="o">=</span><span class="p">[</span><span class="n">d</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">a2</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">d</span><span class="p">])</span>
     <span class="n">lat</span><span class="o">.</span><span class="n">add_sublattices</span><span class="p">((</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
     <span class="n">lat</span><span class="o">.</span><span class="n">add_hoppings</span><span class="p">(([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span>
@@ -201,9 +201,9 @@ are function arguments, which makes the lattice easily configurable.</p>
 <section id="graphene">
 <h2><span class="section-number">2.2. </span>Graphene<a class="headerlink" href="#graphene" title="Link to this heading">¶</a></h2>
 <p>The next example shows a slightly more complicated two-atom lattice of graphene.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">sqrt</span>
 
-<span class="k">def</span> <span class="nf">monolayer_graphene</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">monolayer_graphene</span><span class="p">():</span>
     <span class="n">a</span> <span class="o">=</span> <span class="mf">0.24595</span>   <span class="c1"># [nm] unit cell length</span>
     <span class="n">a_cc</span> <span class="o">=</span> <span class="mf">0.142</span>  <span class="c1"># [nm] carbon-carbon distance</span>
     <span class="n">t</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.8</span>      <span class="c1"># [eV] nearest neighbour hopping</span>
@@ -269,7 +269,7 @@ the vertices of the Brillouin zone.</p>
 <h2><span class="section-number">2.4. </span>Material repository<a class="headerlink" href="#material-repository" title="Link to this heading">¶</a></h2>
 <p>A few common lattices are included in pybinding’s <a class="reference internal" href="../materials/index.html"><span class="doc">Material Repository</span></a>. You can get started
 quickly by importing one of them. For example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pybinding.repository</span><span class="w"> </span><span class="kn">import</span> <span class="n">graphene</span>
 <span class="n">lattice</span> <span class="o">=</span> <span class="n">graphene</span><span class="o">.</span><span class="n">bilayer</span><span class="p">()</span>
 <span class="n">lattice</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
@@ -288,14 +288,14 @@ section. For more lattice specifications check out the <a class="reference inter
 <p>This is a full example file which you can download and run with <code class="samp docutils literal notranslate"><span class="pre">python3</span> <span class="pre">lattice_example.py</span></code>.</p>
 <p><a class="reference download internal" download="" href="../_downloads/40e7278492c3d905df7bd0e74eecd3a2/lattice_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">source</span> <span class="pre">code</span></code></a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Create and plot a monolayer graphene lattice and it&#39;s Brillouin zone&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">pybinding</span> <span class="k">as</span> <span class="nn">pb</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pybinding</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pb</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">sqrt</span>
 
 <span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">use_style</span><span class="p">()</span>
 
 
-<span class="k">def</span> <span class="nf">monolayer_graphene</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">monolayer_graphene</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return the lattice specification for monolayer graphene&quot;&quot;&quot;</span>
     <span class="n">a</span> <span class="o">=</span> <span class="mf">0.24595</span>   <span class="c1"># [nm] unit cell length</span>
     <span class="n">a_cc</span> <span class="o">=</span> <span class="mf">0.142</span>  <span class="c1"># [nm] carbon-carbon distance</span>

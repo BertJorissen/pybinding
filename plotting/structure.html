@@ -7,13 +7,13 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Model structure &mdash; pybinding</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
 
   
     <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
-      <script src="../_static/documentation_options.js?v=d55fa986"></script>
+      <script src="../_static/documentation_options.js?v=e2a723ec"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -138,7 +138,7 @@ third-nearest-neighbor model of graphene. Note the huge number of hoppings in th
 The extra information may be useful for calculations, but it is not always desirable for figures
 because of the extra noise. To filter out some of the lines, we can pass the <code class="samp docutils literal notranslate"><span class="pre">draw_only</span></code> argument
 as a list of hopping names. For example, if we only want the first-nearest neighbors:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pybinding.repository</span><span class="w"> </span><span class="kn">import</span> <span class="n">graphene</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
 <span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(</span><span class="n">nearest_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">),</span> <span class="n">graphene</span><span class="o">.</span><span class="n">hexagon_ac</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>

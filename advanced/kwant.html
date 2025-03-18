@@ -7,13 +7,13 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kwant compatibility &mdash; pybinding</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
 
   
     <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
-      <script src="../_static/documentation_options.js?v=d55fa986"></script>
+      <script src="../_static/documentation_options.js?v=e2a723ec"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -143,17 +143,17 @@ by calling the <a class="reference internal" href="../_api/pybinding.Model.html#
 <p>A detailed overview of scattering model construction in pybinding is available in the
 <a class="reference internal" href="../tutorial/scattering.html"><span class="doc">tutorial</span></a>. Here, we present a simple example of a graphene wire
 with a potential barrier:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pybinding.repository</span><span class="w"> </span><span class="kn">import</span> <span class="n">graphene</span>
 
-<span class="k">def</span> <span class="nf">potential_barrier</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">x0</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">potential_barrier</span><span class="p">(</span><span class="n">v0</span><span class="p">,</span> <span class="n">x0</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Barrier height `v0` in eV with spatial position `-x0 &lt;= x &lt;= x0`&quot;&quot;&quot;</span>
     <span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span><span class="p">(</span><span class="n">is_double</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># enable double-precision floating-point</span>
-    <span class="k">def</span> <span class="nf">function</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">function</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">energy</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="o">-</span><span class="n">x0</span> <span class="o">&lt;=</span> <span class="n">x</span><span class="p">,</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="n">x0</span><span class="p">)]</span> <span class="o">=</span> <span class="n">v0</span>
         <span class="k">return</span> <span class="n">energy</span>
     <span class="k">return</span> <span class="n">function</span>
 
-<span class="k">def</span> <span class="nf">make_model</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_model</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">v0</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
         <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
         <span class="n">pb</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">),</span>
@@ -171,7 +171,7 @@ with a potential barrier:</p>
 <img alt="../_images/kwant-1.png" class="plot-directive" src="../_images/kwant-1.png" />
 </figure>
 <p>We can then vary the height of the potential barrier and calculate the transmission using Kwant:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">kwant</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">kwant</span>
 
 <span class="n">length</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">15</span>  <span class="c1"># nm</span>
 <span class="n">electron_energy</span> <span class="o">=</span> <span class="mf">0.25</span>  <span class="c1"># eV</span>
@@ -225,7 +225,7 @@ loops over some parameter <code class="samp docutils literal notranslate"><span 
 the fast builder makes it possible to fully reconstruct the model in every loop iteration at no
 extra performance cost. This simplifies the code since all the parameters can be applied in a
 single place:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">make_model</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">make_model</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="o">...</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>  <span class="c1"># all parameters in one place</span>
 
 <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">xs</span><span class="p">:</span>

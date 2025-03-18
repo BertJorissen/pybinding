@@ -8,13 +8,13 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>12. Wavefunction calculations &mdash; pybinding</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
 
   
     <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
-      <script src="../_static/documentation_options.js?v=d55fa986"></script>
+      <script src="../_static/documentation_options.js?v=e2a723ec"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
@@ -122,7 +122,7 @@ Hamiltonian matrix is created.</p>
 <p><a class="reference download internal" download="" href="../_downloads/a78fd1b5fafb484989c84d4297cb34b5/wavefunction.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
 <section id="berry">
 <h2><span class="section-number">12.1. </span>Berry<a class="headerlink" href="#berry" title="Link to this heading">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository.group6_tmd</span> <span class="kn">import</span> <span class="n">monolayer_3band</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pybinding.repository.group6_tmd</span><span class="w"> </span><span class="kn">import</span> <span class="n">monolayer_3band</span>
 <span class="n">lat</span> <span class="o">=</span> <span class="n">monolayer_3band</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;MoS2&quot;</span><span class="p">)</span>
 <span class="n">wfc_area</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">lapack</span><span class="p">(</span><span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">lat</span><span class="p">,</span> <span class="n">pb</span><span class="o">.</span><span class="n">translational_symmetry</span><span class="p">()))</span><span class="o">.</span><span class="n">calc_wavefunction_area</span><span class="p">(</span>
 <span class="n">pb</span><span class="o">.</span><span class="n">make_area</span><span class="p">(</span><span class="o">*</span><span class="n">lat</span><span class="o">.</span><span class="n">reciprocal_vectors</span><span class="p">(),</span> <span class="n">step</span><span class="o">=</span><span class="mf">.1</span><span class="p">)</span>

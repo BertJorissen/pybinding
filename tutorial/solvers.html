@@ -8,13 +8,13 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>9. Eigenvalue solvers &mdash; pybinding</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
 
   
     <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
-      <script src="../_static/documentation_options.js?v=d55fa986"></script>
+      <script src="../_static/documentation_options.js?v=e2a723ec"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -127,7 +127,7 @@ only its implementations such as <a class="reference internal" href="../_api/pyb
 systems. However, a great advantage of this solver is that it always solves for all eigenvalues
 and eigenvectors of a Hamiltonian matrix. This makes it perfect for calculating the entire band
 structure of the bulk or nanoribbons, as has been shown several times in this tutorial.</p>
-<p>Internally, this solver uses the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.eigh.html#scipy.linalg.eigh" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.linalg.eigh()</span></code></a> function for dense Hermitian matrices.
+<p>Internally, this solver uses the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.linalg.eigh.html#scipy.linalg.eigh" title="(in SciPy v1.15.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.linalg.eigh()</span></code></a> function for dense Hermitian matrices.
 See the <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.lapack" title="pybinding.solver.lapack"><code class="xref py py-func docutils literal notranslate"><span class="pre">solver.lapack()</span></code></a> API reference for more details.</p>
 </section>
 <section id="arpack">
@@ -136,11 +136,11 @@ See the <a class="reference internal" href="../_api/pybinding.solver.html#pybind
 large systems. However, only a small subset of the total eigenvalues and eigenvectors can be
 calculated. This tutorial already contains a few examples where the ARPACK solver was used, and
 one more is presented below.</p>
-<p>Internally, the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.sparse.linalg.eigsh()</span></code></a> function is used to solve large sparse Hermitian
+<p>Internally, the <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.15.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">scipy.sparse.linalg.eigsh()</span></code></a> function is used to solve large sparse Hermitian
 matrices. The first argument to <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.arpack" title="pybinding.solver.arpack"><code class="xref py py-func docutils literal notranslate"><span class="pre">solver.arpack()</span></code></a> must be the pybinding <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a>, but
-the following arguments are the same as <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">eigsh()</span></code></a>, so the solver routine
+the following arguments are the same as <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.15.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">eigsh()</span></code></a>, so the solver routine
 can be tweaked as desired. Rather than reproduce the full list of options here, we refer you to
-the scipy <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.14.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">eigsh()</span></code></a> reference documentation. Here, we will focus on the
+the scipy <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.linalg.eigsh.html#scipy.sparse.linalg.eigsh" title="(in SciPy v1.15.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">eigsh()</span></code></a> reference documentation. Here, we will focus on the
 specific features of solvers within pybinding.</p>
 </section>
 <section id="solver-interface">
@@ -148,7 +148,7 @@ specific features of solvers within pybinding.</p>
 <p>No matter which concrete solver is used, they all share a common <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.Solver" title="pybinding.solver.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a> interface.
 The two primary properties are <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.Solver.eigenvalues" title="pybinding.solver.Solver.eigenvalues"><code class="xref py py-attr docutils literal notranslate"><span class="pre">eigenvalues</span></code></a> and <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.Solver.eigenvectors" title="pybinding.solver.Solver.eigenvectors"><code class="xref py py-attr docutils literal notranslate"><span class="pre">eigenvectors</span></code></a>.
 These are the raw results of the exact diagonalization of the Hamiltonian matrix.</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">pybinding.repository</span><span class="w"> </span><span class="kn">import</span> <span class="n">graphene</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">())</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">hamiltonian</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
 <span class="go">[[ 0.0 -2.8]</span>
@@ -163,7 +163,7 @@ These are the raw results of the exact diagonalization of the Hamiltonian matrix
 </div>
 <p>The properties contain just the raw data. However, <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.Solver" title="pybinding.solver.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a> also offers a few convenient
 calculation methods. We’ll demonstrate these on a simple rectangular graphene system.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pybinding.repository</span><span class="w"> </span><span class="kn">import</span> <span class="n">graphene</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
     <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>
@@ -238,7 +238,7 @@ function with the specified broadening:</p>
 stands out as the signature of the zigzag edge states.</p>
 <p id="manual-band-calculation">For periodic systems, the wave vector can be controlled using <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.Solver.set_wave_vector" title="pybinding.solver.Solver.set_wave_vector"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Solver.set_wave_vector()</span></code></a>.
 This allows us to compute the eigenvalues at various points in k-space. For example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">pi</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">pi</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span>
     <span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span>

@@ -8,13 +8,13 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Multi-orbital models &mdash; pybinding</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
 
   
     <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
-      <script src="../_static/documentation_options.js?v=d55fa986"></script>
+      <script src="../_static/documentation_options.js?v=e2a723ec"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -189,12 +189,12 @@ larger than <code class="samp docutils literal notranslate"><span class="pre">nu
 single- and multi-orbital models. In case of the latter, the <code class="docutils literal notranslate"><span class="pre">energy</span></code> argument of the modifiers
 will have a shape matching the onsite/hopping matrix term.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span>
-<span class="k">def</span> <span class="nf">potential</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">potential</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Linear onsite potential as a function of x for a 2-orbital model&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">energy</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span>
 </pre></div>
 </div>
-<p>Note the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.eye.html#numpy.eye" title="(in NumPy v2.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">np.eye(2)</span></code></a> in the code above. The number 2 matches the 2-orbital
+<p>Note the <a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.eye.html#numpy.eye" title="(in NumPy v2.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">np.eye(2)</span></code></a> in the code above. The number 2 matches the 2-orbital
 structure of a specific model. Without this, <code class="docutils literal notranslate"><span class="pre">energy</span> <span class="pre">+</span> <span class="pre">x</span></code> would also add the value to the
 off-diagonal elements of the onsite matrix which is not desirable in this case.</p>
 <p>The modifier defined above will only work for 2-orbital models. In general, we might want to
@@ -202,7 +202,7 @@ create modifiers which work with any n-orbital model or with a mixed number of o
 we can use the <code class="docutils literal notranslate"><span class="pre">sub_id</span></code> modifier argument and its <code class="docutils literal notranslate"><span class="pre">.eye</span></code> attribute which supplies the correct
 matrix shape for any sublattice:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span>
-<span class="k">def</span> <span class="nf">potential</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">sub_id</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">potential</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">sub_id</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Same as above, but works for any n-orbital model&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">energy</span> <span class="o">+</span> <span class="n">sub_id</span><span class="o">.</span><span class="n">eye</span> <span class="o">*</span> <span class="n">x</span>
 </pre></div>
@@ -210,7 +210,7 @@ matrix shape for any sublattice:</p>
 <p>Even more generally, if we wish to apply completely different functions to the various sublattices,
 the <code class="docutils literal notranslate"><span class="pre">sub_id</span></code> argument can be used to create different branches in the modifier:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span>
-<span class="k">def</span> <span class="nf">potential</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">sub_id</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">potential</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">sub_id</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Applies different functions to different sublattices&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">sub_id</span> <span class="o">==</span> <span class="s2">&quot;A&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">energy</span> <span class="o">+</span> <span class="n">x</span>  <span class="c1"># we know sublattice A is single-orbital</span>
@@ -291,7 +291,7 @@ orbitals on a single site. For example, when calculating the local density of st
 input parameters is the target site position. By default, the resulting LDOS is calculated as the
 sum of all orbitals but this is optional as shown in the following example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Calculate the LDOS in the center of a MoS2 quantum dot&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">group6_tmd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pybinding.repository</span><span class="w"> </span><span class="kn">import</span> <span class="n">group6_tmd</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">group6_tmd</span><span class="o">.</span><span class="n">monolayer_3band</span><span class="p">(</span><span class="s2">&quot;MoS2&quot;</span><span class="p">),</span>
                  <span class="n">pb</span><span class="o">.</span><span class="n">regular_polygon</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>

@@ -7,13 +7,13 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lattice specification &mdash; pybinding</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
 
   
     <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
-      <script src="../_static/documentation_options.js?v=d55fa986"></script>
+      <script src="../_static/documentation_options.js?v=e2a723ec"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -109,7 +109,7 @@
 are already familiar with the <a class="reference internal" href="../tutorial/index.html"><span class="doc">Tutorial</span></a>.</p>
 <p><a class="reference download internal" download="" href="../_downloads/45412374df93e912756e05da7929cd48/lattice.ipynb"><code class="xref nbexport download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">this</span> <span class="pre">page</span> <span class="pre">as</span> <span class="pre">a</span> <span class="pre">Jupyter</span> <span class="pre">notebook</span></code></a></p>
 <p>First, we set a few constants which are going to be needed in the following examples:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">pi</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">pi</span>
 
 <span class="n">a</span> <span class="o">=</span> <span class="mf">0.24595</span>   <span class="c1"># [nm] unit cell length</span>
 <span class="n">a_cc</span> <span class="o">=</span> <span class="mf">0.142</span>  <span class="c1"># [nm] carbon-carbon distance</span>
@@ -128,7 +128,7 @@ are already familiar with the <a class="reference internal" href="../tutorial/in
 <code class="samp docutils literal notranslate"><span class="pre">offset</span></code> arguments were already explained in the basic tutorial. The <code class="samp docutils literal notranslate"><span class="pre">onsite_energy</span></code> is applied
 as an intrinsic part of the sublattice site. As an example, we’ll add this term to monolayer
 graphene:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">monolayer_graphene</span><span class="p">(</span><span class="n">onsite_energy</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">monolayer_graphene</span><span class="p">(</span><span class="n">onsite_energy</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]):</span>
     <span class="n">lat</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="n">a1</span><span class="o">=</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">a2</span><span class="o">=</span><span class="p">[</span><span class="n">a</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">a</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
     <span class="n">lat</span><span class="o">.</span><span class="n">add_sublattices</span><span class="p">((</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">a_cc</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="n">onsite_energy</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
                         <span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span>  <span class="n">a_cc</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span> <span class="n">onsite_energy</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
@@ -179,7 +179,7 @@ has vectors at an acute angle with regard to each other. On the other hand, a 4-
 rectangular which makes certain model geometries easier to create. It also makes it possible to
 realize armchair edges, as shown in <a class="reference internal" href="../tutorial/shape_symmetry.html#graphene-nanoribbons"><span class="std std-ref">Nanoribbons</span></a> section of the basic tutorial.</p>
 <p>We can create a 4-atom cell by adding two more sublattice to the <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice" title="pybinding.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a> specification:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">monolayer_graphene_4atom</span><span class="p">():</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">monolayer_graphene_4atom</span><span class="p">():</span>
     <span class="n">lat</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="n">a1</span><span class="o">=</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">a2</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="n">a_cc</span><span class="p">])</span>
     <span class="n">lat</span><span class="o">.</span><span class="n">add_sublattices</span><span class="p">((</span><span class="s1">&#39;A&#39;</span><span class="p">,</span>  <span class="p">[</span>  <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">a_cc</span><span class="o">/</span><span class="mi">2</span><span class="p">]),</span>
                         <span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span>  <span class="p">[</span>  <span class="mi">0</span><span class="p">,</span>  <span class="n">a_cc</span><span class="o">/</span><span class="mi">2</span><span class="p">]),</span>
@@ -208,7 +208,7 @@ realize armchair edges, as shown in <a class="reference internal" href="../tutor
 <p>Note the additional sublattices A2 and B2, shown in green and red in the figure. As defined above,
 these are interpreted as new and distinct lattice sites. However, we would like to have sublattices
 A2 and B2 be equivalent to A and B. <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice.add_aliases" title="pybinding.Lattice.add_aliases"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Lattice.add_aliases()</span></code></a> does exactly that:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">monolayer_graphene_4atom</span><span class="p">():</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">monolayer_graphene_4atom</span><span class="p">():</span>
     <span class="n">lat</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="n">a1</span><span class="o">=</span><span class="p">[</span><span class="n">a</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">a2</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="o">*</span><span class="n">a_cc</span><span class="p">])</span>
     <span class="n">lat</span><span class="o">.</span><span class="n">add_sublattices</span><span class="p">((</span><span class="s1">&#39;A&#39;</span><span class="p">,</span>  <span class="p">[</span>  <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">a_cc</span><span class="o">/</span><span class="mi">2</span><span class="p">]),</span>
                         <span class="p">(</span><span class="s1">&#39;B&#39;</span><span class="p">,</span>  <span class="p">[</span>  <span class="mi">0</span><span class="p">,</span>  <span class="n">a_cc</span><span class="o">/</span><span class="mi">2</span><span class="p">]))</span>

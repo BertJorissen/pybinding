@@ -8,13 +8,13 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>8. Generators &mdash; pybinding</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
 
   
     <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
-      <script src="../_static/documentation_options.js?v=d55fa986"></script>
+      <script src="../_static/documentation_options.js?v=e2a723ec"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -128,15 +128,15 @@ cover such cases.</p>
 It’s especially useful for creating additional local hoppings, e.g. to model defects. Here, we
 present a way to create twisted bilayer graphene with an arbitrary rotation angle <span class="math notranslate nohighlight">\(\theta\)</span>.
 We start with two unconnected layers of graphene.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">import</span> <span class="nn">pybinding</span> <span class="k">as</span> <span class="nn">pb</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pybinding</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pb</span>
 
 <span class="n">c0</span> <span class="o">=</span> <span class="mf">0.335</span>  <span class="c1"># [nm] graphene interlayer spacing</span>
 
 
-<span class="k">def</span> <span class="nf">two_graphene_monolayers</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">two_graphene_monolayers</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Two individual AB stacked layers of monolayer graphene without interlayer hopping&quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">pybinding.repository.graphene.constants</span> <span class="kn">import</span> <span class="n">a_cc</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">t</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pybinding.repository.graphene.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">a_cc</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">t</span>
 
     <span class="n">lat</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="n">a1</span><span class="o">=</span><span class="p">[</span><span class="n">a</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">a</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)],</span> <span class="n">a2</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="n">a</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">a</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
     <span class="n">lat</span><span class="o">.</span><span class="n">add_sublattices</span><span class="p">((</span><span class="s1">&#39;A1&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span>   <span class="n">a_cc</span><span class="p">,</span>   <span class="mi">0</span><span class="p">]),</span>
@@ -161,16 +161,16 @@ We start with two unconnected layers of graphene.</p>
 </div>
 <p>A <a class="reference internal" href="../_api/pybinding.site_position_modifier.html#pybinding.site_position_modifier" title="pybinding.site_position_modifier"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;site_position_modifier</span></code></a> is applied to rotate just one layer.
 Then, a <a class="reference internal" href="../_api/pybinding.hopping_generator.html#pybinding.hopping_generator" title="pybinding.hopping_generator"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;hopping_generator</span></code></a> finds and connects the layers via site
-pairs which satisfy the given criteria using <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.cKDTree.html#scipy.spatial.cKDTree" title="(in SciPy v1.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">cKDTree</span></code></a>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">cKDTree</span>
+pairs which satisfy the given criteria using <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.cKDTree.html#scipy.spatial.cKDTree" title="(in SciPy v1.15.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">cKDTree</span></code></a>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">cKDTree</span>
 
-<span class="k">def</span> <span class="nf">twist_layers</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">twist_layers</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Rotate one layer and then a generate hopping between the rotated layers,</span>
 <span class="sd">       reference is AB stacked&quot;&quot;&quot;</span>
     <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>  <span class="c1"># from degrees to radians</span>
 
     <span class="nd">@pb</span><span class="o">.</span><span class="n">site_position_modifier</span>
-    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rotate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Rotate layer 2 by the given angle `theta`&quot;&quot;&quot;</span>
         <span class="n">layer2</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">x0</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">layer2</span><span class="p">]</span>
@@ -180,7 +180,7 @@ pairs which satisfy the given criteria using <a class="reference external" href=
         <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span>
 
     <span class="nd">@pb</span><span class="o">.</span><span class="n">hopping_generator</span><span class="p">(</span><span class="s1">&#39;interlayer&#39;</span><span class="p">,</span> <span class="n">energy</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>  <span class="c1"># eV</span>
-    <span class="k">def</span> <span class="nf">interlayer_generator</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">interlayer_generator</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate hoppings for site pairs which have distance `d_min &lt; d &lt; d_max`&quot;&quot;&quot;</span>
         <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">layer1</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
@@ -199,7 +199,7 @@ pairs which satisfy the given criteria using <a class="reference external" href=
         <span class="k">return</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span>  <span class="c1"># lists of site indices to connect</span>
 
     <span class="nd">@pb</span><span class="o">.</span><span class="n">hopping_energy_modifier</span>
-    <span class="k">def</span> <span class="nf">interlayer_hopping_value</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="n">hop_id</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">interlayer_hopping_value</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="n">hop_id</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the value of the newly generated hoppings as a function of distance&quot;&quot;&quot;</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">x1</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y1</span><span class="o">-</span><span class="n">y2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">z1</span><span class="o">-</span><span class="n">z2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">interlayer</span> <span class="o">=</span> <span class="p">(</span><span class="n">hop_id</span> <span class="o">==</span> <span class="s1">&#39;interlayer&#39;</span><span class="p">)</span>
@@ -228,16 +228,16 @@ hopping energy to the desired distance-dependent value.</p>
 <p>This example covers a structure with two equivalent layers, both of which are defined using a
 <a class="reference internal" href="../_api/pybinding.Lattice.html#pybinding.Lattice" title="pybinding.Lattice"><code class="xref py py-class docutils literal notranslate"><span class="pre">Lattice</span></code></a>. A similar approach can be used when considering heterostructures but we can use
 a <a class="reference internal" href="../_api/pybinding.site_generator.html#pybinding.site_generator" title="pybinding.site_generator"><code class="xref py py-func docutils literal notranslate"><span class="pre">&#64;site_generator</span></code></a> to add a layer created from a different unit cell.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hbn_layer</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">hbn_layer</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate hBN layer defined by the shape with intralayer hopping terms&quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">pybinding.repository.graphene.constants</span> <span class="kn">import</span> <span class="n">a_cc</span><span class="p">,</span> <span class="n">t</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pybinding.repository.graphene.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">a_cc</span><span class="p">,</span> <span class="n">t</span>
 
     <span class="n">a_bn</span> <span class="o">=</span> <span class="mi">56</span> <span class="o">/</span> <span class="mi">55</span> <span class="o">*</span> <span class="n">a_cc</span>  <span class="c1"># ratio of lattice constants is 56/55</span>
 
     <span class="n">vn</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.4</span>  <span class="c1"># [eV] nitrogen onsite potential</span>
     <span class="n">vb</span> <span class="o">=</span> <span class="mf">3.34</span>  <span class="c1"># [eV] boron onsite potential</span>
 
-    <span class="k">def</span> <span class="nf">hbn_monolayer</span><span class="p">():</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">hbn_monolayer</span><span class="p">():</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a lattice of monolayer hBN &quot;&quot;&quot;</span>
 
         <span class="n">a</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">a_bn</span>
@@ -260,17 +260,17 @@ a <a class="reference internal" href="../_api/pybinding.site_generator.html#pybi
     <span class="n">positions_nitrogen</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="n">idx_n</span><span class="p">]</span><span class="o">.</span><span class="n">positions</span>
 
     <span class="nd">@pb</span><span class="o">.</span><span class="n">site_generator</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Br&#39;</span><span class="p">,</span> <span class="n">energy</span><span class="o">=</span><span class="n">vb</span><span class="p">)</span>  <span class="c1"># onsite energy [eV]</span>
-    <span class="k">def</span> <span class="nf">add_boron</span><span class="p">():</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_boron</span><span class="p">():</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add positions of newly generated boron sites&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">positions_boron</span>
 
     <span class="nd">@pb</span><span class="o">.</span><span class="n">site_generator</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="n">energy</span><span class="o">=</span><span class="n">vn</span><span class="p">)</span>  <span class="c1"># onsite energy [eV]</span>
-    <span class="k">def</span> <span class="nf">add_nitrogen</span><span class="p">():</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_nitrogen</span><span class="p">():</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add positions of newly generated nitrogen sites&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">positions_nitrogen</span>
 
     <span class="nd">@pb</span><span class="o">.</span><span class="n">hopping_generator</span><span class="p">(</span><span class="s1">&#39;intralayer_bn&#39;</span><span class="p">,</span> <span class="n">energy</span><span class="o">=</span><span class="n">t</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">intralayer_generator</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">intralayer_generator</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate nearest-neighbor hoppings between B and N sites&quot;&quot;&quot;</span>
         <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">layer_bn</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
@@ -288,7 +288,7 @@ a <a class="reference internal" href="../_api/pybinding.site_generator.html#pybi
         <span class="k">return</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span>  <span class="c1"># lists of site indices to connect</span>
 
     <span class="nd">@pb</span><span class="o">.</span><span class="n">hopping_energy_modifier</span>
-    <span class="k">def</span> <span class="nf">intralayer_hopping_value</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="n">hop_id</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">intralayer_hopping_value</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="n">hop_id</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the value of the newly generated hoppings as a function of distance&quot;&quot;&quot;</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">x1</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y1</span><span class="o">-</span><span class="n">y2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">z1</span><span class="o">-</span><span class="n">z2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">intralayer</span> <span class="o">=</span> <span class="p">(</span><span class="n">hop_id</span> <span class="o">==</span> <span class="s1">&#39;intralayer_bn&#39;</span><span class="p">)</span>
@@ -301,7 +301,7 @@ a <a class="reference internal" href="../_api/pybinding.site_generator.html#pybi
 <p>Function <code class="xref py py-func docutils literal notranslate"><span class="pre">hbn_layer()</span></code> creates a layer of
 hexagonal boron-nitride that fits a given shape, and connects the intralayer sites, while <code class="xref py py-func docutils literal notranslate"><span class="pre">graphene.monolayer_alt()</span></code> creates a single layer of graphene. We can once again use the function
 <code class="xref py py-func docutils literal notranslate"><span class="pre">twist_layers()</span></code> and create the desired graphene/hBN flake.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pybinding.repository</span><span class="w"> </span><span class="kn">import</span> <span class="n">graphene</span>
 
 <span class="n">shape</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">circle</span><span class="p">(</span><span class="n">radius</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span>
 
@@ -345,20 +345,20 @@ Finally, it is up to the user to chose an approach which suits their needs bette
 <h2><span class="section-number">8.2. </span>Examples<a class="headerlink" href="#examples" title="Link to this heading">¶</a></h2>
 <p><a class="reference download internal" download="" href="../_downloads/13ee2bedb5631b92d01b2273aebd1800/twisted_heterostructures.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Construct a circular flake of twisted bilayer graphene (arbitrary angle)&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">math</span>
-<span class="kn">import</span> <span class="nn">pybinding</span> <span class="k">as</span> <span class="nn">pb</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pybinding</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pb</span>
 
-<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">cKDTree</span>
-<span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.spatial</span><span class="w"> </span><span class="kn">import</span> <span class="n">cKDTree</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pybinding.repository</span><span class="w"> </span><span class="kn">import</span> <span class="n">graphene</span>
 
 <span class="n">c0</span> <span class="o">=</span> <span class="mf">0.335</span>  <span class="c1"># [nm] graphene interlayer spacing</span>
 
 
-<span class="k">def</span> <span class="nf">two_graphene_monolayers</span><span class="p">():</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">two_graphene_monolayers</span><span class="p">():</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Two individual AB stacked layers of monolayer graphene without any interlayer hopping,&quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">pybinding.repository.graphene.constants</span> <span class="kn">import</span> <span class="n">a_cc</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">t</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pybinding.repository.graphene.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">a_cc</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">t</span>
 
     <span class="n">lat</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Lattice</span><span class="p">(</span><span class="n">a1</span><span class="o">=</span><span class="p">[</span><span class="n">a</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">a</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)],</span> <span class="n">a2</span><span class="o">=</span><span class="p">[</span><span class="o">-</span><span class="n">a</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">a</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)])</span>
     <span class="n">lat</span><span class="o">.</span><span class="n">add_sublattices</span><span class="p">((</span><span class="s1">&#39;A1&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span>   <span class="n">a_cc</span><span class="p">,</span>   <span class="mi">0</span><span class="p">]),</span>
@@ -381,13 +381,13 @@ Finally, it is up to the user to chose an approach which suits their needs bette
     <span class="k">return</span> <span class="n">lat</span>
 
 
-<span class="k">def</span> <span class="nf">twist_layers</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">twist_layers</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Rotate one layer and then a generate hopping between the rotated layers,</span>
 <span class="sd">       reference is AB stacked&quot;&quot;&quot;</span>
     <span class="n">theta</span> <span class="o">=</span> <span class="n">theta</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span>  <span class="c1"># from degrees to radians</span>
 
     <span class="nd">@pb</span><span class="o">.</span><span class="n">site_position_modifier</span>
-    <span class="k">def</span> <span class="nf">rotate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">rotate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Rotate layer 2 by the given angle `theta`&quot;&quot;&quot;</span>
         <span class="n">layer2</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
         <span class="n">x0</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">layer2</span><span class="p">]</span>
@@ -397,7 +397,7 @@ Finally, it is up to the user to chose an approach which suits their needs bette
         <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span>
 
     <span class="nd">@pb</span><span class="o">.</span><span class="n">hopping_generator</span><span class="p">(</span><span class="s1">&#39;interlayer&#39;</span><span class="p">,</span> <span class="n">energy</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>  <span class="c1"># eV</span>
-    <span class="k">def</span> <span class="nf">interlayer_generator</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">interlayer_generator</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate hoppings for site pairs which have distance `d_min &lt; d &lt; d_max`&quot;&quot;&quot;</span>
         <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">layer1</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
@@ -416,7 +416,7 @@ Finally, it is up to the user to chose an approach which suits their needs bette
         <span class="k">return</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span>  <span class="c1"># lists of site indices to connect</span>
 
     <span class="nd">@pb</span><span class="o">.</span><span class="n">hopping_energy_modifier</span>
-    <span class="k">def</span> <span class="nf">interlayer_hopping_value</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="n">hop_id</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">interlayer_hopping_value</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="n">hop_id</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the value of the newly generated hoppings as a function of distance&quot;&quot;&quot;</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">x1</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y1</span><span class="o">-</span><span class="n">y2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">z1</span><span class="o">-</span><span class="n">z2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">interlayer</span> <span class="o">=</span> <span class="p">(</span><span class="n">hop_id</span> <span class="o">==</span> <span class="s1">&#39;interlayer&#39;</span><span class="p">)</span>
@@ -426,16 +426,16 @@ Finally, it is up to the user to chose an approach which suits their needs bette
     <span class="k">return</span> <span class="n">rotate</span><span class="p">,</span> <span class="n">interlayer_generator</span><span class="p">,</span> <span class="n">interlayer_hopping_value</span>
 
 
-<span class="k">def</span> <span class="nf">hbn_layer</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">hbn_layer</span><span class="p">(</span><span class="n">shape</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Generate hBN layer defined by the shape with intralayer hopping terms&quot;&quot;&quot;</span>
-    <span class="kn">from</span> <span class="nn">pybinding.repository.graphene.constants</span> <span class="kn">import</span> <span class="n">a_cc</span><span class="p">,</span> <span class="n">t</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">pybinding.repository.graphene.constants</span><span class="w"> </span><span class="kn">import</span> <span class="n">a_cc</span><span class="p">,</span> <span class="n">t</span>
 
     <span class="n">a_bn</span> <span class="o">=</span> <span class="mi">56</span> <span class="o">/</span> <span class="mi">55</span> <span class="o">*</span> <span class="n">a_cc</span>  <span class="c1"># ratio of lattice constants is 56/55</span>
 
     <span class="n">vn</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.4</span>  <span class="c1"># [eV] nitrogen onsite potential</span>
     <span class="n">vb</span> <span class="o">=</span> <span class="mf">3.34</span>  <span class="c1"># [eV] boron onsite potential</span>
 
-    <span class="k">def</span> <span class="nf">hbn_monolayer</span><span class="p">():</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">hbn_monolayer</span><span class="p">():</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a lattice of monolayer hBN &quot;&quot;&quot;</span>
 
         <span class="n">a</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">*</span> <span class="n">a_bn</span>
@@ -458,17 +458,17 @@ Finally, it is up to the user to chose an approach which suits their needs bette
     <span class="n">positions_nitrogen</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="n">idx_n</span><span class="p">]</span><span class="o">.</span><span class="n">positions</span>
 
     <span class="nd">@pb</span><span class="o">.</span><span class="n">site_generator</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;Br&#39;</span><span class="p">,</span> <span class="n">energy</span><span class="o">=</span><span class="n">vb</span><span class="p">)</span>  <span class="c1"># onsite energy [eV]</span>
-    <span class="k">def</span> <span class="nf">add_boron</span><span class="p">():</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_boron</span><span class="p">():</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add positions of newly generated boron sites&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">positions_boron</span>
 
     <span class="nd">@pb</span><span class="o">.</span><span class="n">site_generator</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="n">energy</span><span class="o">=</span><span class="n">vn</span><span class="p">)</span>  <span class="c1"># onsite energy [eV]</span>
-    <span class="k">def</span> <span class="nf">add_nitrogen</span><span class="p">():</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_nitrogen</span><span class="p">():</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Add positions of newly generated nitrogen sites&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">positions_nitrogen</span>
 
     <span class="nd">@pb</span><span class="o">.</span><span class="n">hopping_generator</span><span class="p">(</span><span class="s1">&#39;intralayer_bn&#39;</span><span class="p">,</span> <span class="n">energy</span><span class="o">=</span><span class="n">t</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">intralayer_generator</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">intralayer_generator</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Generate nearest-neighbor hoppings between B and N sites&quot;&quot;&quot;</span>
         <span class="n">positions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="n">layer_bn</span> <span class="o">=</span> <span class="p">(</span><span class="n">z</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
@@ -486,7 +486,7 @@ Finally, it is up to the user to chose an approach which suits their needs bette
         <span class="k">return</span> <span class="n">row</span><span class="p">,</span> <span class="n">col</span>  <span class="c1"># lists of site indices to connect</span>
 
     <span class="nd">@pb</span><span class="o">.</span><span class="n">hopping_energy_modifier</span>
-    <span class="k">def</span> <span class="nf">intralayer_hopping_value</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="n">hop_id</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">intralayer_hopping_value</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">,</span> <span class="n">hop_id</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the value of the newly generated hoppings as a function of distance&quot;&quot;&quot;</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">x1</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y1</span><span class="o">-</span><span class="n">y2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">z1</span><span class="o">-</span><span class="n">z2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         <span class="n">intralayer</span> <span class="o">=</span> <span class="p">(</span><span class="n">hop_id</span> <span class="o">==</span> <span class="s1">&#39;intralayer_bn&#39;</span><span class="p">)</span>

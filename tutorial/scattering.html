@@ -8,13 +8,13 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>11. Scattering model &mdash; pybinding</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
 
   
     <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
-      <script src="../_static/documentation_options.js?v=d55fa986"></script>
+      <script src="../_static/documentation_options.js?v=e2a723ec"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -120,11 +120,11 @@ thereby creating a scattering model.</p>
 <h2><span class="section-number">11.1. </span>Attaching leads<a class="headerlink" href="#attaching-leads" title="Link to this heading">¶</a></h2>
 <p>To start with, we need a finite-sized system to serve as the central scattering region. We’ll just
 make a simple ring. Refer to the <a class="reference internal" href="finite.html"><span class="doc">Finite size</span></a> section for more details.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pybinding.repository</span><span class="w"> </span><span class="kn">import</span> <span class="n">graphene</span>
 
-<span class="k">def</span> <span class="nf">ring</span><span class="p">(</span><span class="n">inner_radius</span><span class="p">,</span> <span class="n">outer_radius</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ring</span><span class="p">(</span><span class="n">inner_radius</span><span class="p">,</span> <span class="n">outer_radius</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;A simple ring shape&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">contains</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">contains</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">logical_and</span><span class="p">(</span><span class="n">inner_radius</span> <span class="o">&lt;</span> <span class="n">r</span><span class="p">,</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="n">outer_radius</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">pb</span><span class="o">.</span><span class="n">FreeformShape</span><span class="p">(</span><span class="n">contains</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">outer_radius</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">outer_radius</span><span class="p">])</span>
@@ -233,9 +233,9 @@ figure above, the band plots of the leads are:</p>
 <p>There is no need to specifically apply a field to a lead. Fields (and all modifier functions) are
 always applied globally to both the main system and all leads. For example, we can define a PN
 junction at <span class="math notranslate nohighlight">\(x_0 = 0\)</span> and pass it to the model:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">pn_junction</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">pn_junction</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">v1</span><span class="p">,</span> <span class="n">v2</span><span class="p">):</span>
     <span class="nd">@pb</span><span class="o">.</span><span class="n">onsite_energy_modifier</span>
-    <span class="k">def</span> <span class="nf">potential</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">potential</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
         <span class="n">energy</span><span class="p">[</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">x0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">v1</span>
         <span class="n">energy</span><span class="p">[</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">x0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">v2</span>
         <span class="k">return</span> <span class="n">energy</span>

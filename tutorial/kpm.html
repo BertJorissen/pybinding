@@ -8,13 +8,13 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>10. Kernel polynomial method &mdash; pybinding</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
 
   
     <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
-      <script src="../_static/documentation_options.js?v=d55fa986"></script>
+      <script src="../_static/documentation_options.js?v=e2a723ec"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -165,7 +165,7 @@ for a specific model:</p>
 <h3><span class="section-number">10.2.1. </span>LDOS<a class="headerlink" href="#ldos" title="Link to this heading">¶</a></h3>
 <p>The <a class="reference internal" href="../_api/pybinding.chebyshev.html#pybinding.chebyshev.KPM.calc_ldos" title="pybinding.chebyshev.KPM.calc_ldos"><code class="xref py py-meth docutils literal notranslate"><span class="pre">KPM.calc_ldos()</span></code></a> method makes it very easy to calculate the local density of states
 (LDOS). In the next example we’ll use a large square sheet of pristine graphene:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pybinding.repository</span><span class="w"> </span><span class="kn">import</span> <span class="n">graphene</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span> <span class="n">pb</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">60</span><span class="p">))</span>
 <span class="n">kpm</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">kpm</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
@@ -257,15 +257,15 @@ the smaller <code class="samp docutils literal notranslate"><span class="pre">nu
 method for several positions and populate a <code class="xref py py-class docutils literal notranslate"><span class="pre">SpatialMap</span></code>. However, this would be tedious and
 slow, so instead we have <a class="reference internal" href="../_api/pybinding.chebyshev.html#pybinding.chebyshev.KPM.calc_spatial_ldos" title="pybinding.chebyshev.KPM.calc_spatial_ldos"><code class="xref py py-meth docutils literal notranslate"><span class="pre">KPM.calc_spatial_ldos()</span></code></a> which makes this much simpler. Let’s use
 a strained bit of graphene as an example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gaussian_bump_strain</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">gaussian_bump_strain</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Out-of-plane deformation (bump)&quot;&quot;&quot;</span>
     <span class="nd">@pb</span><span class="o">.</span><span class="n">site_position_modifier</span>
-    <span class="k">def</span> <span class="nf">displacement</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">displacement</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
         <span class="n">dz</span> <span class="o">=</span> <span class="n">height</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">y</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># gaussian</span>
         <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">+</span> <span class="n">dz</span>  <span class="c1"># only the height changes</span>
 
     <span class="nd">@pb</span><span class="o">.</span><span class="n">hopping_energy_modifier</span>
-    <span class="k">def</span> <span class="nf">strained_hoppings</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">):</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">strained_hoppings</span><span class="p">(</span><span class="n">energy</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">x2</span><span class="p">,</span> <span class="n">y2</span><span class="p">,</span> <span class="n">z2</span><span class="p">):</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">x1</span><span class="o">-</span><span class="n">x2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">y1</span><span class="o">-</span><span class="n">y2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">z1</span><span class="o">-</span><span class="n">z2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># strained neighbor distance</span>
         <span class="k">return</span> <span class="n">energy</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">3.37</span> <span class="o">*</span> <span class="p">(</span><span class="n">d</span> <span class="o">/</span> <span class="n">graphene</span><span class="o">.</span><span class="n">a_cc</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># see strain section</span>
 

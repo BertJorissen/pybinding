@@ -8,13 +8,13 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>3. Band structure &mdash; pybinding</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
       <link rel="stylesheet" type="text/css" href="../_static/plot_directive.css" />
 
   
     <link rel="stylesheet" href="../_static/extra.css" type="text/css" />
-      <script src="../_static/documentation_options.js?v=d55fa986"></script>
+      <script src="../_static/documentation_options.js?v=e2a723ec"></script>
       <script src="../_static/doctools.js?v=9bcbadda"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
       <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
@@ -122,7 +122,7 @@ the concepts of a <a class="reference internal" href="../_api/pybinding.Model.ht
 <p>A <a class="reference internal" href="../_api/pybinding.Model.html#pybinding.Model" title="pybinding.Model"><code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></a> contains the full tight-binding description of the physical system that we wish
 to solve. We’ll start by assigning a lattice to the model, and we’ll use a pre-made one from the
 material repository.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">pybinding.repository</span><span class="w"> </span><span class="kn">import</span> <span class="n">graphene</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">())</span>
 <span class="n">model</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
@@ -151,7 +151,7 @@ sites in the system. The model also has a <a class="reference internal" href="..
 <span class="go">(1, 0)   -2.8</span>
 </pre></div>
 </div>
-<p>It’s a sparse matrix (see <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.14.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a>) which corresponds to the tight-binding
+<p>It’s a sparse matrix (see <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html#scipy.sparse.csr_matrix" title="(in SciPy v1.15.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">scipy.sparse.csr_matrix</span></code></a>) which corresponds to the tight-binding
 Hamiltonian of our model. The output above shows the default sparse representation of the data
 where each line corresponds to <code class="samp docutils literal notranslate"><span class="pre">(row,</span> <span class="pre">col)</span> <span class="pre">value</span></code>. Alternatively, we can see the dense matrix
 output:</p>
@@ -193,7 +193,7 @@ small systems.</p>
 <p>Beyond just the <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.Solver.eigenvalues" title="pybinding.solver.Solver.eigenvalues"><code class="xref py py-attr docutils literal notranslate"><span class="pre">eigenvalues</span></code></a> and <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.Solver.eigenvectors" title="pybinding.solver.Solver.eigenvectors"><code class="xref py py-attr docutils literal notranslate"><span class="pre">eigenvectors</span></code></a> properties,
 <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.Solver" title="pybinding.solver.Solver"><code class="xref py py-class docutils literal notranslate"><span class="pre">Solver</span></code></a> has a convenient <a class="reference internal" href="../_api/pybinding.solver.html#pybinding.solver.Solver.calc_bands" title="pybinding.solver.Solver.calc_bands"><code class="xref py py-meth docutils literal notranslate"><span class="pre">calc_bands()</span></code></a> method which can be used to
 calculate the band structure of our model.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">pi</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">pi</span>
 
 <span class="n">model</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">Model</span><span class="p">(</span><span class="n">graphene</span><span class="o">.</span><span class="n">monolayer</span><span class="p">(),</span> <span class="n">pb</span><span class="o">.</span><span class="n">translational_symmetry</span><span class="p">())</span>
 <span class="n">solver</span> <span class="o">=</span> <span class="n">pb</span><span class="o">.</span><span class="n">solver</span><span class="o">.</span><span class="n">lapack</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
@@ -289,10 +289,10 @@ are going to be dedicated to model building.</p>
 <h2><span class="section-number">3.5. </span>Example<a class="headerlink" href="#example" title="Link to this heading">¶</a></h2>
 <p><a class="reference download internal" download="" href="../_downloads/b9319e43d41aa7679d4792f49e75ce4f/bands_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">source</span> <span class="pre">code</span></code></a></p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="sd">&quot;&quot;&quot;Calculate and plot the band structure of monolayer graphene&quot;&quot;&quot;</span>
-<span class="kn">import</span> <span class="nn">pybinding</span> <span class="k">as</span> <span class="nn">pb</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">pi</span>
-<span class="kn">from</span> <span class="nn">pybinding.repository</span> <span class="kn">import</span> <span class="n">graphene</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pybinding</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pb</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">sqrt</span><span class="p">,</span> <span class="n">pi</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pybinding.repository</span><span class="w"> </span><span class="kn">import</span> <span class="n">graphene</span>
 
 <span class="n">pb</span><span class="o">.</span><span class="n">pltutils</span><span class="o">.</span><span class="n">use_style</span><span class="p">()</span>
 
