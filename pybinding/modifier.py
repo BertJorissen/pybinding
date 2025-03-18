@@ -399,7 +399,7 @@ def hopping_energy_modifier(is_double: bool = False, is_complex: bool = False, p
                              keywords="energy, x1, y1, z1, x2, y2, z2, hop_id, shift")
 
 
-def constant_potential(magnitude: float) -> Callable:
+def constant_potential(magnitude: float) -> _cpp.OnsiteModifier:
     """Apply a constant onsite energy to every lattice site
 
     Parameters
@@ -413,7 +413,7 @@ def constant_potential(magnitude: float) -> Callable:
     return f
 
 
-def force_double_precision() -> Callable:
+def force_double_precision() -> _cpp.OnsiteModifier:
     """Forces the model to use double precision even if that's not require by any modifier"""
     @onsite_energy_modifier(is_double=True)
     def f(energy: Union[float, complex, np.ndarray]) -> Union[float, complex, np.ndarray]:
@@ -421,7 +421,7 @@ def force_double_precision() -> Callable:
     return f
 
 
-def force_complex_numbers() -> Callable:
+def force_complex_numbers() -> _cpp.OnsiteModifier:
     """Forces the model to use complex numbers even if that's not require by any modifier"""
     @hopping_energy_modifier(is_complex=True)
     def f(energy: Union[float, complex, np.ndarray]) -> Union[float, complex, np.ndarray]:
@@ -429,7 +429,7 @@ def force_complex_numbers() -> Callable:
     return f
 
 
-def force_phase() -> Callable:
+def force_phase() -> _cpp.OnsiteModifier:
     """Forces the model to add the phase so that eigenvectors have the right phase"""
     @onsite_energy_modifier(phase=True)
     def f(energy: Union[float, complex, np.ndarray]) -> Union[float, complex, np.ndarray]:

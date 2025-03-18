@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.15)
 project(pybinding_cppcore CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
@@ -10,11 +10,11 @@ option(PB_MKL "Use Intel's Math Kernel Library" OFF)
 option(PB_CUDA "Enable compilation of components written in CUDA" OFF)
 option(PB_CARTESIAN_FLOAT "Use floats for positions" OFF)
 
-message(STATUS "PB_WERROR: ${PB_WERROR}")
-message(STATUS "PB_TESTS: ${PB_TESTS}")
-message(STATUS "PB_NATIVE_SIMD: ${PB_NATIVE_SIMD}")
-message(STATUS "PB_MKL: ${PB_MKL}")
-message(STATUS "PB_CUDA: ${PB_CUDA}")
+message(STATUS "PB_WERROR:          ${PB_WERROR}")
+message(STATUS "PB_TESTS:           ${PB_TESTS}")
+message(STATUS "PB_NATIVE_SIMD:     ${PB_NATIVE_SIMD}")
+message(STATUS "PB_MKL:             ${PB_MKL}")
+message(STATUS "PB_CUDA:            ${PB_CUDA}")
 message(STATUS "PB_CARTESIAN_FLOAT: ${PB_CARTESIAN_FLOAT}")
 
 add_library(cppcore
@@ -133,6 +133,10 @@ if(PB_NATIVE_SIMD AND NOT MSVC) # MSVC does not have anything like a /arch:nativ
         MESSAGE(STATUS "march=native option added")
         target_compile_options(cppcore PUBLIC -march=native)
     endif()
+endif()
+
+if (MSVC)
+    add_compile_options(/utf-8)
 endif()
 
 if(PB_MKL)

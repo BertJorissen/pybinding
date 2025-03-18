@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.15)
 project(pybinding CXX)
 
 set(CMAKE_CXX_STANDARD 17)
@@ -8,6 +8,9 @@ if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release CACHE STRING "Choose the type of build" FORCE)
 endif()
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
+
+find_package(Python3 COMPONENTS Interpreter Development.Module REQUIRED)
+message(STATUS "PYTHON_EXECUTABLE: ${Python3_EXECUTABLE}")
 
 find_program(ccache_found ccache)
 if(ccache_found)
@@ -23,6 +26,6 @@ if(EXISTS ${CMAKE_SOURCE_DIR}/docs)
 endif()
 
 if(TARGET catch)
-    add_custom_target(tests COMMAND $<TARGET_FILE:catch> COMMAND ${PYTHON_EXECUTABLE} -m pytest
+    add_custom_target(tests COMMAND $<TARGET_FILE:catch> COMMAND ${Python3_EXECUTABLE} -m pytest
                       DEPENDS _pybinding WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 endif()

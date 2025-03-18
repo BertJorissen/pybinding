@@ -10,7 +10,7 @@
 namespace cpb { namespace num {
 
 /// Array scalar type
-enum class Tag : std::int8_t {f32, cf32, f64, cf64, b, i8, i16, i32, i64, u8, u16, u32, u64};
+enum Tag : std::int8_t {f32, cf32, f64, cf64, b, i8, i16, i32, i64, u8, u16, u32, u64};
 
 namespace detail {
     template<class scalar_t> constexpr Tag get_tag();

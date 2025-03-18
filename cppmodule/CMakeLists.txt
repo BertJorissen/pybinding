@@ -1,6 +1,5 @@
-set(PYBIND11_PYTHON_VERSION 3.9 CACHE STRING "Minimum required Python version")
+set(PYBIND11_PYTHON_VERSION 3.10 CACHE STRING "Minimum required Python version")
 add_subdirectory(deps/pybind11 EXCLUDE_FROM_ALL)
-
 pybind11_add_module(_pybinding THIN_LTO
     include/cast.hpp
     include/resolve.hpp
@@ -36,5 +35,5 @@ if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY)
     endforeach()
 endif()
 
-add_custom_target(pytest COMMAND ${PYTHON_EXECUTABLE} -m pytest DEPENDS _pybinding
+add_custom_target(pytest COMMAND ${Python3_EXECUTABLE} -m pytest DEPENDS _pybinding
                   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
