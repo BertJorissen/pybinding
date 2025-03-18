@@ -9,9 +9,6 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 
-find_package(Python3 COMPONENTS Interpreter Development.Module REQUIRED)
-message(STATUS "PYTHON_EXECUTABLE: ${Python3_EXECUTABLE}")
-
 if (MSVC)
     add_compile_options(/utf-8)
 endif()
@@ -30,6 +27,5 @@ if(EXISTS ${CMAKE_SOURCE_DIR}/docs)
 endif()
 
 if(TARGET catch)
-    add_custom_target(tests COMMAND $<TARGET_FILE:catch> COMMAND ${Python3_EXECUTABLE} -m pytest
-                      DEPENDS _pybinding WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+    add_custom_target(tests COMMAND $<TARGET_FILE:catch> DEPENDS _pybinding WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 endif()
