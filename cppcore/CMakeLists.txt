@@ -135,10 +135,6 @@ if(PB_NATIVE_SIMD AND NOT MSVC) # MSVC does not have anything like a /arch:nativ
     endif()
 endif()
 
-if (MSVC)
-    add_compile_options(/utf-8)
-endif()
-
 if(PB_MKL)
     include(mkl)
     target_link_mkl(cppcore PUBLIC)

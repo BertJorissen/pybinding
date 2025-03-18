@@ -12,6 +12,10 @@ message(STATUS "Build type: ${CMAKE_BUILD_TYPE}")
 find_package(Python3 COMPONENTS Interpreter Development.Module REQUIRED)
 message(STATUS "PYTHON_EXECUTABLE: ${Python3_EXECUTABLE}")
 
+if (MSVC)
+    add_compile_options(/utf-8)
+endif()
+
 find_program(ccache_found ccache)
 if(ccache_found)
     set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE ccache)

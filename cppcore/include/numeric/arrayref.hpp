@@ -9,6 +9,9 @@
 
 namespace cpb { namespace num {
 
+/// Forward declaration of the Tag enum
+enum Tag : std::int8_t;
+
 /// Array scalar type
 enum Tag : std::int8_t {f32, cf32, f64, cf64, b, i8, i16, i32, i64, u8, u16, u32, u64};
 
