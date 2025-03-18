@@ -6,6 +6,7 @@
 #include <numeric>
 #include <stdexcept>
 #include <array>
+#include <cstdint>
 
 namespace cpb { namespace num {
 
