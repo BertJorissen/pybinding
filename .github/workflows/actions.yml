@@ -55,35 +55,35 @@ jobs:
           - os: ubuntu-latest
             arch: x86_64
             dev: normal
-            python-version: "3.10"
+            python-version: "3.11"
           - os: ubuntu-latest
             arch: x86_64
             dev: development
-            python-version: "3.10"
+            python-version: "3.11"
           - os: windows-latest
             arch: x86_64
             dev: normal
-            python-version: "3.10"
+            python-version: "3.11"
           - os: windows-latest
             arch: x86_64
             dev: development
-            python-version: "3.10"
+            python-version: "3.11"
           - os: macos-latest
             arch: x86_64
             dev: normal
-            python-version: "3.10"
+            python-version: "3.11"
           - os: macos-latest
             arch: x86_64
             dev: development
-            python-version: "3.10"
+            python-version: "3.11"
           - os: macos-latest
             arch: arm64
             dev: normal
-            python-version: "3.10"
+            python-version: "3.11"
           - os: macos-latest
             arch: arm64
             dev: development
-            python-version: "3.10"
+            python-version: "3.11"
     steps:
       - uses: actions/checkout@v4
         with:
@@ -119,14 +119,13 @@ jobs:
           CIBW_ARCHS_MACOS: ${{ matrix.arch }}
           CIBW_ARCHS_LINUX: x86_64
           CIBW_BEFORE_BUILD: pip install scipy contourpy --prefer-binary
-          CIBW_ENVIRONMENT: PB_BUILD_TYPE=Release PB_NATIVE_SIMD=OFF DELOCATE_VERBOSITY=1
+          CIBW_ENVIRONMENT: PB_BUILD_TYPE=Release PB_NATIVE_SIMD=OFF DELOCATE_VERBOSITY=1 MACOSX_DEPLOYMENT_TARGET=11.0 # minimum supported version for C++17
           CIBW_BUILD_VERBOSITY: 1
           # Use delvewheel on windows
           CIBW_BEFORE_TEST: pip install scipy contourpy --prefer-binary
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: python -c "import pybinding as pb; exit(pb.tests())"
           CIBW_SKIP: cp36-* cp37-* pp* *win32 *i686 *musllinux* *ppc64le *s390x *aarch64
-          MACOSX_DEPLOYMENT_TARGET: 11.0 # minimum supported version for C++17
       - uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-${{ matrix.arch }}-${{ matrix.dev }}-wheels
