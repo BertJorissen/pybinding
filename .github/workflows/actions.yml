@@ -118,7 +118,11 @@ jobs:
         env:
           CIBW_ARCHS_MACOS: ${{ matrix.arch }}
           CIBW_ARCHS_LINUX: x86_64
-          CIBW_BEFORE_BUILD: pip install scipy contourpy --prefer-binary
+          CIBW_BEFORE_BUILD: |
+            pip install scipy contourpy --prefer-binary
+            echo "Detecting Python executable..."
+            PYTHON_EXECUTABLE=$(python -c "import sys; print(sys.executable)")
+            echo "Using Python Executable: $PYTHON_EXECUTABLE"
           CIBW_ENVIRONMENT: PB_BUILD_TYPE=Release PB_NATIVE_SIMD=OFF MACOSX_DEPLOYMENT_TARGET=11.0 _PYTHON_HOST_PLATFORM=macosx-11.0-${{ matrix.arch }}
           CIBW_BUILD_VERBOSITY: 1
           # Use delvewheel on windows
