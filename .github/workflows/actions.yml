@@ -122,7 +122,7 @@ jobs:
           CIBW_ENVIRONMENT: PB_BUILD_TYPE=Release PB_NATIVE_SIMD=OFF MACOSX_DEPLOYMENT_TARGET=11.0 _PYTHON_HOST_PLATFORM=macosx-11.0-${{ matrix.arch }}
           CIBW_BUILD_VERBOSITY: 1
           # Use delvewheel on windows
-          CIBW_MANYLINUX_X86_64_IMAGE: "manylinux_2_17"
+          CIBW_MANYLINUX_X86_64_IMAGE: "manylinux_2_28"
           CIBW_REPAIR_WHEEL_COMMAND_MACOS: delocate-wheel -w {dest_dir} -vv {wheel}
           CIBW_BEFORE_TEST: "pip install --only-binary :all: scipy contourpy"
           CIBW_TEST_REQUIRES: pytest
