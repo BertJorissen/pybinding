@@ -118,13 +118,13 @@ jobs:
         env:
           CIBW_ARCHS_MACOS: ${{ matrix.arch }}
           CIBW_ARCHS_LINUX: x86_64
-          CIBW_BEFORE_BUILD: pip install scipy contourpy --prefer-binary
+          CIBW_BEFORE_BUILD: "pip install --only-binary :all: scipy contourpy"
           CIBW_ENVIRONMENT: PB_BUILD_TYPE=Release PB_NATIVE_SIMD=OFF MACOSX_DEPLOYMENT_TARGET=11.0 _PYTHON_HOST_PLATFORM=macosx-11.0-${{ matrix.arch }}
           CIBW_BUILD_VERBOSITY: 1
           # Use delvewheel on windows
           
           CIBW_REPAIR_WHEEL_COMMAND_MACOS: delocate-wheel -w {dest_dir} -vv {wheel}
-          CIBW_BEFORE_TEST: pip install scipy contourpy --prefer-binary
+          CIBW_BEFORE_TEST: "pip install --only-binary :all: scipy contourpy"
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: python -c "import pybinding as pb; exit(pb.tests())"
           CIBW_SKIP: cp36-* cp37-* pp* *win32 *i686 *musllinux* *ppc64le *s390x *aarch64
