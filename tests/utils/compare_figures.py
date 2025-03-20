@@ -109,7 +109,8 @@ class CompareFigure:
         def reportfile(variant):
             path = path_from_fixture(self.request, prefix="failed", variant=variant, ext=self.ext)
             if not path.parent.exists():
-                path.parent.mkdir(parents=True)
+                with suppress(OSError): # read-only filesystem crashes here
+                    path.parent.mkdir(parents=True)
             return str(path)
 
         def delete(variant):
@@ -118,11 +119,16 @@ class CompareFigure:
                 with suppress(OSError):
                     os.remove(filename)
 
+        def copyfile(src, dst):
+            filename = reportfile(dst)
+            if os.path.exists(filename):
+                shutil.copyfile(src, filename)
+
         if fail_data:
-            shutil.copyfile(fail_data['actual'], reportfile("_actual"))
-            shutil.copyfile(fail_data['expected'], reportfile("_baseline"))
+            copyfile(fail_data['actual'], "_actual")
+            copyfile(fail_data['expected'], "_baseline")
             if 'diff' in fail_data:
-                shutil.copyfile(fail_data['diff'], reportfile("_diff"))
+                copyfile(fail_data['diff'], "_diff")
         else:
             delete("_actual")
             delete("_baseline")

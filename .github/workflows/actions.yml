@@ -69,11 +69,19 @@ jobs:
             dev: development
             python-version: "3.11"
           - os: macos-latest
-            arch: universal2
+            arch: x86_64
             dev: normal
             python-version: "3.11"
           - os: macos-latest
-            arch: universal2
+            arch: x86_64
+            dev: development
+            python-version: "3.11"
+          - os: macos-latest
+            arch: arm64
+            dev: normal
+            python-version: "3.11"
+          - os: macos-latest
+            arch: arm64
             dev: development
             python-version: "3.11"
     steps:
@@ -115,7 +123,7 @@ jobs:
           CIBW_BUILD_VERBOSITY: 1
           # Use delvewheel on windows
           
-          CIBW_REPAIR_WHEEL_COMMAND_MACOS: delocate-wheel --require-archs ${{ matrix.arch }} -w {dest_dir} -vv {wheel}
+          CIBW_REPAIR_WHEEL_COMMAND_MACOS: delocate-wheel -w {dest_dir} -vv {wheel}
           CIBW_BEFORE_TEST: pip install scipy contourpy --prefer-binary
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: python -c "import pybinding as pb; exit(pb.tests())"
