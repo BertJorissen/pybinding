@@ -115,7 +115,7 @@ jobs:
           CIBW_BUILD_VERBOSITY: 1
           # Use delvewheel on windows
           
-          CIBW_REPAIR_WHEEL_COMMAND_MACOS: delocate-wheel --require-archs ${{ matrix.arch }} -x {dest_dir} -vv wheel}
+          CIBW_REPAIR_WHEEL_COMMAND_MACOS: delocate-wheel --require-archs ${{ matrix.arch }} -w {dest_dir} -vv {wheel}
           CIBW_BEFORE_TEST: pip install scipy contourpy --prefer-binary
           CIBW_TEST_REQUIRES: pytest
           CIBW_TEST_COMMAND: python -c "import pybinding as pb; exit(pb.tests())"
