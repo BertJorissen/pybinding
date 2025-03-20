@@ -23,8 +23,8 @@ class CMakeBuild(build_ext):
 
     def build_extension(self, ext):
         extdir = os.path.abspath(os.path.dirname(self.get_ext_fullpath(ext.name)))
-        cmake_args = ["-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=" + extdir,
-                      "-DPYTHON_EXECUTABLE=" + sys.executable]
+        cmake_args = ["-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=" + os.environ.get("PB_CMAKE_LIBRARY_OUTPUT_DIRECTORY", extdir),
+                      "-DPython_EXECUTABLE=" + os.environ.get("PB_PYTHON_EXECUTABLE", sys.executable)]
         cmake_args += ["-DPB_WERROR=" + os.environ.get("PB_WERROR", "OFF"),
                        "-DPB_TESTS=" + os.environ.get("PB_TESTS", "OFF"),
                        "-DPB_NATIVE_SIMD=" + os.environ.get("PB_NATIVE_SIMD", "ON"),

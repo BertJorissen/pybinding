@@ -35,5 +35,5 @@ if(NOT CMAKE_LIBRARY_OUTPUT_DIRECTORY)
     endforeach()
 endif()
 
-add_custom_target(pytest COMMAND ${Python3_EXECUTABLE} -m pytest DEPENDS _pybinding
+add_custom_target(pytest COMMAND ${Python_EXECUTABLE} -m pytest DEPENDS _pybinding
                   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
