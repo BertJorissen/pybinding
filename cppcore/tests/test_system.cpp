@@ -35,7 +35,7 @@ TEST_CASE("CompressedSublattices") {
     REQUIRE(cs.start_index(1) == 0);
     REQUIRE(cs.start_index(2) == 10);
     REQUIRE(cs.start_index(3) == 27);
-    REQUIRE_THROWS_WITH(cs.start_index(4), Catch::Contains("invalid num_orbitals"));
+    REQUIRE_THROWS_WITH(cs.start_index(4), Catch::Matchers::ContainsSubstring("invalid num_orbitals"));
 }
 
 TEST_CASE("HoppingBlocks") {

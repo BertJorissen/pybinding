@@ -30,7 +30,7 @@ TEST_CASE("OptimizedHamiltonian reordering", "[kpm]") {
         }
         return v;
     };
-    auto equals = [](std::vector<idx_t> const& v) { return Catch::Equals(v); };
+    auto equals = [](std::vector<idx_t> const& v) { return Catch::Matchers::Equals(v); };
 
     SECTION("Diagonal single") {
         auto oh = kpm::OptimizedHamiltonian(model.hamiltonian(), kpm::MatrixFormat::CSR, true);
@@ -178,7 +178,7 @@ TEST_CASE("OptimizedHamiltonian scaling") {
     auto oh = kpm::OptimizedHamiltonian(model.hamiltonian(), kpm::MatrixFormat::CSR, true);
     auto bounds = kpm::Bounds(-12, 10); // ensures `scale.b != 0`
     oh.optimize_for({0, 0}, bounds.scaling_factors());
-    auto scaled = oh.matrix().get<SparseMatrixX<float>>();
+    auto scaled = var::get<SparseMatrixX<float>>(oh.matrix());
 
     // Because `scale.b != 0` the scaled Hamiltonian matrix should get
     // a non-zero diagonal even if the original matrix didn't have one.

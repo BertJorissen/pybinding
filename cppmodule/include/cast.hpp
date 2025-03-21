@@ -10,13 +10,14 @@ template<>
 struct visit_helper<cpb::var::variant> {
     template<class... Args>
     static auto call(Args&&... args)
-        -> decltype(cpb::var::apply_visitor(std::forward<Args>(args)...)) {
-        return cpb::var::apply_visitor(std::forward<Args>(args)...);
+        -> decltype(cpb::var::visit(std::forward<Args>(args)...)) {
+        return cpb::var::visit(std::forward<Args>(args)...);
     }
 };
 
-template<class... Args>
-struct type_caster<cpb::var::variant<Args...>> : variant_caster<cpb::var::variant<Args...>> {};
+// not necessary for std::variant
+//template<class... Args>
+//struct type_caster<cpb::var::variant<Args...>> : variant_caster<cpb::var::variant<Args...>> {};
 
 /// Only for statically sized vectors: accepts smaller source arrays and zero-fills the remainder
 template<class Vector>

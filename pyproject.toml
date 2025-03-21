@@ -1,33 +1,33 @@
 [project]
 name = "pybinding"
-version = "1.0.5"
+version = "1.0.6"
 authors = [
     {name="Dean Moldovan", email="dean0x7d@gmail.com"},
 ]
 maintainers = [
     {name="Bert Jorissen", email="info@bertjorissen.be"}
 ]
-description = "Package for tight-binding calculations, Documentation: http://pybinding.site/ (c) 2015-2024"
+description = "Package for tight-binding calculations, Documentation: http://pybinding.site/ (c) 2015-2025"
 readme = "README.md"
 dependencies = [
     "numpy>=1.12",
     "scipy>=0.19",
-    "matplotlib==3.9.0",
+    "matplotlib>=3.10.0",
     "pytest>=5.0"
 ]
-requires-python = ">=3.9"
-license = {file = "license.md"}
+requires-python = ">=3.10"
+license = "BSD-3-Clause"
+license-files = ["license.md"]
 classifiers = [
     'Development Status :: 5 - Production/Stable',
     'Intended Audience :: Science/Research',
     'Topic :: Scientific/Engineering :: Physics',
-    'License :: OSI Approved :: BSD License',
     'Programming Language :: C++',
     'Programming Language :: Python :: 3 :: Only',
-    'Programming Language :: Python :: 3.9',
     'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
     'Programming Language :: Python :: Implementation :: CPython',
 ]
 keywords = [

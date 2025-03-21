@@ -10,7 +10,7 @@ void wrapper_tests(py::module& pm) {
     auto m = pm.def_submodule("wrapper_tests");
 
     m.def("variant_load", [](cpb::var::variant<int, std::string> v) {
-        return v.is<int>() ? "int" : "std::string";
+        return cpb::var::holds_alternative<int>(v) ? "int" : "std::string";
     });
 
     m.def("variant_cast", []() {

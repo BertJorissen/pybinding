@@ -93,7 +93,7 @@ TEST_CASE("Lattice") {
         lattice.register_hopping_energy("t1", 1.0);
 
         REQUIRE_THROWS_WITH(lattice.add_hopping({0, 0, 0}, "A", "A", "t1"),
-                            Catch::Contains("Don't define onsite energy here"));
+                            Catch::Matchers::ContainsSubstring("Don't define onsite energy here"));
         REQUIRE_THROWS_WITH(lattice.add_hopping({0, 0, 0}, "bad_name", "A", "t1"),
                             "There is no sublattice named 'bad_name'");
         REQUIRE_THROWS_WITH(lattice.add_hopping({0, 0, 0}, "A", "B", "bad_name"),
@@ -134,7 +134,7 @@ TEST_CASE("Lattice") {
         REQUIRE(lattice.max_hoppings() == 13);
 
         REQUIRE_THROWS_WITH(lattice.add_hopping({0, 0, 0}, "A", "A", "t22"),
-                            Catch::Contains("Don't define onsite energy here."));
+                            Catch::Matchers::ContainsSubstring("Don't define onsite energy here."));
         REQUIRE_THROWS_WITH(lattice.add_hopping({0, 0, 0}, "B", "C", "t22"),
                             "Hopping size mismatch: from 'B' (2) to 'C' (3) "
                             "with matrix 't22' (2, 2)");
@@ -154,9 +154,9 @@ TEST_CASE("Lattice") {
     SECTION("Set offset") {
         REQUIRE_NOTHROW(lattice.set_offset({0.5f, 0.5f, 0}));
         REQUIRE_THROWS_WITH(lattice.set_offset({0.6f, 0, 0}),
-                            Catch::Contains("must not be moved by more than half"));
+                            Catch::Matchers::ContainsSubstring("must not be moved by more than half"));
         REQUIRE_THROWS_WITH(lattice.set_offset({0, -0.6f, 0}),
-                            Catch::Contains("must not be moved by more than half"));
+                            Catch::Matchers::ContainsSubstring("must not be moved by more than half"));
 
         auto const copy = lattice.with_offset({0.5f, 0, 0});
         REQUIRE(copy.calc_position({1, 2, 0}).isApprox(Cartesian(1.5f, 2, 0)));
@@ -195,7 +195,7 @@ TEST_CASE("Optimized unit cell") {
         return v;
     };
 
-    auto equals = [](std::vector<storage_idx_t> const& v) { return Catch::Equals(v); };
+    auto equals = [](std::vector<storage_idx_t> const& v) { return Catch::Matchers::Equals(v); };
 
     add_sublattice("0", 1);
     add_sublattice("1", 1);

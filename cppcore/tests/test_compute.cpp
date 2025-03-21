@@ -14,8 +14,8 @@ TEST_CASE("Lanczos", "[lanczos]") {
     for (auto& count : loop_counters) {
         auto const bounds = compute::minmax_eigenvalues(matrix, 1e-3f);
         auto const expected = abs(3 * graphene::t);
-        REQUIRE(bounds.max == Approx(expected));
-        REQUIRE(bounds.min == Approx(-expected));
+        REQUIRE(bounds.max == Catch::Approx(expected));
+        REQUIRE(bounds.min == Catch::Approx(-expected));
         count = bounds.loops;
     }
 
@@ -36,10 +36,12 @@ SparseMatrixX<scalar_t> make_random_csr(idx_t rows, idx_t cols) {
     for (auto i = storage_idx_t{0}; i < rows; ++i) {
         for (auto j = storage_idx_t{0}; j < cols; ++j) {
             auto value = static_cast<scalar_t>(distribution(generator));
-            var::variant<real_t*, complex_t*>(&value).match(
-                [](real_t*) { },
-                [](complex_t* p) { p->imag(real_t{0.5} * p->real()); }
-            );
+            var::visit([](auto* p) {
+                using T = var::decay_t<decltype(*p)>;
+                if constexpr (std::is_same_v<T, std::complex<float>> || std::is_same_v<T, std::complex<double>>) {
+                    p->imag(real_t{0.5} * p->real());
+                }
+            }, var::variant<real_t*, complex_t*>(&value));
             if (abs(value) < 0.1) { triplets.emplace_back(i, j, value); }
         }
     }
@@ -52,12 +54,12 @@ SparseMatrixX<scalar_t> make_random_csr(idx_t rows, idx_t cols) {
 
 template<class real_t>
 bool approx_equal(real_t a, real_t b) {
-    return a == Approx(b);
+    return a == Catch::Approx(b);
 }
 
 template<class real_t>
 bool approx_equal(std::complex<real_t> a, std::complex<real_t> b) {
-    return a.real() == Approx(b.real()) && a.imag() == Approx(b.imag());
+    return a.real() == Catch::Approx(b.real()) && a.imag() == Catch::Approx(b.imag());
 }
 
 template<class scalar_t, size_t size>

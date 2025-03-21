@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.15)
 project(pybinding_cppcore CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
@@ -10,12 +10,13 @@ option(PB_MKL "Use Intel's Math Kernel Library" OFF)
 option(PB_CUDA "Enable compilation of components written in CUDA" OFF)
 option(PB_CARTESIAN_FLOAT "Use floats for positions" OFF)
 
-message(STATUS "PB_WERROR: ${PB_WERROR}")
-message(STATUS "PB_TESTS: ${PB_TESTS}")
-message(STATUS "PB_NATIVE_SIMD: ${PB_NATIVE_SIMD}")
-message(STATUS "PB_MKL: ${PB_MKL}")
-message(STATUS "PB_CUDA: ${PB_CUDA}")
-message(STATUS "PB_CARTESIAN_FLOAT: ${PB_CARTESIAN_FLOAT}")
+message(STATUS "CMAKE_LIBRARY_OUTPUT_DIRECTORY: ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}")
+message(STATUS "Python_EXECUTABLE:              ${Python_EXECUTABLE}")
+message(STATUS "PB_TESTS:                       ${PB_TESTS}")
+message(STATUS "PB_NATIVE_SIMD:                 ${PB_NATIVE_SIMD}")
+message(STATUS "PB_MKL:                         ${PB_MKL}")
+message(STATUS "PB_CUDA:                        ${PB_CUDA}")
+message(STATUS "PB_CARTESIAN_FLOAT:             ${PB_CARTESIAN_FLOAT}")
 
 add_library(cppcore
     include/compute/eigen3/lanczos.hpp
@@ -61,9 +62,8 @@ add_library(cppcore
     include/numeric/traits.hpp
     include/solver/FEAST.hpp
     include/solver/Solver.hpp
-        include/support/format.hpp
+    include/support/format.hpp
     include/support/simd.hpp
-    include/support/variant.hpp
     include/system/CompressedSublattices.hpp
     include/system/Foundation.hpp
     include/system/HoppingBlocks.hpp
@@ -119,10 +119,6 @@ download_dependency(eigen3 3.4.0
                     https://gitlab.com/libeigen/eigen/-/archive/\${VERSION}
                     eigen-\${VERSION}.tar.gz */Eigen)
 target_include_directories(cppcore SYSTEM PUBLIC ${EIGEN3_INCLUDE_DIR})
-download_dependency(variant 1.2.0
-                    https://raw.githubusercontent.com/mapbox/variant/v\${VERSION}/include
-                    mapbox/variant.hpp mapbox/recursive_wrapper.hpp mapbox/variant_visitor.hpp)
-target_include_directories(cppcore SYSTEM PUBLIC ${VARIANT_INCLUDE_DIR})
 download_dependency(simdpp dev # dangerous, but we need the latest version. No release since 2017.
                     https://github.com/p12tic/libsimdpp/archive/refs/heads
                     /\${VERSION}.zip */simdpp)
@@ -152,8 +148,21 @@ if(PB_CUDA)
 endif()
 
 if(PB_TESTS)
-    set(catch_url https://raw.githubusercontent.com/catchorg/Catch2/v\${VERSION}/single_include/catch2)
-    download_dependency(catch 2.13.10 ${catch_url} catch.hpp)
+    set(catch_url https://raw.githubusercontent.com/catchorg/Catch2/v\${VERSION}/extras)
+    download_dependency(catch 3.8.0 ${catch_url} catch_amalgamated.hpp catch_amalgamated.cpp)
+    if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/deps/catch/catch_amalgamated.hpp)
+        file(RENAME ${CMAKE_CURRENT_SOURCE_DIR}/deps/catch/catch_amalgamated.hpp
+                ${CMAKE_CURRENT_SOURCE_DIR}/deps/catch/catch.hpp)
+    endif()
+    set(INPUT_FILE "${CMAKE_CURRENT_SOURCE_DIR}/deps/catch/catch_amalgamated.cpp")
+    set(OUTPUT_FILE "${CMAKE_CURRENT_SOURCE_DIR}/deps/catch/catch.cpp")
+    if(EXISTS ${INPUT_FILE})
+        file(RENAME ${INPUT_FILE} ${OUTPUT_FILE})
+        file(READ ${OUTPUT_FILE} FILE_CONTENTS)
+        string(REPLACE "#include \"catch_amalgamated.hpp\"" "#include \"catch.hpp\"" FILE_CONTENTS "${FILE_CONTENTS}")
+        file(WRITE ${OUTPUT_FILE} "${FILE_CONTENTS}")
+    endif()
+    add_library(catch2 OBJECT ${OUTPUT_FILE})
     add_subdirectory(tests)
 endif()
 
