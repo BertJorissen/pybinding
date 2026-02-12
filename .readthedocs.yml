@@ -1,4 +1,4 @@
 python:
-  version: 3.10
+  version: 3.13
   setup_py_install: true
 requirements_file: support/rtd_requirements.txt
