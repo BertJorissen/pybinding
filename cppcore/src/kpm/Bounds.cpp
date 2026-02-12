@@ -22,7 +22,7 @@ void Bounds::compute_bounds() {
     if (!hamiltonian || min != max) { return; }
 
     timer.tic();
-    auto const lanczos = hamiltonian.get_variant().match(MinMaxEigenvalues{precision_percent});
+    auto const lanczos = var::visit(MinMaxEigenvalues{precision_percent}, hamiltonian.get_variant());
     timer.toc();
 
     min = lanczos.min;

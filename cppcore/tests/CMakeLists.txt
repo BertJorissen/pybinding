@@ -1,5 +1,5 @@
 add_executable(catch
-    catch.cpp
+    #catch.cpp
     fixtures.hpp
     fixtures.cpp
     test_compute.cpp
@@ -14,6 +14,8 @@ add_executable(catch
 )
 target_include_directories(catch PRIVATE ${CATCH_INCLUDE_DIR})
 target_link_libraries(catch PRIVATE cppcore)
+
+target_link_libraries(catch PRIVATE catch2)
 
 enable_warnings(catch)
 add_custom_target(cpptest COMMAND $<TARGET_FILE:catch>)

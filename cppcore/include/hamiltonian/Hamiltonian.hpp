@@ -30,13 +30,13 @@ public:
     void reset() { ptr.reset(); }
 
     template<class scalar_t>
-    auto get() const -> decltype(ptr->template get<SparseMatrixX<scalar_t>>()) {
-        return ptr->template get<SparseMatrixX<scalar_t>>();
+    auto get() const -> decltype(var::get<SparseMatrixX<scalar_t>>(*ptr)) {
+        return var::get<SparseMatrixX<scalar_t>>(*ptr);
     }
 
     template<class... Args>
-    auto match(Args&&... args) const -> decltype(ptr->match(std::forward<Args>(args)...)) {
-        return ptr->match(std::forward<Args>(args)...);
+    auto match(Args&&... args) const -> decltype(var::visit(std::forward<Args>(args)..., *ptr)) {
+        return var::visit(std::forward<Args>(args)..., *ptr);
     }
 };
 
@@ -176,7 +176,7 @@ inline SparseMatrixX<scalar_t> const& get_reference(Hamiltonian const& h) {
 
 template<class scalar_t>
 inline bool is(Hamiltonian const& h) {
-    return h.get_variant().template is<SparseMatrixRC<scalar_t>>();
+    return var::holds_alternative<SparseMatrixRC<scalar_t>>(h.get_variant());
 }
 
 template<class scalar_t>

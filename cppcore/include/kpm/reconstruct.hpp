@@ -7,8 +7,8 @@ namespace cpb { namespace kpm {
 /// `F` can be any of the function objects defined below: SpectralDensity, GreensFunction, etc.
 template<class F, class M, class... Args>
 auto reconstruct(M const& moments, Args&&... args)
-                 -> decltype(var::apply_visitor(F{std::forward<Args>(args)...}, moments.data)) {
-    return var::apply_visitor(F{std::forward<Args>(args)...}, moments.data);
+                 -> decltype(var::visit(F{std::forward<Args>(args)...}, moments.data)) {
+    return var::visit(F{std::forward<Args>(args)...}, moments.data);
 };
 
 /// Reconstruct spectral density based on the given KPM moments

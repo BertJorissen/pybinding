@@ -1,9 +1,9 @@
 #pragma once
-#include <mapbox/variant.hpp>
+#include <variant>
 
 namespace cpb { namespace var {
 
-using namespace mapbox::util;
+using namespace std;
 
 /// Variant of a container with real elements
 template<template<class> class... C>

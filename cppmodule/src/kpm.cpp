@@ -133,7 +133,7 @@ void wrap_greens(py::module& m) {
             return self;
         }))
         .def_property_readonly("matrix", [](kpm::OptimizedHamiltonian const& self) {
-            return var::apply_visitor(ReturnMatrix{}, self.matrix());
+            return var::visit(ReturnMatrix{}, self.matrix());
         })
         .def_property_readonly("sizes", [](kpm::OptimizedHamiltonian const& self) {
             return self.map().get_data();

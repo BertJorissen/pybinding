@@ -115,7 +115,7 @@ struct SelectMatrix {
 
     template<class Matrix>
     void operator()(Matrix const& h2) {
-        var::apply_visitor(SelectAlgorithm<Matrix>{h2, s, ac, oh, compute}, m);
+        var::visit(SelectAlgorithm<Matrix>{h2, s, ac, oh, compute}, m);
     }
 };
 
@@ -127,7 +127,7 @@ DefaultCompute::DefaultCompute(idx_t num_threads, ProgressCallback progress_call
 
 void DefaultCompute::moments(MomentsRef m, Starter const& s, AlgorithmConfig const& ac,
                              OptimizedHamiltonian const& oh) const {
-    var::apply_visitor(SelectMatrix{std::move(m), s, ac, oh, *this}, oh.matrix());
+    var::visit(SelectMatrix{std::move(m), s, ac, oh, *this}, oh.matrix());
 }
 
 void DefaultCompute::progress_start(idx_t total) const {

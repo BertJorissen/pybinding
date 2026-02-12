@@ -11,6 +11,7 @@ from numpy.typing import ArrayLike
 from matplotlib.collections import LineCollection
 from matplotlib.colors import ListedColormap
 from matplotlib.cm import ScalarMappable
+from matplotlib.colorbar import Colorbar
 
 from .misc import with_defaults
 
@@ -215,7 +216,7 @@ def blend_colors(color, bg, factor):
 
 
 def colorbar(mappable: Optional[ScalarMappable] = None, ax: Optional[plt.Axes] = None, cax: Optional[plt.Axes] = None,
-             label="", powerlimits=(0, 0), **kwargs):
+             label="", powerlimits: Optional[Tuple[int, int]] = None, **kwargs):
     """Custom colorbar with modified style and optional label
 
     Changes default `pad` and `aspect` argument values and turns on rasterization for a
@@ -239,11 +240,8 @@ def colorbar(mappable: Optional[ScalarMappable] = None, ax: Optional[plt.Axes] =
     if ax is None:
         ax = plt.gca()
     if mappable is None:
-        print(ax.get_images())
-        print("yes" if ax.get_images() else "no")
-        print(ax.collections[0])
         mappable = ax.get_images()[0] if ax.get_images() else ax.collections[0]
-    cbar = plt.colorbar(mappable, cax=cax, ax=ax, **with_defaults(kwargs, pad=0.02, aspect=28))
+    cbar: Colorbar = plt.colorbar(mappable, cax=cax, ax=ax, **with_defaults(kwargs, pad=0.02, aspect=28))
 
     cbar.solids.set_edgecolor("face")  # remove white gaps between segments
     cbar.solids.set_rasterized(True)   # and reduce pdf and svg output size
@@ -256,8 +254,8 @@ def colorbar(mappable: Optional[ScalarMappable] = None, ax: Optional[plt.Axes] =
         if cbar.formatter.get_offset() or cbar.orientation != 'vertical':
             cbar.set_label(label)
         else:
-            cbar.ax.set_xlabel(label)
-            cbar.ax.xaxis.set_label_position('top')
+            cbar.ax.set_ylabel(label)
+            cbar.ax.yaxis.set_label_position('right')
 
     return cbar
 
@@ -636,7 +634,6 @@ def plot_color(x: ArrayLike, y: ArrayLike, z: ArrayLike, ax: Optional[plt.Axes] 
         y = np.array([y]).T
     if z.ndim == 1:
         z = np.array([z] * y.shape[1]).T
-        print(z.shape)
 
     assert np.shape(x)[0] == np.shape(y)[0], "x and y-data size differ, {0} != {1}".format(x.shape, y.shape)
     assert np.shape(x)[0] == np.shape(z)[0] + 1, "x and z-data size differ, {0} != {1}".format(x.shape, z.shape)

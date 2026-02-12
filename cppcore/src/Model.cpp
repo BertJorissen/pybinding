@@ -140,7 +140,7 @@ std::string Model::report() {
 
     return fmt::format("Built system with {} lattice sites, {}\n"
                        "The Hamiltonian has {} non-zero values, {}",
-                       num_sites, system_build_time, nnz, hamiltonian_build_time);
+                       num_sites, system_build_time.str(), nnz, hamiltonian_build_time.str());
 }
 
 std::shared_ptr<System> Model::make_system() const {

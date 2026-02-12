@@ -12,7 +12,7 @@ from jinja2 import FileSystemLoader, TemplateNotFound
 from jinja2.sandbox import SandboxedEnvironment
 
 from sphinx import package_dir
-from sphinx.ext.autosummary import import_by_name, get_documenter
+from sphinx.ext.autosummary import import_by_name, _get_documenter
 from sphinx.jinja2glue import BuiltinTemplateLoader
 from sphinx.util.osutil import ensuredir
 from sphinx.util.inspect import safe_getattr
@@ -30,7 +30,7 @@ def get_members(app, obj, typ, include_public=()):
     items = []
     for name in dir(obj):
         try:
-            documenter = get_documenter(app, safe_getattr(obj, name), obj)
+            documenter = _get_documenter(app, safe_getattr(obj, name), obj)
         except AttributeError:
             continue
         if documenter.objtype == typ:
@@ -92,7 +92,7 @@ def generate_autosummary_docs(sources, app, suffix='.rst', output_dir=None,
 
         new_files.append(fn)
         with open(fn, 'w') as f:
-            doc = get_documenter(app, obj, parent)
+            doc = _get_documenter(app, obj, parent)
 
             if template_name is not None:
                 template = template_env.get_template(template_name)

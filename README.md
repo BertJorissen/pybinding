@@ -3,9 +3,13 @@
 [![DOI](https://zenodo.org/badge/20541/dean0x7d/pybinding.svg)](https://zenodo.org/badge/latestdoi/20541/dean0x7d/pybinding)
 [![License](https://img.shields.io/badge/license-BSD-blue.svg?maxAge=2592000)](license.md)
 [![Gitter](https://img.shields.io/gitter/room/dean0x7d/pybinding.svg?maxAge=2592000)](https://gitter.im/dean0x7d/pybinding)
-[![Documentation Status](https://readthedocs.org/projects/pybinding/badge/?version=stable)](http://docs.pybinding.site/)
-[![Travis Build Status](https://travis-ci.org/dean0x7d/pybinding.svg?branch=master)](https://travis-ci.org/dean0x7d/pybinding)
-[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/vd84e6gxixsu9l81/branch/master?svg=true)](https://ci.appveyor.com/project/dean0x7d/pybinding)
+
+# Stable fork  of Pybinding
+
+To install newer versions of pybinding, compatible with Python 3.13 and later, use the following command:
+```
+pip install pybinding-dev
+```
 
 Pybinding is a Python package for numerical tight-binding calculations in solid state physics.
 The main features include:
@@ -34,12 +38,12 @@ See the [documentation] for more details.
 
 Pybinding can be installed on Windows, Linux or Mac, with the following prerequisites:
 
-* [Python] 3.9 or newer (Python 2.x is not supported)
+* [Python] 3.10 or newer
 * The [SciPy] stack of scientific packages, with required versions:
   * numpy >= v1.12
   * scipy >= v0.19
-  * matplotlib >= v2.0
-* If you're using Linux, you'll also need GCC >= v5.0 (or clang >= v3.5) and CMake >= v3.5.
+  * matplotlib >= v3.10.0
+* If you're using Linux, you'll also need GCC >= v7.0 (or clang >= v5.0) and CMake >= v3.15.
 
 Detailed [install instructions] are part of the documentation, but if you already have all the
 prerequisites, it's just a simple case of using `pip`, Python's usual package manager:

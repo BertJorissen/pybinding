@@ -5,6 +5,7 @@
 
 #include <Eigen/Core>
 
+#include <cassert>
 #include <algorithm>
 #include <numeric>
 #include <vector>

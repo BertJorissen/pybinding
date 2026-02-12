@@ -7,7 +7,7 @@ namespace cpb { namespace kpm {
 
 inline std::string format_report(std::string msg, Chrono const& time, bool shortform) {
     auto const fmt_str = shortform ? "{:s} [{}] " : "- {:<80s} | {}\n";
-    return fmt::format(fmt_str, msg, time);
+    return fmt::format(fmt_str, msg, time.str());
 }
 
 struct AlgorithmConfig;

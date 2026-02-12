@@ -49,7 +49,7 @@ TEST_CASE("SiteStateModifier") {
         REQUIRE(count["B"] == 2);
 
         model.add(SiteStateModifier(remove_site, 1));
-        REQUIRE_THROWS_WITH(model.system(), Catch::Contains("has not been implemented yet"));
+        REQUIRE_THROWS_WITH(model.system(), Catch::Matchers::ContainsSubstring("has not been implemented yet"));
         REQUIRE(count["A"] == 0);
         REQUIRE(count["B"] == 2);
     }
@@ -58,7 +58,7 @@ TEST_CASE("SiteStateModifier") {
 TEST_CASE("SitePositionModifier") {
     auto model = Model(lattice::square_2atom(), shape::rectangle(2, 2));
     REQUIRE(model.system()->num_sites() == 6);
-    REQUIRE(model.system()->positions.y[1] == Approx(-1));
+    REQUIRE(model.system()->positions.y[1] == Catch::Approx(-1));
 
     auto count = std::unordered_map<std::string, idx_t>();
     constexpr auto moved_pos = 10.0f;
@@ -109,27 +109,27 @@ TEST_CASE("State and position modifier ordering") {
 
     SECTION("State before position") {
         REQUIRE(model.system()->num_sites() == 4);
-        REQUIRE(model.system()->positions.x[0] == Approx(-1));
-        REQUIRE(model.system()->positions.x[1] == Approx(0));
+        REQUIRE(model.system()->positions.x[0] == Catch::Approx(-1));
+        REQUIRE(model.system()->positions.x[1] == Catch::Approx(0));
 
         model.add(delete_site);
         model.add(move_site);
 
         REQUIRE(model.system()->num_sites() == 3);
-        REQUIRE(model.system()->positions.x[0] == Approx(0));
+        REQUIRE(model.system()->positions.x[0] == Catch::Approx(0));
     }
 
     SECTION("Position before state") {
         REQUIRE(model.system()->num_sites() == 4);
-        REQUIRE(model.system()->positions.x[0] == Approx(-1));
-        REQUIRE(model.system()->positions.x[1] == Approx(0));
+        REQUIRE(model.system()->positions.x[0] == Catch::Approx(-1));
+        REQUIRE(model.system()->positions.x[1] == Catch::Approx(0));
 
         model.add(move_site);
         model.add(delete_site);
 
         REQUIRE(model.system()->num_sites() == 4);
-        REQUIRE(model.system()->positions.x[0] == Approx(10));
-        REQUIRE(model.system()->positions.x[1] == Approx(0));
+        REQUIRE(model.system()->positions.x[0] == Catch::Approx(10));
+        REQUIRE(model.system()->positions.x[1] == Catch::Approx(0));
 
     }
 }
@@ -194,11 +194,11 @@ TEST_CASE("SiteGenerator") {
 
         auto const complex_vector = MatrixXcd::Constant(1, 2, 2.0);
         REQUIRE_THROWS_WITH(model.add(SiteGenerator("C", complex_vector, noop)),
-                            Catch::Contains("must be a real vector or a square matrix"));
+                            Catch::Matchers::ContainsSubstring("must be a real vector or a square matrix"));
 
         auto const complex_matrix = MatrixXcd::Constant(2, 2, {1.0, 1.0});
         REQUIRE_THROWS_WITH(model.add(SiteGenerator("C", complex_matrix, noop)),
-                            Catch::Contains("diagonal of the onsite hopping term must be real"));
+                            Catch::Matchers::ContainsSubstring("diagonal of the onsite hopping term must be real"));
     }
 
     SECTION("Structure") {
