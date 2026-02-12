@@ -115,7 +115,7 @@ include(warnings)
 enable_warnings(cppcore)
 
 include(download)
-download_dependency(eigen3 3.4.0
+download_dependency(eigen3 3.4.1
                     https://gitlab.com/libeigen/eigen/-/archive/\${VERSION}
                     eigen-\${VERSION}.tar.gz */Eigen)
 target_include_directories(cppcore SYSTEM PUBLIC ${EIGEN3_INCLUDE_DIR})
@@ -149,7 +149,7 @@ endif()
 
 if(PB_TESTS)
     set(catch_url https://raw.githubusercontent.com/catchorg/Catch2/v\${VERSION}/extras)
-    download_dependency(catch 3.8.0 ${catch_url} catch_amalgamated.hpp catch_amalgamated.cpp)
+    download_dependency(catch 3.12.0 ${catch_url} catch_amalgamated.hpp catch_amalgamated.cpp)
     if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/deps/catch/catch_amalgamated.hpp)
         file(RENAME ${CMAKE_CURRENT_SOURCE_DIR}/deps/catch/catch_amalgamated.hpp
                 ${CMAKE_CURRENT_SOURCE_DIR}/deps/catch/catch.hpp)

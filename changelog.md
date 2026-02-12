@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.0.7 | 2026-02-13
+
+* Update the versions for Catch, fmt, pybind11 and python dependencies
+* Add support for python 3.13
+* Add `Wavefunction.operator_kpath()` to calculate the expectation value of an operator in k-space
+* Small documentation updates
+* Update to Eigen 5.0.0 and Catch2 3.12.0
+
 ## v1.0.6 | 2025-03-17
 
 * Update the versions for Catch, fmt, pybind11 and python dependencies
@@ -16,11 +24,11 @@
 
 ## v1.0.5.dev0 |2024-09-23
 
-* `pb.kpmm.deferred_greens` has been added to caluclate the Green's function in a deferred way
+* `pb.kpmm.deferred_greens` has been added to calculate the Green's function in a deferred way
 
 ## v1.0.4 |2024-06-20
 
-Majer new release, new additions:
+Major new release, new additions:
 
 * `pb.Wavefunction` class to save the eigenvectors, similar to `pb.Bands`
 * `pb.Area` to save results in an area in reciprocal space

@@ -4,11 +4,86 @@ import matplotlib.pyplot as plt
 from numpy.typing import ArrayLike
 from typing import Optional, Union, List, Iterable
 from matplotlib.patches import FancyArrow
+from matplotlib.collections import PatchCollection, PathCollection
 
 from ..utils.misc import with_defaults
 from ..utils import pltutils
 
-__all__ = ['make_path', 'Path', 'make_area', 'Area', 'AbstractArea']
+__all__ = ['make_path', 'Point', 'Path', 'make_area', 'Area', 'AbstractArea']
+
+class Point(np.ndarray):
+    """A ndarray which represents a k point
+
+    Attributes
+    ----------
+    point_label : Optional[str]
+        Label for the point.
+    """
+    def __new__(cls, array: ArrayLike, point_label: Optional[List[str]] = None):
+        obj = np.asarray(array).view(cls)
+        obj.point_label = point_label
+        return obj
+
+    def _default_points(self):
+        return str(0)
+
+    def __array_finalize__(self, obj):
+        if obj is None:
+            return
+        default_label = self._default_points()
+        self.point_label = getattr(obj, 'point_label', default_label)
+
+    def __reduce__(self):
+        r = super().__reduce__()
+        state = r[2] + (self.point_label,)
+        return r[0], r[1], state
+
+    # noinspection PyMethodOverriding,PyArgumentList
+    def __setstate__(self, state):
+        if len(state) == 6:
+            self.point_label = state[-1:]
+            state_out = state[:-1]
+        else:
+            self.point_label = None
+            state_out = state
+        super().__setstate__(state_out)
+
+    def plot(self, point_label: Optional[str] = None, ax: Optional[plt.Axes] = None,
+             **kwargs) -> PathCollection:
+        """Scatter plot of the point
+
+        Parameters
+        ----------
+        point_label : str
+            Labels for the :attr:`.Path.points`.
+        ax : Optional[plt.Axes]
+            The axis to plot on.
+        **kwargs
+            Forwarded to :func:`~matplotlib.pyplot.arrow`.
+        """
+        if ax is None:
+            ax = plt.gca()
+        ax.set_aspect('equal')
+        default_color = pltutils.get_palette('Set1')[1]
+        kwargs = with_defaults(kwargs, zorder=2, s=3, lw=1.5, color=default_color)
+
+        out = ax.scatter(*self, **kwargs)
+        self.decorate_plot(point_label, ax)
+        return out
+
+    def decorate_plot(self, point_label: Optional[List[str]] = None, ax: Optional[plt.Axes] = None) -> None:
+        if ax is None:
+            ax = plt.gca()
+        ax.autoscale_view()
+        pltutils.add_margin(0.5, ax=ax)
+        pltutils.despine(trim=True, ax=ax)
+        if point_label is None:
+            point_label = self.point_label
+
+        if point_label:
+            ha, va = pltutils.align(*(-self))
+            pltutils.annotate_box(point_label, self * 1.05, fontsize='large',
+                                  ha=ha, va=va, bbox=dict(lw=0), ax=ax)
 
 
 class Path(np.ndarray):

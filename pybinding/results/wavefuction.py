@@ -253,6 +253,66 @@ class Wavefunction:
             fatbands_out.labels["orbitals"] = names
         return fatbands_out
 
+    def operator_kpath(self, operator: Union[np.ndarray, Callable[[np.ndarray], np.ndarray]], disentangle: bool = False,
+                        names: Union[Optional[List[str]], str] = None) -> FatBands:
+        """Apply the operator on the wavefunction. Only from-to same band, no correlations between bands.
+
+        Parameters
+        ----------
+        operator : np.ndarray or Callable
+            The operators to apply on the system. This should be in the shape of (k_idx, ham_idx, ham_idx).
+            Optionally, this can be 4D, (op_idx, k_idx, ham_idx, ham_idx), with op_idx different operators.
+            If this is a function (Callable), the function should accept the pb.Path to build the operator
+            for thses k-vectors, and return a np.ndarray as would be provided if it were not a Callable mentioned above.
+        disentangle : bool
+            If the bands and the results should be disentangled. Defualt: False.
+        names : Union[Optional[List[str]], str]
+            The names for the labels of the operators.
+
+        Returns
+        -------
+        :class: ~pybinding.FatBands
+        """
+        nk_wfc, nbands_wfc, dim_wfc = self.wavefunction.shape
+        wfc_conj = self.wavefunction.conj()
+        if callable(operator):
+            operator_loc = operator(self.bands.k_path)
+        else:
+            operator_loc = np.asarray(operator)
+        if operator_loc.ndim == 3:  # see if we are working with a single operator
+            operator_loc = np.array([operator_loc])  # add another ghost dimension
+        elif operator_loc.ndim != 4:
+            raise ValueError("The operator should be either 3D or 4D, and not {0}D".format(operator_loc.ndim))
+        n_ops, nk_ops, dim1_ops, dim2_ops = operator_loc.shape
+        if nk_ops != nk_wfc:
+            raise ValueError(
+                "The first dimension of the operator should match the k-points of the wavefunction,"
+                " {0} != {1}".format(nk_ops, nk_wfc))
+        if dim1_ops != dim_wfc or dim2_ops != dim_wfc:
+            raise ValueError(
+                "The last two dimensions of the operator should match the dimension of the wavefunction,"
+                " {0} != {1} and {2} != {3}".format(dim1_ops, dim_wfc, dim2_ops, dim_wfc))
+
+        # vectorized over bands and operators
+        print(wfc_conj.shape, operator_loc.shape, self.wavefunction.shape)
+        data_mat = np.einsum(
+            'kbi,okij,kbj->kbo',
+            wfc_conj,
+            operator_loc,
+            self.wavefunction,
+            optimize=True
+        ).real
+
+        fatbands_out = self.fatbands_disentangled if disentangle else self.fatbands  # generate the fatbands object
+        fatbands_out.data = self.disentangle(data_mat) if disentangle else data_mat  # append the data
+        if names is None:  # determine the right name
+            fatbands_out.labels["orbitals"] = list(map(str, range(n_ops)))
+        elif isinstance(names, str):  # if only a string is given, wrap it with a list
+            fatbands_out.labels["orbitals"] = [names]
+        else:  # the correct shape should be given, List[str] with length the amount of operators
+            fatbands_out.labels["orbitals"] = names
+        return fatbands_out
+
 
 class WavefunctionArea(Wavefunction):
     def __init__(self, bands: BandsArea, wavefunction: np.ndarray, sublattices: Optional[AliasArray] = None,
