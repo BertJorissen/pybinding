@@ -115,7 +115,7 @@ include(warnings)
 enable_warnings(cppcore)
 
 include(download)
-download_dependency(eigen3 5.0.0
+download_dependency(eigen3 3.4.1
                     https://gitlab.com/libeigen/eigen/-/archive/\${VERSION}
                     eigen-\${VERSION}.tar.gz */Eigen)
 target_include_directories(cppcore SYSTEM PUBLIC ${EIGEN3_INCLUDE_DIR})

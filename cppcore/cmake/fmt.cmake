@@ -1,4 +1,4 @@
-download_dependency(fmt 11.1.4 https://raw.githubusercontent.com/fmtlib/fmt/\${VERSION}
+download_dependency(fmt 12.1.0 https://raw.githubusercontent.com/fmtlib/fmt/\${VERSION}
                     include/fmt/format.h
                     src/format.cc
                     include/fmt/format-inl.h
